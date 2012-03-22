@@ -1,0 +1,40 @@
+
+
+<tr class = 'taskRow' style="display:marker;" >
+		
+		{% if display_universe %}
+		<td class = 'universe cell'>
+			{{task.universe.lookup}}
+		</td>
+		{% endif %}
+
+		<td class = 'id cell'>
+     		<a href = "{{task.get_absolute_url}}"> {{task.id}} </a>      			
+   		</td>
+    	
+    	<td class = 'name cell'>  
+    		{{task.name}}     	
+    	</td>
+    
+    	<td class = 'owner cell'>
+     		{% for owner in task.owners.all %}
+		     	<a href = "/do/list_tasks/by_owner/"> 
+		     		{{owner}} 
+		     
+		    	 </a>
+		     {% empty %}
+		     	none
+	    	 {% endfor %}
+	    	 
+	     </td>
+     
+     	<td class = 'button cell'> 
+     		<form method="POST" action="/do/claim_task_for_user/">     		
+     			{% csrf_token %}     		
+     			<input type="hidden" name="task_id" value="{{task.id}}"/>
+     			<button class="claimTask" type="submit">I'm on it.</button>
+     		</form>
+    
+		</td>
+	
+	</tr>	

@@ -1,0 +1,7 @@
+<div class="typical list">
+	<ul>
+	{% for notice in object.notices.all %}
+		<li>{{notice.creator}} showed {{notice.target}} this task on {{notice.created}}</li>				
+	{% endfor %}
+	</ul>
+</div>

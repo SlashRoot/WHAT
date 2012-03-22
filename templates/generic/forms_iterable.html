@@ -1,0 +1,26 @@
+{% extends "brown_and_bubble_driven.html" %}
+{% block title %}Create New Contact{% endblock %}
+{% block more_content %}
+
+<div class="container">
+	<div class="row">
+		<div class="threecol"> </div>
+		<div class="sixcol">
+			<div class="tanRounded normal">
+		
+				<form action='' method="post">
+
+					{% csrf_token %}
+
+					{% for form in forms %}
+						{% include 'forms/form_loop.html' %}
+					{% endfor %}
+
+					<input type="submit">
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

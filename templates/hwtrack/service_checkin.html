@@ -1,0 +1,17 @@
+ {% include 'sitewide_head.html' %}
+
+ 
+ <script type="text/javascript" src="/media/js/autocomplete.js"></script> 
+ 
+ <div id="serviceCheckIn" class="bigModal">
+ 
+	<form action='' method="post">
+		
+	{% for form in service_check_in_forms %}
+		{% include 'forms/form_loop.html' %}
+	{% endfor %}
+	
+	<input type="submit">
+	</form>
+	
+</div>

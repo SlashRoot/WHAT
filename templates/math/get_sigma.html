@@ -1,0 +1,65 @@
+<style>
+.factor {
+font-size: 40px;
+}
+
+.plusSign {
+color:blue;
+font-size:30px;
+vertical-align: text-bottom;
+}
+
+.power {
+font-size:24px;
+vertical-align: top;
+color:red;
+}
+
+
+</style>
+
+<div class="factor">
+	&sigma;({{starting_integer}}, {{sequence_length}})
+</div>
+<hr/>
+As products of powers of prime factors:<br/>
+{% for element in reduced_result %}
+
+	{% for factor, power in element.items %}
+	
+		<span class="plusSign">{% if not forloop.counter == 1 %}*{% endif %}</span>
+		<span class="factor">{{factor}}</span>
+		<span class="power">{{power}}</span>
+			
+	{% endfor %}
+	
+	{% if forloop.counter == 1 %}
+		<br/>
+		----------------------------------------------------
+		<br/>
+	{% endif %}
+			
+{% endfor %}
+
+<hr/>
+As Integers: <br/>
+{{numerator}}
+<br/>
+----
+<br/>
+{{denominator}}
+
+<hr/>
+
+As an approximate decimal: {{as_decimal}}
+
+<hr/>
+Lowest Common Multiple of {{candidates}}: {{nice_lcm}}
+
+<hr/>
+<strong>Process Details</strong><br/>
+(Took: {{how_long}})
+<br/>
+(Projected CPU Burden: {{burden}})
+<br/>
+(Burden per second (big is good, below 2000 is choking): {{burden_time}} {% if burden_time < 2000 %}<span style="color:red">Ouch! Please don't do that again.</span>{% endif %})

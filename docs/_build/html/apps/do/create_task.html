@@ -1,0 +1,136 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Creating Tasks &mdash; SlashRoot WHAT v.001 documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '.001',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="SlashRoot WHAT v.001 documentation" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../contents.html">SlashRoot WHAT v.001 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="creating-tasks">
+<h1>Creating Tasks<a class="headerlink" href="#creating-tasks" title="Permalink to this headline">¶</a></h1>
+<p>If you have task creation privileges, a plus sign will appear near &#8220;Tasks&#8221; in the heading.</p>
+<p>When you click the plus sign, a modal will appear with a TaskForm.</p>
+<p>Fill out the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Name (autocompletes against existing TaskPrototype objects)</li>
+<li>Whether or not it&#8217;s already complete (boolean)</li>
+<li>If it is not complete, projected completion date</li>
+<li>If it is complete, date completed (or will we assume &#8216;now&#8217; as the completed date?  Is the task truly completed if it is not marked &#8216;complete?&#8217;)</li>
+<li>People who have some authority over this task</li>
+<li>People who have some interest in this task</li>
+</ul>
+</div></blockquote>
+<div class="section" id="create-just-a-new-task-or-a-new-taskprototype">
+<h2>Create just a new Task or a new TaskPrototype?<a class="headerlink" href="#create-just-a-new-task-or-a-new-taskprototype" title="Permalink to this headline">¶</a></h2>
+<p>When you autocomplete the name field and successfully find an existing TaskPrototype, the border of the modal will do something to indicate this, the description will populate, and the ID of the TaskPrototype will be displayed at the top.</p>
+<p>The ID of the TaskPrototype will be displayed as a link.  You can click it to be taken to the profile page for the TaskPrototype.</p>
+<p>If you modify the name or description, a pre-clicked checkbox will appear prompting you to <strong>evolve</strong> the TaskPrototype object (this is the recommended course of action).</p>
+</div>
+<div class="section" id="creating-parent-child-and-sibling-tasks">
+<h2>Creating Parent, Child, and Sibling Tasks<a class="headerlink" href="#creating-parent-child-and-sibling-tasks" title="Permalink to this headline">¶</a></h2>
+<p>Beneath the form, three plus signs will allow the creation of parent, child, and sibling Tasks.</p>
+<p>By clicking the plus sign, an additional TaskForm will appear below and slightly indented the parent TaskForm.</p>
+<p>Click &#8220;Save&#8221; to save the task.  Any validation errors will appear as red borders around the respective fields.</p>
+<p>Saved tasks will have a green border.</p>
+<p>Once you are finished, you can close the modals.</p>
+</div>
+</div>
+<div class="section" id="evolving-taskprototypes">
+<h1>Evolving TaskPrototypes<a class="headerlink" href="#evolving-taskprototypes" title="Permalink to this headline">¶</a></h1>
+<p>If you autocomplete against a name or description that is close to your desire but not exact, you can <em>evolve</em> the TaskPrototype to match your needs.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Creating Tasks</a><ul>
+<li><a class="reference internal" href="#create-just-a-new-task-or-a-new-taskprototype">Create just a new Task or a new TaskPrototype?</a></li>
+<li><a class="reference internal" href="#creating-parent-child-and-sibling-tasks">Creating Parent, Child, and Sibling Tasks</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#evolving-taskprototypes">Evolving TaskPrototypes</a></li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/apps/do/create_task.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../contents.html">SlashRoot WHAT v.001 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, SlashRoot Collective.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

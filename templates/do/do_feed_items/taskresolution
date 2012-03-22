@@ -1,0 +1,5 @@
+<div class="tanRounded normal bigFeed taskResolution" task_id="{{item.task.id}}">	
+	{{item.creator}} <a href="{{item.task.get_absolute_url}}">{{item.task}}</a>
+	<br/>
+	<small><abbr class="timeago" title="{{item.created|date:"c"}}"></abbr></small>
+</div>

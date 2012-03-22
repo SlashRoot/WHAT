@@ -1,0 +1,64 @@
+
+    {% csrf_token %}
+        <p>Task name in the past tense (ie, "Took both llamas for a walk"):</p>            
+        {{task_prototype_name_form.as_ul}}                        
+    
+    {# CREATING A NEW TASK PROTOTYPE #}
+    <div class="hidden taskPrototypeDoesNotExist">
+    
+        <p>This task prototype does not exist.</p>                            
+        {% if user_can_make_new_prototypes %}
+        <p>You can create it.</p>                                                            
+            <div class="collapsable left">
+            {{rest_of_the_task_prototype_form}}    
+                <h3 class="left head collapsed">Parents</h3>                            
+                    <div class="left blockContent">
+                        <div class="cloneArea">
+                            <div id="original_parent">
+                                {{task_prototype_parent_form}}
+                            </div>
+                        </div>                                    
+                        <button type="button" class="hidden quickClone" id="add_parent">Add Parent</button>
+                    </div>
+                    
+                <h3 class="left head expanded">Children</h3>
+                    <div class="left blockContent">
+                        <div class="cloneArea">
+                            <div id="original_child">
+                                {{task_prototype_child_form}}
+                            </div>
+                        </div>
+                        <button type="button" class="hidden quickClone" id="add_child">Add Child</button>        
+                    </div>
+            </div>
+        
+        <div class="left">                                
+            Access Requirement:
+            <select name="access_requirement">
+                {% for privilege in user_privileges %}
+                    <option value="{{privilege.id}}">{{privilege}}</option>                                
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="left">
+            {# TODO: Figure out whether this hard-coded field should be handled in the view. #}
+            <input type="checkbox" name="no_generate">Create Prototype Only (do not generate Task)
+        </div>
+                        
+        {% else %}
+        
+            <p class="left">You can not create new Prototypes.</p>
+            
+        {% endif %}
+        
+    </div>
+    
+    {# USING AN EXISTING TASK PROTOTYPE #}
+    <div class="taskPrototypeDoesExist hidden">
+        <p>This task will be created with the following children.</p>
+        </p>Please check any that are already completed:
+        <div id="taskChildren"></div> {# Gets populated by jQuery #}
+    </div>
+    
+    <button id="submitTask" class="left hidden submit" type="submit">Save This Task</button>            

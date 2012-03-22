@@ -1,0 +1,10 @@
+{% for session in sessions %}
+	<div class="left">
+		<ul>
+			<li>key: {{session.session_key}}</li>
+			<li>get_decoded: {{session.get_decoded}}</li>
+			<li>{{session.sessioninfo.created}}</li>
+			<li>{{session.sessioninfo.user}}</li>
+		</ul>
+	</div>
+{% endfor %}

@@ -1,0 +1,17 @@
+<h3>Place a Call to {{outgoing_number_object.owner}} ({{outgoing_number_object.type}})</h3>
+
+Select a member phone to call from:
+
+<form action="/comm/outgoing_call/" method="POST">
+	{% csrf_token %}
+	<input type="hidden" name="callTo" value="{{request.GET.phone_number}}">
+
+	<select id="numberChooser" name="callFrom">
+	{% for number in eligible_numbers %}
+		<option value="{{number.0}}">{{number.2}} ({{number.1}}) - {{number.3}}</option>
+	{% endfor %}
+	</select>
+	
+	<button type="submit">Submit</button>
+
+</form>

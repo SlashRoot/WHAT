@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <title>WebSocket example: echo service</title>
+  </head>
+  <body>
+    <h1>WebSocket example: echo service</h1>
+    <script type="text/javascript">
+        var ws = new WebSocket("ws://127.0.0.1:8080/ws/echo");
+        ws.onmessage = function(evt) {
+            var data = evt.data;
+            var target = document.getElementById("received");
+            target.value = target.value + data;
+        };
+        window.send_data = function() {
+            ws.send(document.getElementById("send_input").value);
+        };
+    </script>
+    <form>
+      <label for="send_input">Text to send</label>
+      <input type="text" name="send_input" id="send_input"/>
+      <input type="submit" name="send_submit" id="send_submit" value="Send"
+             onclick="send_data(); return false"/>
+      <br>
+      <label for="received">Received text</label>
+      <textarea name="received" id="received"></textarea>
+    </form>
+  </body>
+</html>

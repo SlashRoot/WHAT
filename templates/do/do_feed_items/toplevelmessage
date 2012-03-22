@@ -1,0 +1,5 @@
+<div class="tanRounded normal bigFeed">	
+	{{item.creator}} wrote on <a href="{{item.content_object.get_absolute_url}}">{{item.content_object}}</a>: <em>"{{item.message|truncatewords:10|striptags}}"</em>
+	<br/>
+	<small><abbr class="timeago" title="{{item.created|date:"c"}}"></abbr></small>
+</div>

@@ -1,0 +1,92 @@
+{% include 'sitewide_head.html' %}
+
+<style>
+label, button {
+float:left;
+clear:left;
+}
+
+input, textarea, select {
+float:left;
+}
+
+.clonedForm {
+    border: 6px groove #DCDCDC;
+    clear: left;
+    float: left;
+    margin: 2px;
+    padding: 10px;
+}
+
+.formHeading {
+    color: Crimson;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.conclusionBlock {
+ clear: left;
+    float: left;
+    margin-top: 20px;
+}
+
+.bigTotal {
+color:red;
+}
+
+.xClose {
+cursor:pointer;
+}
+
+.underText{
+    color: green;
+    float: left;
+    
+    font-size: 9px;
+    vertical-align: sub;
+}
+
+.addButton {
+    background-image: url("/media_admin/img/admin/icon_addlink.gif");
+    background-position: 50% 0;
+    background-repeat: no-repeat;
+    float: left;
+    height: 20px;
+    margin-left: 10px;
+    padding-top: 10px;
+}
+
+</style>
+
+
+
+	{% for involvement in exchange.parties.all %}
+		<div class="floatLeft">	
+		Involvement of {{involvement.party}} (#{{involvement.id}})
+	
+		<br/>Items pleged
+		{% for pledge in involvement.pledged.all %}
+			<div class="floatLeft">
+				Pledge #{{pledge.id}}
+			</div>
+			{% for item in pledge.items.all %}
+			
+				<br/>{{item.drill_down}} 
+			
+			{% endfor %}
+			
+			{% for ipledge in pledge.incoming_pledges.all %}
+			
+				{% for item in ipledge.items.all %}
+				
+					<br/>{{item.drill_down}} 
+				
+				{% endfor %}
+			
+			{% endfor %}
+				
+	
+		{% endfor %}
+		</div>
+	
+	{% endfor %}

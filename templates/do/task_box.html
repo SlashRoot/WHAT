@@ -1,0 +1,74 @@
+{% load do_tags %}
+
+<div id="taskBox_{{task.id}}" class="tanRounded task taskBox {% if task|task_is_owned_by_user:user %}highlight{% endif %}" selected="taskBoxes" item="task_{{task.id}}">
+	<span class="navButton taskName tencol" shows="task_{{task.id}}" exclude="taskBoxes">
+        {{task.name_with_links|safe}}
+    </span>
+    <span class="taskStats twocol last">
+        ({{task.gravitas}})
+    </span>
+    <div class="left fullWidth hidden" set="task_{{task.id}}" exclusive="taskBoxes">    
+        <div class="left fullWidth">By {{task.creator}} on {{task.created}}</div>
+        
+        <div class="left fullWidth taskDetails slightlySmaller">
+            <span class="navButton" exclude="taskDetails" shows="taskChildren">{{task.children.count}} children</span>, 
+            <span class="navButton" exclude="taskDetails" shows="taskOwners">{{task.ownership.count}} owners</span>
+            
+            <div class="hidden taskChildren typical" set="taskChildren" exclusive="taskDetails">            	
+            	{% for progeny in task.children.all %}
+            		<div class="listChild">
+                		{% if user.is_authenticated %} {#TODO: Check if they are an owner of this task? #}
+                			<input {% if progeny.child.status == "Completed" %}checked="yes"{% endif %} type="checkbox" task="{{progeny.child.id}}" modal="taskActions" class="launchModal {% if progeny.child.is_open %}markResolved{% endif %} left"/>
+                		{% endif %}
+                    	<div class="childName {% if not progeny.child.is_open %}strikeOut{% endif %}">	                    		
+            				{{progeny.child.name_with_links|safe}}
+            			</div>
+            		</div>
+            	{% endfor %}                
+            </div>
+            
+            <div class="hidden taskOwners biggerTypical" set="taskOwners" exclusive="taskDetails">
+            	<ul>
+                	{% for ownership in task.ownership.all %}
+                		<li>{{ownership.owner}}</li>
+                	{% endfor %}
+                </ul>
+            </div>
+            
+        </div>
+        
+        {% if task.projected %}
+            <div class="left fullWidth">Projected: {{task.projected}}</div> 
+        {% endif %}
+        
+        {% if user.is_authenticated %}
+            <div class="taskOwnership">
+            		<div class="left fullWidth"><hr/></div>                                        	
+                	{% if task|task_is_owned_by_user:user %}
+                		<a href="javascript:;" task="{{task.id}}" shows="taskResolution" exclude="taskActions" modal="taskActions" class="launchModal markResolved left">
+                        	Mark Resolved
+                    	</a>
+                	{% else %}	                                        		
+                		<a href="javascript:;" url="/do/own_task/{{task.id}}/" class="submitViaAjax left" successCallback="refreshTask">
+                        	Own this task
+                    	</a>
+                	{% endif %}
+                		   
+                <a href="javascript:;" class="right">
+                    Draw Attention
+                </a>		                                            
+            </div>
+        {% endif %}
+        
+        <div class="left fullWidth">
+        <hr/>
+        	<div class="tags">
+        		<form>
+        			<input name="tags" value="{% for tag in task.tags.all %}{{tag.name}},{% endfor %}"/><button type="button" class="submitViaAjax" url="/utility/save_tags_for_object/do__task__{{task.id}}/">Tags</button>
+        		</form>
+        	</div>
+        <hr/>
+        	<div class="center typical"><a href="{{task.get_absolute_url}}">Full Task Profile</a></div>
+        </div>
+    </div>
+</div>

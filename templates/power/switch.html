@@ -1,0 +1,50 @@
+{% extends 'brown_and_bubble_driven.html' %}
+
+
+{% block more_content %}
+
+<div class="row">
+		<div class="tanRounded normal">		
+
+			
+				<button id="DoNotPress">DoNotPress</button>
+				
+				<script type="text/javascript">
+				
+				$('#DoNotPress').click(function(){
+				            $.post('/presence/close_slashroot/', {command:'on', module_id : '{{module.device.model.id}}' });
+				                          });
+				
+				</script>
+			
+
+		</div>
+	</div>
+
+	{% for module in modules %}
+		
+	<div class="row">
+		<div class="tanRounded normal">		
+
+			
+				<button id="on_{{module.device.model.id}}">Turn {{module.device.model.name}} On!</button>
+				<button id="off_{{module.device.model.id}}">Turn {{module.device.model.name}} Off!</button>
+				
+				<script type="text/javascript">
+				
+				$('#on_{{module.device.model.id}}').click(function(){
+				            $.post('/power/change/', {command:'on', module_id : '{{module.device.model.id}}' });
+				                          });
+				                          
+				$('#off_{{module.device.model.id}}').click(function(){
+				            $.post('/power/change/', {command:'off', module_id : '{{module.device.model.id}}' });
+				                          });
+				
+				</script>
+			
+
+		</div>
+	</div>
+	{% endfor %}
+
+{% endblock %}

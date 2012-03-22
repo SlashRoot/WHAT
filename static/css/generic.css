@@ -1,0 +1,175 @@
+.typewriter {
+font-family:veteran-typewriter;
+}
+
+.verySmall {
+font-size:22px;
+line-height: 26px;
+            }
+           
+.tanRounded {	
+    border: 3px ridge #543302;
+    border-radius: 5px 5px 5px 5px;
+    color: #FFEDD3;
+    font-family: caption;
+    font-size: 14px;
+    list-style: none outside none;
+    margin-right: 5px;
+    margin-top: 5px;
+    padding: 20px;
+}
+
+.tanRounded.normal {
+	margin: 1px;
+	background-color: #48515A;
+}
+
+.tanRounded.normal a {
+	color:#BDCFE1;
+}
+
+.tanRounded.task {
+	background-color:#48515A;
+
+}
+
+.tanRounded.task:hover {
+	background-color: #A7C5E1;
+	box-shadow: 0 -1px 9px white;
+}
+
+.tanRounded.title {
+    background-color: #A7C5E1;
+    border-bottom: 5px solid Black;
+    color: -moz-fieldtext;
+    line-height: 20px;
+}
+
+.tanRounded.nav li {
+	font-size: 3px;
+	display:inline;
+    margin-right: 100px;
+    font:caption;
+}
+
+.tanRounded.normal .tanRounded{
+ 	border-bottom:1px solid white;
+ 	border-left:1px solid white;  
+                 
+}
+
+.tanRounded.inverse {
+    background-color: #A7C5E1;
+    box-shadow: 0 -1px 9px white;
+}
+
+ .tanRounded.inverse a {
+ 	color:#A7C5E1;
+ }
+ 
+.tanRounded.highlight {
+
+    font-weight: bold;
+}
+ 
+.tanRounded.normal.highlight {
+	background-color: #A7C5E1;
+}
+
+
+
+.tanRounded ul {
+	list-style:none;
+}
+
+.kindaTransparent {
+opacity:0.5;
+-moz-box-shadow:none !important;
+box-shadow:none !important;
+}
+
+.typical {
+font-size:14px;
+line-height: 14px;
+}
+
+.slightlySmaller {
+font-size:.9em;
+}
+
+.biggerTypical {
+    font-size: 22px;
+    line-height: 28px;
+}
+
+.left {
+clear:left;
+float:left;
+}
+
+.right {
+clear:right;
+float:right;
+}
+
+.floatRight {
+     float:right;
+             }
+
+.center {
+text-align:center;
+}
+
+.divBox {
+border: 2px dashed #DCDCDC;	
+}
+
+.stronger {
+font-size:130% !important;
+font-weight:bold;
+}
+
+.hidden, .tooltip {
+display:none;
+}
+
+.visible {
+display:block;
+}
+
+
+
+.headingRow .tooltip {
+    background-color: #634628;
+    border: 2px outset #6E5241;
+    border-radius: 8px 8px 8px 8px;
+    bottom: 0;
+    color: #F1C493;
+    float: left;
+    font-size: 14px;
+    left: 20%;
+    margin-left: 3%;
+    opacity: 0.8;
+    position: absolute;
+    width: 50%;
+}
+
+.fullWidth {
+	width:100%;
+}
+
+.strikeOut {
+text-decoration: line-through;
+}
+
+.topLevelMessage{
+padding: 10px 0 0 10px;
+margin: 5px 0 0 5px;
+border: 1px solid #DCDCDC;
+}
+
+.bigFeed {    
+    font-family: serif;
+    font-size: 12px;
+    line-height: 13px;
+}

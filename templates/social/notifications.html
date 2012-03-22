@@ -1,0 +1,14 @@
+
+{# User-targeted DrawAttention objects #}
+{% for attention in request.user.genericparty.notices.unread %}
+	<li class="notification">{% include 'social/draw_attention_notice.html' %}</li>
+{% endfor %}
+
+{# Group-targeted  DrawAttention objects #}
+{% for group in request.user.groups.all %}
+
+	{% for attention in group.genericparty.notices.unread %}
+		<li class="notification">{% include 'social/draw_attention_notice.html' %}</li>
+	{% endfor %}
+
+{% endfor %}

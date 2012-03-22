@@ -1,0 +1,39 @@
+#. sudo apt-get install libpq-dev python-dev python-pip python-virtualenv
+?
+
+#. pip install -E <virtualenv_directory> -r REQUIREMENTS
+
+#. Eclipse
+	http://www.eclipse.org/downloads/download.php?file=/eclipse/downloads/drops/R-3.6.1-201009090800/eclipse-SDK-3.6.1-linux-gtk.tar.gz
+
+#. Subclipse / Subversive (From Eclipse Marketplace)
+
+#. PyDev (From Eclipse Marketplace)
+
+#. Eclipse HTML / Javascript editor
+	http://sourceforge.jp/projects/amateras/downloads/48175/tk.eclipse.plugin.htmleditor_2.0.7.jar/
+	(put in eclipse / dropins)
+
+	
+#. Debugger Settings
+	use arguments: runserver 0.0.0.0:4000 --noreload
+	change working directory to ${workspace_loc}
+
+	
+
+
+	
+To run the Orbited / Stomp server (only needed if you want to test push functionality):
+	
+orbited -c /path_to_slashroot_app/apps/push/orbited_stuff/slashrootcafe.cfg &
+
+
+**SPECIAL NOTES FOR FEDORA**
+
+You need to install the python-devel and postgresql-devel packages in lieu, apparently, of libpq.
+
+You also need to install gcc in order to compile the image library.
+
+The 32-bit version of glibc-devel is installed.  This package is "glibc-devel.i686" - any other glibc-devel will conflict, so uninstall all but this one.
+
+

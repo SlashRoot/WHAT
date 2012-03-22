@@ -1,0 +1,46 @@
+{% load social_tags %}
+
+<h2>Service Chronology</h2>
+{% for event in service.chronology %}
+    {% if event.display_type == "Message" %}
+        {% with message=event %}
+            {% include "social/message_display_verbose.html" %}
+        {% endwith %}
+    {% endif %}
+    
+    {% if event.display_type == "Status" %}
+        <div class="tanRounded">
+            {{event.created}}<br/>
+            <strong>{{event.creator}}</strong> changed the status to <strong>{{event.prototype.name}}</strong>
+        </div>
+    {% endif %}
+    
+    {% if event.display_type == "Phone Call" %}
+        {% with call=event %}
+            <div class="tanRounded chronology-phonecall">
+                {% with show_progress_bar=1 %}
+                    {% include 'comm/call_alert.html' %}
+                {% endwith %}
+                
+                {% with task=call.resolve_task %}
+                	{% for message in task|message_threads_for_object_family %}
+					    <div class="tanRounded">
+							<strong>{{message.creator}}</strong>&nbsp;&nbsp;&nbsp;<small>{{message.created}}</small>
+					        <br/>
+					        {% if not message.content_object == task %}
+					        <em>
+					        	(posted on <a href="{{message.content_object.get_absolute_url}}">{{message.content_object}}</a>)
+					        </em>
+					        <br/>
+					        {% endif %}
+					        {{message.message|safe}}
+					    </div>
+					{% endfor %}
+                {% endwith %}
+                
+            </div>
+        {% endwith %}
+    {% endif %}
+{% empty %}
+    <div>There are currently no discussions for this task.</div>
+{% endfor %}

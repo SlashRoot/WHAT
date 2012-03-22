@@ -1,0 +1,220 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SlashRoot WHAT documentation &mdash; SlashRoot WHAT v.001 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '.001',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="SlashRoot WHAT v.001 documentation" href="#" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="contents.html">SlashRoot WHAT v.001 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="slashroot-what-documentation">
+<h1>SlashRoot WHAT documentation<a class="headerlink" href="#slashroot-what-documentation" title="Permalink to this headline">¶</a></h1>
+<p>The SlashRoot WHAT (Whole House Automation Thing) is designed with two general purposes in mind:</p>
+<p><a href="#id1"><span class="problematic" id="id2">*</span></a>1. To facilitate the entire automation of SlashRoot business processes, including but by no means limited to accounting, sales, marketing, managing our contacts,
+facilitating actual communication (phone, email, SMS, and more), scheduling, power consumption, our website, our network, and so on.</p>
+<p><a href="#id3"><span class="problematic" id="id4">*</span></a>2. To provide services at various layers to our members, subscribers, clients, and really everybody who has anything to do with SlashRoot.</p>
+<p>In particular, we have visualized a barter-driven e-commerce platform that can act as a sort of local currency for New Paltz.</p>
+<p>The WHAT is written primarily in Python using the Django framework.
+The search engine is based on Solr, which is written in Java.
+The deployment modules use Twisted&#8217;s WSGI container, which is also written in Python.
+The &#8216;push&#8217; functionality uses Orbited, which is part of Twisted, and Stomp, an implementation of MorbidQ.</p>
+<p>The WHAT is divided up into &#8220;apps&#8221; - python modules that generally conform to Django conventions.
+The apps are not atomized into independent functions; rather, they are an inter-dependent set of divisions of labor.</p>
+</div>
+<div class="section" id="the-major-what-apps-and-their-roles">
+<h1>The major WHAT apps and their roles<a class="headerlink" href="#the-major-what-apps-and-their-roles" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="docutils">
+<colgroup>
+<col width="31%" />
+<col width="69%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">App Name</th>
+<th class="head">Module Docstring (from __init__.py)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><strong>accounting</strong></td>
+<td><span class="target" id="module-accounting"></span>Tracks and aggregates accounts and expenditures.  Has no serious public-facing components except reports.  Very little actual action - this app mostly just draws in data from the commerce, service, product, and hwtrack apps to provide a clear picture of the holdings their collective knowledge represents.</td>
+</tr>
+<tr><td><strong>comm</strong></td>
+<td><span class="target" id="module-comm"></span>Handles actual instances of communication (phone calls, SMS messages, email, etc.).  Plays with various external services (ie, Twilio, Postfix, etc.) to deliver messages.  Ideally, this app is loosly coupled from the contact app and can operate with a degree of independence from its conventions.  This is probably our most portable app.</td>
+</tr>
+<tr><td><strong>cms</strong></td>
+<td><span class="target" id="module-cms"></span>A modest content management system, designed to provide for dynamic display of user-entered knowledge or knowledge drawn from other apps.</td>
+</tr>
+<tr><td><strong>commerce</strong></td>
+<td><span class="target" id="module-commerce"></span>The heart of our e-commerce platform.  Handles all exchanges, pledges, deliveries, etc.  The logic of this app drives the frontend of every transaction.  The models of this app are our most refined, having been through dozens or hundreds of hours of conjecture over copius amounts of cannabis smoke.  This app has some of our best and most promising work.</td>
+</tr>
+<tr><td><strong>contact</strong></td>
+<td><span class="target" id="module-contact"></span>Contact Management.  Ideally, this app will handle only static content management and have no dymanic functions of its own.  At the moment, our email handler lives here - this probably needs to change.</td>
+</tr>
+<tr><td><strong>do</strong></td>
+<td><span class="target" id="module-do"></span>The town square in our do-ocracy.  This app contains all the tasks and actions that drive our organization.</td>
+</tr>
+<tr><td><strong>hwtrack</strong></td>
+<td><span class="target" id="module-hwtrack"></span>Handles every piece of hardware that comes to our attention.</td>
+</tr>
+<tr><td><strong>main</strong></td>
+<td><span class="target" id="module-main"></span>Named after the street where the first SlashRoot is located, this app drives every aspect of our public face, including our website, the public screen in our window, our menu, and anything else that is visible to the outside world.</td>
+</tr>
+<tr><td><strong>meta</strong></td>
+<td><span class="target" id="module-meta"></span>Handles knowledge about the WHAT project itself.</td>
+</tr>
+<tr><td><strong>mooncalendar</strong></td>
+<td><span class="target" id="module-mooncalendar"></span>Scheduling and projections - for events, business predictions, and anything else where time is a relevant piece of knowledge.  There is universal agreement that this app needs to be renamed, but little consensus on the name itself - &#8220;time,&#8221; &#8220;hourglass,&#8221; clock,&#8221; &#8220;happen,&#8221; and &#8220;happening(s)&#8221; have all been thrown around.</td>
+</tr>
+<tr><td><strong>people</strong></td>
+<td><span class="target" id="module-people"></span>Contains models for people and groups of all kinds.  In many ways, this app is an extension of django&#8217;s auth app (django.contrib.auth).</td>
+</tr>
+<tr><td><strong>pigs</strong></td>
+<td><span class="target" id="module-pigs"></span>Provides functionality related to rank and progress of our membership.  Again, this is an app that we all agree needs to be renamed, but we haven&#8217;t come up with the name.  Perhaps &#8220;progress&#8221;?</td>
+</tr>
+<tr><td><strong>pos</strong></td>
+<td><span class="target" id="module-pos"></span>Very near extinction after having most of its function sucked up by commerce and accounting.  The only major function left in this app is the PointOfSale model, which is a literal model of stations where sales can occur.  This app includes the &#8216;kick&#8217; method, which kicks open the cash drawer of a connected POS - one of our more exciting moments in coding.</td>
+</tr>
+<tr><td><strong>power</strong></td>
+<td><span class="target" id="module-power"></span>Measures and controls our power consumption.  Includes several neat methods written to interface with X10 modules.</td>
+</tr>
+<tr><td><strong>presence</strong></td>
+<td><span class="target" id="module-presence"></span>Handles the space itself - who is present, what they&#8217;re up to, etc.  Also handles virtual presence, ie sessions, etc.  Eventually, we&#8217;d like to add various location-based functions to this app.</td>
+</tr>
+<tr><td><strong>products</strong></td>
+<td><span class="target" id="module-products"></span>A whole app to deal with RealThings that are not Services.  Here&#8217;s where we outline our recipes and such.  This app needs a little refactoring yet.</td>
+</tr>
+<tr><td><strong>push</strong></td>
+<td><span class="target" id="module-push"></span>Possibly our most technically challenging app, this one pushes information out to the user rather than needing for information to be pulled.  Ideally, this app will use websockets to push to newer browsers, mobile APIs to talk to mobile devices, and so on, falling back to traditional comet methods when those fail.</td>
+</tr>
+<tr><td><strong>service</strong></td>
+<td><span class="target" id="module-service"></span>All of the services that we offer and the actual rendering of those services to our clients.  Also includes services to which we subscribe (for example, our internet connection).</td>
+</tr>
+<tr><td><strong>social</strong></td>
+<td><span class="target" id="module-social"></span>Sharing is caring!  This app handles all of the social elements of the WHAT, such as the DrawAttention model.  This is how we communicate and refine our knowledge base.</td>
+</tr>
+<tr><td><strong>utility</strong></td>
+<td><span class="target" id="module-utility"></span>Contains helper models and functions which get used throughout the rest of the project.  This app is also highly portable and is used in many of our web projects.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="other-less-major-apps">
+<h1>Other (less major) apps<a class="headerlink" href="#other-less-major-apps" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="84%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">App Name</th>
+<th class="head">Description (not dynamic)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><strong>checklist</strong></td>
+<td>An app to cover checklists.  Very primitive.  Can probably be tossed or merged with do.</td>
+</tr>
+<tr><td><strong>dajax</strong></td>
+<td>A third-party app designed to facilitate ajax functionality.</td>
+</tr>
+<tr><td><strong>dajaxice</strong></td>
+<td>Handlers to mediate between javascript frameworks and dajax.</td>
+</tr>
+<tr><td><strong>donald</strong></td>
+<td>Our math app.  Once in a while we get REALLY high and do math with Donald Silberger.</td>
+</tr>
+<tr><td><strong>haystack</strong></td>
+<td>A third-party app delivering modular search for Django.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">SlashRoot WHAT documentation</a></li>
+<li><a class="reference internal" href="#the-major-what-apps-and-their-roles">The major WHAT apps and their roles</a></li>
+<li><a class="reference internal" href="#other-less-major-apps">Other (less major) apps</a></li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="contents.html">SlashRoot WHAT v.001 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, SlashRoot Collective.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

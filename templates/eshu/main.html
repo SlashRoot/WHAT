@@ -1,0 +1,21 @@
+{{request.user}}
+<br/>
+
+<ul>
+<li>My Eshu</li>
+<li>My Eshu Groups</li>
+
+	<ul>
+		{% for group in request.user.groups.all %}
+			{% if group.commercegroup %}
+				
+				<li><a href="/eshu/list_purchases/{{group.genericparty.id}}">{{group.commercegroup}}</a></li>
+			
+			{% endif %}
+		
+		{% endfor %}
+	</ul>
+
+</ul>
+
+

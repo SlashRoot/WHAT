@@ -1,0 +1,26 @@
+{% extends 'brown_and_bubble_driven.html' %}
+
+{% block title %}Service Check-in{% endblock %}
+
+{% block more_content %}
+
+<div class="container">
+	<div class="row">
+		<div class="threecol"></div>
+		
+		<div class="sixcol">
+			<div class="tanRounded normal">
+				<form action="" method="POST">
+					{% csrf_token %}
+						{{form.as_ul}}
+					<button>Submit</button>
+				</form>
+			</div>
+		</div>
+		
+		<div class="threecol"></div>
+	</div>
+</div>
+		
+
+{% endblock %}

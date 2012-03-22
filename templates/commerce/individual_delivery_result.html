@@ -1,0 +1,40 @@
+Delivery Complete.
+
+{% if index_list %}
+Ingredient Index Assignments:
+
+<table>
+			<tr>
+				<td>
+					Item
+				</td>
+				
+				<td>
+					Index
+				</td>
+			
+			</tr>
+			
+	{% for index_list in big_index_list %}
+		{% for assignment in index_list %}
+
+			
+			
+			<tr>
+				<td>
+					{{assignment.0.character}} {# Item Name #}
+				</td>
+				
+				<td>
+					{{assignment.1.id}} {# Index Number #}
+				</td>
+			</tr>
+			
+		{% endfor %}
+	{% endfor %}
+	
+
+</table>
+
+
+{% endif %}

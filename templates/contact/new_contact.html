@@ -1,0 +1,69 @@
+{% extends "brown_and_bubble_driven.html" %}
+{% block title %}Add Contact{% endblock %}
+{% block more_content %}
+
+<script type="text/javascript">
+
+$(function(){
+
+	$('#id_party_lookup_lookup').keydown(function() {
+		$('#blankForm').slideUp();
+		$('#populatedForm').slideUp();
+		
+	});
+	
+})
+
+
+	function found() {
+		user_id = $('#id_party_lookup')[0].value.split('_')[1];
+		$.get("/contact/contact_forms_for_person/", {'user_id': user_id, 'phone_number': '{{request.GET.phone_number|default:"0"}}' }, function(data) {
+			$('#formLoader').html(data);
+			$('#blankForm').slideUp( function(){
+				$('#populatedForm').slideDown();
+			});
+		});
+		
+	}
+	
+	function notFound() {
+		$('#populatedForm').slideUp( function(){
+			$('#blankForm').slideDown();
+		});
+	}
+
+</script>
+
+<div class="container">
+	<div class="row">
+		<div class="threecol"> </div>
+		<div class="sixcol">
+			<div class="tanRounded normal">
+			
+
+				{{initial_lookup_form}}							
+
+				
+				<form id="blankForm" action='' method="post">
+
+					{% csrf_token %}
+
+					{% include 'contact/new_contact_inside_form.html' %}
+
+					<input type="submit">
+				</form>
+				
+				<form id="populatedForm" action='' method="post" class="hidden">
+
+					{% csrf_token %}
+					<div id="formLoader">{# This will be filled by ajax. #}</div>
+
+					<input type="submit">
+				</form>
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

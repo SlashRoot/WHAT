@@ -1,0 +1,5 @@
+<div class="tanRounded normal bigFeed">
+	 {{item.user}} logged in from {{item.hostname}}.
+	 <br/>
+	 <small><abbr class="timeago" title="{{item.created|date:"c"}}"></abbr></small>
+</div>

@@ -1,0 +1,119 @@
+.branchConnector {
+    background-color: #F1C493;
+    border-color: #6E5241 -moz-use-text-color;
+    border-style: double none;
+    border-width: 5px medium;
+    box-shadow: 9px 8px 30px #4D3A2E;
+    float: left;
+    margin-left: -45%;
+    opacity: 0.85;
+    padding: 10px;
+    position: relative;
+    width: 30%;
+    z-index: 10;
+}
+    
+.branch {
+	position:relative;
+	z-index:20;
+}
+
+.branchHeading {
+	position: relative;
+}
+
+#trunk {
+	position:relative;
+	z-index:20;
+}
+
+.verbList {
+    font-size: 30px;
+    padding: 6px;
+ }
+
+#secondHeadingRow {
+overflow:visible !important;
+}
+
+.taskBox {
+    float: left;
+	font-size: 13px;
+    width: 93%;
+    text-align: left;
+}
+
+.taskDetails .taskOwnership {
+ font-size:17px;                            
+ }
+ 
+ .taskName {
+    font-size: 17px;
+    line-height: 31px;
+    color: #E6A370;
+ }
+ 
+ 
+.twelvecol #mainLogin {
+    background: none repeat scroll 0 0 transparent;
+    margin-top: -7px;
+    position: absolute;
+}
+
+.leftmostInTitle {
+	position:absolute;
+	left:0;
+	width:15%;
+}
+
+.leftOfTitle {
+    left:15%;
+    width:15%;
+    position: absolute;
+}
+
+.rightOfTitle {
+	position:absolute;
+	right:15%;
+	width:15%;
+}
+
+.rightmostInTitle {
+	position:inherit;
+	left: 60px;
+	top: 0px;
+	width:15%
+	z-index:50;
+}
+
+#headingLoginBox{
+    margin-left: 14px;
+    margin-top: 5px;
+    position: fixed;
+    z-index: 400;
+}
+
+.ui-slider {
+    background-color: black;
+    margin-left: 40%;
+    position: relative;
+    text-align: center;
+    width: 20%;
+}
+
+.ui-slider-handle {
+background-color: red;
+}
+
+.navButton {
+cursor:pointer;
+}
+
+.taskDetails .taskChildren {
+    margin-left: 10px;
+    text-align: left;
+}
+
+.taskDetails .taskChildren .listChild {
+margin-top:10px;
+}

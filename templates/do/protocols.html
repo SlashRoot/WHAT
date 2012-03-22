@@ -1,0 +1,32 @@
+{% extends 'brown_and_bubble_driven.html' %}
+
+
+{% block title %}List of Task Protocols{% endblock %}
+
+
+{% block more_content %} 
+
+<div class="container">
+
+	<div class="row">
+		<div class="twelveCol tanRounded normal last">
+			<ul> 
+			{% for protocol in protocols %}
+				<li> <a href="{{protocol.get_absolute_url}}"> {{protocol.name}} </a> </li>
+			{% endfor %}
+			</ul> 		
+		</div>
+	</div>
+	
+</div>
+	
+	
+	
+
+
+
+
+
+
+
+{% endblock %}

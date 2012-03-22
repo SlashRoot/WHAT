@@ -1,0 +1,297 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>people.models &mdash; SlashRoot WHAT v.001 documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '.001',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="SlashRoot WHAT v.001 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../contents.html">SlashRoot WHAT v.001 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for people.models</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.db.models.signals</span> <span class="kn">import</span> <span class="n">post_save</span>
+<span class="kn">from</span> <span class="nn">django.db.models.query_utils</span> <span class="kn">import</span> <span class="n">Q</span>
+
+<span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
+
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">Group</span>
+<span class="kn">from</span> <span class="nn">django.contrib.sessions.models</span> <span class="kn">import</span> <span class="n">Session</span>
+
+<span class="n">POLITICAL_PARTIES</span> <span class="o">=</span> <span class="p">(</span>
+                     <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">&quot;Republican&quot;</span><span class="p">),</span>
+                     <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">&quot;Democrat&quot;</span><span class="p">),</span>
+                     <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&quot;Conservative&quot;</span><span class="p">),</span>
+                     <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">&quot;Working Families&quot;</span><span class="p">),</span>
+                     <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s">&quot;Independence&quot;</span><span class="p">),</span>
+                     <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s">&quot;Green Party&quot;</span><span class="p">),</span>
+                     <span class="p">)</span>
+
+<div class="viewcode-block" id="UserProfile"><a class="viewcode-back" href="../../contents.html#people.models.UserProfile">[docs]</a><span class="k">class</span> <span class="nc">UserProfile</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Used to extend contrib.auth.models.User&#39;&#39;&#39;</span>
+    <span class="n">birth_month</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">birth_day</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">pin</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+    <span class="n">email_prefix</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
+    <span class="n">contact_info</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="s">&#39;contact.ContactInfo&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">political_party</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">choices</span><span class="o">=</span><span class="n">POLITICAL_PARTIES</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    We are thinking of two more fields for contacts.</span>
+<span class="sd">    Not sure whether they go with all users or only some subclass.</span>
+<span class="sd">    They are &quot;relationships,&quot; whereby we can ForeignKey them to User through a ManyToMany,</span>
+<span class="sd">    and &quot;Activity,&quot; which describes their involvement with SlashRoot (ie, &quot;We designed a website for them.&quot;)</span>
+<span class="sd">    &#39;&#39;&#39;</span>  
+    <span class="n">description</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">get_full_name</span><span class="p">())</span>
+
+
+</div>
+<span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">User</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Justin says: I hate this model.  Let&#39;s not use it.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">comments</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
+    
+<span class="k">class</span> <span class="nc">Member</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">rank</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;pigs.Rank&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">inducted</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;mooncalendar.Moon&#39;</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">sessions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">sessions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">session</span> <span class="ow">in</span> <span class="n">Session</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">session</span><span class="o">.</span><span class="n">get_decoded</span><span class="p">()[</span><span class="s">&#39;_auth_user_id&#39;</span><span class="p">]:</span>
+                    <span class="n">sessions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">session</span><span class="p">)</span> 
+            <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span>
+                <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">sessions</span>
+    
+    <span class="k">def</span> <span class="nf">purposes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">purposes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">session</span> <span class="ow">in</span> <span class="n">Session</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">session</span><span class="o">.</span><span class="n">get_decoded</span><span class="p">()[</span><span class="s">&#39;_auth_user_id&#39;</span><span class="p">]:</span>
+                    <span class="n">purposes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">get_decoded</span><span class="p">()[</span><span class="s">&#39;presence&#39;</span><span class="p">])</span> 
+            <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span>
+                <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">purposes</span>
+    
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">get_full_name</span><span class="p">()</span>
+    
+<span class="k">class</span> <span class="nc">Subscriber</span><span class="p">(</span><span class="n">User</span><span class="p">):</span>
+    <span class="k">pass</span>
+    
+<span class="k">class</span> <span class="nc">Sabbatical</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">()</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">()</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
+    <span class="n">member</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Member</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Team</span><span class="p">(</span><span class="n">Group</span><span class="p">):</span>    
+    <span class="n">contact</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">members</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="s">&#39;people.Member&#39;</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;teams&quot;</span><span class="p">)</span>    
+    
+<span class="k">class</span> <span class="nc">CommerceGroup</span><span class="p">(</span><span class="n">Group</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    A group that engages in commerce.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">contact_info</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="s">&#39;contact.ContactInfo&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">get_full_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+    
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+    
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span>
+    
+<span class="k">class</span> <span class="nc">RoleInGroup</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This model exists because we can&#39;t add a &#39;through&#39; from auth.User -=&gt; auth.Group.</span>
+<span class="sd">    Sad.  Very sad.</span>
+<span class="sd">    See http://stackoverflow.com/questions/5292594/extending-a-field-of-a-contrib-model-in-django</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;roles&quot;</span><span class="p">)</span>
+    <span class="n">group</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Group</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;officers&quot;</span><span class="p">)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">help_text</span> <span class="o">=</span> <span class="s">&quot;This user&#39;s role in the group, ie &#39;Bean Counter&#39;.&quot;</span><span class="p">)</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="c">#Now, if we want to do custom permissions..... A few possibilities:</span>
+    
+    <span class="c">#authority = IntegerField() #One-dimensional authority spectrum - brutal but simple.</span>
+    
+    <span class="c">#permissions = ForeignKey(Permission) #Recycles Django&#39;s permission model - good or bad thing?</span>
+    
+    <span class="c">#custom_permissions = ManyToMany(SomeModelWeCreateForThisPurpose) </span>
+    <span class="c">#..........What about the &#39;scope&#39; of these?  </span>
+    <span class="c">#For example, presumable all groups will have a &quot;view finances&quot; permission, </span>
+    <span class="c">#but only some will have a &quot;buy new reindeer food&quot; permission.</span>
+
+
+<span class="k">class</span> <span class="nc">GenericPartyManager</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Manager</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s">&#39;party&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">(</span><span class="s">&#39;Either specify only party or no party at all.  Boo on you.&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">object</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;party&#39;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">__class__</span> <span class="o">==</span> <span class="n">User</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">GenericPartyManager</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="nb">object</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="nb">object</span><span class="o">.</span><span class="n">__class__</span> <span class="o">==</span> <span class="n">Group</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">GenericPartyManager</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="nb">object</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s">&#39;GenericParty must be either a User or a Group&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_query_set</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        
+        
+<span class="c">#    def filter(self, *args, **kwargs):</span>
+<span class="c">#        &quot;&quot;&quot;</span>
+<span class="c">#        Custom filter method that ensures that the generic party actually exists.</span>
+<span class="c">#        Use sparingly - extra DB hits ahead.</span>
+<span class="c">#        </span>
+<span class="c">#        It still of course saves a DB hit on .get(), and doesn&#39;t do much worse on .filter().</span>
+<span class="c">#        </span>
+<span class="c">#        TODO: THIS METHOD IS KINDA BUSTED.  If somebody wants to take another swing at it, I&#39;d be most grateful.  -Justin</span>
+<span class="c">#        &quot;&quot;&quot;</span>
+<span class="c">#        negate = False #Hack because this is a filter.  For exclude, this&#39;d be true.</span>
+<span class="c">#        </span>
+<span class="c">#        clone = self.get_query_set()._clone()</span>
+<span class="c">#        if negate:</span>
+<span class="c">#            clone.query.add_q(~Q(*args, **kwargs))</span>
+<span class="c">#        else:</span>
+<span class="c">#            gathering = Q(*args, **kwargs) #The children of this Q will be a list of tuples, wherefore the second element in each will be a user object or group object.</span>
+<span class="c">#            for child in gathering.children:</span>
+<span class="c">#                actual_party = GenericParty.objects.get(party = child[1]) #Now we know the genericparty object exists.  TODO: Address the fact that this is a queryset.  Why not a regular object?                </span>
+<span class="c">#            clone.query.add_q(~Q(*args, **kwargs)) #Extra DB hit, but we&#39;d have encountered it anyway if this were a generic relation.  Not a big deal.</span>
+<span class="c">#        return clone</span>
+
+
+<span class="k">class</span> <span class="nc">GenericParty</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    The hotly contested model of anybody who engages in commerce, be they a group or a User.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">group</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="n">Group</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">GenericPartyManager</span><span class="p">()</span>
+    
+    <span class="n">budget_perspectives</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="s">&#39;commerce.BudgetPerspective&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&#39;CommerceParty must refer to either a user or a group - not both.&#39;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&#39;CommerceParty must have either a user or a group.&#39;</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span>
+    
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lookup</span><span class="p">())</span>
+
+
+
+<span class="k">def</span> <span class="nf">createGenericParty</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">party</span> <span class="o">=</span> <span class="n">GenericParty</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">party</span><span class="o">=</span><span class="n">instance</span><span class="p">)</span> <span class="c">#Will create the GenericParty instance.                </span>
+
+
+<span class="c">#Create new Generic Parties every time a user or group is created.</span>
+<span class="n">post_save</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">createGenericParty</span><span class="p">,</span> <span class="n">sender</span><span class="o">=</span><span class="n">User</span><span class="p">)</span>
+<span class="n">post_save</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">createGenericParty</span><span class="p">,</span> <span class="n">sender</span><span class="o">=</span><span class="n">Group</span><span class="p">)</span>
+
+<span class="c">#Global</span>
+<span class="c">#SLASHROOT_AS_COMMERCEGROUP = CommerceGroup.objects.get(id=3)</span>
+<span class="c">#SLASHROOT_AS_GENERICPARTY = GenericParty.objects.get(party=SLASHROOT_AS_COMMERCEGROUP.group_ptr)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../contents.html">SlashRoot WHAT v.001 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, SlashRoot Collective.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+<form enctype="multipart/form-data" id="task_form" action="{{request.path}}" method="post">
+		
+	{{task_prototype_name_form}}
+	
+	<div id="taskPrototypeDoesNotExist" class="hidden everythingButNameField center">
+		<h4>This task prototype does not exist.</h4>
+		{% if user_can_make_new_prototypes %}
+			<button type="button" id="redirectToCreatePrototype">You can create it.</button>			
+		{% else %}
+			<h4>You can not create new Prototypes.</h4>
+		{% endif %}
+		<br/>
+		<h4>List all TaskPrototypes.</h4>
+		
+	</div>
+	
+	<div class="hidden taskDetails everythingButNameField">
+		<div id="taskChildren" class="hidden">
+		
+		</div>
+	    {{task_form}}
+	    <button type="submit">Save</button>
+	</div>
+	
+	{% csrf_token %}
+	
+
+	
+</form>

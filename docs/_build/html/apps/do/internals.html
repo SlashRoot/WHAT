@@ -1,0 +1,207 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Do Module Internals &mdash; SlashRoot WHAT v.001 documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '.001',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="SlashRoot WHAT v.001 documentation" href="../../index.html" />
+    <link rel="next" title="Dealing with TaskPrototypes" href="task_prototypes.html" />
+    <link rel="prev" title="Do" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="task_prototypes.html" title="Dealing with TaskPrototypes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Do"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../contents.html">SlashRoot WHAT v.001 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="do-module-internals">
+<h1>Do Module Internals<a class="headerlink" href="#do-module-internals" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="verbs">
+<h2>Verbs<a class="headerlink" href="#verbs" title="Permalink to this headline">¶</a></h2>
+<p>Verb objects are action words we use to classify the things we do.</p>
+<p>Ideally, they&#8217;ll be brief and we&#8217;ll have only a few of them.</p>
+<p>Likely examples include &#8220;Maintain,&#8221; &#8220;Build,&#8221; &#8220;Develop,&#8221; &#8220;Promote,&#8221; &#8220;Repair,&#8221; &#8220;Triage.&#8221;</p>
+<p>Naturally, each Verb will have a spectrum of difficulty and access in Tasks.</p>
+<p>Also, some Verbs, such as &#8220;Triage,&#8221; obviously require generally higher authority.</p>
+</div>
+<div class="section" id="taskprototype-and-task">
+<h2>TaskPrototype and Task<a class="headerlink" href="#taskprototype-and-task" title="Permalink to this headline">¶</a></h2>
+<p>A <strong>TaskPrototype</strong> is the boilerplate from which Task objects are made.  It has unique information about the task, such as Name and Description.</p>
+<p>Some TaskPrototypes, such as &#8220;Sweep the Floor,&#8221; will have hundreds of Task objects associated with them.</p>
+<p>A <strong>Task</strong> is a discrete, one-time action.  It is created at a particular DateTime (typically <em>generated</em> from a TaskPrototype) and completed at a particular DateTime.</p>
+<p>Others, such as &#8220;Turn the stage into storage,&#8221; may have one task in its lifetime.</p>
+<p>TaskPrototype objects can never be changed once created; this would corrupt the integrity of the task objects which rely on them for name and description.
+Instead, they evolve.  TaskPrototypes have a ManyToMany relationship with their evolutionary ancestors and descendents, ie, a single TaskPrototype might split into several, or many might merge into one.</p>
+<div class="section" id="task-families">
+<h3>Task families<a class="headerlink" href="#task-families" title="Permalink to this headline">¶</a></h3>
+<p>Many tasks have smaller, &#8220;child&#8221; tasks that need to be completed as part of the completion of the larger, &#8220;parent&#8221; task.</p>
+<p>This relationship is handled by the model TaskProgeny:</p>
+<dl class="class">
+<dt id="do.models.TaskProgeny">
+<em class="property">class </em><tt class="descclassname">do.models.</tt><tt class="descname">TaskProgeny</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/do/models.html#TaskProgeny"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#do.models.TaskProgeny" title="Permalink to this definition">¶</a></dt>
+<dd><p>An implicit through-model from Task-=&gt;Task.</p>
+<p>Identifies a child, its parent, and the order of that child among its siblings.</p>
+</dd></dl>
+
+<p>TaskPrototype objects use TaskPrototypeProgeny in exactly the same way.</p>
+</div>
+<div class="section" id="generating-tasks-from-taskprototypes">
+<h3>Generating Tasks from TaskPrototypes<a class="headerlink" href="#generating-tasks-from-taskprototypes" title="Permalink to this headline">¶</a></h3>
+<p>TaskPrototype has a method, .generate_task(), which creates a Task (in fact an entire Task family) whose prototype property points to the prototype in question.</p>
+<dl class="method">
+<dt id="do.models.TaskPrototype.generate_task">
+<tt class="descclassname">TaskPrototype.</tt><tt class="descname">generate_task</tt><big>(</big><em>universe</em>, <em>parent_task=None</em>, <em>projected=None</em><big>)</big><a class="reference internal" href="../../_modules/do/models.html#TaskPrototype.generate_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#do.models.TaskPrototype.generate_task" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a task family based on this prototype.</p>
+</dd></dl>
+
+<p>In order to create the entire Task family, TaskPrototype.generate_task() iterates through .children.all().</p>
+</div>
+<div class="section" id="categorizing-taskprototype-objects-by-verb-and-tag">
+<h3>Categorizing TaskPrototype objects by Verb and Tag<a class="headerlink" href="#categorizing-taskprototype-objects-by-verb-and-tag" title="Permalink to this headline">¶</a></h3>
+<p>Tasks are categorized in two ways, but Verb and Tag.  Verbs are very broad, mutually exclusive categories.  Tags are more specific and direct designations.</p>
+<blockquote>
+<div><ul class="simple">
+<li>Every Task has one Verb (&#8220;Maintain,&#8221; &#8220;Promote,&#8221; &#8220;Develop,&#8221; &#8220;Repair,&#8221; etc.)</li>
+<li>Tasks can have one or more tasks (&#8220;Tech Service,&#8221; &#8220;Cleaning,&#8221; &#8220;Coffee Bar Stuff,&#8221; etc.)</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="automatic-task-creation">
+<h2>Automatic Task Creation<a class="headerlink" href="#automatic-task-creation" title="Permalink to this headline">¶</a></h2>
+<p>Every 10 minutes, a cronjob runs the management command <strong>task_generator</strong>.</p>
+<div class="section" id="task-generators">
+<h3>Task Generators<a class="headerlink" href="#task-generators" title="Permalink to this headline">¶</a></h3>
+<p>The TaskGenerator model is</p>
+<div class="section" id="random-recurring">
+<h4>Random Recurring<a class="headerlink" href="#random-recurring" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="do.models.RandomRecurringTaskGenerator">
+<em class="property">class </em><tt class="descclassname">do.models.</tt><tt class="descname">RandomRecurringTaskGenerator</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/do/models.html#RandomRecurringTaskGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#do.models.RandomRecurringTaskGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a TaskPrototype and creates a task based on it every so often.</p>
+</dd></dl>
+
+<p>When task_generator is run, each RandomRecurringTaskGenerator is iterated through.</p>
+<p>RandomRecurringTaskGenerator has a property, frequency, which is used to determine the likelihood of it being added to the Task queue.</p>
+<p>If it is chosen, the  TaskPrototype, .generate_task() is run.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Do Module Internals</a><ul>
+<li><a class="reference internal" href="#verbs">Verbs</a></li>
+<li><a class="reference internal" href="#taskprototype-and-task">TaskPrototype and Task</a><ul>
+<li><a class="reference internal" href="#task-families">Task families</a></li>
+<li><a class="reference internal" href="#generating-tasks-from-taskprototypes">Generating Tasks from TaskPrototypes</a></li>
+<li><a class="reference internal" href="#categorizing-taskprototype-objects-by-verb-and-tag">Categorizing TaskPrototype objects by Verb and Tag</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#automatic-task-creation">Automatic Task Creation</a><ul>
+<li><a class="reference internal" href="#task-generators">Task Generators</a><ul>
+<li><a class="reference internal" href="#random-recurring">Random Recurring</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Do</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="task_prototypes.html"
+                        title="next chapter">Dealing with TaskPrototypes</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/apps/do/internals.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="task_prototypes.html" title="Dealing with TaskPrototypes"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Do"
+             >previous</a> |</li>
+        <li><a href="../../contents.html">SlashRoot WHAT v.001 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, SlashRoot Collective.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

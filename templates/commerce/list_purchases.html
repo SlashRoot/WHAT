@@ -1,0 +1,17 @@
+Purchases by {{party}}
+
+{% for purchase in purchases %}
+	<table>
+		<tr>
+			<td>
+				<a href="/commerce/view_purchase/{{ purchase.get_other_involvements.1.id }}">{{ purchase.get_other_involvements.1.id }}</a>
+			</td>
+			<td>
+				{{ purchase.get_other_involvements.1.party }}
+			</td>
+			<td>
+				{{ purchase.amount }}
+			</td>
+		</tr>
+	</table>
+{% endfor %}

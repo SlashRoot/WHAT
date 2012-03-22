@@ -1,0 +1,48 @@
+{% extends "brown_and_bubble_driven.html" %}
+
+{% block more_content %}
+
+<script type="text/javascript"
+src="http://static.twilio.com/libs/twiliojs/1.0/twilio.js"></script>
+
+<script type="text/javascript">
+	
+	$(function(){ 
+			
+			Twilio.Device.setup("{{capability.generate}}");
+			
+			Twilio.Device.ready(function(device){
+												$('#log').text('ready');
+												})
+												
+			Twilio.Device.error(function(error){
+												$('#log').text('Error: ' + error.message);
+												})
+											
+			Twilio.Device.connect(function(conn){
+												$('#log').text("Successfully established call")	
+												})
+												
+			Twilio.Device.incoming(function (conn) {
+				$("#log").text("Incoming connection from " + conn.parameters.From);
+				// accept the incoming connection and start two-way audio
+				conn.accept();
+				});
+
+				
+		});
+												
+		function call() {
+			params = { "PhoneNumber" : 8454300941 };
+			Twilio.Device.connect(params);
+		}
+
+</script>
+
+<div id="log"></div>
+
+<button class="call" onclick="call();">
+Call
+</button>
+
+{% endblock %}

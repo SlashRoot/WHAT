@@ -1,0 +1,122 @@
+{% include 'sitewide_head.html' %}
+
+<script src="/media/js/collapseable.js"></script>
+
+
+	<script>
+	
+	$(function(){ 
+	
+	    stomp = new STOMPClient();
+	    stomp.onopen = function() {
+	    };
+	    stomp.onclose = function(c) { alert('Lost Connection, Code: ' + c);};
+	    stomp.onerror = function(error) {
+	        alert("Error: " + error);
+	    };
+	    stomp.onerrorframe = function(frame) {
+	        alert("Error: " + frame.body);
+	    };
+	    stomp.onconnectedframe = function() {
+	        stomp.subscribe("/incomingCall");       
+	    };
+	    
+	    
+	    
+	    stomp.onmessageframe = function(frame) {
+	    	wholeFrame=frame;
+		       call_id = $(frame.body).first().attr('call')
+		       status = $(frame.body).first().attr('status')
+		       
+		       color = "#B7E8B0";
+		       if (status == "first dial list") {
+		       color = "#FFE49C";
+		       }
+		       
+		       if (status == "second dial list") {
+		       color = "#FF4A4A";
+		       
+		       }
+		       
+	        	if (status == "sending to voicemail") {
+		       color = "#FFC64A";
+		       }
+		       
+		       if ($('#displayCall_' + call_id).length == 0){
+		       $(frame.body).prependTo('#lastFewCalls').css('background-color', color).show('puff', 900);
+		        }
+		        else {
+		        $('#displayCall_' + call_id).hide();
+		        $('#displayCall_' + call_id).replaceWith(frame.body);
+		        $('#displayCall_' + call_id).css('background-color', color).show('puff', 900);
+		        }
+	    };
+	    stomp.connect('localhost', 61613);
+	});
+		
+	</script>
+
+	<style type="text/css">
+	.basicCallInfo, .displayCall {
+	float:left;
+	}
+	
+	.basicCallInfo {
+	clear: left;
+    width: 500px;
+	}
+	
+	.displayCall {
+  border: 4px double grey;
+    clear: left;
+    margin-bottom: 10px;
+    padding: 10px;
+	}
+	
+	.advancedCallInfo {
+	float:left;
+	margin-left:10px;
+	}
+	
+	.advancedCallInfo h4 {
+	margin:0;
+	text-align:center;
+	}
+	
+	
+	.left label {
+	float:left;
+	clear:left;
+	}
+	
+	.left input {
+	float:left;
+	}
+	
+	.displayCall li {
+    
+    list-style: none outside none;
+	}
+	
+	.callDetails {	 
+	margin:15px;
+	font-size: 12px;
+	}
+	
+	
+	
+	
+	</style>
+
+
+</head>
+
+<div id = "counter"></div>
+
+
+<div id="lastFewCalls">
+	{% for call in calls %}
+		{% include 'comm/call_alert.html' %}
+	{% endfor %}
+</div>
+

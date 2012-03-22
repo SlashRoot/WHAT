@@ -1,0 +1,5 @@
+{% with call=relationship.object %}
+	<div class="tanRounded normal left">
+		{% include 'comm/call_alert.html' %}
+	</div>
+{% endwith %}

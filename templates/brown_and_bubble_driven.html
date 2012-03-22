@@ -1,0 +1,86 @@
+{% extends 'sitewide_head.html' %}
+
+{% block head %}
+	<link rel="stylesheet" href="/media/css/tree.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="/media/css/landing.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="/media/css/forms.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="/media/css/cms.css" type="text/css" media="screen" />
+
+{% endblock head %}
+
+
+{% block content %}
+
+<div class="container nav" id="trunk">
+
+	<div class="row" style="position:relative;">
+
+		<div class="twelvecol">
+			<div class="tanRounded normal center">
+				
+				<div class="leftOfTitle">
+					{% block left_of_title %}{% endblock %}
+				</div>
+				
+				<div class="rightOfTitle">
+					{% block right_of_title %}{% endblock %}
+				</div>
+				
+				
+				<div class="rightmostInTitle">{% block rightmost_in_title %}{% endblock %}</div>
+				
+				<h1 id="title">{% block title %}{% endblock %}</h1>
+
+			</div>
+		</div>
+	</div>
+	
+
+	<div class="row hidden" id="hidden_second_title">				
+		<div class="twelvecol">		
+			<div class="tanRounded normal center">
+				{% block hidden_second_title %}{% endblock hidden_second_title %}
+			</div>
+		</div>
+	</div>
+	
+	
+
+
+				
+	
+{% block more_content %}{% endblock %}
+
+</div>	
+
+{% endblock %}
+
+
+{% block footer %}
+	<div style="position:absolute; left:0;">
+		{% comment %}
+		{% if request.user.is_authenticated and not disable_incoming_calls %}
+		
+			<script type="text/javascript" src="http://static.twilio.com/libs/twiliojs/1.0/twilio.js"></script>
+			
+			<script type="text/javascript">
+				$.get('/comm/incoming_phone_client_loader', function(data) {
+					$('#incomingPhone').html(data);					
+				});
+			</script>
+			
+			<div id="incomingPhone" class="verySmall">
+				Loading Incoming Client...
+			</div>
+			
+		{% endif %}
+		{% endcomment %}
+	</div>
+	{% if not unnecessary %}
+		<div class="rightmostInTitle">
+			{% include 'widgets/login.html' %}
+		</div>
+	{% endif %}
+{% endblock %}
+
+

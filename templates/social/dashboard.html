@@ -1,0 +1,127 @@
+{% extends "brown_and_bubble_driven.html" %}
+
+{% block title %}Slashroot Dashboard{% endblock %}
+{% block more_content %}
+<style>
+.spacing{
+padding-top:15px;
+}
+
+#media{
+height:348px;
+}
+
+#user-logging{
+    height: 332px;
+}
+
+#user-logging-box{
+margin-top:-160px;
+}
+</style>
+<script type="text/javascript" src="/media/js/login-ajax.js"></script>
+<div class="container">
+    <div class="row">
+        <div class="spacing eightcol">
+            <div class="tanRounded normal">
+                <h2>Hello,  {{user.first_name}}!<div style="float:right;"><a id="widgetLogout" href="javascript:;">Logout</a>
+                </div></h2>
+                <div class="tanRounded"><h2>Messages ({{count|length}}):</h2>
+                	{% for message, created in inbox_messages %}
+            			<div class="tanRounded">
+            				From <strong>{{message.creator}}</strong> on <strong><a href="{{message.content_object.get_absolute_url}}">{{message.content_object}}</a></strong> at {{message.created}}:
+            				<br/>
+            				{{message.message|safe}}
+            			</div>
+                	{% endfor %}
+                    <br>
+                    See More
+                </div>
+                
+                <div class="tanRounded">
+                    <h2>Anchors:</h2>
+                    <ul>
+                    {% for anchor in anchors %}
+                        <li>{{anchor.get_dow_display}}s at {{anchor.time}}</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+                
+                <div class="tanRounded">
+                    <h2>Instructions:</h2>
+                </div>
+                
+                <div class="tanRounded">
+                    <h2>Experience Points:</h2>
+                    <div>{{points}}</div>
+                </div>
+                
+                <div class="tanRounded">
+                    <h2>Completed Tasks:</h2>
+                    <ul>
+                    {% for complete in completed %}
+                        <li><a href="{{complete.task.get_absolute_url}}">{{complete.task}}</a></li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+                      
+            <div class="spacing fourcol last">
+                <div class="tanRounded normal left ">
+                    <h2>To Do:</h2>
+                    <ul>{% for task in tasks %}
+                        <li class="left">
+                            {% include 'do/task_box.html' %}
+                        </li>
+                    {% endfor %}
+                    </ul>
+                    {% if not user.magneticcard %}
+                    <div class="tanRounded normal left">
+                        Swiped cards:
+                            <a href="/mellon/enter_new_magnetic_card">Add a magnetic card</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="spacing fourcol last">
+            	<div class="tanRounded normal left">
+            		<a href="/service/the_situation">Service App</a>
+            	</div>
+            </div>
+                
+            <div class="spacing fourcol last">
+            	<div class="tanRounded normal left">
+            		<a href="/pos/">POS App (coming soon)</a>
+            	</div>
+            </div>    
+                      
+            <div class="spacing fourcol last" id="media">
+            	<div class="tanRounded normal left">
+            		<iframe src="{{media.media}}">
+            		
+            		</iframe>
+            	</div>
+            </div>    
+                
+            <div class="spacing fourcol last">
+                <div class="tanRounded normal left" id="user-logging-box">
+                    {% for message in log_for_user.all %}
+                        <ul>
+                            <li>From: {{message.creator}} at {{message.created}}</li>
+                            {% if message.content_object.group %}
+                            (on <a href="/social/log/group/{{message.content_object.group.name}}/">
+                                    {{message.content_object.group.name}}</a>)
+                            {% endif %}
+                            <li>{{message.message|safe}}</li>
+                        </ul>
+                    {% endfor %}
+                    
+                    
+                </div>
+            </div>
+
+        </div>
+</div>
+{% endblock %}

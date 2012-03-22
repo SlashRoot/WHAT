@@ -1,0 +1,260 @@
+{% extends 'brown_and_bubble_driven.html' %}
+
+{% load do_tags %}
+
+{% block title %}Find a Task {% endblock %}
+
+{% block left_of_title %}
+	<div id="counter"></div>
+{% endblock %}
+
+{% block right_of_title %}
+	<a href="javascript:;" class="toggle_hidden_second_title navButton" set="options">
+		Show Options
+	</a>
+{% endblock %}
+
+
+{% block rightmost_in_title %} 
+        <input style="width:100%;" class="search" id="doSearch" />
+{% endblock %}
+
+
+{% block hidden_second_title %}
+	<div class="demo">
+		<p>
+			<label for="amount">Gravitas:</label>
+			<input type="text" id="amount" style="border:0; color:#f6931f; font-weight:bold;" />
+		</p>				
+		<div id="slider-range"></div>				
+	</div>
+{% endblock %}
+
+
+
+
+{% block more_content %}
+
+<input id="hiddenMagneticCard" style="opacity:0; position:absolute;">
+
+
+
+<script type="text/javascript">
+
+	{% if request.user.is_authenticated %}
+		var startedLoggedIn = 1
+		resumeMessage = "Logging Out"
+		
+		{# show top priority tag #}
+		$(function(){
+			$('[shows = "tags"]')[0].click();
+			$('[tag_id = 9]')[0].click();
+		})
+	{% else %}
+		var startedLoggedIn = 0
+		resumeMessage = "Resuming"		
+	{% endif %}
+	
+	groupName = "{{request.GET.group}}"
+	totalNumberOfVerbs = {{verbs|length}};
+	
+	$('body').delegate('.getFillElement', 'click', function () {
+		clickedElement = $(this);
+		url = clickedElement.attr('url');		
+		elementToFill = $('#' + clickedElement.attr('elementToFill'));
+		animation = $('#' + clickedElement.attr('animation'));
+		
+		elementToFill.hide();
+		animation.fadeIn();
+		
+		if ($(this).attr('callback')) {
+    	   var f = $(this).attr('callback');
+        }
+		
+		$.get(url, {'group': groupName}, function(data) {
+			elementToFill.html(data);
+			animation.hide();
+			elementToFill.fadeIn();
+			
+			if (f) {
+	            	   //Some submission elements may specify a success callback function.  If so, let's execute it.
+            		   window[f].apply(null, Array(clickedElement));
+            	   }
+		})
+	}) 
+
+
+function taskCount(clickedElement) {
+	totalNumberOfTasks = $('.taskBox', '#taskList').length;
+	$('.numberOfTasks', clickedElement).html('(' + totalNumberOfTasks + ')')
+	if (startedTraversing == 0 && !startedLoggedIn) {
+		goTraversing();
+		startedTraversing = 1;
+	}
+	
+	verb_id = clickedElement.attr('verb_id');
+	
+	
+	$.get('/do/get_people_for_verb_as_html/' + verb_id + "/", function(data) {
+		$('#peopleList').html(data);
+		$('#peopleLoadingAnimation').hide();
+		$('#peopleList').fadeIn();
+	
+	})
+	
+}
+
+function loadPeople() {
+$('#peopleList').hide();
+$('#peopleLoadingAnimation').fadeIn();
+}
+
+</script>
+
+<script type="text/javascript" src="/media/js/do_landing_script.js"></script>
+
+
+
+
+
+<style type="text/css">
+
+#ui-tooltip-modal{
+   width: 420px !important;
+   -moz-box-shadow: 0 0 10px 1px rgba(0,0,0,.5);
+   -webkit-box-shadow: 0 0 10px 1px rgba(0,0,0,.5);
+   box-shadow: 0 0 10px 1px rgba(0,0,0,.5);
+}
+ 
+#ui-tooltip-modal .ui-tooltip-content{
+   padding: 10px;
+}
+
+</style>
+	
+	{# HEADER ROW #}
+	<div class="center row headingRow" id="secondHeadingRow">
+		
+			<div class="branchHeading fourcol">
+				<div class="tanRounded normal">
+					<h2>
+						<a href="javascript:;" class="navButton" exclude="branches" shows="tasks">
+							Tasks 
+						</a>
+						{% if request.user.is_authenticated %} 
+								<a href="/do/create_task/"><button> + </button></a>
+						{% endif %}
+					</h2>
+				</div>
+			</div>
+			
+			
+			<div class="branchHeading twocol">
+				<div class="tanRounded normal">
+					<h2>
+						<a href="javascript:;" class="navButton" exclude="branches" shows="verbs">
+							Verbs 
+						</a>						
+					</h2>
+				</div>
+			</div>
+			
+			<div class="branchHeading twocol">
+				<div class="tanRounded normal">
+					<h2>
+						<a href="javascript:;" class="navButton" exclude="branches" shows="tags">
+							Tags 
+						</a>						
+					</h2>
+				</div>
+			</div>
+			
+			
+			<div class="branchHeading fourcol last">
+				<div class="tanRounded normal">
+					<h2>
+						<a href="javascript:;" class="navButton" exclude="branches" shows="people">
+							People
+						</a>						
+					</h2>
+				</div>
+			</div>
+									
+	</div>	
+	
+	
+	{# END HEADER ROW #}
+
+	<div class="center row">
+			
+			{# TASK COLUMN #}
+				
+			<div class="fourcol">
+				
+				<div class="hidden" id="taskLoadingAnimation">
+					<img class="fullWidth" src="/media/images/loader-gears.gif"/>
+				</div>
+				
+				<div id="taskList"></div> {# Gets populated by ajax #}
+					
+				
+				
+			</div>
+		
+			{# VERB / TAGCOLUMN #}		
+			<div class="fourcol">
+
+			
+					<div id="verbList {% if request.user.is_authenticated %}hidden{% endif %}" exclusive="branches" set="verbs">
+						{% for verb in verbs %}
+					        <div class="verbList tanRounded normal" item="{{verb.name}}" selected="verbs">
+								<a id="verbClick_{{forloop.counter}}" class="navButton getFillElement functionClick" function="loadPeople" callback="taskCount" animation="taskLoadingAnimation" url="/do/get_tasks_in_verb_ajax_as_html/{{verb.id}}/" shows="{{verb.name}}" elementToFill="taskList" verb_id="{{verb.id}}" verb_name="{{verb.name}}" exclude="verbs" href="javascript:;">
+									{{verb.name}}&nbsp;<span class="numberOfTasks"></span>	
+								</a>
+	                            <p class="biggerTypical hidden" exclusive="verbs" set="{{verb.name}}">{{verb.description}}</p>
+	                        </div>
+						{% endfor %}
+					</div>
+					
+					<div id="tagList" class="hidden" exclusive="branches" set="tags">
+						{% for tag in tags %}
+					        <div class="tagList tanRounded normal" item="{{tag.name}}" selected="tags">
+								<a id="tagClick_{{forloop.counter}}" class="navButton getFillElement tagClick" callback="taskCount" tag_id="{{tag.id}}" exclude="tags" shows="{{tag.name}}" elementToFill="taskList" url="/do/get_tasks_in_tag_ajax_as_html/{{tag.id}}/" href="javascript:;">
+									{{tag.name}} 
+								</a>
+	                            <p class="biggerTypical hidden" exclusive="tags" set="{{tag.name}}">{{tag.description}}</p>
+	                        </div>
+						{% endfor %}
+					</div>
+				
+				
+			</div>
+			
+			{# People #}
+			<div class="fourcol last">
+			
+				<div class="hidden" id="peopleLoadingAnimation">
+					<img class="fullWidth" src="/media/images/loader-people.gif"/>
+				</div>
+			
+				<div id="peopleList"></div> {# Gets populated by ajax #}
+					
+			</div>
+			
+			
+				
+		</div>
+	
+	
+<div id="taskActions" class="taskActions hidden" set="taskResolution" exclusive="taskActions">
+	<a href="javascript:;" id="markCompleted" url="/do/own_task/{{task.id}}/" class="submitViaAjax left">
+        Mark Completed
+	</a>
+	
+	<a href="javascript:;" id="markAbandoned" url="/do/own_task/{{task.id}}/" class="submitViaAjax right">
+        Mark Abandoned
+	</a>
+</div>
+	
+{% endblock %}
+

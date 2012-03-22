@@ -1,0 +1,19 @@
+{% extends 'brown_and_bubble_driven.html' %}
+
+{% block title %}Slashroot Archives{% endblock %}
+
+{% block more_content %}
+<div class="container">
+    <div class="row">
+        <div class="twelvecol">
+            <div class="tanRounded normal">
+                <ul>
+                {% for complete in completed_tasks %}
+                    <li>{{complete.creator}} <a href="{{complete.task.get_absolute_url}}">{{complete.task}}</a></li>
+                {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

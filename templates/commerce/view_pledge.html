@@ -1,0 +1,31 @@
+<ul>
+	<li>
+		Pledge #{{pledge.id}}
+	</li>
+	<li>
+		Party: {{pledge.pursuant_to.party}}
+	</li>
+	<li>
+		Items:
+		<ul>
+			{% for item in pledge.items.all %}
+				<li>Item #: {{item.id}} - {{item.drill_down.character}}</li>
+			{% endfor %}
+		</ul>
+	</li>
+	
+	<li>
+		Incoming Pledges:
+		<ul>
+			{% for pledge in pledge.incoming_pledges.all %}
+				<li><a href="/commerce/view_pledge/{{pledge.id}}">{{pledge.id}}</a> - {{pledge.pursuant_to.party}} ({{pledge}}).</li>
+			{% endfor %}
+		
+		</ul>
+	
+	
+	</li>
+	
+	
+	
+</ul>

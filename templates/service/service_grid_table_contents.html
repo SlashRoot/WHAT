@@ -1,0 +1,62 @@
+<thead>
+        <tr id="title-row">
+            {% for column in columns %}
+                <td class="column-head">
+                    <img src="/media/images/icons/{{column.icon}}" title="{{column.name}}" />
+                </td>
+            {% endfor %}
+        </tr>
+    </thead>
+    
+    <tbody>
+    <tr>
+        {% for service in service_objects_to_be_displayed %}
+            <tr>
+                <td>{{service.recipient.name}}</td>
+                
+                <td>N/I</td>
+                
+                <td>
+                    {% for ownership in service.task.ownership.all %}
+                        {{ownership.owner}}
+                        {% if not forloop.last %}
+                            <br/>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                
+                <td>
+                    {{service.task.days}}
+                </td>
+                
+                
+                <td>
+                    {{service.incoming_calls_during_this_service.count}} / {{service.outgoing_calls_during_this_service.count}} 
+                </td>
+                
+                <td class="calls_today {% if not service.most_recent_incoming_call_was_answered %}red-blinky{% endif %}">
+                    {% if service.phone_calls_today.count == 0 %}
+                        <a href="{{service.recipient.contact_info.get_absolute_url}}"><img src="/media/images/icons/call_now.png"></a><br/>Call Now
+                    {% else %}
+                        {{service.incoming_calls_today.count}} / {{service.outgoing_calls_today.count}}
+                    {% endif %} 
+                </td>
+                
+                
+                <td>{{service.task.messages.count}}</td>
+                
+                <td class="mra">
+                    {{service.most_recent_action.service_log_display}}
+                    <br/>
+                    <small>{{service.most_recent_action.created}}
+                </td>
+                <td>N/I</td>
+                <td class="service-status">
+                    <a href="{{service.get_absolute_url}}">
+                        {{service.status.name}}
+                    </a>
+                </td>
+                
+            </tr>
+        {% endfor %}
+    </tbody>

@@ -1,0 +1,143 @@
+
+from contact.models import PhoneProvider, PhoneNumber
+from comm import comm_settings
+
+from twilio import util
+from twilio.rest import TwilioRestClient
+from twilio import twiml
+from tropo import Session, Tropo
+from django.utils.datastructures import MultiValueDictKeyError
+
+import json
+from django.http import HttpResponse
+from comm.models import PhoneCall
+import requests
+
+
+from twisted.internet.threads import deferToThread
+from twisted.internet.task import deferLater
+from twisted.internet import reactor
+
+
+
+class CallResponse(object):
+    '''
+    A response to a request from a voip provider such as twilio or tropo.  
+    Abstracts common verbs such as .say() and .ask() and .conference() and provides the appropriate command for the provider.
+    '''
+    
+    def __init__(self, provider, *args, **kwargs):
+        '''
+        Takes a PhoneProvider object, sets the provider for this response to that provider.
+        '''
+        self.provider = provider
+        if provider.name == "Twilio":
+            self.response_object = twiml.Response()
+        if provider.name == "Tropo":
+            self.response_object = Tropo()
+        super(CallResponse, self).__init__()
+        
+    def render(self):
+        if self.provider.name == "Twilio":
+            return HttpResponse(self.response_object, mimetype='text/xml')
+        if self.provider.name == "Tropo":
+            return HttpResponse(self.response_object.RenderJson(), mimetype='text/json')
+    
+    def say(self, *args, **kwargs):
+        if self.provider.name == "Twilio":
+            if kwargs['voice'] == 'Allison' or kwargs['voice'] == 'Susan' or kwargs['voice'] == 'Vanessa':
+                kwargs['voice'] = 'woman'
+            else:
+                kwargs['voice'] = 'man'
+            return self.response_object.addSay(*args, **kwargs)
+        if self.provider.name == "Tropo":
+            return self.response_object.say(*args, **kwargs)
+
+    def transfer(self, *args, **kwargs):
+        if self.provider.name == "Twilio":
+            return self.response_object.addDial(*args, **kwargs)
+        if self.provider.name == "Tropo":
+            return self.response_object.transfer(*args, **kwargs)
+        
+    def conference(self, *args, **kwargs):
+        if self.provider.name == "Twilio":
+            dial = self.response_object.addDial()
+            return dial.addConference(kwargs['conference_id'])
+        if self.provider.name == "Tropo":
+            self.response_object.on("hangup", next="/comm/handle_hangup/%s/%s/" % (kwargs['conference_id'], kwargs['number'].id))
+            if 'record' in kwargs and kwargs['record']:
+                self.response_object.startRecording('http://slashrootcafe.com/comm/recording_handler/call/%s/' % kwargs['conference_id'], format="audio/mp3")
+            return self.response_object.conference(kwargs['conference_id'], allowSignals=['leaveConference',], *args, **kwargs)
+    
+    def conference_holding_pattern(self, conference_id, number_object, hold_music):
+        '''
+        Put someone on hold, perparing them for a conference.  During their hold, play the hold music.
+        '''
+        if self.provider.name == "Twilio":
+            dial = self.response_object.addDial(record=True)
+            #TODO: make voicemail work for twillio
+            return dial.addConference(conference_id)#TODO: waitUrl=hold_music)
+         
+        if self.provider.name == "Tropo":
+            #First we add the hold music, allowing for the "exithold" signal to end it.
+            self.response_object.say(hold_music, allowSignals=["joinConference", "goToVoiceMail", "incomplete"])
+            self.response_object.on("hangup", next="/comm/handle_hangup/%s/%s/" % (conference_id, number_object.id))
+            self.response_object.on('joinConference', next="/comm/simply_join_conference/%s/%s/" % (conference_id, number_object.id))
+            self.response_object.on('goToVoiceMail', next="/comm/voicemail/")
+            reactor.callFromThread(send_deferred_tropo_signal, conference_id, 'goToVoiceMail', 40) #How to test this?
+
+    def join_and_begin_conference(self, conference_id, number, *args, **kwargs):
+        '''
+        Join the user to a conference that started with a holding pattern and begin the conference.
+        '''
+        if self.provider.name == "Twilio":
+            #Twilio will begin the conference upon joining, so I think we can just pass here.
+            pass
+        if self.provider.name == "Tropo":
+            reactor.callFromThread(send_deferred_tropo_signal, conference_id, 'joinConference', 0)
+            
+        self.conference(conference_id=conference_id, number=number)
+        return True #We can't know anything meaningful because we aren't going to wait around for the signal.
+    
+    def on(self, *args, **kwargs):
+        if self.provider.name == "Twilio":
+            raise NotImplementedError("Twilio does not offer an equivalent to Tropo's .on() method.")
+        if self.provider.name == "Tropo":
+            return self.response_object.on(*args, **kwargs)
+        
+    def call(self, *args, **kwargs):
+        if self.provider.name == "Twilio":
+            raise NotImplementedError("Twilio does not offer an equivalent to Tropo's .call() method.")
+        if self.provider.name == "Tropo":
+            if 'caller_id' in kwargs:
+                kwargs['from'] = kwargs['caller_id'] #Why Tropo, do you think it's acceptable to use a python command (from) in your lib?
+            return self.response_object.call(*args, **kwargs)
+    
+    def ask(self, *args, **kwargs):
+        if self.provider.name == "Twilio":
+            raise NotImplementedError("We're getting there..")
+        if self.provider.name == "Tropo":
+            return self.response_object.ask(*args, **kwargs)
+        
+    def prompt_and_record(self, recording_object = None, *args, **kwargs):
+        if self.provider.name == "Twilio":
+            raise NotImplementedError("We're getting there..")
+        if self.provider.name == "Tropo":
+            recording_url_args = ("recording" if recording_object else "call", recording_object.id if recording_object else int(kwargs['call_id']))
+            recording_kwargs = {}
+            recording_kwargs['say'] = kwargs['prompt']
+            recording_kwargs['url'] = "http://60main.slashrootcafe.com/comm/recording_handler/%s/%s/" % (recording_url_args)
+            if kwargs['transcribe']:
+                recording_kwargs['transcription'] = {'id':kwargs['call_id'], "url":"http://60main.slashrootcafe.com/comm/transcription_handler/%s/%s/" % (recording_url_args)}
+            self.response_object.record(**recording_kwargs)
+    
+    def hangup(self, *args, **kwargs):
+        self.response_object.hangup(*args, **kwargs)
+
+def send_deferred_tropo_signal(session_id, signal_name, defer_time):
+    url =  "https://api.tropo.com/1.0/sessions/%s/signals" % session_id
+    if not defer_time:
+        deferToThread(requests.get, url, params = {'action': 'signal', 'value': signal_name})
+    else:
+        deferLater(reactor, defer_time, requests.get, url, params = {'action': 'signal', 'value': signal_name})
+    return True

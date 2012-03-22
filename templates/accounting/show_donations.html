@@ -1,0 +1,5 @@
+{% for donation in donations %}
+
+	{{donation.donor.get_full_name}} - {{donation.amount}}<br/>
+
+{% endfor %}

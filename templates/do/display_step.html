@@ -1,0 +1,44 @@
+<div class="thereturnofsmallCircle">
+     <span class="xClose verySmallCircle">
+         X
+     </span>
+ </div>
+ 
+ <h2>{{step.name}}</h2>
+ <p class="typical">{{step.description}}</p>
+ 
+ <h3>Working on this step:</h3>
+ <ul>
+    {% for member in step.assigned.all %}
+        <li>{{member.first_name}}</li>
+    {% endfor %}
+</ul>    
+
+
+{% for project in step.projects.all %}
+<strong>This step is part of completing: {{project.name}}</strong>
+
+{% endfor %}
+
+<h3>Previous Activity</h3>
+{% for activity in step.activity.all %}
+    {% include "do/activityRow.html" %}
+{% endfor %}
+<h3>Report Activity</h3>
+
+<form>
+    {{form}}
+    <a href="javascript:;" class="submitViaAjax" url="/utility/submit_generic/PhoneCall">Submit</a>
+</form>
+    
+<div class="left box">
+    
+    <h3>Coming soon to this window:</h3>
+    <ul>
+        <li>Report activity on this step</li>
+        <li>Comment on this step</li>
+        <li>Send message / chat / SMS with the other members of this step</li>
+        <li>Schedule a time to work on this step</li>
+        <li>Much more!</li>
+        
+</div>

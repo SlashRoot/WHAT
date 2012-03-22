@@ -1,0 +1,19 @@
+{% for person, task_count in people %}
+	{% if forloop.counter == 1 %}
+		<div class="tanRounded normal">
+			<h3>People with the skills to {{verb}}:</h3>
+		</div>
+	{% endif %}
+
+	<div id="peopleBoxContainer_{{person.id}}" class="personCounter_{{forloop.counter}}">
+		<div class="tanRounded normal left fullWidth" style="width:91%; border-color:{% if not person.member %}#aaaaaa;{% else %}{% if person.member.rank == None %}white{% endif %}{{person.member.rank.color}}{% endif %};" >
+			<img class="left" style="height:125px;" src="/media/{{person.userprofile.contact_info.image}}"/>
+			<h2>{{person}} - {{task_count}}</h2>
+		</div>
+	</div>
+{% empty %}
+	<div class="tanRounded normal">
+		<h3>Nobody to list.</h3><br/><h3>{{verb}} something to be listed here.</h3>
+	</div>
+
+{% endfor %}	 

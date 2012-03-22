@@ -1,0 +1,89 @@
+<style>
+.newRow {
+float:left;
+clear:left;
+}
+
+.blah {
+width:80px;
+float:left;
+border:1px solid black;
+}
+
+</style>
+
+	<div class="newRow">
+		<span class="blah">
+			id
+		</span>
+		
+		<span class="blah">
+			quick
+		</span>
+		
+		<span class="blah">
+			name
+		</span>
+		
+		<span class="blah">
+			hostname
+		</span>
+		
+		<span class="blah">
+			form_factor
+		</span>
+		
+		<span class="blah">
+			connectivity
+		</span>
+		
+		<span class="blah">
+			side_a
+		</span>
+		
+		<span class="blah">
+			side_b
+		</span>
+	</div>
+
+
+
+
+
+{% for device in devices %}
+
+	<div class="newRow">
+		<span class="blah">
+			{{device.id}}
+		</span>
+		
+		<span class="blah">
+			{{device.quick_id}}
+		</span>
+		
+		<span class="blah">
+			{{device.name}}
+		</span>
+		
+		<span class="blah">
+			{{device.networkdevice.hostname}}
+		</span>
+		
+		<span class="blah">
+			{{device.networkdevice.computer.get_form_factor_display}}
+		</span>
+		
+		<span class="blah">
+			{{device.peripheral.get_connectivity_display}}
+		</span>
+		
+		<span class="blah">
+			{{device.cable.get_connectivity_side_a_display}}
+		</span>
+		
+		<span class="blah">
+			{{device.cable.get_connectivity_side_b_display}}
+		</span>
+	</div>
+
+{% endfor %}

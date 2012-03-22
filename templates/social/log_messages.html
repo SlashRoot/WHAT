@@ -1,0 +1,8 @@
+<ul> 
+    {% for message in log_party.messages.all %}
+        <li> 
+            {{message.message|safe}}
+        </li>
+   {% endfor %}
+</ul> 
+    

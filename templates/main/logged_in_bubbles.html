@@ -1,0 +1,32 @@
+<script type="text/javascript">
+menu = $('#dummyMenu');
+</script>
+
+<link rel="stylesheet" href="/media/css/bubble_locations.css" type="text/css" media="screen" />
+
+<style type="text/css">
+.loggedInBubble {
+                 position:absolute;
+                 }
+</style>
+
+<script type="text/javascript" src="/media/js/post_login.js"></script>
+
+{% for menu in menu_tree %}
+
+    <div id="{{menu.launch_name}}" {% if not menu.first %}style="display:none;"{% endif %} class="bubbleLayer">
+        
+        <div id="background_{{menu.name}}" {%if menu.first %}cycle="1"{% endif %} class="backgroundLayer {% if menu.first %}cycle_1{% endif %} inner"></div>
+        
+        {% for bubble in menu.allBubbles %}
+        
+            {% include 'main/bubble_render.html' %}
+
+        {% endfor %}
+                
+    </div>
+
+{% endfor %}
+
+
+{# {% include "pos/beverage_sale.html" %} #}

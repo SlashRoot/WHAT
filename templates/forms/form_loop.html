@@ -1,0 +1,76 @@
+{% for field in form %}
+
+    {# This is designed to allow us to pass template variables and filters into this loop.  If needed, we can deploy them throughout the loop.  #}
+    
+    {% for key, value in veryfirstthing_template.items %} {#items here is a magic word.  See Django docs for built-in template tags and filters #}
+    
+        {% if key == field.name %}
+        {% include value %} 
+        {%endif%}
+
+    {%endfor%}
+
+    {% for key, value in veryfirstthing.items %} {#items here is a magic word.  See Django docs for built-in template tags and filters #}
+    
+        {% if key == field.name %}
+        {{value|safe}} 
+        {%endif%}
+
+    {%endfor%}
+
+
+    
+    {%for key, value in fieldset_headings.items %} {#items here is a magic word.  See Django docs for built-in template tags and filters #}
+    
+        {% if key == field.name %}
+        <span class="fieldset_heading {{key}}_heading">{{value|safe}}</span> 
+        {%endif%}
+
+    {%endfor%}
+
+
+{# THE REAL FORM FIELD! #}
+
+    <div class="label_and_field {{field.name}}{%for key, value in highlight.items %} {#items here is a magic word.  See Django docs for built-in template tags and filters #}
+    
+        {% if key == field.name %}
+        field_highlight 
+        {%endif%}
+
+    {%endfor%}">                            
+        <span class="label label_{{field.name}}" id="label_{{field.name}}">{{field.label_tag}}</span>
+        <span class="field {{field.name}} field_{{field.name}} {% if field.errors %}error{% endif %}" id="field_{{field.name}}">{{field}}</span>
+               
+        {%for key, value in afterboxes.items %} {#items here is a magic word.  See Django docs for built-in template tags and filters #}
+    
+            {% if key == field.name %}
+            <span class="afterbox {{key}}_afterbox">{{value|safe}}</span> 
+            {%endif%}
+
+        {%endfor%}
+        
+        {%if field.help_text %}
+        <span class="help_text">{{field.help_text}}</span>
+        {%endif%}
+        {% if field.errors %}<div class="field-errors">Error: Please fill in the above field properly</div>{% endif %}
+    </div>{#/label_and_field#}
+           
+    
+    {%for key, value in belowboxes.items %} {#items here is a magic word.  See Django docs for built-in template tags and filters #}
+    
+        {% if key == field.name %}
+        <span class="belowbox {{key}}_below box">{{value|safe}}</span> 
+        {%endif%}
+
+    {%endfor%}
+
+    {% for key, value in below_template.items %} {#items here is a magic word.  See Django docs for built-in template tags and filters #}
+    
+        {% if key == field.name %}
+        {% include value %} 
+        {%endif%}
+
+    {%endfor%}
+
+           
+{% endfor %}

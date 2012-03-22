@@ -1,0 +1,57 @@
+{% extends 'brown_and_bubble_driven.html' %}
+
+{% block title %}{{username}}{% endblock %}
+
+{% block more_content %}
+
+<div class="container">
+
+    <div class="row">
+    
+        <div class="fivecol">
+            <div class="tanRounded normal left fullWidth" style="width: 91%; border-color:{% if not person.member %}#aaaaaa;{% else %}{% if person.member.rank == None %}white{% endif %}{{person.member.rank.color}}{% endif %}">
+                <img class="left" style="height:125px;" src="/media/{{person.userprofile.contact_info.image}}"/> 
+                
+                <div class="peopleText" style="width:203px;"><h3>{{person.first_name}} {{person.last_name}}</h3></div>
+                <div class="peopleText">{{person.member.rank}}</div>
+                <div class="peopleText">{{person.member.inducted}}</div>
+                {% if person.userprofile.political_party > 0 %}
+                    <div class="peopleText">{{person.userprofile.get_political_party_display}}</div>
+                {% endif %}                
+           
+            </div>
+        </div>
+        
+        <div class="sevencol last">
+            <div class="tanRounded normal">
+                This month's intentions:
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+    
+        <div class="fivecol">
+            <div class="tanRounded normal">
+                Completed Tasks:
+                <ul>
+                {% for complete in completed %}
+                    <li><a href="{{complete.task.get_absolute_url}}">{{complete.task}}</a></li>
+                {% empty %}
+                    {{username|capfirst}} has not completed any tasks
+                {% endfor %} 
+                <br>
+                <li>See More</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="sevencol last">
+            <div class="tanRounded normal">
+                Blog:
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% for category in categories %}
+    <div class="menu_wrap typewriter">
+        <div class="menu_slot">
+            <div class="menu_head menu_head_left">
+            {{category.name}}<br>
+            </div>
+            <div class="menu_content menu_content_left">
+                <div id="menu_item_1">
+               {% include 'products.html' %}
+            </div>
+    </div>{# menu slot #}
+{% endfor %}

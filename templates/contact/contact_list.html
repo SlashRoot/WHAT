@@ -1,0 +1,47 @@
+
+<style>
+table.typical td{
+border:1px solid black;
+}
+
+</style>
+
+
+<table class="typical">
+
+	<tr>
+		<td>ID</td>
+		<td>username</td>
+		<td>Name</td>
+		<td>Email</td>
+		<td>Phone</td>
+	
+	</tr>
+
+{% for person in people %}
+
+<tr>
+		<td>
+		{{person.id}}
+		</td>
+		
+		<td>
+		{{person.username}}
+		</td>
+		
+		<td>
+			<a href="/contact/contact_profile/{{person.userprofile.contact_info.id}}/">{{person.get_full_name}}</a>
+		</td>
+		
+		<td>
+		{{person.email}}
+		</td>
+	
+		<td>
+		{{person.userprofile.contact_info.phone_numbers.all.0.number}}
+		</td>
+	
+</tr>
+
+{% endfor %}
+</table>

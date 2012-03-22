@@ -1,0 +1,15 @@
+<div id="loggedInBubble_{{forloop.counter}}" class="smallCircle loggedInBubble circleBubble inner bubble_{{forloop.counter}} siblings_{{menu.totalBubbles}}" >
+    <span id="adminLink">
+        
+        {#    action is from Bubbles model - pop static, pop ajax, bread script, etc. #}
+        
+        <a href="{{bubble.url|default:"javascript:;"}}" class="bubbleLink" action="{{bubble.action|default:0}}" {% if bubble.data %}data="{{bubble.data}}"{% endif %} {% if bubble.launch_name %}launch="{{bubble.launch_name}}"{% endif %}>
+            {{bubble.name}}
+        </a>
+    </span>
+    
+    <div class="bubbleContent" style="display:none;">
+        {{bubble.content|safe}}
+    </div>
+    
+</div>

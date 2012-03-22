@@ -1,0 +1,5 @@
+ <div class="tanRounded normal bigFeed taskOwnership" task_id="{{item.task.id}}">	
+ 	{{item.owner}} claimed: <br/><a href="{{item.task.get_absolute_url}}">#{{item.task.id}}: {{item.task}}</a>
+ 	<br/>
+	<small><abbr class="timeago" title="{{item.created|date:"c"}}"></abbr></small>
+</div>

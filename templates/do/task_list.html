@@ -1,0 +1,5 @@
+{% for task in tasks %}
+	<div id="taskBoxContainer_{{task.id}}" class="taskCounter_{{forloop.counter}}">
+		{% include 'do/task_box.html' %}
+	</div>
+{% endfor %}	            

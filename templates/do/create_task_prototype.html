@@ -1,0 +1,67 @@
+{% extends 'brown_and_bubble_driven.html' %}
+{% load social_tags %}
+
+{% block content %}
+
+<script type="text/javascript">
+
+$(function() {
+	
+	$('.cloneArea').delegate('.autocompleteField', 'keyup', function(){
+		add_button = $('.quickClone', $(this).parent().parent().parent() );
+		
+		var number_of_non_blanks = $('.autocompleteField[value!=""]', $(this).parent().parent().parent() ).length;
+		var number_total_fields = $('.autocompleteField', $(this).parent().parent().parent() ).length;
+		
+		blanks_exist = number_of_non_blanks != number_total_fields;
+				
+		if (blanks_exist) {
+			add_button.fadeOut();
+		}
+		
+		else {
+			add_button.fadeIn();
+		}	
+	});
+	
+	$("#task_prototype_form").validate({
+		  rules: {
+		    type: "required",
+		    lookup_name: "required",
+		    access_requirement: "required",
+		  }
+	});
+	
+	
+});
+
+</script>
+
+
+ <div class="container">
+        
+        <div class="row">
+            <div class="twelvecol tanRounded normal last">
+                <h2 class="center">Create New Task</h2>
+            </div>
+        </div>
+        
+        <div class="row">
+        
+	        <div class="threecol"></div>
+	        
+	        <div class="sixcol">
+	        	<div class="tanRounded normal left fullWidth">
+	        		<form enctype="multipart/form-data" id="task_prototype_form" action="/do/task_form_handler/" method="post">
+	        			{% include 'do/inner_task_prototype_form.html' %}
+	        		</form>
+	        	</div>
+	        </div>
+	        
+	        <div class="threecol last"></div>
+	    </div>
+        
+        
+</div>
+
+{% endblock %}

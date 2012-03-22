@@ -1,0 +1,33 @@
+There are {{event_list.count}} events.
+This is moon {{moon_id}}, and it is called {{this_moon.Name}}.  Its new moon date is {{new_moon_date}}.  The next new moon is {{next_moon_date}}.
+There are {{days_between}} days between.  
+
+
+
+and then...
+
+
+
+<style>
+.day {
+float:left;
+height:40px;
+margin-top:1px;
+padding-top:1px;
+width:100%;
+}
+</style>
+
+{% for day in days_covered %}
+<div style="background-color:{{day.color}}; color:{{day.text_color}}" class="day">{{day.date}} {{day.special}}</div>
+{% endfor%}
+
+
+    <ul>
+    {% for Moon in moon_list %}
+        <li>{{ Moon.Name }}</li>
+        	{% for Event in event_list %}
+        	<li>{{ Event.Name }}
+        	{% endfor %}
+    {% endfor %}
+    </ul>

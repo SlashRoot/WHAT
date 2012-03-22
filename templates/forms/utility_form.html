@@ -1,0 +1,16 @@
+{% extends 'brown_and_bubble_driven.html' %}
+
+{% block more_content %}
+<div class="row">
+	<div class="twocol"></div>
+	<div class="sixcol">
+		<div class="tanRounded normal">
+			<form action='' method="post">
+				{% csrf_token %}
+				{% include 'forms/form_loop.html' %}
+			<input type="submit">
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}

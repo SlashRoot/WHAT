@@ -1,0 +1,63 @@
+.rightVert {
+    width:13%;
+    position:absolute;
+    right:0;
+    top:0;
+}
+
+.leftVert {
+    width:10%;
+    margin-left: -18px;
+    margin-top: -10px;   
+        }
+
+.blogContent {
+    width: 75%;
+    border-radius: 20px 20px 20px 20px;
+    float: left;
+    padding: 10px;
+}
+
+.blogContainer {
+    border-left:none !important;
+    border-right:none !important;
+    padding-left:0;
+    padding-right:0;         
+}
+
+.blogAvatar {
+    width:80%;
+    max-width:185px;            
+}
+
+.blogAvatarContainer {
+    border-radius: 13px 0 0 13px;
+    border: medium none !important;
+    opacity: 0.85;
+    margin-top:20px;
+}
+
+.blogColumn {
+     overflow:hidden;
+             }
+
+.blogPost {
+   margin-top:20px;
+   max-width:650px;
+   z-index:5;
+           }
+
+.blogContent p {
+    margin-top:10px;
+                }
+                
+.tooltip {
+    background-color: #222222;
+    border-radius: 20px 20px 20px 20px;
+    color: white;
+    padding: 10px;
+}
+
+td {
+    border: 1px solid black;
+}

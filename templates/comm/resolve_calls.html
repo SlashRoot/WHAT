@@ -1,0 +1,30 @@
+{% extends 'brown_and_bubble_driven.html' %}
+
+{% block content %}
+
+<script type="text/javascript">
+
+$(function(){
+	$('.voicemail').tooltip({ position: "right", opacity: 0.9, effect: "fade"});
+	});
+	
+</script>
+
+
+<table style="border:auto;" border="1">
+	<td>ID</td>
+	<td>DateTime</td>
+	<td>Caller</td>
+	<td>Answerers</td>
+	<td>Recording</td>
+	<td>Status</td>
+	{% for task in tasks %}
+		{% with call=task.related_objects.all.0.object show_caller=1 show_answerers=1 %}
+			<tr>
+				{% include 'comm/tabular_call_data.html' %}
+			</tr>
+		{% endwith %}
+	{% endfor %}
+</table>
+
+{% endblock %}

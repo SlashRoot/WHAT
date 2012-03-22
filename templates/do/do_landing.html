@@ -1,0 +1,64 @@
+{% extends 'brown_and_bubble_driven.html' %}
+
+{% load do_tags %}
+
+{% block title %}Welcome to WHAT.do{% endblock %}
+
+{% block more_content %}
+
+	<div class="center row" id="doAppCommonLinks">
+	
+		
+			<div class="tanRounded nav">
+			<ul>
+				<li><a href="/do/big_feed">Big Feed</a></li>
+				<li><a href="/do/public_list">Task List</a></li>
+				<li><a href="/do/create_task/">New Task</a></li>
+				<li><a href="/service/check_in">Service Check-In</a></li>
+			</ul>
+			</div>
+
+    <div class="center row headingRow" id="secondHeadingRow">        
+        
+        {# NEW TASK COLUMN #}
+
+        <div class="branchHeading sixcol">
+            <div class="tanRounded title">
+                <h2>                    
+                    Latest Manual Tasks                                     
+                </h2>
+            </div>
+            
+            <div id="taskList">
+                {% for task in manual_tasks %}
+                    {% include 'do/task_box.html' %}                            
+                {% endfor %}
+            </div>
+            
+        </div>
+        
+        <div class="branchHeading sixcol last">
+            <div class="tanRounded title">
+                <h2>                    
+                    Latest Task Messages                                     
+                </h2>
+            </div>
+            
+            <div id="messageList">
+                {% for message in task_messages %}
+                    {% with item=message %}
+                    	{% include 'do/do_feed_items/toplevelmessage' %}  
+                    {% endwith %}                          
+                {% endfor %}
+            </div>
+            
+        </div>
+                
+        
+        
+        
+        
+        
+    </div>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "brown_and_bubble_driven.html" %}
+
+{% block title %} Save a New Card {% endblock %}
+
+{% block more_content %}
+
+	<div class="row">
+		<div class="twocol"></div>
+		
+		<div class="sixcol">
+			<div class="tanRounded normal">
+				<form method="POST" action="/mellon/submit_new_magnetic_card/">
+					{% csrf_token %}
+					<ul>
+						<li> Swipe Your Card:<input type="password" name="rawString"></li>
+						<button type="submit"> Enter Your Card </button>
+					</ul>
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+					
+		
+		

@@ -1,0 +1,325 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>commerce.exchange_functions &mdash; SlashRoot WHAT v.001 documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '.001',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="SlashRoot WHAT v.001 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../contents.html">SlashRoot WHAT v.001 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for commerce.exchange_functions</h1><div class="highlight"><pre>
+  
+<span class="kn">from</span> <span class="nn">commerce.models</span> <span class="kn">import</span> <span class="n">ReceiptFile</span><span class="p">,</span> <span class="n">RealThingSize</span><span class="p">,</span> <span class="n">ExchangeInvolvement</span><span class="p">,</span> <span class="n">MoneyBag</span><span class="p">,</span> <span class="n">MoneyBagPiece</span><span class="p">,</span> <span class="n">Exchange</span><span class="p">,</span> <span class="n">PaymentMethod</span><span class="p">,</span> <span class="n">Pledge</span>    
+<span class="kn">from</span> <span class="nn">people.functions</span> <span class="kn">import</span> <span class="n">party_from_encrypted_string</span>
+<span class="kn">from</span> <span class="nn">people.models</span> <span class="kn">import</span> <span class="n">GenericParty</span>    
+    
+<div class="viewcode-block" id="exchange_with_other_party"><a class="viewcode-back" href="../../contents.html#commerce.exchange_functions.exchange_with_other_party">[docs]</a><span class="k">def</span> <span class="nf">exchange_with_other_party</span><span class="p">(</span><span class="n">party</span><span class="p">,</span> <span class="n">member</span><span class="p">,</span> <span class="n">receipt_image</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Dehydration Function.</span>
+<span class="sd">    </span>
+<span class="sd">    Takes the name of some other party and some member, and returns the following in a tuple:</span>
+<span class="sd">    </span>
+<span class="sd">    *an exchange object</span>
+<span class="sd">    *the other party&#39;s involvement object</span>
+<span class="sd">    *our involvement object</span>
+<span class="sd">    &#39;&#39;&#39;</span>    
+    
+    <span class="k">if</span> <span class="n">receipt_image</span><span class="p">:</span>
+        <span class="n">receipt</span> <span class="o">=</span> <span class="n">ReceiptFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="nb">file</span><span class="o">=</span><span class="n">receipt_image</span><span class="p">)</span>
+        <span class="n">exchange</span> <span class="o">=</span> <span class="n">Exchange</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">manager</span><span class="o">=</span><span class="n">member</span><span class="p">,</span> <span class="n">invoice_data</span><span class="o">=</span><span class="n">receipt</span><span class="p">)</span>
+        
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">exchange</span> <span class="o">=</span> <span class="n">Exchange</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">manager</span><span class="o">=</span><span class="n">member</span><span class="p">)</span>
+        
+    <span class="k">if</span> <span class="n">date</span><span class="p">:</span>
+        <span class="n">exchange</span><span class="o">.</span><span class="n">start_date</span> <span class="o">=</span> <span class="n">date</span>
+        <span class="n">exchange</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    
+
+    <span class="n">their_involvement</span> <span class="o">=</span> <span class="n">ExchangeInvolvement</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">exchange</span> <span class="o">=</span> <span class="n">exchange</span><span class="p">,</span> <span class="n">party</span> <span class="o">=</span> <span class="n">party</span> <span class="p">)</span>
+    
+    <span class="n">our_involvement</span> <span class="o">=</span> <span class="n">ExchangeInvolvement</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="n">exchange</span><span class="p">)</span>
+    <span class="n">our_involvement</span><span class="o">.</span><span class="n">slashroot_as_party</span><span class="p">()</span>
+    <span class="n">our_involvement</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    
+
+    
+    <span class="k">return</span> <span class="n">exchange</span><span class="p">,</span> <span class="n">their_involvement</span><span class="p">,</span> <span class="n">our_involvement</span>
+</div>
+<span class="k">def</span> <span class="nf">pledges_from_involvements</span><span class="p">(</span><span class="n">buyer_involvement</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">seller_involvement</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Dehydration Function.</span>
+<span class="sd">    </span>
+<span class="sd">    Creates symmetrical pledges and adds them to their respective involvements.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">seller_pledge</span> <span class="o">=</span> <span class="n">Pledge</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">pursuant_to</span><span class="o">=</span><span class="n">seller_involvement</span><span class="p">,</span> <span class="n">recipient</span><span class="o">=</span><span class="n">buyer_involvement</span><span class="p">)</span>
+    <span class="n">buyer_pledge</span> <span class="o">=</span> <span class="n">Pledge</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">pursuant_to</span><span class="o">=</span><span class="n">buyer_involvement</span><span class="p">,</span> <span class="n">recipient</span><span class="o">=</span><span class="n">seller_involvement</span><span class="p">)</span>
+
+    <span class="c">#This probably ought to be a function somewhere.</span>
+    <span class="n">seller_pledge</span><span class="o">.</span><span class="n">incoming_pledges</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">buyer_pledge</span><span class="p">)</span>
+    <span class="n">buyer_pledge</span><span class="o">.</span><span class="n">incoming_pledges</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">seller_pledge</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">buyer_pledge</span><span class="p">,</span> <span class="n">seller_pledge</span>
+              
+<span class="k">def</span> <span class="nf">donation_from_POST</span><span class="p">(</span><span class="n">post</span><span class="p">,</span> <span class="n">member</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Takes a POST from the donation form, figures that shit out.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">donor</span> <span class="o">=</span> <span class="n">party_from_encrypted_string</span><span class="p">(</span><span class="n">post</span><span class="p">[</span><span class="s">&#39;lookup_other_party&#39;</span><span class="p">])</span>
+    
+    <span class="n">exchange</span><span class="p">,</span> <span class="n">donor_involvement</span><span class="p">,</span> <span class="n">our_involvement</span> <span class="o">=</span> <span class="n">exchange_with_other_party</span><span class="p">(</span><span class="n">donor</span><span class="p">,</span> <span class="n">member</span><span class="p">)</span>
+    
+    <span class="n">donor_pledge</span> <span class="o">=</span> <span class="n">Pledge</span><span class="p">(</span><span class="n">pursuant_to</span> <span class="o">=</span> <span class="n">donor_involvement</span><span class="p">,</span> <span class="n">recipient</span><span class="o">=</span><span class="n">our_involvement</span><span class="p">)</span>
+    <span class="n">donor_pledge</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>  
+    
+    <span class="c">#Do I love these next 8 lines?  No.  No I do not.  -Justin</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">num_money_bags</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">post</span><span class="p">[</span><span class="s">&#39;Money-TOTAL_FORMS&#39;</span><span class="p">])</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">num_money_bags</span> <span class="o">=</span> <span class="mi">0</span>
+        
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">num_real_things</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">post</span><span class="p">[</span><span class="s">&#39;Money-TOTAL_FORMS&#39;</span><span class="p">])</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">num_real_things</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_money_bags</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>   
+        <span class="n">method</span> <span class="o">=</span> <span class="n">PaymentMethod</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">post</span><span class="p">[</span><span class="s">&#39;Money-&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;-method&#39;</span><span class="p">])</span>
+        <span class="n">amount</span> <span class="o">=</span> <span class="n">post</span><span class="p">[</span><span class="s">&#39;Money-&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;-amount&#39;</span><span class="p">]</span>
+        <span class="n">money_bag</span> <span class="o">=</span> <span class="n">MoneyBag</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">method</span> <span class="o">=</span> <span class="n">method</span><span class="p">)</span>
+        <span class="n">piece</span> <span class="o">=</span> <span class="n">MoneyBagPiece</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">money_bag</span> <span class="o">=</span> <span class="n">money_bag</span><span class="p">,</span> <span class="n">amount</span> <span class="o">=</span> <span class="n">amount</span><span class="p">)</span>
+        
+        <span class="c">#Add this money bag as an item in the donor&#39;s involvement.</span>
+        <span class="n">donor_pledge</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">piece</span><span class="p">)</span>
+        <span class="n">donor_pledge</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        
+    <span class="c">#TODO: Hook up real-thing donations</span>
+    
+    <span class="n">donor_pledge</span><span class="o">.</span><span class="n">deliver</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">exchange</span>
+        
+        
+
+<span class="k">def</span> <span class="nf">buy_item</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">deliver</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">seller_involvement</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">buyer_involvement</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">trade_element</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">trade_element_kwargs</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">money_bag</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">quantity</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    A dehydration method specially for trading a real thing for a money bag.</span>
+<span class="sd">    </span>
+<span class="sd">    Makes pledges and returns them.</span>
+<span class="sd">    </span>
+<span class="sd">    Pledges will be delivered if deliver=True.</span>
+<span class="sd">    </span>
+<span class="sd">    If quantity is more than one, items will each be assigned their own pledge unless group=True.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">quantity</span>
+    
+    <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
+        <span class="n">buyer_pledge</span><span class="p">,</span> <span class="n">seller_pledge</span> <span class="o">=</span> <span class="n">pledges_from_involvements</span><span class="p">(</span><span class="n">buyer_involvement</span><span class="o">=</span><span class="n">buyer_involvement</span><span class="p">,</span> <span class="n">seller_involvement</span><span class="o">=</span><span class="n">seller_involvement</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">counter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">):</span> <span class="c">#We&#39;ll iterate through once for each item in the quantity.</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">group</span><span class="p">:</span>
+            <span class="n">buyer_pledge</span><span class="p">,</span> <span class="n">seller_pledge</span> <span class="o">=</span> <span class="n">pledges_from_involvements</span><span class="p">(</span><span class="n">buyer_involvement</span><span class="o">=</span><span class="n">buyer_involvement</span><span class="p">,</span> <span class="n">seller_involvement</span><span class="o">=</span><span class="n">seller_involvement</span><span class="p">)</span>
+    
+        <span class="c">#Get the size details</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">quantification_method</span> <span class="o">=</span> <span class="n">trade_element_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;unit of quantification&#39;</span><span class="p">)</span>
+            <span class="n">amount</span> <span class="o">=</span> <span class="n">trade_element_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;amount&#39;</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="c">#Guess they don&#39;t have an amount for their quantification method.</span>
+            <span class="c">#TODO: Neaten this.</span>
+            <span class="k">pass</span>
+        
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">property</span> <span class="o">=</span> <span class="n">trade_element_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;property&#39;</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="c">#TODO: This is pretty lame. Property is supposed to be ManyToMany.</span>
+            <span class="k">pass</span> 
+        
+        <span class="c">#Make the thing</span>
+        <span class="n">real_thing</span> <span class="o">=</span> <span class="n">trade_element</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="o">**</span><span class="n">trade_element_kwargs</span><span class="p">)</span> <span class="c">#The kwargs will have come most recently from get_purchase_details, which in turns gets them from a form.             </span>
+        
+        <span class="c">#Make and associate the size of the thing</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">RealThingSize</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="n">quantification_method</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="n">amount</span><span class="p">,</span> <span class="n">thing</span><span class="o">=</span><span class="n">real_thing</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="nb">property</span><span class="p">:</span>
+            <span class="n">real_thing</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">property</span><span class="p">)</span>
+        
+        <span class="n">seller_pledge</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">real_thing</span><span class="p">)</span>
+        
+        <span class="c">#..and we give them some money.</span>
+        <span class="n">piece</span> <span class="o">=</span> <span class="n">MoneyBagPiece</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">money_bag</span> <span class="o">=</span> <span class="n">money_bag</span><span class="p">,</span> <span class="n">amount</span> <span class="o">=</span> <span class="n">price</span><span class="p">)</span>
+        <span class="n">buyer_pledge</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">piece</span><span class="p">)</span>
+        
+        <span class="c">#Deliver both.</span>
+        <span class="c">#TODO: Add shipping tracking here.</span>
+        <span class="k">if</span> <span class="n">deliver</span><span class="p">:</span>
+            <span class="n">seller_pledge</span><span class="o">.</span><span class="n">deliver</span><span class="p">()</span>
+            <span class="n">buyer_pledge</span><span class="o">.</span><span class="n">deliver</span><span class="p">(</span><span class="n">change_owner</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            
+    <span class="k">return</span> <span class="n">seller_pledge</span><span class="p">,</span> <span class="n">buyer_pledge</span>
+        
+    
+
+<span class="k">def</span> <span class="nf">get_purchase_details</span><span class="p">(</span><span class="n">main_form</span><span class="p">,</span> <span class="n">item_forms</span><span class="p">,</span> <span class="n">member</span><span class="p">,</span> <span class="n">receipt_image</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>    
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Takes the following:</span>
+<span class="sd">    </span>
+<span class="sd">    *A main_form, which has information about the overall puchase.</span>
+<span class="sd">    *item_forms, each of which should a tuple of a formset and a model</span>
+<span class="sd">    *member - the member who is entering the transaction</span>
+<span class="sd">    *deliver - a boolean about whether delivery has yet been made.</span>
+<span class="sd">    </span>
+<span class="sd">    TODO: Fix and finish.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">houston_we_have_a_problem</span> <span class="o">=</span> <span class="bp">False</span> <span class="k">if</span> <span class="n">main_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span> <span class="k">else</span> <span class="bp">True</span>
+    
+    <span class="c">#We have more than one formset (call it a formset-set) - let&#39;s check each one.</span>
+    <span class="k">for</span> <span class="n">bound_formset</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">item_forms</span><span class="p">:</span>    
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">bound_formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">houston_we_have_a_problem</span> <span class="o">=</span> <span class="bp">True</span>            
+    
+    <span class="k">if</span> <span class="n">houston_we_have_a_problem</span><span class="p">:</span>
+        <span class="c">#We have a problem.  Tell them so and spit back the forms.</span>
+        <span class="k">return</span> <span class="bp">False</span><span class="p">,</span> <span class="p">(</span><span class="n">main_form</span><span class="p">,</span> <span class="n">item_forms</span><span class="p">)</span>
+        
+    <span class="c">#Nothing seems to have caused a problem.  Proceed.    </span>
+    <span class="n">vendor</span> <span class="o">=</span> <span class="n">main_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&#39;other_party&#39;</span><span class="p">]</span>
+    
+    <span class="n">exchange</span><span class="p">,</span> <span class="n">vendor_involvement</span><span class="p">,</span> <span class="n">our_involvement</span> <span class="o">=</span> <span class="n">exchange_with_other_party</span><span class="p">(</span><span class="n">vendor</span><span class="p">,</span> <span class="n">member</span><span class="p">,</span> <span class="n">receipt_image</span><span class="o">=</span><span class="n">receipt_image</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="n">date</span><span class="p">)</span>
+    
+    <span class="n">SlashRoot</span> <span class="o">=</span> <span class="n">our_involvement</span><span class="o">.</span><span class="n">party</span>
+    
+    
+    <span class="c">#For the moment, we&#39;re assuming that the first formset is device, the second is item, the third is ingredient.</span>
+        
+    <span class="c">#Assume this is one money bag for the entire purchase.</span>
+    <span class="n">method</span> <span class="o">=</span> <span class="n">main_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&#39;payment_method&#39;</span><span class="p">]</span>    
+    <span class="n">money_bag</span> <span class="o">=</span> <span class="n">MoneyBag</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">method</span> <span class="o">=</span> <span class="n">method</span><span class="p">)</span>
+    
+    
+    
+    <span class="k">for</span> <span class="n">formset</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">item_forms</span><span class="p">:</span>
+        <span class="c">#Each formset is for a type of purchase (device, ingredient, etc)</span>
+        <span class="c">#So, within this loop, we&#39;re dealing with a formset which contains one form for each item purchased.</span>
+    
+        <span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">formset</span><span class="p">:</span>
+            <span class="c">#First we need to actually instantiate the device (assume, for a moment, that this device is not yet in our ecosystem)</span>
+            <span class="c">#TODO: Review this code to ensure that devices (or, for that matter, other objects) can&#39;t get created only to be thwarted by some error or odd circumstance further down in the code.</span>
+    
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c">#Copy the cleaned data into a dict</span>
+                <span class="n">purchase_form_dict</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                
+                <span class="c">#Pop four important pieces of information out of the dict</span>
+                <span class="n">quantity</span> <span class="o">=</span> <span class="n">purchase_form_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;quantity&#39;</span><span class="p">)</span>
+                <span class="n">price</span> <span class="o">=</span> <span class="n">purchase_form_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;price_per&#39;</span><span class="p">)</span>
+                <span class="n">deliver</span> <span class="o">=</span> <span class="n">purchase_form_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;deliver&#39;</span><span class="p">)</span>
+                <span class="n">group</span> <span class="o">=</span> <span class="n">purchase_form_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;group&#39;</span><span class="p">)</span>
+                
+                <span class="c">#This is standard (we are the new owner)</span>
+                <span class="n">standard_trade_element_dict</span> <span class="o">=</span> <span class="p">{</span>
+                                      <span class="c">#I guess there&#39;s nothing left here.</span>
+                                      <span class="c">#TODO: Examine if this dict is still needed.</span>
+                                      <span class="p">}</span>
+                
+                <span class="c">#Merge what&#39;s left of the popped dict into the standard dict and we have our kwargs.</span>
+                <span class="n">trade_element_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">standard_trade_element_dict</span><span class="p">,</span> <span class="o">**</span><span class="n">purchase_form_dict</span><span class="p">)</span>
+            
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="c">#TODO: Figure out why some forms come in blank (and thus produce KeyError)</span>
+                <span class="k">continue</span>
+    
+            <span class="n">vendor_pledge</span><span class="p">,</span> <span class="n">our_pledge</span> <span class="o">=</span> <span class="n">buy_item</span><span class="p">(</span><span class="n">seller_involvement</span> <span class="o">=</span> <span class="n">vendor_involvement</span><span class="p">,</span> 
+                     <span class="n">buyer_involvement</span> <span class="o">=</span> <span class="n">our_involvement</span><span class="p">,</span>
+                     <span class="n">trade_element</span> <span class="o">=</span> <span class="n">model</span><span class="p">,</span>
+                     <span class="n">trade_element_kwargs</span> <span class="o">=</span> <span class="n">trade_element_dict</span><span class="p">,</span>
+                     <span class="n">price</span> <span class="o">=</span> <span class="n">price</span><span class="p">,</span>
+                     <span class="n">money_bag</span> <span class="o">=</span> <span class="n">money_bag</span><span class="p">,</span>
+                     <span class="n">quantity</span> <span class="o">=</span> <span class="n">quantity</span><span class="p">,</span>   
+                     <span class="n">deliver</span> <span class="o">=</span> <span class="n">deliver</span><span class="p">,</span>
+                     <span class="n">group</span> <span class="o">=</span> <span class="n">group</span><span class="p">,</span>
+                     <span class="p">)</span>
+    <span class="k">return</span> <span class="bp">True</span><span class="p">,</span> <span class="p">[</span><span class="n">vendor_involvement</span><span class="p">,</span> <span class="n">our_involvement</span><span class="p">]</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../contents.html">SlashRoot WHAT v.001 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, SlashRoot Collective.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

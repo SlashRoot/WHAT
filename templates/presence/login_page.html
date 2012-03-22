@@ -1,0 +1,46 @@
+{% extends "brown_and_bubble_driven.html" %}
+{% block title %}Login{% endblock %}
+{% block more_content %}
+
+
+
+<div class="container">
+
+	<div class="row">
+		<div class="threecol"> </div>
+		<div class="sixcol">
+		
+			<div class="tanRounded normal center">
+			
+		
+				{% if form.errors %}
+				<p>Your username and password didn't match. Please try again.</p>
+				{% endif %}
+			
+				<form name="login" method="post" action="">
+				{% csrf_token %}
+				<table>
+				<tr class="fullWidth">
+				    <td>{{ form.username.label_tag }}</td>
+				    <td>{{ form.username }}</td>
+				</tr>
+				<tr class="fullWidth">
+				    <td>{{ form.password.label_tag }}</td>
+				    <td>{{ form.password }}</td>
+				</tr>
+				</table>
+				
+				<input type="submit" value="Login" />
+				<input type="hidden" name="next" value="{{ next }}" />
+				</form>
+				
+			</div>
+			
+		</div>
+		
+	</div>
+
+
+</div>
+
+{% endblock %}

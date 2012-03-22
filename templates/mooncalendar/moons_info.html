@@ -1,0 +1,61 @@
+<style>
+.moon_segment {
+    border: 1px solid black;
+    float: left;
+    margin: 20px;
+    width: 100px;
+}
+
+.new_row {
+clear:left;
+}
+
+.moon
+{
+border:1px dashed red;
+}
+
+</style>
+
+
+{% for moon in moons %}
+
+
+	<div class="moon new_row">
+	
+		<span class="moon_segment">
+			{{moon.name}} <br/> ({{moon.new}})
+		</span>
+
+		<span class="moon_segment">
+			{{moon.length_waxing_crescent}}
+		</span>
+		
+		<span class="moon_segment">
+			{{moon.length_waxing_gibbous}}
+		</span>
+		
+		<span class="moon_segment">
+			{{moon.length_waning_crescent}}
+		</span>
+		
+		<span class="moon_segment">
+			{{moon.length_waning_gibbous}}
+		</span>
+		
+		<span class="moon_segment">
+			Total: {{moon.length}}
+		</span>
+		
+		<span class="moon_segment">
+			Waxing: {{moon.length_waxing}}
+		</span>
+		
+		<span class="moon_segment">
+			Waning: {{moon.length_waning}}
+		</span>
+	
+	
+	</div>
+
+{% endfor %}

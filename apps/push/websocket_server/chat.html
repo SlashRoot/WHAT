@@ -1,0 +1,51 @@
+<html>
+<meta http-equiv name="Content-Type" value="text/html; charset=utf-8">
+<title>Websockets Chat Demo</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
+<body>
+<div id="chat">
+    <div id="status" style="position:fixed; right: 10px;"></div>
+    <h2>Chat log</h2>
+    <ul id="log"></ul>
+    <form id="form">
+    <input type="text" id="data">
+    <input type="submit" value="say">
+    </form>
+</div>
+<div id="nows">
+    Ваш браузер не поддерживает WebSockets :'(
+</div>
+
+<script>
+  if (window.WebSocket) {  
+      var myWebSocket = new WebSocket("ws://localhost:8007/");  
+    
+      myWebSocket.onopen = function(evt) {
+          $('#status').removeClass('disconnected').addClass('connected').text('WebSocket is connected :)');    
+      };
+      
+      myWebSocket.onmessage = function(evt) {
+          $('<li/>').text(evt.data).appendTo('#log');
+        $("body").stop(true, false).animate({ scrollTop: $(document).height() }, "slow");          
+      };
+      
+      myWebSocket.onclose = function(evt) { 
+          $('#status').removeClass('connected').addClass('disconnected').text('WebSocket is disconnected :('); 
+      };
+      
+      $('#form').submit(function(evt) {
+          evt.preventDefault();          
+          myWebSocket.send($('#data').val());
+          $('#data').val('');
+      });
+
+      $('#nows').hide();
+      $('#chat').show();
+  } else {
+      $('#nows').show();
+      $('#chat').hide();
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+{% for form in contact_forms %}
+	{% include 'forms/form_loop.html' %}
+	<hr/>
+{% endfor %}
+
+{% for form in phone_forms %}
+	{% include 'forms/form_loop.html' %}
+		<hr/>
+{% endfor %}
+
+<div id="phone_clone_container">
+	<div id="original_phone" class="hidden">
+		{{blank_phone_form.as_ul}}
+		<hr/>
+	</div>
+</div>
+
+<button id="add_phone" class="quickClone" type="button">Add Phone</button>
+
+{% if referenced_user %}
+	<input type="hidden" name="user_id" value="{{referenced_user.id}}" />
+{% endif %}

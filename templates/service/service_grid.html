@@ -1,0 +1,50 @@
+{% extends 'brown_and_bubble_driven.html' %}
+
+{% block content %}
+
+<script type="text/javascript">
+
+$(function(){
+    $('.column-head img').tooltip({ position: "right", opacity: 0.9, effect: "fade"});
+    });
+    
+</script>
+
+<style type="text/css">
+.red-blinky {
+             border:3px solid red; 
+             text-decoration:blink;
+             }
+
+.column-head img {
+    width:50px;
+    width:70px;
+}
+
+.column-head {
+text-align:center;              
+}
+
+.calls_today img {
+    width:80px;
+                  }
+
+</style>
+
+<a href="/service/check_in">Service Check-In</a>
+
+<h2 style="margin-top:100px;">Need Attention</h2>
+<table id="current-clients" style="border:auto;" border="1">
+    {% with service_objects_to_be_displayed=needing_attention %}
+        {% include 'service/service_grid_table_contents.html' %}
+    {% endwith %}
+</table>
+
+<h2 style="margin-top:100px;">May not need Attention</h2>
+<table id="current-clients" style="border:auto;" border="1">
+    {% with service_objects_to_be_displayed=not_needing_attention %}
+        {% include 'service/service_grid_table_contents.html' %}
+    {% endwith %}
+</table>
+
+{% endblock %}

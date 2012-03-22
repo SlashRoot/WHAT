@@ -1,0 +1,31 @@
+{% include 'sitewide_head.html' %}
+ 
+ <div id="pos" class="bigModal">
+            
+               {# Will be made DRY by doing something like include xClose.html #}
+				{% include 'generic/xClose.html' %}
+
+                <div class="title"><h2>Beverage Sales</h2></div>
+                
+                <div class="singleRowForm">
+                
+                {% include 'commerce/record_purchase.html' %}
+                                  
+                    
+                    <div id="previousBeverageSales" class="insideModalList">
+                    	<h3>Last 10 Sales</h3>
+                    
+                    	<ul class="commonList" id="lastFewSales">
+		                    {% for sale in sales %}
+		                    
+								{% include 'pos/sale_row.html' %}                    
+		                    
+		                    {% endfor %}
+                    	</ul>
+                    	
+                    	
+                    </div>
+                    
+                </div>
+                        
+            </div>

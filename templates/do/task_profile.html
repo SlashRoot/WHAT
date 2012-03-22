@@ -1,0 +1,193 @@
+{% extends 'brown_and_bubble_driven.html' %}
+
+{% load social_tags %}
+{% load do_tags %}
+
+{% block title %}{{task.name_with_links|safe}}{% endblock %}
+
+{% block rightmost_in_title %}
+	{% if task.check_for_new_children_in_prototype > 0 %}	
+		{{task.check_for_new_children_in_prototype}} new child tasks.	
+	{% endif %}
+{% endblock %}
+
+{% block more_content %}
+
+<script type="text/javascript">
+
+function messagesRefresh() {
+	//GET
+}
+
+$(function(){ 
+
+	//Refresh messages on new message
+	
+    stomp = new STOMPClient();
+    stomp.onopen = function() {
+    };
+    stomp.onclose = function(c) { alert('Lost Connection, Code: ' + c);};
+    stomp.onerror = function(error) {
+        alert("Error: " + error);
+    };
+    stomp.onerrorframe = function(frame) {
+        alert("Error: " + frame.body);
+    };
+    stomp.onconnectedframe = function() {
+        stomp.subscribe("/social/new_messages/task__{{task.id}}/");        
+    };
+    
+    
+    stomp.onmessageframe = function(frame) {
+		messagesRefresh();	        
+    };
+    stomp.connect('localhost', 61613);
+});
+</script>
+
+
+	<div class="container">
+	    <div class="row">
+	    	<div class="twelvecol">
+	    		<div class="tanRounded normal">
+	    			<ul>
+		    			<li>{{task.creator}} created this task on {{task.created}}</li>
+			    		{% for resolution in task.resolutions.all %}
+			    			<li>{{resolution.creator}} marked (#{{resolution.id}}) this task {{resolution.get_type_display}} on {{resolution.created}}</li>
+			    		{% endfor %}
+		    	</div>
+	    	</div>
+	    
+	    
+	        <div class="fivecol">
+	            
+	            {# OWNERSHIP #}
+	            <div class="tanRounded normal">	            
+	                    <div class="tanRounded" id="taskOwnership">
+		                    {% if task.ownership.count %}
+		                        <h2>Owners</h2>
+		                        <ul>
+			                        {% for ownership in task.ownership.all %}
+			                            <li>{{ownership.owner}}</li>
+			                        {% endfor %}
+		                        </ul>
+		                    {% else %}
+		                        <h2>Unclaimed Task</h2>
+		                    {% endif %}
+		                    
+		                    {% if task|task_is_owned_by_user:user %}
+		                    	<button href="javascript:;" url="/do/disown_task/{{task.id}}/" class="submitViaAjax">
+		                        	Disown this task
+		                    {% else %}
+		                    	<button href="javascript:;" url="/do/own_task/{{task.id}}/" class="submitViaAjax">
+		                        	Own this task	
+		                    {% endif %}
+		                    	</button>
+	                    </div>
+	              </div>
+	                    
+	                    {# PROGENY #}
+						<div class="tanRounded normal left fullWidth">
+						
+		                    {# Parents #}
+		                    <div class="tanRounded normal left">
+		                    		<h2>Parents</h2>
+		                    		{% for progeny in task.parents.all %}
+		                    			<a href="{{progeny.parent.get_absolute_url}}">{{progeny.parent}}</a>
+		                    		{% empty %}
+		                    			<h4>No Parents</h4>
+		                    		{% endfor %}
+		                    </div>
+	                    
+	                    	{# Children #}
+	                    	<div class="tanRounded normal left">
+	                    		<h2>Children</h2>
+	                    		<ul>
+		                    		{% for progeny in task.open_children %}
+		                    			{% with task=progeny.child %}
+		                    				{% include 'do/task_box.html' %}
+		                    			{% endwith %}
+		                    		{% endfor %}
+		                    		
+		                    		{% for progeny in task.closed_children %}
+		                    			<li class="strikeOut">
+		                    				<a href="{{progeny.child.get_absolute_url}}">{{progeny.child}}</a>
+		                    			</li>
+		                    		{% endfor %}
+		                    		
+		                    		{% if task.children.count == 0 %}
+		                    			<h4>No children.</h4>
+		                    		{% endif %}
+		                    		
+		                    		{% if task|task_is_owned_by_user:user %}
+				                    	<button class="navButton" shows="addChildForm">
+				                        	Add a Child Task
+				                        </button>
+				                        <div class="hidden tanRounded left" set="addChildForm">
+				                        	<form enctype="multipart/form-data" id="task_prototype_form" action="/do/task_form_handler/" method="post">
+				                        		<input type="hidden" value="{{task.id}}" name="parentIdIpsoFacto">
+				                        		{% include 'do/inner_task_prototype_form.html' %}
+				                        	</form>
+				                        </div>
+				                    {% else %}
+				                    	(Own this task to Add Child Tasks)
+				                    {% endif %}	   		                    		
+	                    		</ul>
+                    	   </div>
+                    	   
+	                    </div>
+	                    
+	                    {# RELATED OBJECTS #}
+	            		{% for relationship in task.related_objects.all %}
+	            			{# TODO: Make this generic instead of assuming that the related object is a phone call#}
+	            			
+	            			{% with template=relationship.object|show_related_object %}
+	            				{% include template %}
+	            			{% endwith %}
+
+	            		{% endfor %}
+	            		
+	            		{# OUTGOING CALL #}
+						
+						{% include 'comm/review_and_make_calls_with_service_recipient.html' %}	 
+	            		
+	            </div> {# End of Left Column #}
+					
+	            <div class="sevencol last">
+	            
+	                {# MESSAGES #}
+	                <div class="tanRounded normal" id="taskDiscussion">
+	                	{% include 'do/task_messages.html' %}
+	                    
+                    	<form action="/do/post_task_message/{{task.id}}/" method="POST" enctype="multipart/form-data">
+                    		{% csrf_token %}
+                        	<textarea name="message" cols=60 rows=6></textarea>
+                        	
+                        	
+                        	<div id="original_messageFile" class="hidden">
+	                        	<input type="file" name="messageFile" size="40">
+                        	</div>
+                        	
+                    		<button id="add_messageFile" class="hidden quickClone" type="button" style="display: inline;">Add File</button>
+                        		
+                        	<button type="submit">Submit Message</button>
+                            <input type="checkbox" name="completed"/>Mark Task Complete
+                        </form>
+	                </div>
+	                
+	                {# DRAW ATTENTION #}
+	                <div class="tanRounded normal">
+	                	<h2>Share this Task</h2>
+	                	{{task|draw_attention_report}}
+	                	{% with object=task %}
+	                		{{task|draw_attention}}
+	                	{% endwith %}	                
+	                </div>
+	              
+	                
+	            </div>
+	        </div>
+	        
+	    </div>
+	</div>
+{% endblock %}

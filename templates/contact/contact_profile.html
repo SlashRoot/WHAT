@@ -1,0 +1,16 @@
+<h2>{{contact.userprofile}}</h2>
+<table>
+	{% for key, value in contact_info %}
+		<tr>
+			<td>{{key}}</td>
+			<td>{{value}}</td>
+		</tr>	
+	{% endfor %}
+</table>
+
+<h4>Phone Numbers</h4>
+
+{% for phone_number in contact.phone_numbers.all %}
+	{{phone_number.type}} - <a href="/comm/outgoing_call_menu/?phone_number={{phone_number.id}}">call now</a>
+{% endfor %}
+

@@ -1,0 +1,50 @@
+From carlythomasset@yahoo.com  Wed Aug 24 15:17:04 2011
+Return-Path: <carlythomasset@yahoo.com>
+X-Original-To: info@slashrootcafe.com
+Delivered-To: djangomailhandler@margaret.local
+Received: from nm12-vm0.bullet.mail.ac4.yahoo.com
+	(nm12-vm0.bullet.mail.ac4.yahoo.com [98.139.53.198])
+	by slashrootcafe.com (Postfix) with SMTP id 22A743D4D4
+	for <info@slashrootcafe.com>; Wed, 24 Aug 2011 15:17:04 -0400 (EDT)
+Received: from [98.139.52.188] by nm12.bullet.mail.ac4.yahoo.com with NNFMP;
+	24 Aug 2011 19:17:05 -0000
+Received: from [98.139.52.148] by tm1.bullet.mail.ac4.yahoo.com with NNFMP;
+	24 Aug 2011 19:17:05 -0000
+Received: from [127.0.0.1] by omp1031.mail.ac4.yahoo.com with NNFMP;
+	24 Aug 2011 19:17:05 -0000
+X-Yahoo-Newman-Property: ymail-3
+X-Yahoo-Newman-Id: 456087.39971.bm@omp1031.mail.ac4.yahoo.com
+Received: (qmail 32986 invoked by uid 60001); 24 Aug 2011 19:17:04 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s1024;
+	t=1314213423; bh=xUFAXI6Nh7J7Odff4fJOIT/P5HBP8OsEQvOozdvjXYE=;
+	h=X-YMail-OSG:Received:X-Mailer:Message-ID:Date:From:To:MIME-Version:Content-Type;
+	b=pq8wmN4rkzQaduh0+ctjvq+8OLKOoHu51e3bOb1GMbGG0lxExgZDzQ6PqV4GEZ2Am268n6dESraPMLSaIC/Vtn5/8yDWA+FJPn/w+PF3kOqmAXbb9FjpVkKmlrE7FQh6T0OxpomF/KM05ZufB3bD/Yo0YCtl2P8m+d8rmbjpNtc=
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; s=s1024; d=yahoo.com;
+	h=X-YMail-OSG:Received:X-Mailer:Message-ID:Date:From:To:MIME-Version:Content-Type;
+	b=Z7vBul2xaXzwmwKasPTr27O7zwVTlExaZENFBmzA6YAHB23AZXuhyN4yeXuuLIZOkqRtJfz1td8mxDkpmJEw5oSp5ARhIWDO5uEDe94x/DUkIyMq7Q+k9DFlAUZ4ytGwPwPb0+xC7/1cd+xpcm0ror0Ijt8lN7PsQyfkAlaigE8=;
+X-YMail-OSG: jMqu3fMVM1mkNX2X7GVXKHpzUjuRDAOFVJle3A.Yb0stDng
+	IpIf8sFRnl6v4nkr2nF3i1SNd0YIIHY2jVKbm.OsH92EW8rmTsXnsquGWy9o
+	2OSHshDeiDTi6bEIjZrDzi480s1LkCYSF7ipfDPEy1HhoXCLSbz4GPexvhNi
+	r07vc77dWubZ.3FoND8E3YUGoPPfM1Lz_eGTna333CHsc2xucJm15nRx6Jrd
+	C6tmun9O3fGAGjajHq3iFOfwE3P2UBRs31uYeEA3jk4Af1.SRyqspn3DQn4w
+	gXp3koLGyLF1B98Fd_UsOrYYc2xwIhJ5nOMMpYziGd6c2SZcsqOLSo6D0meK
+	pft8Zy9jQ9it.fo68fbCBZNqvAfXuHxpLrnA-
+Received: from [24.39.111.54] by web59712.mail.ac4.yahoo.com via HTTP;
+	Wed, 24 Aug 2011 12:17:03 PDT
+X-Mailer: YahooMailClassic/14.0.4 YahooMailWebService/0.8.113.315625
+Message-ID: <1314213423.15242.YahooMailClassic@web59712.mail.ac4.yahoo.com>
+Date: Wed, 24 Aug 2011 12:17:03 -0700 (PDT)
+From: Carly Thomasset <carlythomasset@yahoo.com>
+To: info@slashrootcafe.com
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="0-1789925305-1314213423=:15242"
+
+--0-1789925305-1314213423=:15242
+Content-Type: text/plain; charset=us-ascii
+
+boooooo
+--0-1789925305-1314213423=:15242
+Content-Type: text/html; charset=us-ascii
+
+<table cellspacing="0" cellpadding="0" border="0" ><tr><td valign="top" style="font: inherit;">boooooo</td></tr></table>
+--0-1789925305-1314213423=:15242--

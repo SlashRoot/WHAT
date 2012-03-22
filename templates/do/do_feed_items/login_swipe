@@ -1,0 +1,6 @@
+<div class="tanRounded normal bigFeed" id="task_{{task.id}}">
+	 {{item}} logged in via magnetic card.
+	 <br/>
+	 {% if opening %}(Turned On Lights){% endif %}
+</div>
+

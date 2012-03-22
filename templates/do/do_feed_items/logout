@@ -1,0 +1,5 @@
+<div class="tanRounded normal bigFeed">
+	 {{item}} logged out.
+  	<br/>
+	<small><abbr class="timeago" title="{{item.destroyed|date:"c"}}"></abbr></small>
+</div>

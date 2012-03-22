@@ -1,0 +1,146 @@
+{% extends 'brown_and_bubble_driven.html' %}
+
+{% load do_tags %}
+
+{% block title %}Latest DOings{% endblock %}
+
+{% block right_of_title %}
+    <div id="heartbeat-monitor" style="border: 1px solid white; height: 35px;">
+      <div style="font-size:11px;">Most Recent Heartbeat</div>
+      <span style="font-size:10px;" id="most-recent-heartbeat">(Listening)</span>
+    </div>
+{% endblock %}
+
+{% block rightmost_in_title %} 
+
+{% endblock %}
+
+{% block hidden_second_title %}
+	{# Filtration Options Here #}
+{% endblock %}
+
+
+{% block more_content %}
+
+
+<script type="text/javascript">
+
+	$(function(){ 
+	
+	    stomp = new STOMPClient();
+	    stomp.onopen = function() {
+	    };
+	    stomp.onclose = function(c) { 
+	    	window.location.reload();
+	    };
+	    stomp.onerror = function(error) {
+	        alert("Error: " + error);
+	    };
+	    stomp.onerrorframe = function(frame) {
+	        alert("Error: " + frame.body);
+	    };
+	    stomp.onconnectedframe = function() {
+	        stomp.subscribe("/feeds/do/llamas/walruses/tasks");        
+	        stomp.subscribe("/feeds/do/llamas/walruses/activity");
+            stomp.subscribe("/feeds/presence/json");
+            stomp.subscribe("/heartbeat");
+	    };
+	    
+	    
+	    
+	    stomp.onmessageframe = function(frame) {
+	    	wholeFrame=frame;
+	    	dest = frame.headers['destination'];
+	       	
+	       	
+   	       	if (dest == "/feeds/do/llamas/walruses/tasks") {
+		       	freeze = frame.body;
+		       	$('#taskList').children().last().fadeOut();
+		       	var newElement = $(freeze).hide().prependTo('#taskList')
+		       	}
+		       	
+  	       	if (dest == "/feeds/do/llamas/walruses/activity") {
+		       	freeze = frame.body;
+		       	$('#activityList').children().last().fadeOut();
+		       	var newElement = $(freeze).hide().prependTo('#activityList');		       	
+		       	}
+                                                
+            if (dest == "/feeds/presence/json") {
+                $('#activityList').children().last().fadeOut();
+                var newElement = $(freeze).hide().prependTo('#activityList');
+            }
+                                                
+            if (dest == "/heartbeat") {
+                $('#heartbeat-monitor').hide();
+                var object_dict = $.parseJSON(frame.body);
+                $('#most-recent-heartbeat').html(object_dict['id'] + ' - <abbr id="time-since-heartbeat" title="' + object_dict['created'] + '"></abbr>' );
+                $('#time-since-heartbeat').timeago();
+                $('#heartbeat-monitor').animate({'backgroundColor':'#FFEDD3', 'color':'black'}, 0);
+                $('#heartbeat-monitor').show('pulsate', 300);
+                $('#heartbeat-monitor').animate({'backgroundColor':'#48515A', 'color':'#FFEDD3'}, 3000);
+                return 1;
+            }
+            
+			
+			$("abbr.timeago", newElement).timeago();
+			
+			if (newElement.hasClass('taskResolution')) {
+				//If this is a resolution for a task, we want to fade the Task out of the new tasks list.
+				task_id = newElement.attr('task_id');
+				$('#task_' + task_id).hide('blind', 5000);
+				$('.taskOwnership[task_id=' + task_id + ']').hide('blind', 5000);
+			}
+								       	
+		    newElement.switchClass('normal', 'highlight', 0);
+		   	newElement.show('blind', 5000);
+       		newElement.switchClass('highlight', 'normal', 45000);	
+		        
+	    };
+	    stomp.connect('localhost', 61613);
+	});
+
+</script>
+
+
+
+	
+	<div class="center row headingRow" id="secondHeadingRow">		
+		
+		{# NEW TASK COLUMN #}
+
+		<div class="branchHeading sixcol">
+			<div class="tanRounded normal">
+				<h2>					
+					Latest Tasks 									
+				</h2>
+			</div>
+			
+			<div id="taskList">
+				{% for task in tasks %}
+					{% include 'do/do_feed_items/task_feed.html' %}							
+				{% endfor %}
+			</div>
+			
+		</div>
+
+	
+	
+		{# ACTIVITY COLUMN #}		
+		<div class="branchHeading sixcol last">
+			<div class="tanRounded normal">
+				<h2>					
+					Activity 									
+				</h2>
+			</div>
+			
+			<div id="activityList">
+				{% for item, item_type in activity_list %}		
+		   				{% include "do/do_feed_items/"|add:item_type %}
+				{% endfor %}
+			</div>
+								
+		</div>
+	
+	</div>
+
+{% endblock %}

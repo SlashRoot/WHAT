@@ -1,0 +1,79 @@
+{% extends "widgets/widget_general_include" %}
+
+{% block content %}
+
+<script type="text/javascript" src="/media/js/login-ajax.js"></script>
+
+	{% if user.is_authenticated %}
+	<div id="mainLogin" class="loginBox">
+		<div class="loginForm">
+			<div class="verySmall loggedInLabel right">
+				<div class="verySmall username right">
+					{{user.username}}
+				</div>
+				
+				{% if request.session.presence %}
+					({{request.session.presence.purpose.name}})
+				{% else %}
+				
+					<div class="floatRight">
+						<a href="/iam" style="color: Brown;">(My Dashboard)</a>
+					</div>{# Purpose name #}
+				
+				{% endif %}
+				
+				
+			</div>{# verySmall loggedInLabel #}
+			
+			<div id="loginLabel left" >
+				<a id="widgetLogout" href="javascript:;" style="color: Brown;">Logout</a>
+			</div> {# loginLabel #}
+			
+		{# loginForm is closed outside the conditional #}
+	{# mainLoginForm is closed outside the conditional #}	
+			
+			
+	{# If the user is NOT authenticated....  #}
+	{% else %} 
+	
+
+	<div id="mainLoginForm" class="loginBox expanded" style="display:inline">
+		<div class="loginForm"> 
+			
+				<div id="loginLabel">Login</div>
+				
+				<p class="fieldLabel">Username:</p>
+				
+				<input id="widgetLoginUsername" type="text" />
+				
+				<p class="fieldLabel">Password:</p>
+				
+				<input id="widgetLoginPassword" type="password" />
+				
+					<div class="loginSubmitWrap">
+						<span class="button loginButton">
+							<button onClick="javascript:;" id="widgetLoginSubmit" class="loginSubmit typewriter submit">
+								Login	
+							</button>
+						</span>
+					</div>{# login submit wrap #}
+		{# loginForm is closed outside the conditional #}
+	{# mainLoginForm is closed outside the conditional #}	
+
+	
+	{% endif %} {# Whether or not the the user is logged in.... #}
+
+
+		</div>
+		{# loginForm #} {# Closes in either case of authentication #}
+		
+		<div id="loadingAnimationSmall">
+			{# Put an animation in here. #}
+		</div>{# loadingAnimationSmall #}
+		
+	</div>{# mainLogin #} {# Closes in either case of authentication #}
+
+
+
+
+{% endblock %}

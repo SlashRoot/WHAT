@@ -1,0 +1,201 @@
+{% include 'sitewide_head.html' %}
+
+<style>
+label, button {
+float:left;
+clear:left;
+}
+
+input, textarea, select {
+float:left;
+}
+
+.clonedForm {
+    border: 6px groove #DCDCDC;
+    clear: left;
+    float: left;
+    margin: 2px;
+    padding: 10px;
+}
+
+.formHeading {
+    color: Crimson;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.conclusionBlock {
+ clear: left;
+    float: left;
+    margin-top: 20px;
+}
+
+.bigTotal {
+color:red;
+}
+
+.xClose {
+cursor:pointer;
+}
+
+.underText{
+    color: green;
+    float: left;
+    
+    font-size: 9px;
+    vertical-align: sub;
+}
+
+.addButton {
+    background-image: url("/media_admin/img/admin/icon_addlink.gif");
+    background-position: 50% 0;
+    background-repeat: no-repeat;
+    float: left;
+    height: 20px;
+    margin-left: 10px;
+    padding-top: 10px;
+}
+
+.invoice td {
+border:1px solid #DCDCDC;
+}
+
+</style>
+
+<script type="text/javascript">
+
+$(function(){
+
+	$('.new_delivery').click(function(){
+		if ($('.new_delivery:checked').length != 0) {
+		$('#save').fadeIn();
+		}
+		else {
+		$('#save').fadeOut();
+		}
+		
+	})
+
+})
+
+</script>
+
+		<div class="left">	
+		Purchase From {{involvement.party}} (#{{involvement.id}} in Exchange #{{involvement.exchange.id}})
+	
+		<table class="invoice">
+		
+				<tr>
+					{% if request.GET.show_pledges %}
+					<td>
+						Pledges
+					</td>
+					{% endif %}
+					
+					<td>
+						Item
+					</td>
+					
+					<td>
+						Price
+					</td>
+					
+					<td>
+						Qty
+					</td>
+					
+					<td>
+						Total
+					</td>
+					
+					<td>
+						Delivered
+					</td>
+				</tr>
+			<form method="post" action="/commerce/individual_delivery/">
+			{% csrf_token %}
+				{% for character, pledge_cluster in involvement.get_pledge_clusters.items %}
+					{# pledge_roup will be a three-part list: 0 is the character, 1 is the list of pledges, and 2 is the total amount #}
+					<tr>
+						
+						{% if request.GET.show_pledges %}
+						<td>
+							{% for pledge in pledge_cluster.1 %}
+								<a href="/commerce/view_pledge/{{pledge.id}}">{{pledge.id}}</a>,
+							{% endfor %}							
+						</td>
+						{% endif %}
+						
+						{% comment %}
+						The branches here deal with two possible conditions:
+						1) The pledge cluster contains only one pledge, and that pledge is a group.
+						2) The pledge cluster contains more than one pledge, or a single pledge that is not a group.
+						
+						(For the definition of a pledge which is a "group," see commerce.models.pledge.group)
+						
+						In the first condition, we want to:
+						
+						1) Display the character only once (instead of over and over for each identical item in the pledge
+						2) Display the price per item (instead of the price per pledge, which will be equal to the 'total' column)
+						3) Display quantity as the number of items, not the number of pledges.
+						  
+						Obviously, in scenario #2, we want to do the opposite of each of these things
+						
+						{% endcomment %}
+						
+						
+						
+						{% if pledge_cluster.1|length == 1 and pledge_cluster.1.0.group %}
+							<td>
+								{{pledge_cluster.1.0.group.display}}
+							</td>
+							
+							<td>
+								{{pledge_cluster.1.0.group.price_per}}
+							</td>
+							
+							<td>
+								{{pledge_cluster.1.0.group.quantity}}
+							</td>
+
+						{% else %}
+							<td>
+								{{pledge_cluster.0}}
+							</td>
+
+							<td>
+								{{pledge_cluster.1.0.incoming_amount}}
+							</td>
+							
+							<td>
+								{{pledge_cluster.1|length}}
+							</td>
+
+						{% endif %}
+	
+
+						<td>
+							{{pledge_cluster.2}}
+						</td>
+						
+						<td>
+							{% for pledge in pledge_cluster.1 %}
+								{% if pledge.delivery %}
+									<input type="checkbox" checked="checked" disabled="disabled">
+								{% else %}
+									<input class="new_delivery" name="deliver_{{pledge.id}}" id="deliver_{{pledge.id}}" type="checkbox">
+								{% endif %} 	
+															
+							{% endfor %}
+						</td>
+					</tr>
+							
+			
+				{% endfor %}
+
+		</table>
+						<div id="save" class="left" style="display:none;">
+					<button>Save New Deliveries</button>			
+				</div>
+			</form>
+		</div>

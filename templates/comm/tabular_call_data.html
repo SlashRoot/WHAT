@@ -1,0 +1,28 @@
+<td>
+    <a href="{{call.resolve_task.get_absolute_url}}">{{call.resolve_task.id}}</a>
+</td>
+
+<td>{{call.created|date:"D d M H:i:s"}}</td>
+
+{% if show_caller %}
+    <td>
+        <a href="{{call.from_number.get_absolute_url}}">
+            {{call.from_number}}
+        </a>
+    </td>
+{% endif %}
+
+{% if show_answerers %}
+    <td>
+        {% for answerer in call.answerers %}{{answerer.first_name}}{% if not forloop.last %},&nbsp;{% endif %}{% endfor %}
+        {% if call.voicemail %}<span class="voicemail" title="{{call.voicemail.transcription_text}}">VOICEMAIL</span>{% endif %}
+    </td>
+{% endif %}
+
+<td class="tabular-recording-info">
+   {% include 'comm/call_recordings.html' %}
+</td>
+
+<td>
+    {{call.resolve_task.get_status_display}}
+</td>

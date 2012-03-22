@@ -1,0 +1,64 @@
+{% if has_outgoing_call %}
+    <div class="tanRounded normal left">
+        <h3>
+            <a href="/comm/review_calls_with_user/{{related_user.id}}/">Review Calls with {{call_to_name}}</a>
+        </h3>
+        
+        <h3>
+            {% for phone_number in phone_numbers %}
+                <a href="/comm/outgoing_call_menu/?phone_number={{phone_number.id}}">Place Call to {{call_to_name}})</a>
+            {% endfor %}
+        </h3>
+    
+        {# Twilio Client #}
+    
+        <script type="text/javascript" src="http://static.twilio.com/libs/twiliojs/1.0/twilio.js"></script>
+        
+        <script type="text/javascript">
+        
+            $(function(){ 
+            
+            Twilio.Device.setup("{{capability.generate}}");
+            
+            Twilio.Device.ready(function(device){
+                                                 $('#log').text('ready');
+                                                 })
+            
+            Twilio.Device.error(function(error){
+                                                $('#log').text('Error: ' + error.message);
+                                                })
+            
+            Twilio.Device.connect(function(conn){
+                                                 $('#log').text("Successfully established call")    
+                                                 })
+            
+            Twilio.Device.incoming(function (conn) {
+                                                    $("#log").text("Incoming connection from " + conn.parameters.From);
+                                                    // accept the incoming connection and start two-way audio
+                                                    conn.accept();
+                                                    });
+            
+            
+                                                    });
+            
+            function call(id) {
+                               params = { "SuperLlama" : id };
+                               Twilio.Device.connect(params);
+                               }
+        
+        </script>
+        
+        <div id="log"></div>
+        
+        <h3>Call via Browser Client</h3>
+        
+        {% for phone_number in phone_numbers %}
+        
+            <button class="call" onclick="call({{phone_number.id}});">
+            Call {{phone_number.type}}
+            </button>
+            
+        {% endfor %}
+        
+    </div>
+{% endif %}

@@ -1,0 +1,59 @@
+{% extends 'brown_and_bubble_driven.html' %}
+
+{% block title %}{{phone_number}}{% endblock %}
+
+{% block more_content %}
+        
+        {% if not phone_number.user %}
+            <h2><a href='/contact/new_contact/?phone_number={{phone_number.number}}'>Add to Contacts</a></h2>
+        {% endif %}
+        
+        <h2><a href="/comm/outgoing_call_menu/?phone_number={{phone_number.id}}">Place Call</a></h2>    
+        
+        
+        
+    
+    
+    
+    <table style="border:auto;" border="1">
+        
+        <tr><td colspan="4"><h2>Calls from this number</h2></td></tr>
+        <tr>
+            <td>ID</td>
+            <td>DateTime</td>
+            <td>Answerers</td>
+            <td>Recording</td>
+            <td>Status</td>
+        </tr>
+    
+        {% for call in phone_number.calls_from.all %}
+            <tr>
+                {% with show_answerers=1 %}
+                    {% include 'comm/tabular_call_data.html' %}
+                {% endwith %}
+            </tr>
+        {% endfor %}
+    
+        <tr><td colspan="4"><h2>Calls to this number</h2></td></tr>
+        <tr>
+            <td>ID</td>
+            <td>DateTime</td>
+            <td>Caller</td>
+            <td>Recording</td>
+            <td>Status</td>
+        </tr>
+    
+        {% for call in phone_number.calls_to.all %}
+            <tr>
+                {% with show_caller=1 %}
+                    {% include 'comm/tabular_call_data.html' %}
+                {% endwith %}
+            </tr>
+        {% endfor %}
+    
+    </table>
+    
+    
+    
+    
+{% endblock more_content %}

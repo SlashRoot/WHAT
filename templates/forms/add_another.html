@@ -1,0 +1,28 @@
+{% include 'sitewide_head.html' %}
+
+<script type="text/javascript">
+$(function(){
+	$('#add_another').click(function(){
+
+		clone = $('#original').clone(true);
+		$('#form_list').append( clone );
+		clone.attr('
+		clone.fadeIn();
+	
+	
+	});
+
+})
+</script>
+
+
+<div style="display:none;" id="original_item">{{form}}</div>
+
+
+<div id="form_list">
+
+
+</div>
+
+
+<button class="clone" id="add_another">Add Another</button>

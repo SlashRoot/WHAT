@@ -1,0 +1,243 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Technology Service &mdash; SlashRoot WHAT v.001 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '.001',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="SlashRoot WHAT v.001 documentation" href="../index.html" />
+    <link rel="next" title="Do" href="../apps/do/index.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="../contents.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../apps/do/index.html" title="Do"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../contents.html" title="&lt;no title&gt;"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../contents.html">SlashRoot WHAT v.001 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="technology-service">
+<h1>Technology Service<a class="headerlink" href="#technology-service" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="how-to-check-a-computer-in-for-service">
+<h2>How to check a computer in for service<a class="headerlink" href="#how-to-check-a-computer-in-for-service" title="Permalink to this headline">¶</a></h2>
+<p>#. Login.
+<a href="#id1"><span class="problematic" id="id2">*</span></a>Each User profile with Technology Service permissions has a barcode attached to their login at service workstations.</p>
+<ol class="arabic simple">
+<li>Navigate to /tech_service/check_in/. ( Some GUI Tech Serivce Gui Somethingss... )</li>
+</ol>
+<p>#. Complete the only field on the form, &#8220;Client / Quick / Hostname.&#8221;
+<a href="#id3"><span class="problematic" id="id4">*</span></a>The field will autocomplete against User, Group, QuickID, Barcode, and Computer.hostname.</p>
+<ol class="arabic simple">
+<li>Choose an existing object from the autocomplete&#8217;s results, or select &#8220;create new&#8221; / Press Enter.( to begin to create alot of new objects.(</li>
+</ol>
+<p>Possible outcomes:</p>
+<p><a href="#id5"><span class="problematic" id="id6">*</span></a>Only User Exists
+<a href="#id7"><span class="problematic" id="id8">*</span></a>Only Group Exists
+<a href="#id9"><span class="problematic" id="id10">*</span></a>Only Device Exists</p>
+<p><a href="#id11"><span class="problematic" id="id12">*</span></a>User and Device, but not Group
+<a href="#id13"><span class="problematic" id="id14">*</span></a>Group and Device, but not User
+<a href="#id15"><span class="problematic" id="id16">*</span></a>User and Group, but not Device</p>
+<p><a href="#id17"><span class="problematic" id="id18">*</span></a>Total repeat (Device and User / Group exist)
+What does this mean and how does What know if the device is returning or checked in and has an open work session.</p>
+<p><a href="#id19"><span class="problematic" id="id20">*</span></a>Neither exist:</p>
+<div class="section" id="checking-in-by-existing-client">
+<h3>Checking in by Existing Client<a class="headerlink" href="#checking-in-by-existing-client" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Normally a student should be able to identify weather someone already has A User Profile by completing the autocomplete field with a First or Last name, Group Name, a Barcode or Tech ID, or rarely a Hostname.</li>
+</ol>
+<p>Possible Outcomes:</p>
+<p><a href="#id21"><span class="problematic" id="id22">*</span></a>Found a User Profile but no Prior knowledge of THIS Device.</p>
+<p><a href="#id23"><span class="problematic" id="id24">*</span></a>Found a Group but no Prior Knowledge of THIS Device.</p>
+<p><a href="#id25"><span class="problematic" id="id26">*</span></a>Found A Device, a User/Group Profile, and THIS is a Returning Device, or possibly a Device we already have.</p>
+</div>
+<div class="section" id="checking-in-by-existing-device">
+<h3>Checking in by Existing Device<a class="headerlink" href="#checking-in-by-existing-device" title="Permalink to this headline">¶</a></h3>
+<p>#.If an Existing Device is Found Via Quick ID or Barcode, You have found this persons User Profile. is this new service, or warantee service?</p>
+<p>#.If an existing Device is discovered via User, Group, and no longer has a Barcode or QuickID,
+affix a new one and append the last ID string to the updated barcode with some utility.
+(this requires sudo or some higher level overide permissions)</p>
+<p>Creates:
+-Service
+-Expectation
+-Exchange
+-Pledge</p>
+</div>
+<div class="section" id="checking-with-no-prior-knowledge">
+<h3>Checking with no prior knowledge<a class="headerlink" href="#checking-with-no-prior-knowledge" title="Permalink to this headline">¶</a></h3>
+<p>This will bring you through a specialized sign up form designated to prioritize The effiencency of checking in tech service, unlike the more minimalized normal public user sign up form.</p>
+<p>#.The system will prompt you do begin scanning barcodes for and new intake of any new Devices
+Sticker every discrete device. Each device gets a barcode sticker, then gets scanned. Each boink creates a field that autocompletes against Device(Category?), and leads you to the appropriate form for the type of device you are checking in.</p>
+<p>Possible Outcomes:
+<a href="#id27"><span class="problematic" id="id28">*</span></a>Laptop
+<a href="#id29"><span class="problematic" id="id30">*</span></a>Power Supply
+<a href="#id31"><span class="problematic" id="id32">*</span></a>Mobile Device
+blahhhhhhhhhhhhhhhhjb,...</p>
+<p>#.Complete:</p>
+<p><a href="#id33"><span class="problematic" id="id34">*</span></a>User
+First, Last
+<a href="#id35"><span class="problematic" id="id36">*</span></a>Contact
+Phone Number, Email
+<a href="#id37"><span class="problematic" id="id38">*</span></a>Device
+Operating System, Model, Description
+#. Discuss symptoms, steps needed to cause symptom
+<a href="#id39"><span class="problematic" id="id40">*</span></a>Service
+Symptom(s)
+Urgency
+#. Discuss pledge/payment
+<a href="#id41"><span class="problematic" id="id42">*</span></a>Expectation
+Expected Date of Completion (if there is one)
+Pledge (agreement of rates and Services about to be performed)
+<a href="#id43"><span class="problematic" id="id44">*</span></a>Exchance
+Moneys Exchanged for Parts
+Hardware dropped-off (completed before)</p>
+<p>#. Print some shit out automatically, AND Send an enail or SMS to customer with a shortened URL that links to their ticket/session page.
+An URL shortening step would be nice here. ticket includes all relevant barcodes and a barcode for the ticket.
+Ticket barcode gets generated automatically and is of a separate sequence from device stickers.</p>
+<p>#. Ticket also includes all info the privelege level of the customer allows.
+Also includes an option to create a password on our site to check status of repair session.
+Links to Facebook, other social network sites, possible a shortened URL to appropriate page.</p>
+</div>
+</div>
+</div>
+<div class="section" id="how-to-record-action-on-a-service-project">
+<h1>How to record action on a service project<a class="headerlink" href="#how-to-record-action-on-a-service-project" title="Permalink to this headline">¶</a></h1>
+<p>If an existing Device is discovered via User, Group, and no longer has a Barcode or QuickID,
+affix a new one and append the last ID string to the updated barcode with some utility.
+(this requires sudo or some higher level overide permissions)
+Checking with no prior knowledge</p>
+<p>When a barcode is scanned, and the device has already been Pledged, but the Expectation is not Met, it means that we probably already have the device already.
+<a href="#id45"><span class="problematic" id="id46">*</span></a>Prompt: Start new service Session?
+What Symptoms are you attempting to resolve? (unless Diag.)
+What Services are you about to Render?</p>
+<p>A Ticket is opened while device is being worked on.
+This starts a timer to track actual time spent.
+in some cases, with the right permission, multiple tickets can be open.
+&#8220;Tech Utilites become Availible&#8221;</p>
+<p>The Timer Stops
+<a href="#id47"><span class="problematic" id="id48">*</span></a>Prompt: Sucsessful in Resolving Symptom _______?
+<a href="#id49"><span class="problematic" id="id50">*</span></a>Complete:
+Log
+Steps Taken</p>
+<p>If this satisfies</p>
+<p>Wishlist: Repairs generate a sequence of steps, tech then checks off as completed.</p>
+<ol class="arabic simple">
+<li>Each major action taken is entered into Service Logs. (Ticket Session or whatwever the fuck</li>
+</ol>
+</div>
+<div class="section" id="how-to-check-out-a-computer">
+<h1>How to check out a computer<a class="headerlink" href="#how-to-check-out-a-computer" title="Permalink to this headline">¶</a></h1>
+<ol class="arabic simple">
+<li>Tech on duty scans customer barcode (stapled to their forehead in a previous step) to bring up session ticket. If barcode has been removed or tampered with, enter first letters of their name and pick from list.</li>
+<li>Tech finds all associated devices. If 3 barcodes show in ticket, there should be 3 devices found. Boink each one to release it.</li>
+<li>Payment is received from customer -=&gt; redirect to POS screen with Service ready to sell as RealThing.  (Think, &#8220;Can I get you a hot cocoa with that?&#8221;)</li>
+</ol>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Technology Service</a><ul>
+<li><a class="reference internal" href="#how-to-check-a-computer-in-for-service">How to check a computer in for service</a><ul>
+<li><a class="reference internal" href="#checking-in-by-existing-client">Checking in by Existing Client</a></li>
+<li><a class="reference internal" href="#checking-in-by-existing-device">Checking in by Existing Device</a></li>
+<li><a class="reference internal" href="#checking-with-no-prior-knowledge">Checking with no prior knowledge</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#how-to-record-action-on-a-service-project">How to record action on a service project</a></li>
+<li><a class="reference internal" href="#how-to-check-out-a-computer">How to check out a computer</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../contents.html"
+                        title="previous chapter">&lt;no title&gt;</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../apps/do/index.html"
+                        title="next chapter">Do</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/sectors/technology_service.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../apps/do/index.html" title="Do"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../contents.html" title="&lt;no title&gt;"
+             >previous</a> |</li>
+        <li><a href="../contents.html">SlashRoot WHAT v.001 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, SlashRoot Collective.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

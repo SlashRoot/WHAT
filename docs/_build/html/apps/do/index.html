@@ -1,0 +1,197 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Do &mdash; SlashRoot WHAT v.001 documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '.001',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="SlashRoot WHAT v.001 documentation" href="../../index.html" />
+    <link rel="next" title="Do Module Internals" href="internals.html" />
+    <link rel="prev" title="Technology Service" href="../../sectors/technology_service.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="internals.html" title="Do Module Internals"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../../sectors/technology_service.html" title="Technology Service"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../contents.html">SlashRoot WHAT v.001 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="do">
+<h1>Do<a class="headerlink" href="#do" title="Permalink to this headline">¶</a></h1>
+<p>This document describes the user experience of WHAT.do.</p>
+<p>The Do app is the town square of our do-ocracy.</p>
+<p>Browsing to its landing page, <strong>/do/</strong>, brings you to three-way fork where you can decide how to involve yourself.</p>
+<p>The chief model of WHAT.do is <strong>Task</strong>.  A Task is any discrete activity, phrased in the past tense - anything from &#8220;finished painting the southeast wall&#8221; to &#8220;brought peace to all humanity.&#8221;</p>
+<p>Tasks are familial - they have children which are prerequisites to completion.  For more information on Task modeling, see <a class="reference internal" href="internals.html"><em>Do Module Internals</em></a>.</p>
+<div class="section" id="finding-a-task">
+<h2>Finding a Task...<a class="headerlink" href="#finding-a-task" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="by-verb-or-tag">
+<h3>...by Verb or Tag<a class="headerlink" href="#by-verb-or-tag" title="Permalink to this headline">¶</a></h3>
+<p>You can find an open task by browsing verbs and choosing one that suits your mood.  You can &#8220;build,&#8221; &#8220;maintain,&#8221; &#8220;develop,&#8221; etc.
+You can also look for a tag, such as &#8220;ordering&#8221; or &#8220;tech work.&#8221;</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>In the middle column, click either &#8220;Verbs&#8221; or &#8220;Tags.&#8221;</li>
+<li>The &#8220;tasks&#8221; column will now display tasks in this verb or tag, and the &#8220;people&#8221; column will display people who have performed tasks in this verb or tag.</li>
+<li>You can now proceed directly to selecting a task or finding a member you&#8217;d like to work with.</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="by-person">
+<h3>...by Person<a class="headerlink" href="#by-person" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>First you will navigate to the do app and choose People</li>
+<li>Then choose a person at /root</li>
+<li>The skills and completed  jobs w/ some points or credits will display when you click on them</li>
+</ol>
+</div>
+<div class="section" id="by-task">
+<h3>...by Task<a class="headerlink" href="#by-task" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>First, navigate to /do and click Task</li>
+<li>Second, You will see a list of tasks that /root needs to get done</li>
+<li>There, will be a list of people and things when you hover over the task or something</li>
+<li>Last, there will be means of communicating your preference of time</li>
+</ol>
+</div>
+</div>
+<div class="section" id="once-you-have-found-a-task">
+<h2>Once you have found a task<a class="headerlink" href="#once-you-have-found-a-task" title="Permalink to this headline">¶</a></h2>
+<p>So, you have isolated the task that you want to perform.</p>
+<p>If you <strong>hover</strong> over the task, you&#8217;ll see the following information:</p>
+<blockquote>
+<div><ul class="simple">
+<li>People who have already claimed ownership over the task</li>
+<li>The DateTime that the task was created</li>
+<li>The DateTime that the task is projected to be completed</li>
+<li>The Task family summary (the first few parents and children)</li>
+</ul>
+</div></blockquote>
+<p>For tasks which pertain to related objects, such as PhoneCall responses, you will see a short summary of the related object.</p>
+<p>If you <strong>click</strong> on the task, you will see Task brief.  From here, you can:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Bid on this task</li>
+<li>Own this task (if you have sufficient privileges to claim ownerhsip)</li>
+<li>Mark this task completed (if the task is not top level or has no children)</li>
+<li>The Task family summary (the first few parents and children)</li>
+<li>Participate in discussion about the Task</li>
+<li>Go to the full Task profile, which contains:</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li>The entire Task family, laid on on a horizontal tree</li>
+<li>Modify the description of the task (if you have proper privileges)</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Do</a><ul>
+<li><a class="reference internal" href="#finding-a-task">Finding a Task...</a><ul>
+<li><a class="reference internal" href="#by-verb-or-tag">...by Verb or Tag</a></li>
+<li><a class="reference internal" href="#by-person">...by Person</a></li>
+<li><a class="reference internal" href="#by-task">...by Task</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#once-you-have-found-a-task">Once you have found a task</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../../sectors/technology_service.html"
+                        title="previous chapter">Technology Service</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="internals.html"
+                        title="next chapter">Do Module Internals</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/apps/do/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="internals.html" title="Do Module Internals"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../../sectors/technology_service.html" title="Technology Service"
+             >previous</a> |</li>
+        <li><a href="../../contents.html">SlashRoot WHAT v.001 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, SlashRoot Collective.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

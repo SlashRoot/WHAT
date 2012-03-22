@@ -1,0 +1,12 @@
+<h2>Calls with {{subject_user.get_full_name}}</h2>
+<ul>
+	{% for participation in subject_user.communications.all %}
+		<a href="/comm/phone_call_details/{{participation.communication.id}}/">
+			{% if participation.other_participants %}
+				<li>{{participation.created}} {{participation.direction_inverse}} {% for other_participation in participation.other_participants %}{{other_participation.person}}{% endfor %}</li>
+			{% else %}
+				<li>{{participation.created}} {{participation.direction_inverse}} {{participation.number_on_the_other_end}}</li>
+			{% endif %}
+		</a>
+	{% endfor %}
+</ul>

@@ -1,0 +1,165 @@
+{% include 'sitewide_head.html' %}
+
+{% comment %}
+		//Let's parse the ID a bit.  The ID will look like "id_Coconuts-0-amount" where Coconuts is the form prefix and amount is a field name.
+		formset_name = $(this).attr('id').split("-")[0]; //This will get us "id_Coconuts" or the like.
+		id = formset_name.split("-")[1]; //This will get us the 0 from above.
+{% endcomment %}
+
+
+<style>
+
+	label, button {
+	float:left;
+	clear:left;
+	}
+	
+	input, textarea, select {
+	float:left;
+	}
+	
+	.clonedForm {
+	    border: 6px groove #DCDCDC;
+	    clear: left;
+	    float: left;
+	    margin: 2px;
+	    padding: 10px;
+	}
+	
+	.formHeading {
+	    color: Crimson;
+	    font-size: 20px;
+	    margin-bottom: 10px;
+	}
+	
+	.conclusionBlock {
+	 clear: left;
+	    float: left;
+	    margin-top: 20px;
+	}
+	
+	.bigTotal {
+	color:red;
+	}
+	
+	.xClose {
+	cursor:pointer;
+	}
+
+</style>
+
+
+<script type="text/javascript">
+$(function(){
+
+	$('.quantity, .pricePer').keyup(function(){
+		//Every time a quantity or price is changed, we'll update the total for that form.
+		
+		//We'll need to know about the form itself, which is the parent element of this field.
+		parent = $(this).parent();
+		
+		quantity = $('.quantity', parent).val(); //Use the parent as context to make this query cheaper. (We'll do this every time.)
+		pricePer = $('.pricePer', parent).val();
+		
+		thisEntryTotal = quantity * pricePer;
+		
+		//First, let's determine the total.
+		
+		//Figure out which form div this is by the ID of the parent element.
+		form_number = parent.attr('id').split('_')[1];
+		
+		//From here, we can discern which total div we want to modify.
+		total_div = $('.formTotal', parent); 
+		
+		//....and now we modify it.
+		total_div.html(thisEntryTotal);	
+		
+		//Let's also add up all the totals and update the main total at the bottom.
+		purchaseTotal = parseFloat(0);
+		$('#form_list .formTotal').each(function(){
+			purchaseTotal += parseFloat(this.innerHTML);
+		})
+		$('#purchaseTotal').html(purchaseTotal);
+	});
+
+	$('#submitBigPurchase').click(function(){
+		$('#bigPurchaseForm').submit();
+	});
+	
+
+
+})
+
+
+</script>
+
+
+
+<form enctype="multipart/form-data" id="bigPurchaseForm" action="{{request.path}}" id="transaction_form" method="post">
+{% csrf_token %}
+	
+	{{main_form}} 
+	
+		<div id="management_forms">
+			{% for formset, model in item_forms %}
+				{{formset.management_form}}
+			{% endfor %}
+		</div>
+	
+	
+	
+	
+	
+	<div id="form_list">
+		{% if show_errors %}
+			{% for formset, model in item_forms %}
+			
+				{{formset.management_form}}
+				
+				{% for form in formset %}
+	
+						<div class="clonedForm">
+							{{form.prefix}}
+							{{form}}
+						</div>
+						
+				{% endfor %}
+				
+			{% endfor %}
+		{% endif %}
+	
+	</div>
+	
+	
+
+</form>
+
+{% for item_form, model in item_forms %}
+
+	{# This is a hidden form.  It just hangs out here, waiting to be cloned.  #}
+	<div style="display:none;" id="original_{{forloop.counter}}">
+	{% include 'generic/xClose.html' %}
+		<div class="formHeading">
+			{{item_form.prefix}} <span class="counter"></span>
+			<br/>Total: <span id="id_{{item_form.prefix}}-0-total" class="formTotal">0</span>
+		</div>
+		{{item_form.empty_form}} {# Just the form, not the management fields #}
+	</div> 
+	
+	{# Here's the actual clone button. #}
+	{% if not show_errors %}
+	{# Remember, each element in item_form is a tuple with the form first, then the model. TODO: Examine using verbose name here. #}
+		
+		<button type="button" class="clone {{item_form.prefix}}" data="{{item_form.prefix}}" id="add_{{forloop.counter}}">Add {{item_form.prefix|title}}</button>
+		
+		
+	{% endif %}
+	
+{% endfor %}
+
+
+<div class="conclusionBlock">
+	<div class="floatLeft bigTotal">Purchase Total:<span id="purchaseTotal">0</span></div>
+	<button id="submitBigPurchase" type="button" class="submit">Submit {{transaction_type}}</button>
+</div>
+	

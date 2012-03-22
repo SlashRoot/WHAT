@@ -1,0 +1,5 @@
+<div class="tanRounded normal bigFeed" id="task_{{task.id}}">
+	 <a href="{{task.get_absolute_url}}">#{{task.id}}: {{task.name_with_links|striptags}}</a>
+	 <br/>
+	 <small>by {{task.creator}}  <abbr class="timeago" title="{{task.created|date:"c"}}"></abbr></small>
+</div>

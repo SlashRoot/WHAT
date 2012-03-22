@@ -1,0 +1,13 @@
+<span>
+	<a href="{{task_maybe_prototype.get_absolute_url}}">
+		{{model_name}} #{{task_maybe_prototype.id}} ({{task_maybe_prototype.type}})
+	</a>
+</span>
+<ul>
+{% for progeny in progeny_objects %}
+	<li>
+		<input type="checkbox" name="completed_{{progeny.child.id}}">
+		<span>{{progeny.child.name}}</span>
+	</li>
+{% endfor %}
+</ul>

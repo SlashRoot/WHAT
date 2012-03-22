@@ -1,0 +1,55 @@
+{% include 'sitewide_head.html' %}
+<link rel="stylesheet" href="/media/css/bar_menu.css" type="text/css" media="screen" />
+
+
+<div class="menu_page">
+    <div class="menu_wrap typewriter">
+        <div class="menu_slot">
+            <div class="menu_head menu_head_left">
+            Coffee</div>
+            <div class="menu_content menu_content_left">
+                <div id="menu_item_1">
+                
+               {% for coffee in coffees %}
+                    {{coffee.name}}<br>
+               {% endfor %}
+                 
+                </div>
+            </div>
+        </div>
+        <div class="menu_slot_w">
+            <div class="menu_head_w">
+            Organic Beverages
+            </div>
+            <div class="menu_content_w">
+                <div id="menu_item_1">
+                    <br>At Slash Root, we strive for the
+                    <br><strong>highest quality beverages possible</strong>
+                    <br>we use enitirely organic, fair trade and local ingredients.
+                    <br>
+                    <br>However, our choice to use high quality ingredients, particularly
+                    <br>organic milk, means that
+                    <br><strong>our costs are much higher</strong>
+                    <br>than your typical beverage peddler.
+                    <br>
+                    <br>So, <strong>pay what you think is fair</strong>, and remember that most of your contribution
+                    <br>will go to wholesome local and / or
+                    <br>organic farmers, roasters and cows.
+                </div>
+            </div>
+        </div>
+        <div class="menu_slot">
+            <div class="menu_head menu_head_right">
+                Teas
+            </div>
+            <div class="menu_content menu_content_right">
+                <div id="menu_item_1">
+                  {% for tea in teas %}
+                  {{tea.name}}
+                  {% endfor %}
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

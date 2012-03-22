@@ -1,0 +1,97 @@
+{% extends "brown_and_bubble_driven.html" %}
+
+{% block content %}
+
+<style type="text/css">
+#tpSorting{
+width:12.45% !important;
+}
+.minWidth{
+min-width:687px;
+}
+
+.sortableTable td {
+    border: 1px solid #C4AE6A;
+    font-size: 14px;
+    text-align: center;
+    width: 137px;
+}
+
+.headerWithIcons img{
+width:18%;
+}
+
+#twelvecolMargin{
+margin-top:33px;
+}
+</style>
+
+{% block right_of_title %}
+
+                
+                
+<div class="row">
+    <div class="twelvecol">
+        <div class="tanRounded normal">
+                    <div id="headingLoginBox" style="position:relative; margin-top:-4px">
+                        {% include 'widgets/login.html' %}
+                    </div>
+                
+            <h2 class="center">Task Prototypes</h2> 
+            <div class="right" style="margin-top:-23px;"> 
+                <input id="tpSearch" />
+                <button id="tpAdd"> + </button> 
+            </div>
+        </div>
+     </div>
+ </div>
+{% endblock %}
+
+{% block more_content %}
+<div class="row" id="twelvecolMargin">
+	<div class="twocol">
+		<div class="tanRounded normal">
+			<h3>Filter By:</h3>
+				Verb<br>
+				Something<br>
+				Something else<br>
+		</div>
+	</div>
+	<div class="tencol last">
+		<div class="tanRounded normal">
+			<table id="tpTable" class="sortableTable"> 
+				<thead class="headerWithIcons"> 
+					<tr> 
+					    <th>Task Prototype</th>
+					    <th><img src="/media/images/mac.jpg" /></th> 
+					    <th><img src="/media/images/mac.jpg" /></th> 
+					    <th><img src="/media/images/mac.jpg" /></th> 
+					    <th><img src="/media/images/mac.jpg" /></th>
+                        <th><img src="/media/images/mac.jpg" /></th> 
+					     
+					</tr> 
+				</thead> 
+				<tbody> 
+				{% for tp in task_prototypes %}
+					<tr> 
+					    <td><a href="{{tp.get_absolute_url}}">{{tp.name}}</a></td> 
+					    <td>{{tp.instances.count}}</td>
+					    <td>{{tp.type}}</td>
+					    <td>{{tp.open_tasks.count}}</td>
+					    <td>{{tp.completed_tasks.count}}</td>
+					    <td>{{tp.owner_count}}</td>
+					</tr> 
+				{% endfor %}
+				</tbody> 
+			</table> 
+		</div>
+	</div>
+</div>
+		
+{% endblock %}
+</div>		
+
+</div>
+
+{% endblock %}
+

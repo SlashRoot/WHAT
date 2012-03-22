@@ -1,0 +1,122 @@
+{% extends "widgets/widget_general_include" %}
+
+
+{% block content %}
+
+
+
+
+<script type="text/javascript">
+
+$('#modalPurposeWindow').dialog({
+                                //height: 558,
+                                width: 300,
+                                modal: true,
+                                autoOpen: false,
+});
+
+</script>
+
+
+<script>
+
+llamas = function() {
+alert('this is the llama handler!');
+}
+
+$(function(){ 
+
+    stomp = new STOMPClient();
+    stomp.onopen = function() {
+    };
+    stomp.onclose = function(c) { alert('Lost Connection, Code: ' + c);};
+    stomp.onerror = function(error) {
+        alert("Error: " + error);
+    };
+    stomp.onerrorframe = function(frame) {
+        alert("Error: " + frame.body);
+    };
+    stomp.onconnectedframe = function() {
+        stomp.subscribe("/incomingCall");
+        stomp.subscribe("/pushFeeds/sales")
+        
+    };
+    
+    
+    
+    stomp.onmessageframe = function(frame) {
+    	wholeFrame=frame;
+    	window[wholeFrame.headers['handler']]()
+    	dest = frame.headers['destination'];
+    
+    	
+    	if (dest == "/incomingCall") {
+			pushedBody = $.parseJSON(frame.body);
+	        
+	        $('#incomingCall').fadeIn();
+	        $('#incomingCall_person').html(pushedBody.person);
+	        $('#incomingCall_number').html(pushedBody.number);
+       	}
+       	
+       	if (dest == "/pushFeeds/sales") {
+       	freeze = frame.body;
+       	$('#lastFewSales li').last().fadeOut()
+       	$(freeze).hide().prependTo('#lastFewSales').show('slide', 5000);
+       	}
+	        
+    };
+    stomp.connect('localhost', 61613);
+});
+	
+</script>
+
+
+
+
+<div id="modalPurposeWindow" class="tanRounded">
+All llamas.
+</div>
+
+<div id="incomingCall" class="tanRounded" style="display:none;">
+    <h3>Incoming Call</h3>
+    Phone number:<div id="incomingCall_number"></div>
+    Person:<div id="incomingCall_person"></div>
+</div>
+
+<div class="tanRounded">
+
+	<small>Currently Logged In</small>
+	<hr />
+
+	{% for user in logged_in_users %}
+		<div class="userName">
+			{{user.first_name}}
+		</div>
+		
+		<div class="userPurpose">
+			{% for session in user.everyone.member.sessions %}
+				<a href="javascript:;" class="functionClick" function="modalPurpose" session="{{session.id}}" >
+					{{session.get_decoded.presence.purpose}}
+					{{session.sessioninfo.created}}
+				</a>
+			{% endfor %}
+		</div>
+		
+	{% endfor %}
+	
+</div>
+
+<div class="tanRounded">
+
+    <small>My Projects</small>
+    <hr />
+    
+    <ul>
+            {% for step in steps %}
+                <li><a href="javascript:;" class="ajaxWindowClick" data="/do/displayStep/{{step.id}}/">{{step.name}}</a></li> 
+            {% endfor %}
+    </ul>
+
+</div>
+
+{% endblock %}

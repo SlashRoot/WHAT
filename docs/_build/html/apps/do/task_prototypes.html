@@ -1,0 +1,141 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Dealing with TaskPrototypes &mdash; SlashRoot WHAT v.001 documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '.001',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="SlashRoot WHAT v.001 documentation" href="../../index.html" />
+    <link rel="next" title="This is How SlashRoot Deals with People" href="../people/index.html" />
+    <link rel="prev" title="Do Module Internals" href="internals.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../people/index.html" title="This is How SlashRoot Deals with People"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="internals.html" title="Do Module Internals"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../contents.html">SlashRoot WHAT v.001 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="dealing-with-taskprototypes">
+<h1>Dealing with TaskPrototypes<a class="headerlink" href="#dealing-with-taskprototypes" title="Permalink to this headline">¶</a></h1>
+<p>The TaskPrototype is the backbone of the .do module.</p>
+<p>Let&#8217;s have a look:</p>
+<dl class="class">
+<dt id="do.models.TaskPrototype">
+<em class="property">class </em><tt class="descclassname">do.models.</tt><tt class="descname">TaskPrototype</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/do/models.html#TaskPrototype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#do.models.TaskPrototype" title="Permalink to this definition">¶</a></dt>
+<dd><p>The boilerplate for a Task.  Every Task is based on a TaskPrototype.</p>
+<p>Most tasks in the system will originate from this model&#8217;s generate_task method.</p>
+<dl class="method">
+<dt id="do.models.TaskPrototype.generate_task">
+<tt class="descname">generate_task</tt><big>(</big><em>universe</em>, <em>parent_task=None</em>, <em>projected=None</em><big>)</big><a class="reference internal" href="../../_modules/do/models.html#TaskPrototype.generate_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#do.models.TaskPrototype.generate_task" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a task family based on this prototype.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="taskprototype-profile">
+<h2>TaskPrototype Profile<a class="headerlink" href="#taskprototype-profile" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Dealing with TaskPrototypes</a><ul>
+<li><a class="reference internal" href="#taskprototype-profile">TaskPrototype Profile</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="internals.html"
+                        title="previous chapter">Do Module Internals</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../people/index.html"
+                        title="next chapter">This is How SlashRoot Deals with People</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/apps/do/task_prototypes.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../people/index.html" title="This is How SlashRoot Deals with People"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="internals.html" title="Do Module Internals"
+             >previous</a> |</li>
+        <li><a href="../../contents.html">SlashRoot WHAT v.001 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, SlashRoot Collective.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

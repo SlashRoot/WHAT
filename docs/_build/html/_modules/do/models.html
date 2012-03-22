@@ -1,0 +1,362 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>do.models &mdash; SlashRoot WHAT v.001 documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '.001',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="SlashRoot WHAT v.001 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../contents.html">SlashRoot WHAT v.001 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for do.models</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.db.models.signals</span> <span class="kn">import</span> <span class="n">post_save</span>
+
+<span class="kn">from</span> <span class="nn">django.contrib.contenttypes</span> <span class="kn">import</span> <span class="n">generic</span>
+
+<span class="kn">from</span> <span class="nn">utility.models</span> <span class="kn">import</span> <span class="n">GenericPartyManyToManyField</span><span class="p">,</span> <span class="n">GenericPartyForeignKey</span>
+<span class="kn">from</span> <span class="nn">push.functions</span> <span class="kn">import</span> <span class="n">push_with_template</span>
+<span class="kn">from</span> <span class="nn">people.models</span> <span class="kn">import</span> <span class="n">GenericParty</span>
+
+<span class="n">GENERATIONS_PER_MOON</span> <span class="o">=</span> <span class="mi">4032</span> <span class="c">#Number of times per Moon cycle that our management command is run (approximate, based on cronjob)</span>
+
+<span class="k">class</span> <span class="nc">Skill</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    The ability to do things.</span>
+<span class="sd">    People relate to Skill through Interest.</span>
+<span class="sd">    Tasks relate to Skill through Prerequisite</span>
+<span class="sd">        </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+    
+<span class="k">class</span> <span class="nc">Interest</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Relationship between people and skill.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;auth.User&#39;</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;interests&quot;</span><span class="p">)</span>
+    <span class="n">skill</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;do.Skill&#39;</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;interests&quot;</span><span class="p">)</span>
+    
+<span class="k">class</span> <span class="nc">Prerequisite</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Relationship between Task and Skill.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">prototype</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;do.TaskPrototype&#39;</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;skills&quot;</span><span class="p">)</span>
+    <span class="n">skill</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;do.Skill&#39;</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;tasks&quot;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">TaskManager</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Manager</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Adding a method to get tasks currently owned by a user or group.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">filter_active_by_owner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">party</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Takes a User, Group, or GenericParty and returns a list of tasks that are currently owned by them.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">party</span><span class="o">.</span><span class="n">__class__</span> <span class="o">==</span> <span class="n">GenericParty</span><span class="p">:</span>
+            <span class="n">party</span> <span class="o">=</span> <span class="n">GenericParty</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">party</span><span class="o">=</span><span class="n">party</span><span class="p">)</span>
+               
+        <span class="n">all_owned_tasks</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">TaskManager</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ownership__party</span> <span class="o">=</span> <span class="n">party</span><span class="p">,</span> <span class="n">completed</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="s">&#39;ownership&#39;</span><span class="p">)</span>
+        
+        <span class="n">task_list</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">all_owned_tasks</span><span class="p">:</span> <span class="c">#TODO: Is this the best / fastest way of doing this?</span>
+            <span class="n">ownership</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">ownership</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">party</span><span class="o">=</span><span class="n">party</span><span class="p">)</span><span class="o">.</span><span class="n">latest</span><span class="p">(</span><span class="s">&#39;created&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ownership</span><span class="o">.</span><span class="n">disown</span><span class="p">:</span>
+                <span class="n">task_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+                    
+        <span class="k">return</span> <span class="n">task_list</span>
+    
+    
+<span class="k">class</span> <span class="nc">Task</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    A task of any size - ie &quot;Make SlashRoot successful,&quot; or &quot;Finish Sanding the Spackle to the left of the llama feeding station&quot;</span>
+<span class="sd">    </span>
+<span class="sd">    Tasks have parents through the model TaskHierarchy, which is an implicit &#39;through&#39; model.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">prototype</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;do.TaskPrototype&#39;</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;generated_tasks&quot;</span><span class="p">)</span>
+    <span class="n">projected</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">help_text</span><span class="o">=</span><span class="s">&quot;Expected time of completion&quot;</span><span class="p">)</span>
+    <span class="n">universe</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;people.GenericParty&#39;</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;universe_tasks&quot;</span><span class="p">,</span> <span class="n">help_text</span><span class="o">=</span><span class="s">&quot;Is this task owned by a person (like a personal ToDo list)?  Or a group?&quot;</span><span class="p">)</span>
+    <span class="n">notices</span> <span class="o">=</span> <span class="n">generic</span><span class="o">.</span><span class="n">GenericRelation</span><span class="p">(</span><span class="s">&#39;social.DrawAttention&#39;</span><span class="p">)</span>
+    <span class="n">completed</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">()</span>
+    <span class="n">weight</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+    <span class="n">automated</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">()</span>
+    
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">TaskManager</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Shows name of task in drop down menu. </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prototype</span><span class="o">.</span><span class="n">name</span>
+        
+    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;/do/task_profile/</span><span class="si">%i</span><span class="s">/&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span>
+        
+    <span class="k">def</span> <span class="nf">owners</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns a generic party for each owner.</span>
+<span class="sd">        </span>
+<span class="sd">        TODO: Figure out how disown works into this.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">owners</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="k">for</span> <span class="n">ownership</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ownership</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+            <span class="n">owners</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ownership</span><span class="o">.</span><span class="n">party</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">owners</span>
+    
+    <span class="k">def</span> <span class="nf">is_owned_by_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Takes a User, figures out if that User currently owns this Task.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">user_party</span> <span class="o">=</span> <span class="n">GenericParty</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">party</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ownership</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ownership</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">party</span><span class="o">=</span><span class="n">user_party</span><span class="p">)</span><span class="o">.</span><span class="n">latest</span><span class="p">(</span><span class="s">&#39;created&#39;</span><span class="p">)</span> <span class="c">#Get the latest ownership object for this user.</span>
+            <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="ow">not</span> <span class="n">ownership</span><span class="o">.</span><span class="n">disdown</span><span class="p">)</span> <span class="c">#If the latest ownership object is not a &#39;disown&#39;, they own this item.</span>
+        <span class="k">except</span> <span class="n">TaskOwnership</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span> <span class="c">#If there&#39;s no ownership object at all, obviously they don&#39;t own it.</span>
+
+    <span class="k">def</span> <span class="nf">is_top_level</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">parents</span><span class="p">)</span> <span class="c">#True if self has no parent (ergo, this is a top level model)</span>
+
+    <span class="k">def</span> <span class="nf">get_all_children_as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">children</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">task_hierarchy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;priority&#39;</span><span class="p">):</span> <span class="c">#self.children aren&#39;t tasks but TaskHierarchy objects</span>
+            <span class="n">children</span><span class="p">[</span><span class="n">task_hierarchy</span><span class="o">.</span><span class="n">priority</span><span class="p">]</span> <span class="o">=</span> <span class="n">task_hierarchy</span><span class="o">.</span><span class="n">child</span> <span class="c">#Each TaskHierarchy object has a child.</span>
+        <span class="k">return</span> <span class="n">children</span>
+    
+    <span class="k">def</span> <span class="nf">get_all_parents_as_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">parents</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="k">for</span> <span class="n">task_hierarchy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parents</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="n">parents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">task_hierarchy</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">parents</span>
+            
+
+<div class="viewcode-block" id="TaskProgeny"><a class="viewcode-back" href="../../apps/do/internals.html#do.models.TaskProgeny">[docs]</a><span class="k">class</span> <span class="nc">TaskProgeny</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    An implicit through-model from task-=&gt;task.</span>
+<span class="sd">    </span>
+<span class="sd">    Identifies a child, its parent, and the order of that child among its siblings.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">child</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Task</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;parents&quot;</span><span class="p">)</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Task</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;children&quot;</span><span class="p">)</span>
+    <span class="n">priority</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">help_text</span><span class="o">=</span><span class="s">&quot;An integer that describes the order of this child among its siblings with this parent.&quot;</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">unique_together</span> <span class="o">=</span> <span class="p">((</span><span class="s">&#39;child&#39;</span><span class="p">,</span> <span class="s">&#39;parent&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;parent&#39;</span><span class="p">,</span> <span class="s">&#39;priority&#39;</span><span class="p">))</span>
+        
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> &lt;=- </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="p">)</span>
+</div>
+<span class="k">def</span> <span class="nf">notifyNewChildTask</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">created</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">created</span><span class="p">:</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">parent</span>
+        <span class="n">child</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">child</span>
+        <span class="n">push_with_template</span><span class="p">(</span><span class="s">&#39;do/task_row_detailed.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;task&#39;</span><span class="p">:</span> <span class="n">child</span><span class="p">},</span> <span class="s">&quot;/do/new_child/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">parent</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+        
+
+<span class="c">#post_save.connect(notifyNewChildTask, sender=TaskProgeny) #every time a task hierarchy gets saved notify new_child task, see post save signal in signal in django documentation</span>
+
+
+
+
+
+    
+<div class="viewcode-block" id="TaskPrototype"><a class="viewcode-back" href="../../apps/do/task_prototypes.html#do.models.TaskPrototype">[docs]</a><span class="k">class</span> <span class="nc">TaskPrototype</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">weight</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+    
+<div class="viewcode-block" id="TaskPrototype.generate_task"><a class="viewcode-back" href="../../apps/do/task_prototypes.html#do.models.TaskPrototype.generate_task">[docs]</a>    <span class="k">def</span> <span class="nf">generate_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">universe</span><span class="p">,</span> <span class="n">parent_task</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="kn">from</span> <span class="nn">do.models</span> <span class="kn">import</span> <span class="n">TaskProgeny</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">parent_task</span><span class="p">:</span>
+            <span class="n">parent_task</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generated_tasks</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">universe</span><span class="o">=</span><span class="n">universe</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">prototype_progeny</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="n">child</span> <span class="o">=</span> <span class="n">prototype_progeny</span><span class="o">.</span><span class="n">child</span>
+            <span class="n">child_task</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">generated_tasks</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">universe</span><span class="o">=</span><span class="n">universe</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">child</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
+            
+            <span class="n">new_progeny</span> <span class="o">=</span> <span class="n">TaskProgeny</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent_task</span><span class="p">,</span> <span class="n">child</span><span class="o">=</span><span class="n">child_task</span><span class="p">,</span> <span class="n">priority</span><span class="o">=</span><span class="n">prototype_progeny</span><span class="o">.</span><span class="n">priority</span><span class="p">)</span>            
+            <span class="n">child_task_tree</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">generate_task</span><span class="p">(</span><span class="n">universe</span><span class="p">,</span> <span class="n">parent_task</span> <span class="o">=</span> <span class="n">child_task</span><span class="p">)</span>
+            
+        <span class="k">return</span> <span class="n">parent_task</span>
+</div></div>
+<span class="k">class</span> <span class="nc">TaskPrototypeEvolution</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Through model from TaskPrototype to itself, tracking the evolution of TaskPrototypes over time</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">old_prototype</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;do.TaskPrototype&#39;</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;evolved_into&quot;</span><span class="p">)</span>
+    <span class="n">new_prototype</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;do.TaskPrototype&#39;</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;evolved_from&quot;</span><span class="p">)</span>
+    <span class="n">reason</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">help_text</span><span class="o">=</span><span class="s">&quot;Why did this evolution occur?&quot;</span><span class="p">)</span>
+    
+<span class="k">class</span> <span class="nc">TaskPrototypeProgeny</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Through model from TaskPrototype to itself.</span>
+<span class="sd">    </span>
+<span class="sd">    Identifies a child, its parent, and the order of that child among its siblings, just like TaskProgeny.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">child</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;do.TaskPrototype&#39;</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;parents&quot;</span><span class="p">)</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;do.TaskPrototype&#39;</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;children&quot;</span><span class="p">)</span>
+    <span class="n">priority</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">help_text</span><span class="o">=</span><span class="s">&quot;An integer that describes the order of this child among its siblings with this parent.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> &lt;=- </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">unique_together</span> <span class="o">=</span> <span class="p">((</span><span class="s">&#39;child&#39;</span><span class="p">,</span> <span class="s">&#39;parent&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;parent&#39;</span><span class="p">,</span> <span class="s">&#39;priority&#39;</span><span class="p">))</span>
+        
+
+
+
+
+
+<span class="k">class</span> <span class="nc">TaskGenerator</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">prototype</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;do.TaskGenerator&#39;</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;generators&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="RandomRecurringTaskGenerator"><a class="viewcode-back" href="../../apps/do/internals.html#do.models.RandomRecurringTaskGenerator">[docs]</a><span class="k">class</span> <span class="nc">RandomRecurringTaskGenerator</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Takes an existing task and creates another just like it every so often.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">active</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">()</span>
+    <span class="n">frequency</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">help_text</span><span class="o">=</span><span class="s">&quot;How many of these will be created each Moon cycle?  X / Interval: 4 / Week, 28 / Day,  112 / 4x Per Day, 672 / Hour, 4032 / Every 10 Minutes (maximum)&quot;</span><span class="p">)</span>
+    <span class="n">backlog</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">help_text</span><span class="o">=</span><span class="s">&quot;Should this task be created even if another just like it already exists, uncompleted?&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">roll_the_dice</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">GENERATIONS_PER_MOON</span><span class="p">)</span> <span class="c">#The number of 5-minute segments in a 28-day period</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequency</span>
+            <span class="n">chance</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="n">f</span>
+            <span class="k">if</span> <span class="n">chance</span> <span class="o">&gt;</span> <span class="n">GENERATIONS_PER_MOON</span><span class="p">:</span>
+                <span class="n">prototype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prototype</span>
+                <span class="n">new_task</span> <span class="o">=</span> <span class="n">prototype</span><span class="o">.</span><span class="n">generate_task</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">new_task</span>
+            
+        <span class="k">return</span> <span class="bp">False</span> <span class="c">#Catches other cases</span>
+</div>
+<span class="k">class</span> <span class="nc">ScheduledRecurringTaskGenerator</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Generates Tasks at a regularly scheduled time</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">EventDrivenRecurringTaskGenerator</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Criteria for generating a task based on some other object</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">TaskOwnership</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Signifies ownership or disownership of a task by a particular party.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">party</span> <span class="o">=</span> <span class="n">GenericPartyForeignKey</span><span class="p">()</span>
+    <span class="n">task</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;do.Task&#39;</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;ownership&quot;</span><span class="p">)</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">disown</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">help_text</span><span class="o">=</span><span class="s">&quot;Set to true if this object signifies disownership by the party.&quot;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">TechProject</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Service on physical hardware</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">service</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;service.RenderDeviceService&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">DevelopmentProject</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Writing code and such.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">pass</span>
+
+    
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../contents.html">SlashRoot WHAT v.001 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, SlashRoot Collective.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

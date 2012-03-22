@@ -1,0 +1,61 @@
+
+.taskRow td {
+vertical-align: middle;
+margin-right:14px;
+}
+
+
+.taskRow td.name {
+font-size: 12px;
+max-width: 160px;
+}
+
+.taskRow td.id {
+   font-size: 15px;
+    padding-left: 4px;
+    padding-right: 6px;
+    text-align: center;
+    width: 50px;
+}
+
+.taskRow td.owner {
+font-size: 15px;
+text-align: center;
+width: 130px;
+}
+
+.tabular-recording-info a {
+    top:0 !important;
+    margin-left:-40px;
+}
+
+.tabular-recording-info .jp-progress {
+	top:13px !important;
+	left:80px !important;
+}
+
+.tabular-recording-info .jp-stop {
+	top:6px !important;
+}
+
+.tabular-recording-info .jp-current-time, .tabular-recording-info .jp-duration, .tabular-recording-info .jp-volume-bar {
+	
+	top:10px !important;
+}
+
+.tabular-recording-info .jp-audio {
+height:40px;
+}
+
+.tabular-recording-info {
+width:180px;
+}
+
+.tabular-recording-info .jp-interface {
+height:40px !important;
+}
+
+.tabular-recording-info div.jp-current-time, .tabular-recording-info div.jp-duration {
+left:80px !important;
+width:90px !important;
+}

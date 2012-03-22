@@ -1,0 +1,9 @@
+<form enctype="multipart/form-data" id="taskPrototypeForm" action="{{request.path}}" method="post">
+	{{task_prototype_form}}
+	
+	{% csrf_token %}
+
+	<div id="parent_form"></div>
+
+	<button type="submit">Submit Task</button>
+</form>

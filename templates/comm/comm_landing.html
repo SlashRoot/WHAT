@@ -1,0 +1,65 @@
+{% extends 'sitewide_head.html' %}
+
+{% load comm_tags %}
+
+{% block head %}
+
+<script type="text/javascript">
+
+$(function(){
+
+//TODO: Make Generic
+$('.fireOnClick').click(function(){ 
+	submitUrl = $(this).attr('url')
+	data = {'data': $(this).attr('data'), 'truthiness' : $(this).is(':checked') } 
+	
+	$.ajax({
+	               url: submitUrl,
+	               data: data,
+	               type: "POST",
+	       });
+
+})
+
+
+}) 
+
+</script>
+
+{% endblock %}
+
+
+{% block content %}
+
+
+Hello, {{request.user}}.
+
+<hr/>
+
+ContactInfo ID#{{request.user.userprofile.contact_info.id}}
+<br/><br/>
+{{request.user.userprofile.contact_info.phone_numbers.count}} Phone Numbers:
+<table style="border:1px solid black; text-align:center;">
+
+	<td>type</td>
+	<td>number</td>
+	{% for dial_list in dial_lists %}
+	<td> {{dial_list.name}} </td>
+	{% endfor %}
+	
+{% for phone in request.user.userprofile.contact_info.phone_numbers.all %} 
+
+	<tr>
+		<td>{{phone.type}}</td> 
+		<td>{{phone.number}}</td>
+		
+		{% for dial_list in dial_lists %}
+		<td><input {% if phone|number_is_in_list:dial_list %}checked=checked{% endif %} class="fireOnClick" url="contact/toggle_dial_list/{{dial_list.id}}/" data="{{phone.id}}" type="checkbox"/></td> </td>
+		{% endfor %}
+		
+	</tr>
+{% endfor %}
+</table>
+
+{% endblock %}
+

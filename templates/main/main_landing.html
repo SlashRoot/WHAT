@@ -1,0 +1,183 @@
+{% extends 'sitewide_head.html' %}
+
+{% block head %}
+
+
+
+	<link rel="stylesheet" href="/media/css/tree.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="/media/css/landing.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="/media/css/forms.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="/media/css/cms.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="/media/css/bubble_locations.css" type="text/css" media="screen" />
+	
+	<script type="text/javascript">
+	
+	$(function() {
+	   $('.photostrip').hover(function(){
+         var id_of_text=$(this).attr('id').split('-')[1];
+         $("#bafoons-"+id_of_text).fadeIn(100);
+         $(this).animate({'opacity': '0.7'},100);
+         setTimeout(function(){
+							$("#bafoons-"+id_of_text).fadeOut(1000);}, 5000);
+         },function (){ var id_of_text=$(this).attr('id').split('-')[1];
+         $(this).animate({'opacity': '100'},100);
+					
+	  });
+
+	})
+	
+	</script>
+
+{% endblock head %}
+
+{% block content %}
+
+<div id="return_of_the_top_green_bar">
+
+
+
+</div>
+
+
+
+	{# Login widget. #}	
+	<div class="container nav" id="trunk">
+	    <div class="rightmostInTitle">
+			{% include 'widgets/login.html' %}
+		</div>
+	</div>
+	
+	
+	{# Backgroud image and logo. #}
+	<div class="container">
+		<div class="row">
+			<div class="twocol"></div> {# Left Padding #}
+			<div class="tencol last" id="centerBidniss">
+				<div class="backgroundElements">
+
+
+					<img id="tree" src="/media/images/tree-cropped.png" />
+					<div id="logoBig"> SlashRoot </div>
+				</div>
+
+
+		
+				{# Navigation. #}	
+					
+				{# The circular hand drawn boarders, and their underling photos #}
+				{% comment %}
+				<div id="halfMoonNav">
+				
+				    <a href="/" title="About">
+						<img id="treeBorder_1" src="/media/images/treeborder.png" />
+						<img id="treeImage_1" src="/media/images/cafebar.png" >
+					</a>
+					
+				    <a href="/blog/" title="Blog">
+						<img id="treeBorder_2" src="/media/images/circleborder2.png" /> 
+						<img id="treeImage_2" src="/media/images/timcloseup.png" >
+					</a>
+					
+					<a href="/hack-and-tell/" title="Hack and tell">
+						<img id="treeBorder_3" src="/media/images/circles.png" /> 
+						<img id="treeImage_3" src="/media/images/hackandtell.png" >
+				    </a>
+				    
+				    <a href="/commerce/fluidbarter/" title="FluidBarter">
+						<img id="treeBorder_4" src="/media/images/lacey.png" /> 
+						<img id="treeImage_4" src="/media/images/devlounge.png" >
+					</a>
+					
+				</div> {# halfMoonNav #}
+				{% endcomment %}
+			</div> {# tencol #}
+		</div> {# row #}
+	</div> {# container #}
+	
+    <div id="below_the_fold">	
+	{# About Text #}
+	
+	<div class="row aboutText">
+	
+	<div class="tanRoundedMain normal left">				
+	
+			
+			<br><h2>	We do five things! Usually! </h2> <br><br>
+            
+                                                <ul id=photostrip>
+        <li> <img class="photostrip" id="photostrip-1" src="/media/images/devlounge.png" /> </li> 
+        <li> <img class="photostrip" id="photostrip-2" src="/media/images/cafebar.png" /> </li> 
+        <li> <img class="photostrip" id="photostrip-3" src="/media/images/timcloseup.png" /> </li> 
+      
+        <li> <img class="photostrip" id="photostrip-1" src="/media/images/devlounge.png" /> </li> 
+        <li> <img class="photostrip" id="photostrip-2" src="/media/images/cafebar.png" /> </li> 
+        <li> <img class="photostrip" id="photostrip-3" src="/media/images/timcloseup.png" /> </li> 
+
+    </ul>
+    
+    <ul id=labels>
+        <li id="bafoons-1"> Label  </li> 
+        <li id="bafoons-2"> Llamas </li> 
+        <li id="bafoons-3"> Like </li> 
+        <li id="bafoons-4"> Labels </li> 
+    </ul>
+		
+		The Best Organic / Local Beverages in New Paltz
+		Hand-crafted teas, locally roasted coffee and espresso, the freshest local milk money can buy.  Drink up!<br><br>
+		
+		
+		Technology Service:
+		We love to fix things!  
+		We make computers and their owners get along.  <br><br>
+		
+		
+		Networking:
+		We help to connect people, wireless routers, etc.<br><br>
+		
+		
+		Software Development:
+		Web applications, phone routing, mobile apps – whatever gets the job done.  We're one of the top development shops in New York State.<br><br>
+		
+		
+		Live Events: 
+		Acoustic Music, Poetry, Art, Classes, Workshops, etc.<br><br>
+			
+	
+	</div>
+	
+	</div>
+
+
+
+
+	
+  
+</div>	
+	
+
+{% endblock %}
+
+{% block footer %}
+
+	<div>
+	
+	<div id="contact"> 60 Main st. New Paltz, NY, 12561 845.633.8330 </div>
+	
+		{% if request.user.is_authenticated and not disable_incoming_calls %}
+		
+			<script type="text/javascript" src="http://static.twilio.com/libs/twiliojs/1.0/twilio.js"></script>
+			
+			<script type="text/javascript">
+				$.get('/comm/incoming_phone_client_loader', function(data) {
+					$('#incomingPhone').html(data);					
+				});
+			</script>
+			
+			<div id="incomingPhone" class="verySmall">
+				Loading Incoming Client...
+			</div>
+			
+		{% endif %}
+	</div>
+	
+{% endblock %}

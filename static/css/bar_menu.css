@@ -1,0 +1,84 @@
+body 
+{
+background-color:#715240;
+margin:0;   
+}
+.menu_page{
+background-image:url("/images/roots_crop2.png");
+background-position:center -50px;
+background-repeat:no-repeat;
+height:720px;
+}
+
+.menu_wrap {
+margin-left:auto;
+margin-right:auto;
+margin-top:25px;
+position:inherit;
+width:1300px;
+}
+
+.menu_slot{
+-moz-border-radius:30px 30px 30px 30px;
+-webkit-border-radius:30px 30px 30px 30px;
+boder-radius:30px 30px 30px 30px;
+-moz-box-shadow:0px 0px 24px #000000;
+-webkit-box-shadow:0px 0px 24px #000000;
+background-color:#664A5A;
+float:left;
+height:700px;
+width:350px;
+}
+
+.menu_head{
+color:black;
+font-size:40px;
+margin-top:10px;
+}
+.menu_head_left{
+margin-left:10px;
+text-align:left;
+}
+.menu_head_right{
+margin-right:10px;
+text-align:right;
+}
+
+.menu_content{
+color:white;
+font-size:28px;
+margin-top:-10px;
+line-height:1.15;
+text-shadow:1px 1px 5px #000000;
+}
+.menu_content_left{
+margin-right:20px;
+text-align:right;
+}
+.menu_content_right{
+margin-left:20px;
+text-align:left;
+}
+
+.menu_slot_w{
+width:600px;
+height:700px;
+float:left;
+}
+.menu_head_w{
+color:black;
+font-size:58px;
+font-weight:bold;
+margin-bottom:25px;
+margin-top:-20px;
+text-align:center;
+}
+.menu_content_w{
+color:#FFFFFF;
+font-size:29px;
+line-height:1.15;
+padding-left:20px;
+padding-right:20px;
+text-align:center;
+text-shadow:3px 3px 0 #000000;
+}

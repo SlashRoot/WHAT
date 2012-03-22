@@ -1,0 +1,164 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Access Abstract &mdash; SlashRoot WHAT v.001 documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '.001',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="SlashRoot WHAT v.001 documentation" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../contents.html">SlashRoot WHAT v.001 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="access-abstract">
+<h1>Access Abstract<a class="headerlink" href="#access-abstract" title="Permalink to this headline">¶</a></h1>
+<p>People are very complex organisms that resist straightforward modeling.</p>
+<p>The WHAT attempts to sufficiently introspect the underlying relationships between people to provide features such as permissions, groups, etc.</p>
+<p>Goals:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Connecting trust with access</li>
+</ul>
+</div></blockquote>
+<div class="section" id="trust">
+<h2>Trust<a class="headerlink" href="#trust" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Bases for trust include how a User:</dt>
+<dd><ul class="first last simple">
+<li>Treats and maintains the resources of a Group.</li>
+</ul>
+</dd>
+</dl>
+<p>Trust is the basis for access.</p>
+<p>The primary vehicle for reflecting trust is the Group model.</p>
+</div>
+<div class="section" id="privilegeprototype">
+<h2>PrivilegePrototype<a class="headerlink" href="#privilegeprototype" title="Permalink to this headline">¶</a></h2>
+<p>&#8220;Go behind the counter.&#8221;</p>
+</div>
+<div class="section" id="privilegejurisdiction">
+<h2>PrivilegeJurisdiction<a class="headerlink" href="#privilegejurisdiction" title="Permalink to this headline">¶</a></h2>
+<p>&#8221;...at SlashRoot.&#8221;</p>
+</div>
+<div class="section" id="privilege">
+<h2>Privilege<a class="headerlink" href="#privilege" title="Permalink to this headline">¶</a></h2>
+<p>Privilege combined PrivlegePrototype and PrivlegeJurisdiction.</p>
+<p>&#8220;Go behind the counter at SlashRoot.&#8221;</p>
+<p>This model has the method that returns the big True or False about whether a User has access to a resource.</p>
+<p>Trust is translated to access by the AccessBasis model.</p>
+</div>
+<div class="section" id="accessmeans">
+<h2>AccessMeans<a class="headerlink" href="#accessmeans" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="group">
+<h2>Group<a class="headerlink" href="#group" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="badges">
+<h3>Badges<a class="headerlink" href="#badges" title="Permalink to this headline">¶</a></h3>
+<p>Badges are a type of group.</p>
+</div>
+</div>
+<div class="section" id="accessbasis">
+<h2>AccessBasis<a class="headerlink" href="#accessbasis" title="Permalink to this headline">¶</a></h2>
+<p>There are several bases on which a access can be granted or denied.</p>
+<p>AccessBasedOnGroup</p>
+<p>AccessBasedOnXP</p>
+<p>..and so on.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Access Abstract</a><ul>
+<li><a class="reference internal" href="#trust">Trust</a></li>
+<li><a class="reference internal" href="#privilegeprototype">PrivilegePrototype</a></li>
+<li><a class="reference internal" href="#privilegejurisdiction">PrivilegeJurisdiction</a></li>
+<li><a class="reference internal" href="#privilege">Privilege</a></li>
+<li><a class="reference internal" href="#accessmeans">AccessMeans</a></li>
+<li><a class="reference internal" href="#group">Group</a><ul>
+<li><a class="reference internal" href="#badges">Badges</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#accessbasis">AccessBasis</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/apps/people/ internals.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../contents.html">SlashRoot WHAT v.001 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, SlashRoot Collective.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

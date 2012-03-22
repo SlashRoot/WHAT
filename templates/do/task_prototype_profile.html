@@ -1,0 +1,230 @@
+{% extends 'brown_and_bubble_driven.html' %}
+
+{% block title %}TaskPrototype #{{tp.id}}: {{tp.name}}{% endblock %}
+
+{% block more_content %}
+
+<script type="text/javascript">
+$(function(){
+	initialView = $('[set={{request.GET.view}}]');
+	initialView.slideDown();
+});
+</script>
+
+<style type="text/css">
+
+.horizTree {
+height:600px;
+}
+
+.horizTree .twocol div {
+height:50px;
+}
+
+.count_1, .count_0 {
+margin-top:140px;
+}
+
+.count_2 {
+margin-top:97px;
+}
+
+.count_3 {
+margin-top:175px;
+}
+
+.headingRow{
+margin-bottom:45px;
+}
+</style>
+
+
+
+    <div class="container">
+                
+        <div class="row headingRow">
+        
+        	<div id="tpDetails" class="branchHeading twocol">
+        		<div class="tanRounded normal">
+					<h3>
+						<a href="javascript:;" class="navButton" shows="tpDetails" title="Task Prototype Details">
+							Details
+						</a>
+					</h3>
+				</div>
+        	</div>
+        
+        	<div id="familyTreeButton" class="branchHeading twocol">
+				<div class="tanRounded normal">
+					<h3>
+						<a href="javascript:;" class="navButton" shows="taskTree" title="Family Tree for this Prototype">
+							Task Tree 
+						</a>
+					</h3>
+				</div>		
+			</div>
+			
+			<div id="familyTreeButton" class="branchHeading twocol">
+				<div class="tanRounded normal">
+					<h3>
+						<a href="javascript:;" class="navButton" shows="familyTree" title="Family Tree for this Prototype">
+							Evolution
+						</a>
+					</h3>
+				</div>		
+			</div>
+			
+			<div id="familyTreeButton" class="branchHeading twocol">
+				<div class="tanRounded normal">
+					<h3>
+						<a href="javascript:;" class="navButton" shows="generateTask" title="Generate a Task based on this Prototype">
+							Generate 
+						</a>
+					</h3>
+				</div>		
+			</div>
+			
+			<div id="familyTreeButton" class="branchHeading twocol">
+				<div class="tanRounded normal">
+					<h3>
+						<a href="javascript:;" class="navButton" shows="familyTree" title="Family Tree for this Prototype">
+							Status 
+						</a>
+					</h3>
+				</div>		
+			</div>
+			
+			<div id="familyTreeButton" class="branchHeading twocol last">
+				<div class="tanRounded normal">
+					<h3>
+						<a href="javascript:;" class="navButton" shows="familyTree" title="Family Tree for this Prototype">
+							Discuss 
+						</a>
+					</h3>
+				</div>		
+			</div>
+			
+        
+        </div>
+        
+        {# TASK DETAILS #}
+
+        <div id="taskDetails" class="hidden row" set="tpDetails">
+        	
+        	<div class="twocol">
+        	
+        	</div>
+        	
+        	<div class="eightcol tanRounded normal">
+        		
+        		<div class="taskInstances">
+        			{% if tp.evolved_from.count %}
+        				Descended From:
+        			{% else %}
+        				This is a first-generation TaskPrototype.
+        			{% endif %}
+        			<br>
+        			<br>
+        			{% if tp.evolved_into.count %}
+        				Evolved Into:
+        			{% else %}
+        				This TaskPrototype is the latest in its evolution.
+        			{% endif %}
+        			 <br>
+        			 <br>   			
+        			Total instances: {{tp.instances.count}}
+        			
+        			{% if tp.open_tasks.count %}        			
+        				Currently open ({{tp.open_tasks.count}}):
+	        			<ul>
+	        				{% for task in tp.open_tasks %}
+	        					<li><a href="task.get_absolute_url">{{task}}</a></li>
+	        				{% endfor %}        			
+	        			</ul>	        			
+        			{% endif %}
+        			
+        			
+        		</div>
+        		
+        		
+        	</div>
+        	
+        
+        </div>
+        
+        {# FAMILY TREE #}
+                
+        <div id="familyTreeDisplay" class="hidden horizTree" set="taskTree">
+	        
+	        <div class="row" id="familyTreeHeadings">
+        		
+    			<div class="fourcol"><div class="tanRounded">Parents <button> + </button></div></div>
+        		
+        		<div class="threecol"><div class="tanRounded">You are here</div></div>
+        		
+    			<div class="fourcol last"><div class="tanRounded">Children <button> + </button></div></div>
+        		
+        	</div>
+        	
+        	<div class="row">
+
+		        	<div class="fourcol taskParents count_{{tp.parents.count}}">
+		        		{% for progeny in tp.parents.all %}
+		        			<div class="tanRounded normal">
+		        				<a href="{{progeny.parent.get_absolute_url}}?view=taskTree">
+		        					{{progeny.parent.name}}
+		        				</a>
+		        			</div>
+		        		
+		        		{% empty %}
+		        			<div class="tanRounded normal">
+		        				No parents.
+		        			</div>
+	        			{% endfor %}        		
+		        	</div>
+
+	        
+	        	<div class="threecol count_1">
+	        		<div class="tanRounded normal"><h3>{{tp.name}}</h3></div>
+	        	</div>
+	        	
+	        	<div class="fourcol last taskChildren count_{{tp.children.count}}">
+	        		{% for progeny in tp.children.all %}
+	        			<div class="tanRounded normal">
+	        				<a href="{{progeny.child.get_absolute_url}}?view=taskTree">
+	        					{{progeny.child.name}}
+	        				</a>
+	        			</div>
+					{% empty %}
+	        			<div class="tanRounded normal">
+	        				No children.
+	        			</div>
+	        		{% endfor %}
+	        	</div>
+	        </div>{# end of actual family tree row #}
+        </div>
+        
+        
+        {# FAMILY TREE #}
+                
+        <div id="generateTaskDisplay" class="hidden horizTree" set="generateTask">
+	        
+	        <div class="row">
+	        	<div class="twocol"></div>
+	        	
+	        	<div class="sixcol">	   
+	        		<div class="tanRounded normal">     		
+	        			{{generate_form.as_ul}}
+	        		</div>	        			        	
+	        	</dic>
+	        	
+	        
+	        </div>
+	    
+	    </div>
+        
+        
+        
+    </div> {# end of main container #}
+
+{% endblock %}

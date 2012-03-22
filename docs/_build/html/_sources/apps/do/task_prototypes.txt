@@ -1,0 +1,12 @@
+Dealing with TaskPrototypes
+===========================
+The TaskPrototype is the backbone of the .do module.  
+
+Let's have a look:
+
+.. autoclass:: do.models.TaskPrototype
+ :members:
+
+=====================
+TaskPrototype Profile
+=====================

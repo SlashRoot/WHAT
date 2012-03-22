@@ -1,0 +1,15 @@
+
+
+<tr class = 'parentRow taskRow' style="display:marker;" >
+		
+	{% include 'do/task_row_detailed.html' %}
+	
+</tr>
+
+{% for task in task.children.all %}
+<tr class = "childRow taskRow" style="display:marker;">
+	
+	{% include 'do/task_row_detailed.html' %}
+	
+</tr>
+{% endfor %}

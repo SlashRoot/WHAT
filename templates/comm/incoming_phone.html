@@ -1,0 +1,71 @@
+<script type="text/javascript">
+
+	function lookupNumber(phoneNumber) {
+				$.get('/comm/simple_phone_lookup/', {phone_number: phoneNumber}, function(data) {
+					DISPLAY_NUMBER = data;
+					$('#incomingCallerInfo').html(data);
+				});
+	}
+	
+	function phoneDisplayReset() {
+		$('#dynamicPhoneActivity').text('Listening for Incoming Calls');
+		callerDisplayReset();
+	}
+	
+	function callerDisplayReset() {
+		$('#incomingCallerInfo').html('(Looking up Number)');
+		$('#incomingCallerInfo').hide();
+	}
+    
+    $(function(){ 
+            
+            Twilio.Device.setup("{{capability.generate}}");
+            
+            Twilio.Device.ready(function(device){
+                                                $('#dynamicPhoneActivity').text('Listening for Incoming Calls');
+                                                callerDisplayReset();
+                                                })
+                                                
+                                                
+            Twilio.Device.error(function(error){
+                                                $('#dynamicPhoneActivity').text('Error: ' + error.message);
+                                                callerDisplayReset();
+                                                })
+                                            
+            Twilio.Device.connect(function(conn){
+                                            	    $('#dynamicPhoneActivity').text('<a id="hangupCall">(Hangup)</a> Talking to ');
+                                                	$('#incomingCallerInfo').show();
+                                                
+                                    				$('#hangupCall').click(function(){
+														conn.disconnect();
+													});
+                                                    
+                                                })
+                                                
+            Twilio.Device.disconnect(function(conn){
+            									phoneDisplayReset();
+            									})
+            									
+            Twilio.Device.cancel(function(conn){
+            									phoneDisplayReset();
+            									})
+                                                
+			Twilio.Device.incoming(function (conn) {
+				$("#dynamicPhoneActivity").html('<a id="answerCall">Answer!</a> Incoming call');
+				$('#incomingCallerInfo').show();
+
+				$('#answerCall').click(function(){
+					conn.accept();
+				});
+				
+			});
+            
+
+                
+        });
+
+</script>
+
+<div id="phoneActivity">
+	<span id="dynamicPhoneActivity"></span><span id="incomingCallerInfo" class="hidden">(Looking up Number)</span> 
+</div>

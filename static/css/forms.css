@@ -1,0 +1,154 @@
+/* One row forms, such as the POS */
+.singleRowForm {
+width:100%;
+}
+
+.singleRowForm .formGroup {
+float:left;
+margin-left:5px;
+}
+
+.smallFieldLabel, .singleRowForm label {
+font-size:14px;
+font-family:veteran-typewriter;
+}
+
+.ui-autocomplete-loading { 
+color:black;
+background-color:#8FFDFF;
+}
+
+.ui-state-hover {
+color:white;
+background-color:#4BAB5E;
+font-weight:bold;
+}
+
+.ui-autocomplete {
+background: none repeat scroll 0 0 white;
+font-size: 16px;
+list-style: none outside none;
+margin-left: 0;
+padding-left: 5px;
+width:125px;
+border:1px double blue;
+overflow: hidden;
+}
+
+.ui-autocomplete li {
+margin-top:5px;
+}
+
+@font-face {  
+font-family: "veteran-typewriter";  
+src: url(/media/fonts/veteran-typewriter.ttf) format("truetype");  
+}
+
+.helptext {
+    font-family: arial;
+    font-size: 11px;
+}
+
+.autocompleteField {
+background: -webkit-gradient(linear, left top, left bottom, from(#FFDF80), to(#dcdcdc));
+background: -moz-linear-gradient(top, #FFDF80, #dcdcdc);
+}
+
+.autocompletefieldIncomplete {
+background: -webkit-gradient(linear, left top, left bottom, from(#FFDF80), to(#dcdcdc));
+background: -moz-linear-gradient(top, #FFDF80, #dcdcdc);
+}
+
+.mustBeUniqueField {
+background: -webkit-gradient(linear, left top, left bottom, from(#FF8080), to(#dcdcdc));
+background: -moz-linear-gradient(top, #FF8080, #dcdcdc);
+}
+
+
+/* POS Specific */
+
+#quickBeverageSale #id_member, .commonList .member {
+width:75px;
+}
+
+#quickBeverageSale #id_beverage, .commonList .beverage {
+width:170px;
+}
+
+#quickBeverageSale #id_milk, .commonList .milk {
+width:145px;
+}
+
+
+#quickBeverageSale #id_cup, .commonList .cup {
+width:30px;
+}
+
+#quickBeverageSale #id_client {
+width:90px;
+}
+
+#quickBeverageSale #id_total, .commonList .total {
+width:50px;
+}
+
+
+
+
+.singleRowForm input, .singleRowForm label {
+float:left;
+clear:left;
+}
+
+.invalidBorder {
+border:4px solid red;
+}
+
+.commonList {
+float:left;
+ padding-left: 5px;
+}
+
+.commonList span {
+float:left;
+margin-left: 10px;
+}
+
+.commonList li {
+    border: 1px dashed black;
+    clear: left;
+    float: left;
+    font-family: veteran-typewriter;
+    font-size: 13px;
+    list-style: none outside none;
+    margin-bottom: 5px;
+    padding: 5px;
+}
+
+.underText {
+    color: green;
+    float: left;
+    font-size: 9px;
+    vertical-align: sub;
+}
+
+.addButton {
+    background-image: url("/media_admin/img/admin/icon_addlink.gif");
+    background-position: 50% 0;
+    background-repeat: no-repeat;
+    float: left;
+    height: 20px;
+    margin-left: 10px;
+    padding-top: 10px;
+}
+
+.submit {
+color:blue;
+text-decoration:underline;
+}
+
+#taskPrototypeDoesNotExist {
+    font-family: veteran-typewriter;
+    font-size: 16px;
+    line-height: 30px;
+ }

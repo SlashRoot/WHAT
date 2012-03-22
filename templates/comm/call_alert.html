@@ -1,0 +1,19 @@
+<div class="displayCall" id="displayCall_{{call.id}}" call="{{call.id}}" status="{{call.status}}">
+	<div class="basicCallInfo">
+	    <h5>PhoneCall #{{call.id}} {{call.created}}</h5> 
+	    From {%if call.from_user %}{{call.from_user.get_full_name}}{% else %}Unknown Caller{% endif %}</strong>
+	    {% if call.from_user.userprofile %}
+			<strong>(<a href="{{call.from_user.get_absolute_url}}">{{call.from_user.userprofile.user.get_full_name}}</a>)</strong>    
+	    {% else %}
+	    	(<a href='/contact/new_contact/?phone_number={{call.from_number.number}}'>Add to Contacts</a>)
+	    {% endif %}
+	    <div class="callDetails">
+	    <ul>
+	    Answered by: {% for answerer in call.answerers %}{{answerer.first_name}}{% if not forloop.last %},&nbsp;{% endif %}{% endfor %}
+    	{% include 'comm/call_recordings.html' %}
+	    
+	    </div>
+	
+    </div>
+	  
+</div>	 
