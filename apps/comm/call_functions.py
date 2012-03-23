@@ -137,7 +137,7 @@ def place_conference_call_to_dial_list(call_id, dial_list_id):
         place_deferred_outgoing_conference_call(provider=provider, participant=participant, conference_id=call.id)
     return True
 
-def proper_verbage_for_final_call_connection(call, response_class):
+def proper_verbage_for_final_call_connection(call, response_object, announce_caller=False):
     '''
     Dehydration function for language to speak to picker-upper of a phone call.
     
@@ -145,7 +145,8 @@ def proper_verbage_for_final_call_connection(call, response_class):
     Returns True on success.
     '''
     final_warning = 'Connected. ' #Start constructing the final message to be delivered to the answerer.
-            
+    if announce_caller:
+        final_warning += call.announce_caller()
     current_participants = call.participants.all()
     if current_participants:
         final_warning += 'Also on the call:'
@@ -156,7 +157,7 @@ def proper_verbage_for_final_call_connection(call, response_class):
         final_warning += comm_settings.SLASHROOT_EXPRESSIONS['first_answerer_alert']
         voice = "Allison"
         
-    response_class.say(final_warning, voice = voice)
+    response_object.say(final_warning, voice = voice)
     return True
 
 @permission_required('comm.change_phonecall')
