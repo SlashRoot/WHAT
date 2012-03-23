@@ -11,6 +11,9 @@ from taggit.managers import TaggableManager
 from do.models import Task, TaskRelatedObject, TaskAccess
 from django.core.exceptions import MultipleObjectsReturned
 
+from comm import comm_settings
+
+
 class Communication(models.Model):
     '''
     A single instance of communication - a phone call, email, etc.
@@ -98,6 +101,14 @@ class PhoneCall(Communication):
     
     def service_log_display(self):
         return self.__unicode__()
+    
+    def announce_caller(self):
+        if self.from_user(): #Look to see if this phone number has an owner
+            caller = self.from_user()
+            announcement = "Call from %s. " % str(caller.get_full_name())
+        else: #We know about the phone number, but we don't have a ContactInfo / userprofile for it.
+            announcement = comm_settings.SLASHROOT_EXPRESSIONS['unknown_caller']
+        return announcement
     
     def has_begun(self):
         '''
