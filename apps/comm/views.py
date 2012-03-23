@@ -20,13 +20,13 @@ from comm.models import PhoneCall, PhoneCallRecording, CommunicationInvolvement
 from comm.services import get_provider_and_response_for_request,\
     standardize_call_info, random_tropo_voice,\
     discern_intention_to_connect_from_answerer,\
-    discern_destination_from_tropo_request, extract_transcription_as_text,\
+    discern_destination_from_tropo_request, SLASHROOT_MAIN_LINE,\
+    SLASHROOT_TWILIO_ACCOUNT, extract_transcription_as_text,\
     get_audio_from_provider_recording
 from comm.call_functions import call_object_from_call_info, proper_verbage_for_final_call_connection, get_or_create_nice_number,\
     place_conference_call_to_dial_list
 from people.models import UserProfile, Member
 import datetime
-
 
 from do.functions import get_tasks_in_prototype_related_to_object
 from twilio import twiml
@@ -43,8 +43,6 @@ from twisted.internet import reactor
 
 import os
 import json
-
-from private import resources
 
 #TODO: Un-hardcode email to SMS
 PHONE_DISPATCH_RECIPIENTS = ['justin@justinholmes.com',
@@ -114,13 +112,7 @@ def alert_pickup(request, number_id, call_id):
     provider, r = get_provider_and_response_for_request(request)
     call = PhoneCall.objects.get(id = call_id)
     
-    caller_phone_number_object = call.from_number
-
-    if caller_phone_number_object.owner: #Look to see if this phone number has an owner
-        caller = caller_phone_number_object.owner.userprofile.user
-        inquiry = "Call from %s. " % str(caller.get_full_name())
-    else: #We know about the phone number, but we don't have a ContactInfo / userprofile for it.
-        inquiry = SLASHROOT_EXPRESSIONS['unknown_caller']
+    inquiry = call.announce_caller()
         
     try:
         call_participants = call.participants.filter(direction="to")
@@ -306,7 +298,7 @@ def outgoing_call(request):
     call_from_phone = PhoneNumber.objects.get(id=request.POST['callFrom'])
     call_to_phone = PhoneNumber.objects.get(id=request.POST['callTo'])
 
-    from_number = resources.SLASHROOT_MAIN_LINE
+    from_number = SLASHROOT_MAIN_LINE
     
     
     response = requests.post('https://api.tropo.com/1.0/sessions/', 
