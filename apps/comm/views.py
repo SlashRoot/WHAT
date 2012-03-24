@@ -20,7 +20,7 @@ from comm.models import PhoneCall, PhoneCallRecording, CommunicationInvolvement
 from comm.services import get_provider_and_response_for_request,\
     standardize_call_info, random_tropo_voice,\
     discern_intention_to_connect_from_answerer,\
-    discern_destination_from_tropo_request, SLASHROOT_MAIN_LINE,\
+    discern_destination_from_tropo_request, \
     SLASHROOT_TWILIO_ACCOUNT, extract_transcription_as_text,\
     get_audio_from_provider_recording
 from comm.call_functions import call_object_from_call_info, proper_verbage_for_final_call_connection, get_or_create_nice_number,\
