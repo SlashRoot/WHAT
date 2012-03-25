@@ -9,9 +9,11 @@ from twisted.web import server, resource, static
 from twisted.web.resource import ForbiddenResource
 
 from path_settings import PROJECT_ROOT, VIRTUALENV, set_path
+set_path()#Puts project and apps directories on path TODO: Turn this into a class and method.
+
 from private import resources
  
-set_path()#Puts project and apps directories on path TODO: Turn this into a class and method.
+
 
 class ThreadPoolService(service.Service):
     '''
