@@ -2,6 +2,7 @@ from django import http
 from django.template import RequestContext, loader
 from django.http import HttpResponse
 from django.conf import settings
+from django.http import Http404
 
 from meta.alerts import local_red_alert
 
@@ -20,7 +21,7 @@ class ServerErrorMiddleware(object):
         return file, other_useful_info
 
     def process_exception(self, request, exception):
-        if not settings.DEBUG:
+        if not settings.DEBUG and not exception.__class__ is Http404:
             traceback = self._get_traceback()
             line = self.get_most_recent_line_in_traceback_from_what_codebase(traceback)
             file, other_useful_info = self.get_useful_info_from_traceback_line(line)
