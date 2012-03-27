@@ -33,15 +33,14 @@ class ContentBlock(models.Model):
             return '/blog/%s/' % self.slug
         
     def save(self, *args, **kwargs):
-        if self.headline:
-            slug = slugify(self.headline)
-        elif self.subhead:
-            slug = slugify(self.subhead)
-        else:
-            slug = slugify(self.content)
-            
-        self.slug = slug[:50]
-        
+        if not self.slug:
+            if self.headline:
+                slug = slugify(self.headline)
+            elif self.subhead:
+                slug = slugify(self.subhead)
+            else:
+                slug = slugify(self.content)            
+            self.slug = slug[:50]        
         super(ContentBlock, self).save(*args, **kwargs)
     
 class QandA(models.Model):
