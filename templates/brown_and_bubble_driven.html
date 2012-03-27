@@ -76,11 +76,15 @@
 		{% endif %}
 		{% endcomment %}
 	</div>
-	{% if not unnecessary %}
-		<div class="rightmostInTitle">
-			{% include 'widgets/login.html' %}
-		</div>
-	{% endif %}
+	
+	{% comment %}
+		{% if not unnecessary %}
+			<div class="rightmostInTitle">
+				{% include 'widgets/login.html' %}
+			</div>
+		{% endif %}
+	{% endcomment %}
+	
 {% endblock %}
 
 

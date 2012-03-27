@@ -7,22 +7,21 @@
 
 .leftVert {
     width:10%;
-    margin-left: -18px;
-    margin-top: -10px;   
+    margin-top: -15px;   
         }
 
 .blogContent {
     width: 75%;
-    border-radius: 20px 20px 20px 20px;
     float: left;
     padding: 10px;
 }
 
 .blogContainer {
+	border-radius: 20px 20px 20px 20px;
     border-left:none !important;
-    border-right:none !important;
     padding-left:0;
-    padding-right:0;         
+    padding-right:0;
+    overflow: hidden;       
 }
 
 .blogAvatar {
@@ -34,7 +33,7 @@
     border-radius: 13px 0 0 13px;
     border: medium none !important;
     opacity: 0.85;
-    margin-top:20px;
+    margin-top:20px !important;
 }
 
 .blogColumn {

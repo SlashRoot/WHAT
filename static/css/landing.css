@@ -41,6 +41,7 @@ top:0px;
     height: 6%;
     position: absolute;
     width: 100%;
+    top:0px;
     }
 
 
@@ -155,8 +156,8 @@ margin-left:100px;
 }
 
 .aboutText {
-    height: 420px;
-    margin-top: 80px;
+    height: 380px;
+    margin-top: 20px;
     max-width: 650px;
     text-align: center;
 }
@@ -170,25 +171,38 @@ left:-447px;
 z-index:2
 }
 
+#centerBidniss {
+    margin-left: 16em;
+    position: relative;
+    width: 950px;
+}
+
 #logoBig {
     color: black;
     font-family: veteran-typewriter;
-    font-size: 54px;
-    left: 21%;
+    font-size: 62px;
+    left: 8%;
     letter-spacing: -1px;
     line-height: 0;
     position: absolute;
-    top: 45%;
+    top: 44.5%;
     }
 
 #logoBigBlog {
     color: black;
     font-family: veteran-typewriter;
-    font-size: 38px;
+    font-size: 42px;
 	left:581px;
     position: absolute;
     top: 15px ;
  
+}
+
+#subLogo {
+    float: left;
+    font-size: 24px;
+    position: relative;
+    top: 40px;
 }
 
 #photostrip {
@@ -242,6 +256,29 @@ z-index:2
     width: 66em;
 }
 
+#front-page-blog-preview {
+    background-color: #48515A;
+    border-radius: 20px;
+    float: left;
+    height: 490px;
+    margin-bottom: 200px;
+    margin-left: 12em;
+    margin-top: 40px;
+    overflow: hidden;
+    padding: 30px;
+    border: 5px ridge #543302;
+    width: 990px;
+}
+
+#front-page-blog-preview h1 {
+    text-align: center;
+    width: 100%;
+    margin-bottom:20px;
+	}
+	
+#front-page-blog-preview .blogContent {
+	width:85%;
+}
 
 #leftbar {
 top:0px;

@@ -19,9 +19,10 @@ def main_cms(request):
 
 def main_landing(request):
     ''''
-    Switched out in URLs.  TODO: Bring this back for a menu-driven front page.
+    TODO: Bring this back for a menu-driven front page.
     '''
     disable_incoming_calls = True
+    blog_blocks = ContentBlock.objects.filter(published=True, tags__name__in=["public","blog"]).order_by('-created').distinct() [:4]           
     return render(request, "main/main_landing.html", locals())
 
 

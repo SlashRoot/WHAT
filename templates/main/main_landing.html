@@ -33,31 +33,32 @@
 {% block content %}
 
 <div id="return_of_the_top_green_bar">
-
-
-
 </div>
 
 
 
-	{# Login widget. #}	
+	{# Login widget. #}
+	{% comment %}
 	<div class="container nav" id="trunk">
 	    <div class="rightmostInTitle">
 			{% include 'widgets/login.html' %}
 		</div>
 	</div>
+	{% endcomment %}
 	
 	
 	{# Backgroud image and logo. #}
-	<div class="container">
-		<div class="row">
-			<div class="twocol"></div> {# Left Padding #}
-			<div class="tencol last" id="centerBidniss">
+			<div id="centerBidniss">
 				<div class="backgroundElements">
 
 
 					<img id="tree" src="/media/images/tree-cropped.png" />
-					<div id="logoBig"> SlashRoot </div>
+					<div id="logoBig"> 
+						SlashRoot 
+						<span id="subLogo">
+							:coffee house and tech dojo
+						</span>
+					</div>
 				</div>
 
 
@@ -90,70 +91,75 @@
 					
 				</div> {# halfMoonNav #}
 				{% endcomment %}
-			</div> {# tencol #}
-		</div> {# row #}
-	</div> {# container #}
+			</div> {# centerBidniss #}
 	
     <div id="below_the_fold">	
 	{# About Text #}
 	
 	<div class="row aboutText">
 	
-	<div class="tanRoundedMain normal left">				
+		<div class="tanRoundedMain normal left">				
+		
+				
+				<br><h2>	We do five things! Usually! </h2> <br><br>
+	            {% comment %}
+	                                                <ul id=photostrip>
+	        <li> <img class="photostrip" id="photostrip-1" src="/media/images/devlounge.png" /> </li> 
+	        <li> <img class="photostrip" id="photostrip-2" src="/media/images/cafebar.png" /> </li> 
+	        <li> <img class="photostrip" id="photostrip-3" src="/media/images/timcloseup.png" /> </li> 
+	      
+	        <li> <img class="photostrip" id="photostrip-1" src="/media/images/devlounge.png" /> </li> 
+	        <li> <img class="photostrip" id="photostrip-2" src="/media/images/cafebar.png" /> </li> 
+	        <li> <img class="photostrip" id="photostrip-3" src="/media/images/timcloseup.png" /> </li> 
 	
+	    </ul>
+	    
+	    <ul id=labels>
+	        <li id="bafoons-1"> Label  </li> 
+	        <li id="bafoons-2"> Llamas </li> 
+	        <li id="bafoons-3"> Like </li> 
+	        <li id="bafoons-4"> Labels </li> 
+	    </ul>
+	    {% endcomment %}
 			
-			<br><h2>	We do five things! Usually! </h2> <br><br>
-            
-                                                <ul id=photostrip>
-        <li> <img class="photostrip" id="photostrip-1" src="/media/images/devlounge.png" /> </li> 
-        <li> <img class="photostrip" id="photostrip-2" src="/media/images/cafebar.png" /> </li> 
-        <li> <img class="photostrip" id="photostrip-3" src="/media/images/timcloseup.png" /> </li> 
-      
-        <li> <img class="photostrip" id="photostrip-1" src="/media/images/devlounge.png" /> </li> 
-        <li> <img class="photostrip" id="photostrip-2" src="/media/images/cafebar.png" /> </li> 
-        <li> <img class="photostrip" id="photostrip-3" src="/media/images/timcloseup.png" /> </li> 
-
-    </ul>
-    
-    <ul id=labels>
-        <li id="bafoons-1"> Label  </li> 
-        <li id="bafoons-2"> Llamas </li> 
-        <li id="bafoons-3"> Like </li> 
-        <li id="bafoons-4"> Labels </li> 
-    </ul>
-		
-		The Best Organic / Local Beverages in New Paltz
-		Hand-crafted teas, locally roasted coffee and espresso, the freshest local milk money can buy.  Drink up!<br><br>
-		
-		
-		Technology Service:
-		We love to fix things!  
-		We make computers and their owners get along.  <br><br>
-		
-		
-		Networking:
-		We help to connect people, wireless routers, etc.<br><br>
-		
-		
-		Software Development:
-		Web applications, phone routing, mobile apps – whatever gets the job done.  We're one of the top development shops in New York State.<br><br>
-		
-		
-		Live Events: 
-		Acoustic Music, Poetry, Art, Classes, Workshops, etc.<br><br>
+			<strong>The Best Organic / Local Beverages in New Paltz:</strong>
+			Hand-crafted teas, locally roasted coffee and espresso, the freshest local milk money can buy.  Drink up!<br><br>
 			
+			
+			<strong>Technology Service:</strong>
+			We love to fix things!  
+			We make computers and their owners get along.  <br><br>
+			
+			
+			<strong>Networking:</strong>
+			We help to connect people, wireless routers, etc.<br><br>
+			
+			
+			<strong>Software Development:</strong>
+			Web applications, phone routing, mobile apps – whatever gets the job done.  We're one of the top development shops in New York State.<br><br>
+			
+			
+			<strong>Live Events:</strong> 
+			Acoustic Music, Poetry, Art, Classes, Workshops, etc.<br><br>
+				
+		
+		</div>
 	
 	</div>
-	
-	</div>
-
-
-
-
-	
   
-</div>	
-	
+</div>
+
+<div id="front-page-blog-preview">
+	<img class="left leftVert" src="/media/images/border2.png"/>
+	<h1>Latest <a href="/blog/">Blog</a> Posts</h1>
+	{% for block in blog_blocks %}				
+			<div class="blogContent" style="float:left;">
+				<h2><a href="{{block.get_absolute_url}}">{{block.headline}}</a></h2>
+				<h3>by {{block.creator}}</h3>
+				<h4>{{block.created}}</h4>
+			</div>
+	{% endfor %}
+</div>
 
 {% endblock %}
 
