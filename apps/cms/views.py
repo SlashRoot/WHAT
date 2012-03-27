@@ -76,9 +76,9 @@ def q_and_a_form(request, q_and_a_id):
 
 def blog(request, headline_slug=None):
     
-    if headline_slug:
-        blog_blocks = [get_object_or_404(ContentBlock, slug=headline_slug)] #TODO: Make this a genuine difference using blog_single.html
-    else:
-        blog_blocks = ContentBlock.objects.filter(published=True, tags__name__in=["public","blog"]).order_by('-created').distinct()
-    
-    return render(request,'main/blog.html', locals())
+    if headline_slug:  # If we have a headline slug, we know that we're looking for an individual blog post.
+        blog_post = get_object_or_404(ContentBlock, slug=headline_slug)
+        return render(request, 'cms/blog/blog_single_post.html', locals())
+    else:  # If we don't have a headline slug, we're just headed to the front page of the bloody blog.
+        blog_blocks = ContentBlock.objects.filter(published=True, tags__name__in=["public","blog"]).order_by('-created').distinct()    
+        return render(request,'cms/blog/blog_front_page.html', locals())

@@ -1,0 +1,42 @@
+{% extends 'sitewide_head.html' %}
+
+{% block head %}
+
+	<link rel="stylesheet" href="/media/css/tree.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="/media/css/landing.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="/media/css/forms.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="/media/css/cms.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="/media/css/bubble_locations.css" type="text/css" media="screen" />
+	
+
+{% endblock head %}
+
+{% block content %}
+
+<div class="container nav" id="trunk">	
+    <div class="rightmostInTitle">
+		
+		{% include 'widgets/login.html' %}
+	
+	</div>
+</div>
+
+<div id="schematic"> 
+	<img src="/media/images/schematic.png" /> 
+</div>
+
+
+<div class="container">
+
+	{% block blog_body %}{% endblock %}
+
+<img class="rightVert" src="/media/images/ram.png"/>
+</div>
+
+{% block footer %}
+	
+	<div id="contact"> 60 Main st. New Paltz, NY, 12561 845.633.8330 </div>
+	
+{% endblock footer %}
+
+{% endblock content %}

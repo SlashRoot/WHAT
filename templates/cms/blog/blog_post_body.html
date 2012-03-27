@@ -1,0 +1,30 @@
+<div class="row blogPost">
+    
+        <div class="twocol" style="margin-right:-.5%;">
+            <div class="tanRounded normal blogAvatarContainer left">
+                <img class="blogAvatar" src="/media/{{block.creator.userprofile.contact_info.image}}" />
+                <div class="left">
+                    by {{block.creator}}
+                </div>
+            </div>
+        </div>
+        <div class="blogColumn tencol last">
+            <div class="tanRounded normal left blogContainer">                
+                <img class="left leftVert" src="/media/images/border2.png"/>
+                
+                
+                
+                <div class="blogContent" style="float:left;">
+                    <h2><a href="{{block.get_absolute_url}}">{{block.headline}}</a></h2>
+                    <h4><em>{{block.subhead}}</em></h4>
+                    <div class="blogPubDate">
+                        {{block.created}}
+                    </div>                
+                    {{block.content|safe}}                        
+                </div>
+                
+            </div>
+        </div>
+        
+    
+    </div>

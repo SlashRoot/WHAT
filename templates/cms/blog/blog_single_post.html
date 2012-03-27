@@ -1,0 +1,9 @@
+{% extends 'cms/blog/blog.html' %}
+
+{% block title %}{{blog_post.headline}} | SlashRoot: Coffee House and Tech Dojo{% endblock %}
+
+{% block blog_body %}
+    {% with block=blog_post %}
+        {% include 'cms/blog/blog_post_body.html' %}
+    {% endwith %}
+{% endblock %}
