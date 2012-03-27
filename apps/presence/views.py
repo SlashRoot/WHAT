@@ -8,7 +8,6 @@ from models import PresenceInstance, PresencePurpose, AnchorTime
 #Ajax
 
 import json, os
-from dajaxice.core import dajaxice_functions
 
 import datetime
 from django.contrib.auth.decorators import login_required
@@ -64,10 +63,6 @@ def tellPurpose(request):
     
     
     return response(json.dumps(1))
-
-#Register the above with dajax
-dajaxice_functions.register(tellPurpose)
-
 
 
 def getAnchorsByDate(date):
