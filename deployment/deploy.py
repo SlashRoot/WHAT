@@ -4,6 +4,10 @@ import sys, os
 print "using python binary: %s" % sys.executable #For logging on iguanadon.
 
 from path import path
+from path_settings import set_path
+set_path() #So that private is on path.
+
+from private import resources
 
 deployment_directory = path(__file__).abspath().dirname()
 
@@ -19,7 +23,7 @@ first_argument = '%s/%s.pid' % argument_details_tuple
 second_argument = '%s/%s.tac' % argument_details_tuple
 
 def start():
-    subprocess.call(['twistd', '--pidfile', first_argument, '-y', second_argument, '--logfile', 'LOG_URL' % deployment_type])
+    subprocess.call(['twistd', '--pidfile', first_argument, '-y', second_argument, '--logfile', '%s/%s.log' % (resources.LOG_DIRECTORY, deployment_type)])
 
 def stop():
     try:

@@ -12,7 +12,9 @@ from path_settings import PROJECT_ROOT, VIRTUALENV, set_path
 set_path()#Puts project and apps directories on path TODO: Turn this into a class and method.
 
 from private import resources
- 
+
+from settings.production import PORT as PRODUCTION_SERVER_PORT
+from settings.staging import PORT as STAGING_SERVER_PORT
 
 
 class ThreadPoolService(service.Service):

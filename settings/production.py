@@ -5,5 +5,4 @@ DEBUG = False
 
 MIDDLEWARE_CLASSES.append('meta.errors.ServerErrorMiddleware')
 SERVER_EMAIL = 'production-errors@slashrootcafe.com'
-PRODUCTION_SERVER_PORT = 8080
-STAGING_SERVER_PORT = 3080
+PORT = 8080
