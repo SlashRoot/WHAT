@@ -10,6 +10,7 @@ from django.views.decorators.http import require_http_methods
 
 
 from comm.comm_settings import SLASHROOT_EXPRESSIONS
+from private import resources
 
 from contact.models import PhoneNumber, DialList, PhoneProvider
 
@@ -298,7 +299,7 @@ def outgoing_call(request):
     call_from_phone = PhoneNumber.objects.get(id=request.POST['callFrom'])
     call_to_phone = PhoneNumber.objects.get(id=request.POST['callTo'])
 
-    from_number = SLASHROOT_MAIN_LINE
+    from_number = resources.SLASHROOT_MAIN_LINE
     
     
     response = requests.post('https://api.tropo.com/1.0/sessions/', 
