@@ -170,7 +170,7 @@ class LocationStateLog(models.Model):
     '''
     SlashRoot Security Advisory System State
     '''
-    state = models.ForeignKey('presence.LocationState')
+    state = models.ForeignKey('presence.LocationStatePrototype')
     location = models.ForeignKey('presence.Location')
     created = models.DateTimeField(auto_now_add=True)
     creator = models.ForeignKey('auth.User')
