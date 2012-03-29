@@ -17,7 +17,6 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'settings.heartbeat'
 from comm.services import find_command_in_tropo_command_list
 from settings.common import ADMINS
 
-
 from comm.comm_settings import SLASHROOT_EXPRESSIONS
 from twill.commands import go, showforms, formclear, fv, show, submit, get_browser
 from mechanize import Browser
@@ -28,6 +27,8 @@ import smtplib, imaplib
 
 from django.http import HttpResponse
 from settings.common import EMAIL_HOST
+
+from private import resources
 
 class Heartbeat(object):
     '''
@@ -88,7 +89,7 @@ class WebsiteIsUp(Heartbeat):
         
         for name, url in urls.items():
             try: #The value for each key will either be....
-                self.responses[name] = requests.get('http://%s' % url) #A response object, the result of requests.get()....
+                self.responses[name] = requests.get(url) #A response object, the result of requests.get()....
             except requests.exceptions.ConnectionError:
                 everything_is_cool = False #We know things aren't cool here now. 
     
