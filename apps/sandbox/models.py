@@ -1,12 +1,12 @@
 from django.db import models
-class Giraffe(object):
-    def has_spots(self):
-        return False
-
-
-class Event(models.Model):
-    pass
-
-
-class Attendee(models.Model):
-    event = models.ForeignKey(Event, related_name="attendees")
+from django.contrib.localflavor.us.models import PhoneNumberField
+class TempContactInfo(models.Model):
+    name = models.CharField(max_length=80, default="Full Name")
+    organization = models.CharField(max_length=80, default="Organization (if any)", blank=True, null=True)
+    email = models.EmailField(default="Email")
+    phone = PhoneNumberField(default="Phone XXX-XXX-XXXX", blank=True, null=True)
+    note = models.TextField(default="Notes", blank=True, null=True)
+    
+    def get_absolute_url(self):
+        return '/mesh_summit_contact'
+    

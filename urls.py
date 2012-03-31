@@ -4,9 +4,17 @@ from django.conf import settings
 from django.views.generic.simple import direct_to_template
 
 from django.contrib import admin
+from django.views.generic.edit import CreateView
+
 admin.autodiscover()
 
+from sandbox.models import TempContactInfo
+
+
+
+
 urlpatterns = patterns('',
+    (r'^mesh_summit_contact/$', CreateView.as_view(model=TempContactInfo)),
     (r'sandbox/$', 'sandbox.views.sandbox'),
 
     #MAIN
