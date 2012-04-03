@@ -19,7 +19,7 @@ $(function(){
 	<td>Recording</td>
 	<td>Status</td>
 	{% for task in tasks %}
-		{% with call=task.related_objects.all.0.object show_caller=1 show_answerers=1 %}
+		{% with call=task.related_objects.all.0.object show_caller=1 show_answerers=1 show_checkbox=1 %}
 			<tr>
 				{% include 'comm/tabular_call_data.html' %}
 			</tr>
@@ -28,3 +28,5 @@ $(function(){
 </table>
 
 {% endblock %}
+
+<button id="resolve_call">Resolve</button>
