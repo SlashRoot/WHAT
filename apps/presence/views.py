@@ -11,7 +11,7 @@ import json, os
 
 import datetime
 from django.contrib.auth.decorators import login_required
-from presence.models import LocationState, Location
+from presence.models import LocationStatePrototype, Location
 
 def whoIsHere():
     

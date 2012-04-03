@@ -161,17 +161,19 @@ post_delete.connect(session_destroy_listener, sender=Session)
 class Location(models.Model):
     name=models.CharField(max_length=40)
     
-
-class LocationState(models.Model):
-    '''
-    SlashRoot Security Advisory System State
-
-    '''
+class LocationStatePrototype(models.Model):
     name=models.CharField(max_length=40)
     color=models.CharField(max_length=6)
-    location=models.ForeignKey('presence.Location')
     created=models.DateTimeField(auto_now_add=True)
-    creator=models.ForeignKey('auth.User')
+    
+class LocationStateLog(models.Model):
+    '''
+    SlashRoot Security Advisory System State
+    '''
+    state = models.ForeignKey('presence.LocationStatePrototype')
+    location = models.ForeignKey('presence.Location')
+    created = models.DateTimeField(auto_now_add=True)
+    creator = models.ForeignKey('auth.User')
     
 class MediaURL(models.Model):
     media = models.URLField()

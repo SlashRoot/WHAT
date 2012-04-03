@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from push.functions import push_with_template
-from presence.models import LocationState
+from presence.models import LocationStatePrototype
 from presence.views import open_slashroot
 
 def read_card(card_string):
