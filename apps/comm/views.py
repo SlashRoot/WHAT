@@ -329,8 +329,24 @@ def watch_calls(request):
 @permission_required('comm.change_phonecall')
 def resolve_calls(request):
     resolve_protoype = FixedObject.objects.get(name="TaskPrototype__resolve_phone_call").object #SOGGY AND DISGUSTING.  Too many instaces of this string.
-    tasks = resolve_protoype.instances.filter(resolutions__isnull=True).order_by('created').exclude(id=2686)
+    tasks = resolve_protoype.instances.filter(status__lt=2).order_by('created').exclude(id=2686)[:5]
     return render(request, 'comm/resolve_calls.html', locals() )
+
+@permission_required('comm.change_phonecall')
+def resolve_call(request):
+    call_id = request.POST['call_id']
+    call = PhoneCall.objects.get(id=call_id)    
+    
+    if request.POST['complete'] == 'true':
+        status = 2
+    else:
+        status = 1
+    
+    resolve_task = call.resolve_task()
+    resolve_task.set_status(status, request.user)
+
+    return HttpResponse(status)
+
 
 #@csrf_exempt
 #def outgoing_callback(request):

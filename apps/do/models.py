@@ -495,6 +495,8 @@ class Task(models.Model):
         user = self.related_objects.all()[0].object
         return user
     
+    
+    
     def set_status(self, status, creator):
         if self.status == status:
             return False
