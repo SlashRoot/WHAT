@@ -323,13 +323,13 @@ def outgoing_call(request):
 
 @permission_required('comm.change_phonecall')
 def watch_calls(request):
-    calls=PhoneCall.objects.filter(dial=False).order_by('created').reverse()[:25]
+    calls=PhoneCall.objects.filter(dial=False).order_by('created').reverse()
     return render(request, 'comm/watch_calls.html', locals() )
 
 @permission_required('comm.change_phonecall')
 def resolve_calls(request):
     resolve_protoype = FixedObject.objects.get(name="TaskPrototype__resolve_phone_call").object #SOGGY AND DISGUSTING.  Too many instaces of this string.
-    tasks = resolve_protoype.instances.filter(resolutions__isnull=True).order_by('created').exclude(id=2686)[:25]
+    tasks = resolve_protoype.instances.filter(resolutions__isnull=True).order_by('created').exclude(id=2686)
     return render(request, 'comm/resolve_calls.html', locals() )
 
 #@csrf_exempt
