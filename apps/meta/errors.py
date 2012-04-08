@@ -26,10 +26,13 @@ class ServerErrorMiddleware(object):
         if not settings.DEBUG and not exception.__class__ is Http404:
             traceback = self._get_traceback()
             line = self.get_most_recent_line_in_traceback_from_what_codebase(traceback)
-            file, other_useful_info = self.get_useful_info_from_traceback_line(line)
-            
-            #Now we have the useful info.  We need to tell the world.
-            message = "A critical error has occurred in production. %s.  Likely culprit: %s on or near %s" % (str(exception), file, other_useful_info)
+            if line is None:
+                message = "A critical error has occured in production.  No further information is available."
+            else:
+                file, other_useful_info = self.get_useful_info_from_traceback_line(line)
+                
+                #Now we have the useful info.  We need to tell the world.
+                message = "A critical error has occurred in production. %s.  Likely culprit: %s on or near %s" % (str(exception), file, other_useful_info)
             local_red_alert(message) #Raise the alarm!
         return None #Use default exception handling.
     
