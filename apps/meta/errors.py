@@ -16,10 +16,11 @@ class ServerErrorMiddleware(object):
                     return line
     
     def get_useful_info_from_traceback_line(self, line):
-        remainder_of_the_line = line.split(settings.PROJECT_ROOT)[1] #The part of the line that comes after PROJECT ROOT
-        file = remainder_of_the_line.split('"')[0]
-        other_useful_info = remainder_of_the_line.split('"')[1][2:]
-        return file, other_useful_info
+        if line is not None: #Tracebacks with no detail will be None.  We don't care about those.
+            remainder_of_the_line = line.split(settings.PROJECT_ROOT)[1] #The part of the line that comes after PROJECT ROOT
+            file = remainder_of_the_line.split('"')[0]
+            other_useful_info = remainder_of_the_line.split('"')[1][2:]
+            return file, other_useful_info
 
     def process_exception(self, request, exception):
         if not settings.DEBUG and not exception.__class__ is Http404:
