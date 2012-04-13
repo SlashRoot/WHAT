@@ -226,7 +226,7 @@ class CallerInitialExperience(TestCase):
         
         self.assertTrue(command_to_join_conference['conference']['id'] in url, "The join conference function did not cause the caller to join the conference specified in the url")
 
-    def test_call_is_recorded(self):
+    def test_tropo_record_command_is_issued(self):
         commands_list = self.tropo_response_dict['tropo']
         command = find_command_in_tropo_command_list(commands_list, signal_on='joinConference')
         
@@ -236,7 +236,15 @@ class CallerInitialExperience(TestCase):
         response_commands_dict = json.loads(response_commands_json)
         response_commands_list = response_commands_dict['tropo']
         command_to_join_conference = find_command_in_tropo_command_list(response_commands_list, command_name="startRecording")
-        self.assertTrue(command_to_join_conference)        
+        self.assertTrue(command_to_join_conference)  
+        
+    def test_twilio_record_command_is_issued(self):
+        try:
+            record_command_value = self.twilio_response_object.verbs[1].attrs['record']
+            self.assertEqual(record_command_value, True, msg="The record command was issued, but was not set to True.")
+        except KeyError:    
+            self.fail("record was not in the dictionary")        
+        
         
 class CallBlastsToPotentialPickerUppers(TestCase):
     '''
