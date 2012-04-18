@@ -113,14 +113,14 @@ def user_login_listener(request, user, **kwargs):
     This will probably be sliced into separate functions for Everyone, Members, etc.
     '''
         
-    #request comes from the signal - use it to figure out the session object.
-    session = Session.objects.get(session_key=request.session.session_key)
+    #request comes from the signal
+    session_key = request.session.session_key
     
     try:
-        session_info = SessionInfo.objects.get(session_key=session.session_key) #Does a SessionInfo exist already for this session?  If so, our work here is done.
+        session_info = SessionInfo.objects.get(session_key=session_key) #Does a SessionInfo exist already for this session?  If so, our work here is done.
     except SessionInfo.DoesNotExist: #There is no SessionInfo for this session yet; let's make one.   
         #the session object we just grabbed goes into the sessioninfo object.
-        session_info = SessionInfo(session_key=session.session_key) 
+        session_info = SessionInfo(session_key=session_key) 
         session_info.user = user
         try:
             session_info.ip = request.META['REMOTE_ADDR']
@@ -134,11 +134,9 @@ def user_login_listener(request, user, **kwargs):
         session_info.save()
         
         dict_to_push = {
-                        'session_key' : session.session_key,
-                        'get_decoded': session.get_decoded(),
+                        'session_key' : session_key,
                         'created': session_info.created.isoformat(),
-                        'user': session_info.user.username
-                        
+                        'user': session_info.user.username                        
                         }
         
         push_with_json(dict_to_push, "/feeds/presece/json") #TODO: Make this better.
