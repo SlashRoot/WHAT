@@ -7,7 +7,11 @@ from django.conf import settings
 
 class WHATTestRunner(DjangoTestSuiteRunner):
     def run_tests(self, extra_tests=None, **kwargs):
-        super(WHATTestRunner, self).run_tests(extra_tests=None, test_labels=settings.LOCAL_APPS, **kwargs)
+        if not extra_tests:
+            test_labels = settings.LOCAL_APPS #By default, we want to run only local tests.
+        else:
+            test_labels = extra_tests
+        super(WHATTestRunner, self).run_tests(test_labels, extra_tests=None, **kwargs)
 
 class WHATTestCase(TestCase):
     
