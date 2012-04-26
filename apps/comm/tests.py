@@ -1,3 +1,46 @@
+'''
+The comm tests are quite different in a number of ways from the tests in the other apps of the WHAT.
+This will be obvious even for the casual reader.
+
+The reason for this stark distinction - in style and substance - speaks to the very nature of this app.
+The comm app is about communication - outreach to another party.
+This necessaties a venture into the unknown.
+
+It means that we can't always know how the other party will respond.
+We can't always know that our response is handled gracefully.
+We can't always know what kind of request will even be made.
+
+None of this is terribly new - developers have dealt with foreign APIs, whether or not they were called that - for a long time.
+We deal with this situation in a typical and predictable way - by mocking the API calls of the services that we use.
+
+There is some debate about whether or not, as such this necessarily means that our tests have ceased to be one or another kind of test.
+
+Are they unit tests?
+Are they TDD tests?
+Are they integration tests?
+
+These questions, frankly, are rather sophomoric.
+
+The real questions are:
+
+Do these tests cover the fundamental pieces of logic that are prone to either success or failure?
+Do these tests depict a reality which is likely to occur, given the services that we have chosen to use?
+Do these tests cause greater ease in developing new features?
+Do these tests cause greater likelihood of bug-freedom?
+
+Each test here meets - at least - the following criterion:
+It depicts a situation or scenario that some human being may encounter when her desire is to communicate with - or hear from - some other human being.
+
+All of this communication is regulated by electronic media, from the utterly synchronous (ie, a phone call), to the delayed (a voicemail).
+
+Additionally, each situation or scenario needs to be tested in light of several different service providers, each with their own API.
+The APIs that the various service providers use betray an underlying philosophy about how (and sometimes why) human communication occurs.
+
+We need to test each demonstrable coherent underlying philosophy.
+This is generally not so with the other apps - this is likely the most difficult testing challenge we face in the WHAT.
+
+'''
+
 from django.test import TestCase
 
 from comm.comm_settings import SLASHROOT_EXPRESSIONS
