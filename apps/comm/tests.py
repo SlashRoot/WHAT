@@ -419,7 +419,7 @@ class PickingUpTheCall(TestCase):
     def test_tropo_pickup_call_from_unknown_caller_200(self):
         self.assertEqual(self.tropo_pickup_response.status_code, 200)
     
-    @expecterdFailure
+    @expectedFailure
     def test_twilio_pickup_call_from_unknown_caller(self):
         self.fail()
                 
