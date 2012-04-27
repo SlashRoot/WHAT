@@ -254,9 +254,9 @@ $(function(){
                     {# DRAW ATTENTION #}
                     <div class="tanRounded normal">
                         <h2>Share this Task</h2>
-                        {{task|draw_attention_report}}
-                        {% with object=task %}
-                            {{task|draw_attention}}
+                        {{service|draw_attention_report}}
+                        {% with object=service %}
+                            {{service|draw_attention}}
                         {% endwith %}                    
                     </div>
                   

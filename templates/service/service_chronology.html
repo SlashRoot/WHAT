@@ -28,10 +28,10 @@
 							<strong>{{message.creator}}</strong>&nbsp;&nbsp;&nbsp;<small>{{message.created}}</small>
 					        <br/>
 					        {% if not message.content_object == task %}
-					        <em>
-					        	(posted on <a href="{{message.content_object.get_absolute_url}}">{{message.content_object}}</a>)
-					        </em>
-					        <br/>
+						        <em>
+						        	(posted on <a href="{{message.content_object.get_absolute_url}}">{{message.content_object}}</a>)
+						        </em>
+						        <br/>
 					        {% endif %}
 					        {{message.message|safe}}
 					    </div>

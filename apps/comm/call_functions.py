@@ -100,12 +100,12 @@ def call_object_from_call_info(call_info):
     #The number can be assigned to a ContactInfo object later.
     
     for (key, phone_number) in incoming_numbers.items(): #key will be 'caller', 'recipient', etc.  phone number will be the number.
-        phone_number_object, new_number = get_or_create_nice_number(phone_number) 
+        phone_number_object, is_this_a_new_number = get_or_create_nice_number(phone_number) 
         phone_numbers[key + '_nice'] = phone_number_object.number
         
         phone_numbers[key] = phone_number_object #Put this phone number object in the dict.            
         
-        if not new_number:
+        if not is_this_a_new_number:
             phone_numbers[key].unknown = True #This number is unknown.  We'll want to know that for the template.
 
     #Save the numbers (but not their owners) as part of the call.            
