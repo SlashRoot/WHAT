@@ -27,7 +27,7 @@ That will give you the first purpose (hence the [0]) for which a member reported
 """
 
 from django.db import models
-from people.models import Member
+
 from django.contrib.auth.models import User
 from django.contrib.sessions.models import Session
 from django.contrib.sessions.backends.db import SessionStore
@@ -53,7 +53,7 @@ class PresencePurpose(models.Model):
         return self.name
 
 class PresenceInstance(models.Model):
-    member = models.ForeignKey(Member)
+    member = models.ForeignKey(User)
     purpose = models.ForeignKey(PresencePurpose, related_name="instances")
     created = models.DateTimeField(auto_now_add=True)
     sessioninfo = models.ForeignKey('SessionInfo', related_name="instances") 
@@ -72,7 +72,7 @@ class AnchorTime(models.Model):
     '''
     Describes an anchor time to which a member has committed.
     '''
-    member=models.ForeignKey(Member)
+    member=models.ForeignKey(User)
     created=models.DateTimeField(auto_now_add=True)
     time=models.TimeField()
     dow=models.IntegerField(choices=DAYSOFWEEK)

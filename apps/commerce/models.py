@@ -41,32 +41,7 @@ class BudgetPerspective(models.Model):
     '''
     budget_lines = models.ManyToManyField('commerce.BudgetLinePerspective')
     #TODO: Perhaps a creator in the form of the organization who coined it?    
-
-
-#This class is being kept temporarily for archive transition purposes.  The purpose of this class has been replaced by TradeElementProgeny.
-#class TradeCategory(models.Model): #Ethereal
-#    '''
-#    Classes of things in which we trade.  Hard Drives, Coffee Beans, Pieces of Plywood, Computer Service.
-#    
-#    What draws the line between things which are TradeElements and things that are TradeCategories?
-#    I think Quantification is a good approach.  If some of the TradeElements in question are measured differently, they are probably in different TradeCategories (or are in fact TradeCategories in their own right).
-#    Example:  Nutmeg is a TradeElement.  Spices might be its TradeCategory.
-#    Ubuntu Installations are a TradeElement.  Software Installation might be its TradeCategory.  Comptuer Service might be a parent of that.
-#'''
-#    name = models.CharField(max_length=120)
-#    created = models.DateTimeField(auto_now_add=True, help_text="The datetime that the object was created." )
-#    description = models.TextField(blank=True, null=True)
-#    parent = models.ForeignKey('self', related_name="children", blank=True, null=True)
-#   
-#    quantification_dimensions = models.ManyToManyField('commerce.QuantificationDimension', blank=True, null=True)
-#    
-#    def is_top_level(self):
-#        return bool(not self.parent) #True if self has no parent (ergo, this is a top level model)            
-#    
-#    def __unicode__(self):
-#        return self.name
-    
-    
+        
 class TradeElement(models.Model): #Ethereal
     """
     Specific products or services that we offer for sale or seek for purchase.
@@ -120,11 +95,11 @@ class TradeItem(models.Model): #Literal
     But it turns out not to be.  Instead, we have literal and ethereal versions
     of our products and services as subclasses, and then get down with one another directly.
     '''
-    #element = models.ForeignKey(TradeElement)
+    #element = models.ForeignKey(TradeElement) #Keep this line as a reminder
     
 class RealThing(TradeItem): #Literal
     ''' 
-    A TradeItem that is not Money or Currency.
+    A TradeItem that is not currency.
     '''
     name = models.CharField(max_length=80, blank=True, null=True)
     
@@ -141,9 +116,6 @@ class RealThing(TradeItem): #Literal
         return self.name
         
     
-    
-    
-    
 class MoneyBag(models.Model): #Literal
     '''
     A distinct pile of money.  ie, the $27.51 that Joe spent at the grocery store.
@@ -157,6 +129,7 @@ class MoneyBag(models.Model): #Literal
     
     def amount(self):
         return self.pieces.aggregate(Sum('amount'))
+
 
 class MoneyBagPiece(TradeItem):
     '''
@@ -182,6 +155,7 @@ class PaymentMethod(models.Model):
     def __unicode__(self):
         return self.name
 
+
 class QuantificationUnit(models.Model):
     '''
     Oz, mL, megabytes, inches, etc.
@@ -193,6 +167,7 @@ class QuantificationUnit(models.Model):
     
     def __unicode__(self):
         return self.abbreviation
+
     
 class QuantificationDimension(models.Model):
     '''
@@ -203,6 +178,7 @@ class QuantificationDimension(models.Model):
     
     def __unicode__(self):
         return self.name
+
     
 class QuantificationRatio(models.Model):
     '''
@@ -211,6 +187,7 @@ class QuantificationRatio(models.Model):
     smaller_unit = models.ForeignKey(QuantificationUnit, related_name="larger_units")
     larger_unit = models.ForeignKey(QuantificationUnit, related_name="smaller_units")
     ratio = models.FloatField(help_text="How many of the smaller unit does it take to get one of the larger unit?")
+
 
 class RealThingSize(models.Model): #Literal
     '''
@@ -481,7 +458,7 @@ class Exchange(models.Model):
     #Otherwise, we'll need to specify it.
     created = models.DateTimeField(auto_now_add=True)
     start_date = models.DateTimeField(auto_now_add=True)
-    manager = models.ForeignKey('people.Member', related_name="managed_exchanges") #Who handled this Exchange?
+    manager = models.ForeignKey('auth.User', related_name="managed_exchanges") #Who handled this Exchange?
     invoice_data = models.ForeignKey('InvoiceData', blank = True, null = True)
     
     def list_parties_as_string(self):
