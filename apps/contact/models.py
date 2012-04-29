@@ -142,6 +142,9 @@ class PhoneProvider(models.Model):
     description = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     
+    def __unicode__(self):
+        return self.name
+    
     def get_response_object(self):
         if self.name == "Twilio":
             from twilio import twiml
