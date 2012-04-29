@@ -18,6 +18,7 @@ from twisted.internet.threads import deferToThread
 from twisted.internet.task import deferLater
 from twisted.internet import reactor
 
+from private import API_tokens, resources
 
 
 class CallResponse(object):
@@ -75,7 +76,7 @@ class CallResponse(object):
         '''
         if self.provider.name == "Twilio":
             dial = self.response_object.addDial(record=True)
-            #TODO: make voicemail work for twillio
+            reactor.callFromThread(deferred_route_twilio_call, conference_id, '%s/comm/voicemail/' % (resources.COMM_DOMAIN), 40)
             return dial.addConference(conference_id)#TODO: waitUrl=hold_music)
          
         if self.provider.name == "Tropo":
@@ -119,16 +120,25 @@ class CallResponse(object):
         if self.provider.name == "Tropo":
             return self.response_object.ask(*args, **kwargs)
         
-    def prompt_and_record(self, recording_object = None, *args, **kwargs):
+    def prompt_and_record(self, recording_object=None, prompt=None, transcribe=False, *args, **kwargs):
+        
+        recording_url_args = ("recording" if recording_object else "call", recording_object.id if recording_object else int(kwargs['call_id']))
+        
         if self.provider.name == "Twilio":
-            raise NotImplementedError("We're getting there..")
-        if self.provider.name == "Tropo":
-            recording_url_args = ("recording" if recording_object else "call", recording_object.id if recording_object else int(kwargs['call_id']))
+            self.response_object.say(prompt)
             recording_kwargs = {}
-            recording_kwargs['say'] = kwargs['prompt']
-            recording_kwargs['url'] = "http://60main.slashrootcafe.com/comm/recording_handler/%s/%s/" % (recording_url_args)
-            if kwargs['transcribe']:
-                recording_kwargs['transcription'] = {'id':kwargs['call_id'], "url":"http://60main.slashrootcafe.com/comm/transcription_handler/%s/%s/" % (recording_url_args)}
+            recording_kwargs['action'] = "%s/comm/recording_handler/%s/%s/" % ((resources.COMM_DOMAIN,) + recording_url_args)
+            if transcribe:
+                recording_kwargs['transcribe'] = True
+                recording_kwargs['transcribe_callback'] = "%s/comm/transcription_handler/%s/%s/" % ((resources.COMM_DOMAIN,) + recording_url_args)
+            self.response_object.record(**recording_kwargs)
+            
+        if self.provider.name == "Tropo":
+            recording_kwargs = {}
+            recording_kwargs['say'] = prompt
+            recording_kwargs['url'] = "%s/comm/recording_handler/%s/%s/" % ((resources.COMM_DOMAIN,) + recording_url_args)
+            if transcribe:
+                recording_kwargs['transcription'] = {'id':kwargs['call_id'], "url":"%s/comm/transcription_handler/%s/%s/" % ((resources.COMM_DOMAIN,) + recording_url_args)}
             self.response_object.record(**recording_kwargs)
     
     def hangup(self, *args, **kwargs):
@@ -141,3 +151,7 @@ def send_deferred_tropo_signal(session_id, signal_name, defer_time):
     else:
         deferLater(reactor, defer_time, requests.get, url, params = {'action': 'signal', 'value': signal_name})
     return True
+
+def deferred_route_twilio_call(session_id, url, defer_time):
+    twilio_rest_client = TwilioRestClient(API_tokens.TWILIO_SID, API_tokens.TWILIO_AUTH_TOKEN)
+    deferLater(reactor, defer_time, twilio_rest_client.calls.route, session_id, '%s/comm/voicemail/' % (resources.COMM_DOMAIN))

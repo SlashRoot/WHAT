@@ -51,6 +51,14 @@ def get_phone_calls_by_phone_number(phone_number):
 
     return all_calls
 
+def find_command_in_twilio_response(twilio_response_object, command_name=None):
+    verb_list = twilio_response_object._container[0].verbs
+    for verb in verb_list:
+        if verb.name == command_name:
+            return verb
+    return False #if the loop does not find any places where verb name is equal to command name then we know the command name is not in this verb list    
+    
+
 def find_command_in_tropo_command_list(command_list, signal_on=None, signal_allowed=None, command_name=None, occurance=0):
         '''
         Iterate through a tropo command list and figure out which one is the command that happens for the kwarg specified.

@@ -61,7 +61,7 @@ from django.contrib.auth.models import User
 from unittest import expectedFailure
 
 from comm.services import find_command_in_tropo_command_list,\
-    standardize_call_info
+    standardize_call_info, find_command_in_twilio_response
 
 from comm.call_functions import call_object_from_call_info,\
     place_conference_call_to_dial_list
@@ -669,9 +669,16 @@ class NobodyPickedUp(TestCase):
         voicemail_command = find_command_in_tropo_command_list(commands_list, signal_on="goToVoiceMail")
         self.assertTrue(voicemail_command)
 
-    @expectedFailure
+    
     def test_twilio_voicemail_is_taken(self):
-        self.fail()
+        twilio_response = self.client.post('/comm/voicemail/', TYPICAL_TWILIO_VOICEMAIL_REQUEST)
+        self.assertEqual(twilio_response.status_code, 200)
+        
+        say_command = find_command_in_twilio_response(twilio_response, command_name='Say')
+        self.assertTrue(say_command)
+        
+        record_command = find_command_in_twilio_response(twilio_response, command_name='Record')
+        self.assertTrue(record_command)
 
     def test_tropo_voicemail_is_taken(self):
         '''

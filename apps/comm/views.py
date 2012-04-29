@@ -52,7 +52,7 @@ PHONE_DISPATCH_RECIPIENTS = ['justin@justinholmes.com',
 
 @require_http_methods(["POST"])
 @csrf_exempt
-def answer(request, this_is_only_a_test=False):
+def answer(request, this_is_only_a_test=True):
     '''
     The first response to a basic incoming call.  Can take requests from multiple providers.
     '''
@@ -375,7 +375,6 @@ def voicemail(request):
     task = call.resolve_task()
     task.tags.add("voicemail")
         
-    #TODO: Find the task for this call and tag it.
     prompt = 'No SlashRoot member is available to answer your call right now.  Please leave a message and a SlashRoot member will return your call.'
     r.prompt_and_record(call_id=call.id, recording_object = voicemail_recording, format="audio/mp3", url="", transcribe=True, prompt=prompt)
     return r.render()
