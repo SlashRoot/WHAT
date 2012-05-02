@@ -366,13 +366,13 @@ class CallBlastsToPotentialPickerUppers(TestCase):
     
     def test_tropo_house_phone_gets_confirmation_bypass(self):
         '''
-        That phones marked green_phone qualify for a confirmation bypass.  This does not test that the confirmation bypass actual does anything.
+        That phones marked house_phone qualify for a confirmation bypass.  This does not test that the confirmation bypass actual does anything.
         '''
         modified_tropo_request_dict = json.loads(self.modified_tropo_request) #Grab the JSON request as a dict.
-        modified_tropo_request_dict['session']['parameters']['green_phone'] = True
-        tropo_request_dict_with_green_phone = json.dumps(modified_tropo_request_dict)
+        modified_tropo_request_dict['session']['parameters']['house_phone'] = True
+        tropo_request_dict_with_house_phone = json.dumps(modified_tropo_request_dict)
         
-        green_outgoing_call_request = FakeRequest(tropo_request_dict_with_green_phone)
+        green_outgoing_call_request = FakeRequest(tropo_request_dict_with_house_phone)
         green_tropo_blast_response = conference_blast(green_outgoing_call_request)
         green_tropo_blast_response_dict = json.loads(green_tropo_blast_response.content)
         
@@ -655,10 +655,6 @@ class HangupTests(TestCase):
 class NobodyPickedUp(TestCase):
     def setUp(self):
         prepare_testcase_for_answer_tests(self)
-    
-    @expectedFailure
-    def test_twilio_voicemail_on_timeout(self):
-        self.fail()
     
     def test_tropo_voicemail_on_timeout(self):
         '''
