@@ -52,7 +52,7 @@ PHONE_DISPATCH_RECIPIENTS = ['justin@justinholmes.com',
 
 @require_http_methods(["POST"])
 @csrf_exempt
-def answer(request, this_is_only_a_test=True):
+def answer(request, this_is_only_a_test=False):
     '''
     The first response to a basic incoming call.  Can take requests from multiple providers.
     '''
