@@ -59,7 +59,37 @@ TYPICAL_TWILIO_VOICEMAIL_REQUEST = {
                                     u'ToState': [u'CA']
                                     }
 
-TYPICAL_TWILIO_VOICEMAIL_RECORDING = {u'FromZip': [u'12553'], u'From': [u'+18455975323'], u'FromCity': [u'NEWBURGH'], u'ApiVersion': [u'2010-04-01'], u'To': [u'+14155992671'], u'RecordingUrl': [u'http://api.twilio.com/2010-04-01/Accounts/AC260e405c96ce1eddffbddeee43a13004/Recordings/REfb08671c82d09ea527ecd27a27aa114e'], u'ToCity': [u'NOVATO'], u'CalledState': [u'CA'], u'FromState': [u'NY'], u'Direction': [u'inbound'], u'RecordingDuration': [u'13'], u'CallStatus': [u'completed'], u'ToZip': [u'94949'], u'Digits': [u'hangup'], u'CallerCity': [u'NEWBURGH'], u'RecordingSid': [u'REfb08671c82d09ea527ecd27a27aa114e'], u'FromCountry': [u'US'], u'CalledCity': [u'NOVATO'], u'CalledCountry': [u'US'], u'Caller': [u'+18455975323'], u'CallerZip': [u'12553'], u'AccountSid': [u'AC260e405c96ce1eddffbddeee43a13004'], u'Called': [u'+14155992671'], u'CallerCountry': [u'US'], u'CalledZip': [u'94949'], u'CallSid': [u'CA1ed0859073bed8ee2d0f07f0a8f471cc'], u'CallerState': [u'NY'], u'ToCountry': [u'US'], u'ToState': [u'CA']}
+TYPICAL_TWILIO_VOICEMAIL_RECORDING = {
+                                      u'FromZip': [u'12553'], 
+                                      u'From': [u'+18455975323'], 
+                                      u'FromCity': [u'NEWBURGH'], 
+                                      u'ApiVersion': [u'2010-04-01'], 
+                                      u'To': [u'+14155992671'], 
+                                      u'RecordingUrl': [u'http://api.twilio.com/2010-04-01/Accounts/AC260e405c96ce1eddffbddeee43a13004/Recordings/REfb08671c82d09ea527ecd27a27aa114e'], #An actual mp3 file, but a test voicemail from Tim.  Safe to make public. 
+                                      u'ToCity': [u'NOVATO'], 
+                                      u'CalledState': [u'CA'], 
+                                      u'FromState': [u'NY'], 
+                                      u'Direction': [u'inbound'], 
+                                      u'RecordingDuration': [u'13'], 
+                                      u'CallStatus': [u'completed'], 
+                                      u'ToZip': [u'94949'], 
+                                      u'Digits': [u'hangup'], 
+                                      u'CallerCity': [u'NEWBURGH'], 
+                                      u'RecordingSid': [u'REfb08671c82d09ea527ecd27a27aa114e'], 
+                                      u'FromCountry': [u'US'], 
+                                      u'CalledCity': [u'NOVATO'], 
+                                      u'CalledCountry': [u'US'], 
+                                      u'Caller': [u'+18455975323'], 
+                                      u'CallerZip': [u'12553'], 
+                                      u'AccountSid': [u'AC260e405c96ce1eddffbddeee43a13004'], 
+                                      u'Called': [u'+14155992671'], 
+                                      u'CallerCountry': [u'US'], 
+                                      u'CalledZip': [u'94949'], 
+                                      u'CallSid': [u'CA1ed0859073bed8ee2d0f07f0a8f471cc'], 
+                                      u'CallerState': [u'NY'], 
+                                      u'ToCountry': [u'US'], 
+                                      u'ToState': [u'CA']
+                                      }
 
 TYPICAL_TROPO_REQUEST = '{"session":{"id":"98f3a0633f854e4aad70abe26ce4e99f","accountId":"97442","timestamp":"2011-10-24T22:44:53.727Z","userType":"HUMAN","initialText":null,"callId":"e244f37c086e62cfe02cd4781cbe9778","to":{"id":"8452043574","name":"+18452043574","channel":"VOICE","network":"SIP"},"from":{"id":"8455550000","name":"+18455550000","channel":"VOICE","network":"SIP"},"headers":{"x-sbc-contact":"<sip:+18453808139@192.168.37.72:5060>","Content-Length":"434","x-sbc-remote-party-id":"<sip:+18453808139@192.168.37.72:5060>;privacy=off;screen=no","x-sbc-call-id":"134614484_1573873@192.168.37.72","x-sid":"26a07a6e76861ce397c05f37000407fa","CSeq":"1 INVITE","Via":"SIP/2.0/UDP 10.6.63.186:5060;rport=5060;branch=z9hG4bK-1bb174-6c2d2eaf-336be783-2aaac4c7bbb8","x-sbc-accept":"application/sdp","x-sbc-to":"<sip:+18452043574@67.231.8.93>","From":"<sip:8453808139@10.6.63.186:5060>;tag=2aaac53c0220-0-13c4-6009-1bb174-5bb85655-1bb174","x-sbc-from":"<sip:+18453808139@192.168.37.72;isup-oli=61>;tag=gK063c6859","x-sbc-allow":"BYE","x-voxeo-sbc-name":"10.6.63.186","x-accountid":"2","Contact":"<sip:8453808139@10.6.63.186:5060>","To":"<sip:8452043574@ppid410.romeo.orl.tropo.com>","x-voxeo-sbc":"true","User-Agent":"VCS11.5.55126.0","x-voxeo-to":"<sip:+18452043574@67.231.8.93>","x-appid":"24601","x-sbc-content-disposition":"session;handling=required","x-sbc-request-uri":"sip:+18452043574@sip.tropo.com","Max-Forwards":"70","x-sbc-max-forwards":"56","x-voxeo-sbc-session-id":"26a07a6e76861ce397c05f37000407fa","x-sbc-record-route":"<sip:67.231.8.195;lr=on;ftag=gK063c6859>,<sip:67.231.8.93;lr=on;ftag=gK063c6859>","Call-ID":"1319496293722-16845dc0-ac092ff0-0006bf78@10.6.63.186","Content-Type":"application/sdp"}}}'
 TYPICAL_TROPO_REQUEST_AFTER_REST = '{"session":{"id":"3010a200d38c2e2ae99ac9e1dcd6ec39","accountId":"97442","timestamp":"2011-10-27T18:54:49.697Z","userType":"NONE","initialText":null,"callId":null,"parameters":{"token":"09db1e64c7db4045a459606daae7794c158f859b2e321ab908eda9bb2c362ff3555c69d496c5aa48008f6543","action":"create"}}}'

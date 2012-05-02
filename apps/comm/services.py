@@ -256,6 +256,10 @@ def place_call_to_number(number, conference_id, provider, green_phone=False):
 def get_audio_from_provider_recording(request, provider):
     from django.conf import settings
     
+    if provider.name == "Twilio":
+        #TODO: Provide support for Twilio
+        raise NotImplementedError("We're developing a way to handle twilio audio.")
+    
     if provider.name == "Tropo":
         filename = str(request.FILES['filename'])
         destination = open(settings.PUBLIC_FILE_UPLOAD_DIRECTORY + "audio/call_recordings/" + filename, 'wb+')
