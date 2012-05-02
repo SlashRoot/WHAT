@@ -284,10 +284,6 @@ class CallerInitialExperience(TestCase):
         command_to_join_conference['conference']['id']
         
         self.assertTrue(command_to_join_conference['conference']['id'] in url, "The join conference function did not cause the caller to join the conference specified in the url")
-    
-    @expectedFailure
-    def test_twilio_record_command_is_issued(self):
-        self.fail()
         
     def test_tropo_record_command_is_issued(self):
         commands_list = self.tropo_response_dict['tropo']
