@@ -1,11 +1,18 @@
 '''
 Service-specific functionality.  Any operations that are bound to specific providers belongs here.
 '''
+import urllib2
+
+from django.conf import settings
+
+
 from twilio.rest import TwilioRestClient
 from contact.models import PhoneProvider, PhoneNumber
 from comm.response import CallResponse
 from tropo import Result, Session
 from comm.comm_settings import SLASHROOT_EXPRESSIONS
+
+
 
 from Crypto.Random.random import choice
 from twisted.internet.threads import deferToThread
@@ -254,11 +261,18 @@ def place_call_to_number(number, conference_id, provider, green_phone=False):
 
 
 def get_audio_from_provider_recording(request, provider):
-    from django.conf import settings
     
     if provider.name == "Twilio":
         #TODO: Provide support for Twilio
-        raise NotImplementedError("We're developing a way to handle twilio audio.")
+        recording_url = request.POST['RecordingUrl']
+        recording_file_name = recording_url.split('/')[-1]
+        recording_audio = urllib2.urlopen(recording_url)
+        
+        local_recording_file = open(settings.PUBLIC_FILE_UPLOAD_DIRECTORY + "audio/call_recordings/" + recording_file_name, 'wb+')
+        local_recording_file.write(recording_audio.read())
+        local_recording_file.close()
+        
+        return local_recording_file
     
     if provider.name == "Tropo":
         filename = str(request.FILES['filename'])

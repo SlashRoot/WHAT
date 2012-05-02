@@ -70,6 +70,7 @@ from comm.sample_requests import *
 
 from taggit.models import Tag
 from django.utils.unittest.case import _UnexpectedSuccess
+from private import resources
 
 
 PHONE_NUMBER_ID_TO_TEST = 2
@@ -365,7 +366,7 @@ class CallBlastsToPotentialPickerUppers(TestCase):
         That phones marked house_phone qualify for a confirmation bypass.  This does not test that the confirmation bypass actual does anything.
         '''
         modified_tropo_request_dict = json.loads(self.modified_tropo_request) #Grab the JSON request as a dict.
-        modified_tropo_request_dict['session']['parameters']['house_phone'] = True
+        modified_tropo_request_dict['session']['parameters']['green_phone'] = True
         tropo_request_dict_with_house_phone = json.dumps(modified_tropo_request_dict)
         
         green_outgoing_call_request = FakeRequest(tropo_request_dict_with_house_phone)
@@ -719,10 +720,16 @@ class CallDocumentationTests(TestCase):
     def setUp(self):
         prepare_testcase_for_answer_tests(self)
     
-    @expectedFailure
     def test_twilio_that_voicemail_recording_is_saved(self):
-        response = self.client.post('/comm/recording_handler/recording/1/', TYPICAL_TWILIO_VOICEMAIL_RECORDING)
-        self.fail()
+        twilio_voicemail_response = self.client.post('/comm/voicemail/', TYPICAL_TWILIO_VOICEMAIL_REQUEST)
+        self.assertEqual(twilio_voicemail_response.status_code, 200)
+        
+        record_command = find_command_in_twilio_response(twilio_voicemail_response, command_name='Record')
+        url = record_command.attrs['action'].split(resources.COMM_DOMAIN)[1] #Get everything in the URL after the domain
+        
+        response = self.client.post(url, TYPICAL_TWILIO_VOICEMAIL_RECORDING)
+        
+        self.assertEqual(response.status_code, 200)
             
     def test_tropo_that_voicemail_recording_is_saved(self):
         from django.conf import settings
@@ -742,13 +749,7 @@ class CallDocumentationTests(TestCase):
         
         call = PhoneCall.objects.get(id=self.tropo_call_id)
         self.assertTrue(call.recordings.exists())
-        
-        
-#    def test_that_playback_box_exists_for_recording_file(self):
-         #TODO: Rachel, please don't commit broken tests.
-#        response = self.client.get("/comm/resolve_calls/")
-#        self.assertTrue('<div id="jplayer_%s"' % in response.content )
-    
+
     @expectedFailure
     def test_twilio_voicemail_is_transcribed(self):
         self.fail()

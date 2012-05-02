@@ -243,7 +243,7 @@ def transcription_handler(request, object_type, id):
 @csrf_exempt
 def recording_handler(request, object_type, id):
     '''
-    Handles the mp3 file, send by tropo in the request.
+    Handles audio files sent by VOIP providers.
     '''
     provider, r = get_provider_and_response_for_request(request)
     #First we'll save the MP3 file.
@@ -257,6 +257,11 @@ def recording_handler(request, object_type, id):
         recording_object = PhoneCallRecording.objects.create(call=call)
     
     recording_object.audio_file = file.name
+    
+    #COUPLED TO TWILIO.  TODO: Fix.
+    if provider.name == "Twilio":
+        recording_object.url = request.POST['RecordingUrl']
+    
     recording_object.save()
     
     return r.render()

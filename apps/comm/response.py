@@ -76,7 +76,7 @@ class CallResponse(object):
         '''
         if self.provider.name == "Twilio":
             dial = self.response_object.addDial(record=True)
-            reactor.callFromThread(deferred_route_twilio_call, conference_id, '%s/comm/voicemail/' % (resources.COMM_DOMAIN), 40)
+            reactor.callFromThread(twilio_deferred_voicemail_determination, conference_id, 40)
             return dial.addConference(conference_id)#TODO: waitUrl=hold_music)
          
         if self.provider.name == "Tropo":
@@ -154,4 +154,12 @@ def send_deferred_tropo_signal(session_id, signal_name, defer_time):
 
 def deferred_route_twilio_call(session_id, url, defer_time):
     twilio_rest_client = TwilioRestClient(API_tokens.TWILIO_SID, API_tokens.TWILIO_AUTH_TOKEN)
-    deferLater(reactor, defer_time, twilio_rest_client.calls.route, session_id, '%s/comm/voicemail/' % (resources.COMM_DOMAIN))
+    deferLater(reactor, defer_time, twilio_rest_client.calls.route, session_id, url)
+    return True
+
+def twilio_deferred_voicemail_determination(session_id, defer_time):
+    call = PhoneCall.objects.get(call_id=session_id)
+    if not call.has_begun():
+        return deferred_route_twilio_call(session_id, '%s/comm/voicemail/' % (resources.COMM_DOMAIN), defer_time)
+    else:
+        return False
