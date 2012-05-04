@@ -63,24 +63,41 @@ class Group(models.Model):
     We can haz methods?
     '''
     name = models.CharField(max_length=30)
-    users = models.ManyToManyField(User, through="people.UserInGroup")
     
-class RoleInGroup(models.Model):
+    
+class Role(models.Model):
     '''
-    People are involved or associated with groups in certain ways and for certain reasons.  This model mediates that.
+    A role that someone has.
     '''
     name = models.CharField(max_length=30)
     
 
+class RoleInGroup(models.Model):
+    '''
+    The presence of a particular role in a particular group.
+    '''
+    role = models.ForeignKey('people.Role', related_name="groups")
+    group = models.ForeignKey('people.Group', related_name="roles")
+    
+
 class RoleProgeny(models.Model):
-    parent = models.ForeignKey(RoleInGroup, related_name="children")
-    child = models.ForeignKey(RoleInGroup, related_name="parents")
+    '''
+    For a particular group, a role may be part of a larger role, ie, all banana experts are fruit experts.
+    '''
+    parent = models.ForeignKey(Role, related_name="children")
+    child = models.ForeignKey(Role, related_name="parents")
+    jurisdiction = models.ForeignKey(Group, related_name="role_progenies")
 
 
 class RoleHierarchy(models.Model):
-    lower_role = models.ForeignKey(RoleInGroup, related_name="higher_roles")
-    higher_role = models.ForeignKey(RoleInGroup, related_name="lower_roles")
-
+    '''
+    For a particular group, a role may be subordinant to another role, ie, the banana experts report to the starfruit experts, because starfruit is freaking amazing.
+    (For the record, I don't actually care for starfruit)
+    '''
+    lower_role = models.ForeignKey(Role, related_name="higher_roles")
+    higher_role = models.ForeignKey(Role, related_name="lower_roles")
+    jurisdiction = models.ForeignKey(Group, related_name="role_hierarchies")
+    
     
 class UserInGroup(models.Model):
     '''
@@ -88,10 +105,12 @@ class UserInGroup(models.Model):
     '''
     user = models.ForeignKey(User, related_name="what_groups") #Related name can't be 'groups' because that will conflict with the "groups" field on auth.User
     role = models.ForeignKey(RoleInGroup, related_name="instances")
-    group = models.ForeignKey(Group)
     
     
 class Sabbatical(models.Model):
+    '''
+    A person pausing their involvement as a particular role in a particular group.
+    '''
     start = models.DateTimeField()
     end = models.DateTimeField(blank=True, null=True)
     description = models.TextField()
