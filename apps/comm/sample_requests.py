@@ -19,7 +19,7 @@ TYPICAL_TWILIO_REQUEST = {
     'From':     '+18454300941',
     'CallerZip':     '12484',
     'FromZip':     '12484',
-    'CallStatus':     'completed',
+    'CallStatus':     'in-progress',
     'ToCity':     'NEW PALTZ',
     'ToState':     'NY',
     'To':     '+18456338330',

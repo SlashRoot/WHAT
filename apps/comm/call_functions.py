@@ -19,6 +19,7 @@ from people.models import UserProfile
 from django.contrib.auth.decorators import permission_required
 from comm.services import place_deferred_outgoing_conference_call
 from django.db.models.signals import post_save
+import datetime
 
 RESOLVE_PHONE_CALL = "TaskPrototype__resolve_phone_call" #TODO: There is an instance of this string in views.py.  Dehydrate.
 ANSWER_PHONE_CALLS_PRIVILEGE = 3
@@ -124,6 +125,10 @@ def call_object_from_call_info(call_info):
         CommunicationInvolvement.objects.create(person=phone_numbers['recipient'].owner.userprofile.user, communication=call, direction="to")
     except (UserProfile.DoesNotExist, AttributeError): #Either the owner is None or the UserProfile doesn't exist.
         pass
+    
+    #If this this is the first time we've seen the call marked completed, we'll set the ended date.
+    if call_info['status'] == 'completed' and not call.ended:
+        call.ended = datetime.datetime.now()
 
     return call
 

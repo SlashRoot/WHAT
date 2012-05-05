@@ -63,16 +63,16 @@ def answer(request, this_is_only_a_test=False):
     call_info = standardize_call_info(request, provider=provider)
     call = call_object_from_call_info(call_info) #Identify the call, saving it as a new object if necessary.
     
-    
-    r.say(SLASHROOT_EXPRESSIONS['public_greeting'], voice=random_tropo_voice()) #Greet them.
-    
-    r.conference_holding_pattern(call.call_id, call.from_number, "http://hosting.tropo.com/97442/www/audio/mario_world.mp3") #TODO: Vary the hold music
-    
-    dial_list = DialList.objects.get(name="SlashRoot First Dial")
-    
-    if not this_is_only_a_test:
-        #if it is only a test users' phones will not ring
-        reactor.callFromThread(place_conference_call_to_dial_list, call.id, dial_list.id) #Untested because it runs in twisted. TOOD: Ought to take a DialList as an argument
+    if not call.ended:
+        r.say(SLASHROOT_EXPRESSIONS['public_greeting'], voice=random_tropo_voice()) #Greet them.
+        
+        r.conference_holding_pattern(call.call_id, call.from_number, "http://hosting.tropo.com/97442/www/audio/mario_world.mp3") #TODO: Vary the hold music
+        
+        dial_list = DialList.objects.get(name="SlashRoot First Dial")
+        
+        if not this_is_only_a_test:
+            #if it is only a test users' phones will not ring
+            reactor.callFromThread(place_conference_call_to_dial_list, call.id, dial_list.id) #Untested because it runs in twisted. TOOD: Ought to take a DialList as an argument
 
     return r.render()
 

@@ -2,30 +2,24 @@
 Service-specific functionality.  Any operations that are bound to specific providers belongs here.
 '''
 import urllib2
+import json
 
 from django.conf import settings
+from django.http import HttpResponse
+from django.shortcuts import render
 
-
+from twilio import util, twiml
 from twilio.rest import TwilioRestClient
-from contact.models import PhoneProvider, PhoneNumber
-from comm.response import CallResponse
 from tropo import Result, Session
-from comm.comm_settings import SLASHROOT_EXPRESSIONS
-
-
-
 from Crypto.Random.random import choice
 from twisted.internet.threads import deferToThread
 import requests
 
-import json
+from contact.models import PhoneProvider, PhoneNumber
+from comm.comm_settings import SLASHROOT_EXPRESSIONS
+from comm.response import CallResponse
 from comm import comm_settings
-from twilio import util, twiml
-from django.http import HttpResponse
 from comm.models import PhoneCall
-from django.shortcuts import render
-
-#Get these from https://www.twilio.com/user/account/
 
 from private import API_tokens
 
@@ -65,7 +59,6 @@ def find_command_in_twilio_response(twilio_response_object, command_name=None):
             return verb
     return False #if the loop does not find any places where verb name is equal to command name then we know the command name is not in this verb list    
     
-
 def find_command_in_tropo_command_list(command_list, signal_on=None, signal_allowed=None, command_name=None, occurance=0):
         '''
         Iterate through a tropo command list and figure out which one is the command that happens for the kwarg specified.
@@ -245,7 +238,6 @@ def place_deferred_outgoing_conference_call(participant, conference_id, provider
     #TODO: Make this a REST call instead.
     place_call_to_number(str(participant.number.id), str(conference_id), provider, green_phone=participant.green_phone)
 
-
 def place_call_to_number(number, conference_id, provider, green_phone=False):
     '''
     Stupid name.  Refactor please.
@@ -258,7 +250,6 @@ def place_call_to_number(number, conference_id, provider, green_phone=False):
         number_object = PhoneNumber.objects.get(id=number)
         # TODO: No if machine detection for green phone, and timeout issues
         deferToThread(twilio_client.calls.create, if_machine="Hangup", to=number_object.number, from_="8456338330", url="http://60main.slashrootcafe.com/comm/pickup_connect_auto/%s/%s/" % (number, conference_id))
-
 
 def get_audio_from_provider_recording(request, provider):
     

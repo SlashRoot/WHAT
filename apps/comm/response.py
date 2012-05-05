@@ -145,6 +145,10 @@ class CallResponse(object):
         self.response_object.hangup(*args, **kwargs)
 
 def send_deferred_tropo_signal(session_id, signal_name, defer_time):
+    '''
+    Waits for defer_time seconds and then seconds signal_name to call with call_id matching session_id.
+    Useful for waiting for a while and then doing something to a call (ie, sending someone to voicemail).
+    '''
     url =  "https://api.tropo.com/1.0/sessions/%s/signals" % session_id
     if not defer_time:
         deferToThread(requests.get, url, params = {'action': 'signal', 'value': signal_name})
@@ -153,13 +157,25 @@ def send_deferred_tropo_signal(session_id, signal_name, defer_time):
     return True
 
 def deferred_route_twilio_call(session_id, url, defer_time):
+    '''
+    Currently unused but potentially useful.
+    '''
     twilio_rest_client = TwilioRestClient(API_tokens.TWILIO_SID, API_tokens.TWILIO_AUTH_TOKEN)
     deferLater(reactor, defer_time, twilio_rest_client.calls.route, session_id, url)
     return True
 
-def twilio_deferred_voicemail_determination(session_id, defer_time):
+def twilio_redirect_call_if_no_answer(session_id, url):
+    '''
+    Takes a session_id and the url of a twilio-compliant view.
+    Determines if nobody has picked up - if so, redirects call to URL.
+    '''
+    twilio_rest_client = TwilioRestClient(API_tokens.TWILIO_SID, API_tokens.TWILIO_AUTH_TOKEN)
     call = PhoneCall.objects.get(call_id=session_id)
     if not call.has_begun():
-        return deferred_route_twilio_call(session_id, '%s/comm/voicemail/' % (resources.COMM_DOMAIN), defer_time)
+        return twilio_rest_client.calls.route(session_id, '%s/comm/voicemail/' % (resources.COMM_DOMAIN))
     else:
         return False
+
+def twilio_deferred_voicemail_determination(session_id, defer_time):
+    deferLater(reactor, defer_time, twilio_redirect_call_if_no_answer, session_id, '%s/comm/voicemail/' % (resources.COMM_DOMAIN))
+
