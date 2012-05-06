@@ -338,7 +338,7 @@ class CallBlastsToPotentialPickerUppers(TestCase):
                 
     def test_that_tropo_alert_pickup_is_called_on_success(self):
         '''
-        
+        wtf is with this empty ass doc string! RACHEL!
         '''
         commands_list = self.tropo_blast_response_dict['tropo']
         
@@ -361,10 +361,10 @@ class CallBlastsToPotentialPickerUppers(TestCase):
         self.assertEqual(actual_url, proper_url, "The pickup alert was not triggered upon successful pickup or it was directed at the wrong URL.")
     
     @expectedFailure
-    def test_twilio_house_phone_gets_confirmation_bypass(self):
+    def test_twilio_green_phone_gets_confirmation_bypass(self):
         self.fail()
     
-    def test_tropo_house_phone_gets_confirmation_bypass(self):
+    def test_tropo_green_phone_gets_confirmation_bypass(self):
         '''
         That phones marked green_phone qualify for a confirmation bypass.  This does not test that the confirmation bypass actual does anything.
         '''
