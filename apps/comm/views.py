@@ -63,16 +63,16 @@ def answer(request, this_is_only_a_test=False):
     call_info = standardize_call_info(request, provider=provider)
     call = call_object_from_call_info(call_info) #Identify the call, saving it as a new object if necessary.
     
-    
-    r.say(SLASHROOT_EXPRESSIONS['public_greeting'], voice=random_tropo_voice()) #Greet them.
-    
-    r.conference_holding_pattern(call.call_id, call.from_number, "http://hosting.tropo.com/97442/www/audio/mario_world.mp3") #TODO: Vary the hold music
-    
-    dial_list = DialList.objects.get(name="SlashRoot First Dial")
-    
-    if not this_is_only_a_test:
-        #if it is only a test users' phones will not ring
-        reactor.callFromThread(place_conference_call_to_dial_list, call.id, dial_list.id) #Untested because it runs in twisted. TOOD: Ought to take a DialList as an argument
+    if not call.ended:
+        r.say(SLASHROOT_EXPRESSIONS['public_greeting'], voice=random_tropo_voice()) #Greet them.
+        
+        r.conference_holding_pattern(call.call_id, call.from_number, "http://hosting.tropo.com/97442/www/audio/mario_world.mp3") #TODO: Vary the hold music
+        
+        dial_list = DialList.objects.get(name="SlashRoot First Dial")
+        
+        if not this_is_only_a_test:
+            #if it is only a test users' phones will not ring
+            reactor.callFromThread(place_conference_call_to_dial_list, call.id, dial_list.id) #Untested because it runs in twisted. TOOD: Ought to take a DialList as an argument
 
     return r.render()
 
@@ -243,7 +243,7 @@ def transcription_handler(request, object_type, id):
 @csrf_exempt
 def recording_handler(request, object_type, id):
     '''
-    Handles the mp3 file, send by tropo in the request.
+    Handles audio files sent by VOIP providers.
     '''
     provider, r = get_provider_and_response_for_request(request)
     #First we'll save the MP3 file.
@@ -257,6 +257,11 @@ def recording_handler(request, object_type, id):
         recording_object = PhoneCallRecording.objects.create(call=call)
     
     recording_object.audio_file = file.name
+    
+    #COUPLED TO TWILIO.  TODO: Fix.
+    if provider.name == "Twilio":
+        recording_object.url = request.POST['RecordingUrl']
+    
     recording_object.save()
     
     return r.render()
