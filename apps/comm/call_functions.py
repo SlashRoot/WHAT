@@ -142,9 +142,11 @@ def place_conference_call_to_dial_list(call_id, dial_list_id):
         place_deferred_outgoing_conference_call(provider=provider, participant=participant, conference_id=call.id)
     return True
 
-def proper_verbage_for_final_call_connection(call, response_object, announce_caller=False):
+def proper_verbage_for_final_call_connection(call, response_object, announce_caller=True):
     '''
     Dehydration function for language to speak to picker-upper of a phone call.
+    
+    announce_caller is defaulted to true here to let the answerer know who is calling...lets fix the issue that requires this to be true.
     
     Takes a call and a generic response, appends the response with the appropriate say.
     Returns True on success.
@@ -152,7 +154,7 @@ def proper_verbage_for_final_call_connection(call, response_object, announce_cal
     final_warning = 'Connected. ' #Start constructing the final message to be delivered to the answerer.
     if announce_caller:
         final_warning += call.announce_caller()
-    current_participants = call.participants.all()
+    current_participants = call.participants.filter(direction=to)
     if current_participants:
         final_warning += 'Also on the call:'
         for participant in call.participants.filter(direction="to"):
