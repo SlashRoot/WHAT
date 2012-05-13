@@ -152,12 +152,14 @@ def proper_verbage_for_final_call_connection(call, response_object, announce_cal
     Returns True on success.
     '''
     final_warning = 'Connected. ' #Start constructing the final message to be delivered to the answerer.
+    
     if announce_caller:
         final_warning += call.announce_caller()
-    current_participants = call.participants.filter(direction=to)
-    if current_participants:
+        
+    current_participants = call.participants.filter(direction="to")
+    if current_participants: #If there are current participants, we want to make that clear to the answerer.
         final_warning += 'Also on the call:'
-        for participant in call.participants.filter(direction="to"):
+        for participant in current_participants:
             final_warning += str(participant.person.first_name) + ','                
         voice = "Victor"
     else:
