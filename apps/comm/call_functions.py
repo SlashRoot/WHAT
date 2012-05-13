@@ -142,7 +142,7 @@ def place_conference_call_to_dial_list(call_id, dial_list_id):
         place_deferred_outgoing_conference_call(provider=provider, participant=participant, conference_id=call.id)
     return True
 
-def proper_verbage_for_final_call_connection(call, response_object, announce_caller=True):
+def proper_verbage_for_final_call_connection(call, response_object, announce_caller=False):
     '''
     Dehydration function for language to speak to picker-upper of a phone call.
     

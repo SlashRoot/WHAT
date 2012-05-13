@@ -158,7 +158,8 @@ def pickup_connect(request, number_id, call_id, connect_regardless=False):
 
         
     if connect_regardless or affirmative_consent:
-        proper_verbage_for_final_call_connection(call, r) #Appends the appropriate say to the response
+        announce_caller = bool(connect_regardless) #If we're connecting regardless, let's assume we haven't yet heard whom the caller is.
+        proper_verbage_for_final_call_connection(call, r, announce_caller) #Appends the appropriate say to the response
         
         if not call.has_begun():
             r.join_and_begin_conference(conference_id = call.call_id, number=answerer_number)

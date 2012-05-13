@@ -560,7 +560,7 @@ class PickingUpTheCall(TestCase):
         connect_response_dict = json.loads(connect_response.content)
         commands_list = connect_response_dict['tropo']
         connect_say_command = find_command_in_tropo_command_list(commands_list, command_name="say")
-        self.assertEqual(connect_say_command['say']['value'], 'Connected. %s' % SLASHROOT_EXPRESSIONS['first_answerer_alert'])
+        self.assertEqual(connect_say_command['say']['value'], 'Connected. %s%s' % (SLASHROOT_EXPRESSIONS['unknown_caller'],SLASHROOT_EXPRESSIONS['first_answerer_alert']))
     
     @expectedFailure
     def test_twilio_first_answerer_alert(self):
