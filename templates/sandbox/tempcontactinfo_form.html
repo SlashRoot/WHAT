@@ -1,0 +1,85 @@
+{% extends 'sitewide_head.html' %}
+
+{% block title %}Keep tabs on the mesh activities at slashRoot{% endblock %}
+
+{% block head %}
+
+    <link rel="stylesheet" href="/media/css/tree.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/landing.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/forms.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/cms.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/bubble_locations.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="/media/js/clearfield.js"></script>
+    
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('input').clearField();
+        
+        
+            $('#submit').click(function(){
+                if ($('#id_phone').val() == "Phone XXX-XXX-XXXX") {
+                    $('#id_phone').val('')                           
+                }
+                                          
+                })
+        });
+        
+        
+    </script>
+    
+    <style type="text/css">
+        label {
+               display:none;
+               }
+        
+        form {
+            left: 820px;
+            opacity: 0.7;
+            position: absolute;
+            text-align: center;
+            top: 200px;
+        }
+        
+        input, textarea {
+                font-family: veteran typewriter;
+                font-weight: bold;
+                text-align: center;
+                width: 300px;
+                max-height: 100px;
+               }
+        
+        .errorlist li {
+                color:red;
+                       }
+    </style>
+    
+{% endblock %}
+
+
+{% block content %}
+
+<div id="return_of_the_top_green_bar">
+</div>
+      
+
+<div id="centerBidniss">
+    <div class="backgroundElements">
+
+
+        <img id="tree" src="/media/images/tree-cropped.png" />
+        <div id="logoBig"> 
+            SlashRoot 
+            <span id="subLogo">
+                :coffee house and tech dojo
+            </span>
+        </div>
+    </div>
+</div>
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Keep In Touch." id="submit" />
+</form>
+
+{% endblock %}

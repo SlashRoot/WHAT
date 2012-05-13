@@ -4,10 +4,18 @@ from django.conf import settings
 from django.views.generic.simple import direct_to_template
 
 from django.contrib import admin
+from django.views.generic.edit import CreateView
+
+
 admin.autodiscover()
 
+from sandbox.models import TempContactInfo
+
+
+
+
 urlpatterns = patterns('',
-    (r'sandbox/$', 'sandbox.views.sandbox'),
+    (r'^mesh_summit_contact/$', CreateView.as_view(model=TempContactInfo)),
 
     #MAIN
     (r'^$', 'main.views.main_landing'),
@@ -35,8 +43,8 @@ urlpatterns = patterns('',
     (r'^utility/submit_generic_partial/(?P<object_type>\w+)/(?P<object_id>\d+)/$', 'utility.views.submit_generic_partial'),
     
     #Commerce
-    (r'^commerce/record_purchase', 'commerce.views.record_purchase'),
-    (r'^commerce/record_bill', 'commerce.views.record_purchase', {'is_bill': True}),
+    (r'^commerce/record_purchase/$', 'commerce.views.record_purchase'),
+    (r'^commerce/record_bill/$', 'commerce.views.record_purchase', {'is_bill': True}),
     (r'^commerce/record_donation', 'commerce.views.record_donation'),
     (r'^commerce/record_ingredient_order', 'commerce.views.record_ingredient_order'),
     (r'^commerce/view_exchange/(?P<id>\d+)/$', 'commerce.views.view_exchange'),

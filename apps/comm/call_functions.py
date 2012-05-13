@@ -19,6 +19,7 @@ from people.models import UserProfile
 from django.contrib.auth.decorators import permission_required
 from comm.services import place_deferred_outgoing_conference_call
 from django.db.models.signals import post_save
+import datetime
 
 RESOLVE_PHONE_CALL = "TaskPrototype__resolve_phone_call" #TODO: There is an instance of this string in views.py.  Dehydrate.
 ANSWER_PHONE_CALLS_PRIVILEGE = 3
@@ -100,12 +101,12 @@ def call_object_from_call_info(call_info):
     #The number can be assigned to a ContactInfo object later.
     
     for (key, phone_number) in incoming_numbers.items(): #key will be 'caller', 'recipient', etc.  phone number will be the number.
-        phone_number_object, new_number = get_or_create_nice_number(phone_number) 
+        phone_number_object, is_this_a_new_number = get_or_create_nice_number(phone_number) 
         phone_numbers[key + '_nice'] = phone_number_object.number
         
         phone_numbers[key] = phone_number_object #Put this phone number object in the dict.            
         
-        if not new_number:
+        if not is_this_a_new_number:
             phone_numbers[key].unknown = True #This number is unknown.  We'll want to know that for the template.
 
     #Save the numbers (but not their owners) as part of the call.            
@@ -124,6 +125,10 @@ def call_object_from_call_info(call_info):
         CommunicationInvolvement.objects.create(person=phone_numbers['recipient'].owner.userprofile.user, communication=call, direction="to")
     except (UserProfile.DoesNotExist, AttributeError): #Either the owner is None or the UserProfile doesn't exist.
         pass
+    
+    #If this this is the first time we've seen the call marked completed, we'll set the ended date.
+    if call_info['status'] == 'completed' and not call.ended:
+        call.ended = datetime.datetime.now()
 
     return call
 
@@ -141,16 +146,20 @@ def proper_verbage_for_final_call_connection(call, response_object, announce_cal
     '''
     Dehydration function for language to speak to picker-upper of a phone call.
     
+    announce_caller is defaulted to true here to let the answerer know who is calling...lets fix the issue that requires this to be true.
+    
     Takes a call and a generic response, appends the response with the appropriate say.
     Returns True on success.
     '''
     final_warning = 'Connected. ' #Start constructing the final message to be delivered to the answerer.
+    
     if announce_caller:
         final_warning += call.announce_caller()
-    current_participants = call.participants.all()
-    if current_participants:
+        
+    current_participants = call.participants.filter(direction="to")
+    if current_participants: #If there are current participants, we want to make that clear to the answerer.
         final_warning += 'Also on the call:'
-        for participant in call.participants.filter(direction="to"):
+        for participant in current_participants:
             final_warning += str(participant.person.first_name) + ','                
         voice = "Victor"
     else:

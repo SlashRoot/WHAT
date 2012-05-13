@@ -114,7 +114,7 @@ float:right;
 
 .floatRight {
      float:right;
-             }
+}
 
 .center {
 text-align:center;
@@ -157,6 +157,14 @@ display:block;
 .fullWidth {
 	width:100%;
 }
+
+.the99Percent {
+	width:99%;
+}	
+
+.paddedWidth {
+	width:89%;
+}	
 
 .strikeOut {
 text-decoration: line-through;

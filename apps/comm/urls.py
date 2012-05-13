@@ -36,6 +36,7 @@ urlpatterns = patterns('comm.views',
     
     (r'watch_calls/$', 'watch_calls'),
     (r'resolve_calls/$', 'resolve_calls'),
+    (r'resolve_call/$', 'resolve_call'),
     
     #(r'outgoing_call/(?P<phone_number>\w+==)/', 'outgoing_call'),
     

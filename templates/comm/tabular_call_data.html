@@ -19,10 +19,13 @@
     </td>
 {% endif %}
 
+{% if show_checkbox %}
+    <td>
+        <input type="checkbox" class="resolve-check" id="resolve_{{call.id}}" {% if not call.resolve_task.is_open %} checked = "checked" {% endif %}>
+    </td>    
+{% endif %}    
+
+
 <td class="tabular-recording-info">
    {% include 'comm/call_recordings.html' %}
-</td>
-
-<td>
-    {{call.resolve_task.get_status_display}}
 </td>

@@ -9,18 +9,18 @@ $(function(){
 	});
 	
 </script>
-
+<script src="/media/coffee/resolve_calls.js" type="text/javascript"></script>
 
 <table style="border:auto;" border="1">
 	<td>ID</td>
 	<td>DateTime</td>
 	<td>Caller</td>
 	<td>Answerers</td>
-	<td>Recording</td>
-	<td>Status</td>
+	<td>Resolved</td>
+	<td>Recording</td>	
 	{% for task in tasks %}
-		{% with call=task.related_objects.all.0.object show_caller=1 show_answerers=1 %}
-			<tr>
+		{% with call=task.related_objects.all.0.object show_caller=1 show_answerers=1 show_checkbox=1 %}
+			<tr {% if not call.resolve_task.is_open %}style="background-color:gray;"{% endif %}>
 				{% include 'comm/tabular_call_data.html' %}
 			</tr>
 		{% endwith %}

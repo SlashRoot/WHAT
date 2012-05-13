@@ -4,6 +4,7 @@ from deployment.path_settings import PROJECT_ROOT
 
 from private.database_settings import DATABASE_DICT
 
+
 ADMINS = (
     ('Justin Holmes', 'justin@justinholmes.com'),
     ('Amanda Stauble', 'ac.stauble@gmail.com'),
@@ -101,7 +102,7 @@ TEMPLATE_DIRS = (
     '%s/templates/' % PROJECT_ROOT
 )
 
-INSTALLED_APPS = (
+CORE_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.admin',
@@ -110,27 +111,30 @@ INSTALLED_APPS = (
     'django.contrib.flatpages',
     'django.contrib.admindocs',
     'django.contrib.humanize',
-    'django_coverage',
-    'taggit',
-    #'debug_toolbar',
+)
+
+PACKAGED_APPS = (
+     'south',
+     'taggit',
+     #'django_coverage',
+     #'debug_toolbar',
+     #'haystack',
+)
+
+
+LOCAL_APPS = (    
     'utility',
     'people',
-    
     'products',
-    'hwtrack',
-    
-    #'haystack',
-    
+    'hwtrack',   
     'accounting',
     'checklist',
     'cms',
     'comm',
     'contact',
-    
     'meta',
     'main',
     'mooncalendar',
-    
     'pigs',
     'power',
     'pos',
@@ -141,11 +145,9 @@ INSTALLED_APPS = (
     'do',
     'commerce',
     'mellon',
-
-    'south',
-#    'varnishapp',
 )
 
+INSTALLED_APPS = PACKAGED_APPS + CORE_APPS + LOCAL_APPS
 
 
 HAYSTACK_CONNECTIONS = {
@@ -181,3 +183,7 @@ PUBLIC_FILE_UPLOAD_DIRECTORY = '%s/public/' % MEDIA_ROOT
 LOGIN_REDIRECT_URL = "/iam/"
 
 #VARNISH_MANAGEMENT_ADDRS = ['50.57.232.77:2000']
+
+#Override the Test Runner to test only local apps.
+
+TEST_RUNNER = 'utility.tests.WHATTestRunner'

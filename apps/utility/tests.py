@@ -1,6 +1,17 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 from people.models import GenericParty
+from django.test.simple import DjangoTestSuiteRunner
+
+from django.conf import settings
+
+class WHATTestRunner(DjangoTestSuiteRunner):
+    def run_tests(self, extra_tests=None, **kwargs):
+        if not extra_tests:
+            test_labels = settings.LOCAL_APPS #By default, we want to run only local tests.
+        else:
+            test_labels = extra_tests
+        super(WHATTestRunner, self).run_tests(test_labels, extra_tests=None, **kwargs)
 
 class WHATTestCase(TestCase):
     

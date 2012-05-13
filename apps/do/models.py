@@ -438,7 +438,7 @@ class Task(models.Model):
             return "Open"
     
     def is_open(self):
-        if self.status() == "Open" or self.status() == "Re-opened":
+        if self.status < 2:
             return True
         else:
             return False
@@ -494,6 +494,8 @@ class Task(models.Model):
         '''
         user = self.related_objects.all()[0].object
         return user
+    
+    
     
     def set_status(self, status, creator):
         if self.status == status:
