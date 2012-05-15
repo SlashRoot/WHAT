@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 
 from do.models import Task, TaskPrototype, TaskRelatedObject, TaskAccess,\
@@ -94,7 +94,7 @@ def tickets(request, service_id):
     The profile page for an individual service ticket. 
     '''    
     status_prototypes = ServiceStatusPrototype.objects.all() #TODO: Filter for "active" statuses (ie, allow some to be retired)
-    service = Service.objects.get(id=service_id)
+    service = get_object_or_404(Service, id=service_id)
     task = service.task
     return render(request, 'service/ticket_profile.html', locals())
 
