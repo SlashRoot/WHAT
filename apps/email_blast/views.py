@@ -21,7 +21,7 @@ all at once in a blast instead of emailing to individual members within roles in
             send_to_higher_roles = form.cleaned_data['send_to_higher_roles']
             
             ## Step two: Piece the data together to form a message
-            blast_message = "To " + role + group + ":" + "\n" + message ## Result Example: To Keeper in Slashroot: (next line) Hello Keeper in Slashroot! How are you?
+            blast_message = "To " + group + role + ":" + "\n" + message ## Result Example: To Slashroot Keeper: (next line) Hello Keeper in Slashroot! How are you?
             
             ## Step three: Send the data out. Take notice that blast_message is being used rather than just message.
             ##TODO: I've set up the structure for this form to work. Now we need to figure out how to gather email information because this will not work at all.

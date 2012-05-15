@@ -1,16 +1,21 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-
-Replace this with more appropriate tests for your application.
-"""
-
+from django.core import mail
 from django.test import TestCase
+from unittest import expectedFailure
 
+from email_blast.models import BlastMessage
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.assertEqual(1 + 1, 2)
+class BlastFormTest(TestCase):
+    def test_if_blast_form_is_200(self):
+        response = self.client.get('/blast_form/')
+        self.assertEqual(response.status_code, 200)
+        
+    def test_if_blast_form_gathers_data(self):
+        form = self.client.post('/blast_form/', {'subject':'Testing', 'message':'One, Two', 'role':'King', 'group':'Castle', 'send_to_higher_role':True})
+        self.assertEqual(form.status_code, 200)
+    
+    @expectedFailure    
+    def test_if_email_is_sent(self):
+        self.fail()
+        
+
+    

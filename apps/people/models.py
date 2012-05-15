@@ -4,7 +4,7 @@ from django.db.models.query_utils import Q
 
 from django.core.exceptions import ValidationError
 
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from django.contrib.sessions.models import Session
 from django.db.utils import DatabaseError
 from django.contrib.contenttypes import generic 
@@ -85,16 +85,62 @@ class Member(models.Model):
     def __unicode__(self):
         return self.user.get_full_name()
     
-# Delete me and remove me from Data Base please. I suck. Have a nice day. 
-#class Subscriber(User):
-#   pass
     
 class Sabbatical(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField(blank=True, null=True)
     description = models.TextField()
     member = models.ForeignKey(Member)
+## Lines 95-134 copy and pasted from group_rework branch
+class Group(models.Model):
+    '''
+This is our replacement for django.contrib.auth.models.Group
+We can haz methods?
+'''
+    name = models.CharField(max_length=30)
+    
+    
+class Role(models.Model):
+    '''
+A role that someone has.
+'''
+    name = models.CharField(max_length=30)
+    
 
+class RoleInGroup(models.Model):
+    '''
+The presence of a particular role in a particular group.
+'''
+    role = models.ForeignKey('people.Role', related_name="groups")
+    group = models.ForeignKey('people.Group', related_name="roles")
+    
+
+class RoleProgeny(models.Model):
+    '''
+For a particular group, a role may be part of a larger role, ie, all banana experts are fruit experts.
+'''
+    parent = models.ForeignKey(Role, related_name="children")
+    child = models.ForeignKey(Role, related_name="parents")
+    jurisdiction = models.ForeignKey(Group, related_name="role_progenies")
+
+
+class RoleHierarchy(models.Model):
+    '''
+For a particular group, a role may be subordinant to another role, ie, the banana experts report to the starfruit experts, because starfruit is freaking amazing.
+(For the record, I don't actually care for starfruit)
+'''
+    lower_role = models.ForeignKey(Role, related_name="higher_roles")
+    higher_role = models.ForeignKey(Role, related_name="lower_roles")
+    jurisdiction = models.ForeignKey(Group, related_name="role_hierarchies")
+    
+    
+class UserInGroup(models.Model):
+    '''
+A user's actual involvement in a group.
+'''
+    user = models.ForeignKey(User, related_name="what_groups") #Related name can't be 'groups' because that will conflict with the "groups" field on auth.User
+    role = models.ForeignKey(RoleInGroup, related_name="instances")
+    
 class Team(Group): 
     '''
     Needs to be re-thought. It's intention of having a team of members can probably be taken care of right in Group since members are included in Group. 
