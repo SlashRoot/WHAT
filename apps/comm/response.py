@@ -63,7 +63,8 @@ class CallResponse(object):
     def conference(self, *args, **kwargs):
         if self.provider.name == "Twilio":
             dial = self.response_object.addDial()
-            return dial.addConference(kwargs['conference_id'])
+            startConferenceOnEnter = True if 'start_now' in kwargs and kwargs['start_now'] else False #Sometimes we want this joiner to start the conference.  Sometimes not.
+            return dial.addConference(kwargs['conference_id'], startConferenceOnEnter)
         if self.provider.name == "Tropo":
             self.response_object.on("hangup", next="/comm/handle_hangup/%s/%s/" % (kwargs['conference_id'], kwargs['number'].id))
             if 'record' in kwargs and kwargs['record']:
@@ -91,13 +92,13 @@ class CallResponse(object):
         '''
         Join the user to a conference that started with a holding pattern and begin the conference.
         '''
+        conference_kwargs = {'conference_id':conference_id, 'number':number}
         if self.provider.name == "Twilio":
-            #Twilio will begin the conference upon joining, so I think we can just pass here.
-            pass
+            conference_kwargs['start_now'] = True
         if self.provider.name == "Tropo":
             reactor.callFromThread(send_deferred_tropo_signal, conference_id, 'joinConference', 0)
             
-        self.conference(conference_id=conference_id, number=number)
+        self.conference(**conference_kwargs)
         return True #We can't know anything meaningful because we aren't going to wait around for the signal.
     
     def on(self, *args, **kwargs):
