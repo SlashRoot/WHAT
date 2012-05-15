@@ -28,7 +28,7 @@ import smtplib, imaplib
 from django.http import HttpResponse
 from settings.common import EMAIL_HOST
 
-from private import resources
+from private import resources, account_credentials
 
 class Heartbeat(object):
     '''
@@ -196,7 +196,7 @@ class PhoneAnswering(Heartbeat):
         """verifies that twilio and tropo are receiving the necessary signal"""
         request = TYPICAL_TWILIO_REQUEST
         try:
-            response = requests.post(PHONE_TEST_URL, request)
+            response = requests.post(resources.PHONE_TEST_URL, request)
         except requests.exceptions.ConnectionError:
             return False
             
@@ -220,8 +220,17 @@ class EmailDelivery(Heartbeat):
         email_user = account_credentials.SENDER_EMAIL #Forwarded from RECEIVER_EMAIL
         email_password = account_credentials.SENDER_EMAIL_PASSWORD
         
+        #Generate a unique hash to identify this email.
+        unique_email_id = uuid.uuid1().hex
+        
         #First we need to read the hash file to see what hash we left from last time.
-        heartbeat_hash_file = file(resources.HEARTBEAT_HASH_FILE, 'r')
+        try: #If this is the first time we've run, or if the hash has been deleted, we'll get IOError.
+            heartbeat_hash_file = file(resources.HEARTBEAT_HASH_FILE, 'r')
+        except IOError:
+            heartbeat_hash_file = open(resources.HEARTBEAT_HASH_FILE, 'w')
+            heartbeat_hash_file.write(unique_email_id)
+            
+            
         old_hash = heartbeat_hash_file.read()
         heartbeat_hash_file.close()
 
@@ -236,8 +245,6 @@ class EmailDelivery(Heartbeat):
                 self.error_details = "The previous email was not delivered."            
         else:
             self.error_details = "Unable to login to check %s." % resources.EMAIL_PROVIDER
-
-        unique_email_id = uuid.uuid1().hex
           
         try:
             smtpserver = smtplib.SMTP(resources.HEARTBEAT_SMTP_SERVER, resources.HEARTBEAT_SMTP_SERVER_PORT)            
