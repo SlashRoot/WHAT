@@ -1,10 +1,11 @@
 import sys, os, socket
-import requests
 import json
-from path import path
 from urllib2 import URLError
 import uuid
+import logging
 
+import requests
+from path import path
 
 from comm.sample_requests import TYPICAL_TWILIO_REQUEST
 from xml.etree import ElementTree

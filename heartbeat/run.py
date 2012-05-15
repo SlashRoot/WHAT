@@ -1,5 +1,8 @@
 import sys
+import logging
+
 from path import path
+import requests
 
 PROJECT_ROOT = path(__file__).abspath().dirname().dirname()
 
@@ -11,11 +14,12 @@ sys.path.append(PROJECT_ROOT / 'apps')
 
 from heartbeat import Heartbeat
 from meta.alerts import local_red_alert
-import requests
+
 
 
 
 HEARTBEATS = Heartbeat.__subclasses__()
+logger = logging.getLogger('heartbeat')
 
 class HeartBeatRunner(object):
     error_messages = []
@@ -43,7 +47,8 @@ class HeartBeatRunner(object):
             alert_message = 'Heartbeat Failure. \n'
             for message in self.error_messages:
                 alert_message += "%s \n" % message
-            local_red_alert(alert_message)
+            #local_red_alert(alert_message)
+            
         else:
             #Everything went ok - there are no error messages.
             report_response = requests.post(resources.HEARTBEAT_SUCSESS_URL)
