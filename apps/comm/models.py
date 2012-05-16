@@ -36,6 +36,9 @@ class CommunicationInvolvement(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     destroyed = models.DateTimeField(blank=True, null=True)
     
+    def __unicode__(self):
+        return "%s %s %s" %(self.person.username, self.direction, self.communication)
+    
     def get_absolute_url(self):
         pass
     

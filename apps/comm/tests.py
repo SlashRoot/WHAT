@@ -116,6 +116,7 @@ def prepare_testcase_for_answer_tests(testcase):
     testcase.tropo_interpretation_of_conference_id = tropo_join_conference_command['on']['next'].split('/')[3] #Turn the list into a dict - we know there's only one conference verb.
     
     testcase.tropo_call_id = PhoneCall.objects.get(call_id = testcase.tropo_interpretation_of_conference_id).id #We need the actual ID of the phone call, and it's not clear from the dict.  This is basically a short cut. 
+    testcase.twilio_call_id = PhoneCall.objects.get(call_id = testcase.twilio_interpretation_of_conference_id).id
     
     return testcase.twilio_interpretation_of_conference_id, testcase.tropo_interpretation_of_conference_id
 
@@ -416,9 +417,13 @@ class PickingUpTheCall(TestCase):
     def test_tropo_pickup_call_from_unknown_caller_200(self):
         self.assertEqual(self.tropo_pickup_response.status_code, 200)
     
-    @expectedFailure
-    def test_twilio_pickup_call_from_unknown_caller(self):
-        self.fail()
+    def test_twilio_pickup_call__first_answerer_bypass_from_unknown_caller(self):
+        phone_call = PhoneCall.objects.get(call_id = self.twilio_interpretation_of_conference_id)
+        number_to_call = PhoneNumber.objects.filter(owner__isnull=False)[0]
+        
+        phone_call.participants.all().delete()
+        
+        self.client.post('/comm/pickup_connect_auto/%s/%s/' % (number_to_call.id, phone_call.id), TYPICAL_TWILIO_PICKUP_BYPASS_REQUEST )
                 
     def test_tropo_pickup_call_from_unknown_caller(self):
         '''
