@@ -19,7 +19,7 @@ $(function(){
 	<td>Resolved</td>
 	<td>Recording</td>	
     {%regroup tasks by DateTime as call_list%}
-    {{slice|call_list"10"}}
+    {{slice|call_list:"10"}}
 	{% for task in call_list %}
 		{% with call=task.related_objects.all.0.object show_caller=1 show_answerers=1 show_checkbox=1 %}
 			<tr {% if not call.resolve_task.is_open %}style="background-color:gray;"{% endif %}>
