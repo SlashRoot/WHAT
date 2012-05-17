@@ -225,6 +225,8 @@ urlpatterns = patterns('',
      (r'^mellon/submit_new_magnetic_card/$', 'mellon.views.save_new_card'),
      (r'^mellon/authenticate_card/$', 'mellon.views.authenticate_card'),
      
+     #BlastForm
+     (r'^blast_form/$', 'email_blast.views.email_blast'),
 )
    
 urlpatterns += patterns('django.views.generic.simple',

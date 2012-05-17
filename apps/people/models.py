@@ -99,12 +99,18 @@ We can haz methods?
 '''
     name = models.CharField(max_length=30)
     
+    def __unicode__(self):
+        return self.name
+    
     
 class Role(models.Model):
     '''
 A role that someone has.
 '''
     name = models.CharField(max_length=30)
+    
+    def __unicode__(self):
+        return self.name
     
 
 class RoleInGroup(models.Model):
@@ -113,6 +119,9 @@ The presence of a particular role in a particular group.
 '''
     role = models.ForeignKey('people.Role', related_name="groups")
     group = models.ForeignKey('people.Group', related_name="roles")
+    
+    class Meta:
+        unique_together = ['role', 'group']
     
 
 class RoleProgeny(models.Model):
@@ -136,10 +145,10 @@ For a particular group, a role may be subordinant to another role, ie, the banan
     
 class UserInGroup(models.Model):
     '''
-A user's actual involvement in a group.
-'''
+    A user's actual involvement in a group.
+    '''
     user = models.ForeignKey(User, related_name="what_groups") #Related name can't be 'groups' because that will conflict with the "groups" field on auth.User
-    role = models.ForeignKey(RoleInGroup, related_name="instances")
+    role = models.ForeignKey(RoleInGroup, related_name="users")
     
 class Team(Group): 
     '''
