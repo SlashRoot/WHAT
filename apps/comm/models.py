@@ -65,8 +65,7 @@ class CommunicationInvolvement(models.Model):
             return "%s answered " % (self.person.userprofile.user.first_name)
         if self.direction == "from":
             return "%s called " % (self.person.userprofile.user.first_name)
-            
-            
+        
 class PhoneCall(Communication):
     '''
     This model is loosely based on a twilio phone call HTTP request, which is explained here:

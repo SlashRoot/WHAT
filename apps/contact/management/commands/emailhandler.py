@@ -11,8 +11,6 @@ from django.contrib.auth.models import User
 from contact.models import MailHandler, MailMessage, AdditionalEmail
 from social.models import TopLevelMessage
 
-
-
 #Payload is potentially more complex than meets the eye.
 
 def get_first_text_part(msg):
@@ -33,8 +31,7 @@ def get_first_text_part(msg):
 class Command(BaseCommand):
  
     def handle(self, *args, **options):
-
-        p=Parser()
+        p = Parser()
         
         #Parse the email from standard input
         

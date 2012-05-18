@@ -20,6 +20,7 @@ from django.contrib.auth.decorators import permission_required
 from comm.services import place_deferred_outgoing_conference_call
 from django.db.models.signals import post_save
 import datetime
+import re
 
 RESOLVE_PHONE_CALL = "TaskPrototype__resolve_phone_call" #TODO: There is an instance of this string in views.py.  Dehydrate.
 ANSWER_PHONE_CALLS_PRIVILEGE = 3
@@ -57,10 +58,23 @@ def get_or_create_nice_number(incoming_number):
     '''
     A wrapper over get_or_create for a PhoneNumber object.  Gets or Creates a new PhoneNumber from various formats.
     '''
-    if incoming_number[0] == "+": #Does this number have a country code?
-        phone_number = incoming_number
-    else:#No country code.  We'll assume it's 1.
-        phone_number = "+1" + str(incoming_number)
+    try:
+        number_as_list = re.findall(r"[0-9]", incoming_number) #No matter the format, grab only the numbers.
+        
+        #An unknown caller will produce a completely blank number.
+        if not number_as_list:
+            return PhoneNumber.objects.get_blank_number()
+        
+        if number_as_list[0] == '1': #If the first digit is a 1, we'll just pop it off.
+            number_as_list.pop(0)
+        if not len(number_as_list) == 10: #Now we expect to have exactly ten digits.
+            raise TypeError("I wasn't able to discern exactly ten digits from the phone number you gave me.")
+        incoming_number = ''.join(number_as_list) #Now our incoming number is properly formatted.
+        
+    except TypeError:
+        raise RuntimeError("We expected this phone number to be a string.  It wasn't.  You suck.")
+
+    phone_number = "+1" + str(incoming_number)
     nice_number = phone_number[2:5] + "-" + phone_number[5:8] + "-" + phone_number[8:] #parse the number to look like django wants it: ex. 845-633-8330
     phone_number_object, new = PhoneNumber.objects.get_or_create(number = nice_number)
     return phone_number_object, new
