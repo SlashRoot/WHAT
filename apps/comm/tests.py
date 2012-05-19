@@ -165,6 +165,16 @@ def prepare_testcase_for_pickup_tests(testcase):
 def teardown_testcase_for_pickup_tests(testcase):
     PhoneNumber.objects.all().delete()
     PhoneCall.objects.all().delete()
+    
+    
+def create_phone_calls(number_of_phone_calls_to_create):
+    phone_calls = []
+    twilio = PhoneProvider.objects.get(name="Twilio")
+    
+    for x in range(number_of_phone_calls_to_create):
+        phone_calls.append(PhoneCall.objects.create(service=twilio))
+    return phone_calls
+
 
 class FakeRequest(object):
     '''
@@ -826,23 +836,38 @@ class CallDocumentationTests(TestCase):
         
         
 class CallManagementExperience(TestCase):
-    
+            
     def setUp(self):
         from do import config as do_config
         do_config.set_up()
         admin = User.objects.create(is_superuser=True, username="admin", password="admin")
         admin.set_password('admin')
         admin.save()
+        set_up_providers(self)
 
     def test_watch_calls_200(self):
         self.client.login(username="admin", password="admin")
         response = self.client.get('/comm/watch_calls/')
         self.assertEqual(response.status_code, 200)
         
+    
+    def test_watch_calls_page_paginates(self):
+        self.client.login(username="admin", password="admin")
+        create_phone_calls(150)
+        response = self.client.get('/comm/watch_calls/')
+        self.assertTrue()
+        
     def test_resolve_calls_200(self):
         self.client.login(username="admin", password="admin")
         response = self.client.get('/comm/resolve_calls/')
         self.assertEqual(response.status_code, 200)
+        
+    @expectedFailure
+    def test_resolve_calls_paginates(self):
+        self.client.login(username="admin", password="admin")
+        create_phone_calls(150)
+        response = self.client.get('/comm/resolve_calls/')
+        
         
     @expectedFailure
     def test_sms_to_tag_user_on_call_task(self):
