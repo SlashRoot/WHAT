@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from people.models import Group, Role, RoleInGroup
+from django.core.mail import send_mail
+
 
 class BlastMessage(models.Model):
     '''
@@ -12,7 +14,13 @@ class BlastMessage(models.Model):
     role = models.ForeignKey('people.Role')
     group = models.ForeignKey('people.Group')
     send_to_higher_roles = models.BooleanField(default=True)
+    creator = models.ForeignKey('auth.User', related_name='blasts_sent')
+    created = models.DateTimeField(blank=True, null=True)
+    sent = models.DateTimeField(blank=True, null=True)
     
+    def prepare(self):
+        return self.subject, self.message, self.creator.email, self.populate_targets()
+            
     def populate_targets(self):
         role_in_group = RoleInGroup.objects.get(role=self.role, group=self.group)
         users_in_group = role_in_group.users.all()
@@ -22,3 +30,8 @@ class BlastMessage(models.Model):
             user_emails.add(user_in_group.user.email)
         
         return user_emails
+    
+    def send_blast(self):
+        preparation_tuple = self.prepare()
+        return send_mail(*preparation_tuple)
+        
