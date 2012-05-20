@@ -8,10 +8,20 @@ from django.contrib.auth.models import User
 
 class BlastFormTest(TestCase):
     def test_if_blast_form_is_200(self):
+        admin = User.objects.create(username="admin")
+        admin.set_password('seamonkey')
+        admin.save()
+        
+        self.client.login(username="admin", password="seamonkey")
         response = self.client.get('/blast_form/')
         self.assertEqual(response.status_code, 200)
         
     def test_if_blast_form_prepares_data(self):
+        admin = User.objects.create(username="admin")
+        admin.set_password('seamonkey')
+        admin.save()
+        
+        self.client.login(username="admin", password="seamonkey")
         form = self.client.post('/blast_form/', {'subject':'Testing', 'message':'One, Two', 'role':'King', 'group':'Castle', 'send_to_higher_role':True})
         self.assertEqual(form.status_code, 200)
     
@@ -45,6 +55,9 @@ class BlastFormTest(TestCase):
         
            
     def test_if_email_is_sent(self):
+        '''
+        Ah, do you remember the scene from Office Space where the Bobs are going over Peter Gibbon's file?
+        '''
         bill = User.objects.create(username="Bill", email="glacierformdomino@hotmail.com")
         bob1 = User.objects.create(username="Bob1", email="dpiaquadio@gmail.com")
         bob2 = User.objects.create(username="Bob2", email="darkcatholic619@aol.com")
@@ -70,4 +83,6 @@ class BlastFormTest(TestCase):
         self.assertEqual(blast_message.creator.email, preparation[2])
         self.assertEqual(blast_message.populate_targets(), preparation[3])
         
-    
+    def test_blast_confirmation_is_200(self):
+        response = self.client.get('/blast_form/confirmation/')
+        self.assertEqual(response.status_code, 200)

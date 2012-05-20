@@ -78,6 +78,10 @@ class RoleInGroup(models.Model):
     group = models.ForeignKey('people.Group', related_name="roles")
     created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     
+    def __unicode__(self):
+        return '%s %s' %(self.role, self.group)
+    
+    
 
 class RoleProgeny(models.Model):
     '''
@@ -107,6 +111,9 @@ class UserInGroup(models.Model):
     user = models.ForeignKey(User, related_name="what_groups") #Related name can't be 'groups' because that will conflict with the "groups" field on auth.User
     role = models.ForeignKey(RoleInGroup, related_name="instances")
     created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+
+    def __unicode__(self):
+        return '%s %s' %(self.user, self.role)
     
     
 class Sabbatical(models.Model):

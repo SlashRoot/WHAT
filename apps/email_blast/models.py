@@ -13,8 +13,8 @@ class BlastMessage(models.Model):
     group = models.ForeignKey('people.Group')
     send_to_higher_roles = models.BooleanField(default=True)
     creator = models.ForeignKey('auth.User', related_name='blasts_sent')
-    created = models.DateTimeField(blank=True, null=True)
-    sent = models.DateTimeField(blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    sent = models.DateTimeField(auto_now=True, blank=True, null=True)
     
     def prepare(self):
         return self.subject, self.message, self.creator.email, self.populate_targets()
