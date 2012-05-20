@@ -123,6 +123,10 @@ The presence of a particular role in a particular group.
     class Meta:
         unique_together = ['role', 'group']
     
+    def __unicode__(self):
+        return '%s %s' %(self.role, self.group)
+    
+    
 
 class RoleProgeny(models.Model):
     '''
@@ -149,6 +153,9 @@ class UserInGroup(models.Model):
     '''
     user = models.ForeignKey(User, related_name="what_groups") #Related name can't be 'groups' because that will conflict with the "groups" field on auth.User
     role = models.ForeignKey(RoleInGroup, related_name="users")
+    
+    def __unicode__(self):
+        return '%s %s' %(self.user, self.role)
     
 class Team(Group): 
     '''
