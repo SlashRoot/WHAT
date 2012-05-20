@@ -1,4 +1,4 @@
-from models import Member, Team
+
 from django.contrib import admin
 
 class MemberAdmin(admin.ModelAdmin):

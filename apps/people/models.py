@@ -1,10 +1,14 @@
 from django.db import models
 from django.db.models.signals import post_save
+from django.db.models.query_utils import Q
+
 from django.core.exceptions import ValidationError
 
-from django.contrib.contenttypes import generic 
-from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
+from django.contrib.sessions.models import Session
+from django.db.utils import DatabaseError
+from django.contrib.contenttypes import generic 
+
 
 
 POLITICAL_PARTIES = (
@@ -51,32 +55,74 @@ class UserProfile(models.Model):
             except (AttributeError, KeyError):
                 pass
         return sessions
-    
 
+
+class Client(User):
+    '''
+    Justin says: I hate this model.  Let's not use it. Client will most likely end up as a method on UserProfile. 
+    '''    
+    comments=models.TextField()
+    
+class Member(models.Model):
+    rank = models.ForeignKey('pigs.Rank', blank=True, null=True)
+    inducted = models.ForeignKey('mooncalendar.Moon')
+    user = models.OneToOneField(User)
+    
+   
+    def purposes(self):
+        '''
+        BROKEN: Supposed to return a list of the instances of the members purposes (ie: Work Coffee bar, Dev, etc.)
+        '''
+        purposes = []
+        for session in Session.objects.all():
+            try:
+                if self.id == session.get_decoded()['_auth_user_id']:
+                    purposes.append(session.get_decoded()['presence']) 
+            except (AttributeError, KeyError):
+                pass
+        return purposes
+    
+    def __unicode__(self):
+        return self.user.get_full_name()
+    
+    
+class Sabbatical(models.Model):
+    start = models.DateTimeField()
+    end = models.DateTimeField(blank=True, null=True)
+    description = models.TextField()
+    member = models.ForeignKey(Member)
+## Lines 95-134 copy and pasted from group_rework branch
 class Group(models.Model):
     '''
-    This is our replacement for django.contrib.auth.models.Group
-    
-    We can haz methods?
-    '''
+This is our replacement for django.contrib.auth.models.Group
+We can haz methods?
+'''
     name = models.CharField(max_length=30)
-    created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    
+    def __unicode__(self):
+        return self.name
+    
     
 class Role(models.Model):
     '''
-    A role that someone has.
-    '''
+A role that someone has.
+'''
     name = models.CharField(max_length=30)
-    created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    
+    def __unicode__(self):
+        return self.name
     
 
 class RoleInGroup(models.Model):
     '''
-    The presence of a particular role in a particular group.
-    '''
+The presence of a particular role in a particular group.
+'''
     role = models.ForeignKey('people.Role', related_name="groups")
     group = models.ForeignKey('people.Group', related_name="roles")
-    created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    users = models.ManyToManyField('auth.User', through="people.UserInGroup")
+    
+    class Meta:
+        unique_together = ['role', 'group']
     
     def __unicode__(self):
         return '%s %s' %(self.role, self.group)
@@ -85,23 +131,21 @@ class RoleInGroup(models.Model):
 
 class RoleProgeny(models.Model):
     '''
-    For a particular group, a role may be part of a larger role, ie, all banana experts are fruit experts.
-    '''
+For a particular group, a role may be part of a larger role, ie, all banana experts are fruit experts.
+'''
     parent = models.ForeignKey(Role, related_name="children")
     child = models.ForeignKey(Role, related_name="parents")
     jurisdiction = models.ForeignKey(Group, related_name="role_progenies")
-    created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
 
 class RoleHierarchy(models.Model):
     '''
-    For a particular group, a role may be subordinant to another role, ie, the banana experts report to the starfruit experts, because starfruit is freaking amazing.
-    (For the record, I don't actually care for starfruit)
-    '''
+For a particular group, a role may be subordinant to another role, ie, the banana experts report to the starfruit experts, because starfruit is freaking amazing.
+(For the record, I don't actually care for starfruit)
+'''
     lower_role = models.ForeignKey(Role, related_name="higher_roles")
     higher_role = models.ForeignKey(Role, related_name="lower_roles")
     jurisdiction = models.ForeignKey(Group, related_name="role_hierarchies")
-    created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     
     
 class UserInGroup(models.Model):
@@ -109,22 +153,20 @@ class UserInGroup(models.Model):
     A user's actual involvement in a group.
     '''
     user = models.ForeignKey(User, related_name="what_groups") #Related name can't be 'groups' because that will conflict with the "groups" field on auth.User
-    role = models.ForeignKey(RoleInGroup, related_name="instances")
-    created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-
+    role = models.ForeignKey(RoleInGroup)
+    
     def __unicode__(self):
         return '%s %s' %(self.user, self.role)
     
-    
-class Sabbatical(models.Model):
+    def add_user(self):
+        pass
+        
+class Team(Group): 
     '''
-    A person pausing their involvement as a particular role in a particular group.
-    '''
-    start = models.DateTimeField()
-    end = models.DateTimeField(blank=True, null=True)
-    description = models.TextField()
-    membership = models.ForeignKey(UserInGroup)
-
+    Needs to be re-thought. It's intention of having a team of members can probably be taken care of right in Group since members are included in Group. 
+    '''   
+    contact = models.ForeignKey(User, blank=True, null=True)
+    members = models.ManyToManyField('people.Member', related_name="teams")    
     
 class CommerceGroup(Group):
     '''

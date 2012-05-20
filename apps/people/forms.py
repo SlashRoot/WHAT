@@ -1,12 +1,12 @@
 from django import forms
 
-from people.models import Role, Group
+from people.models import Role, Group, RoleInGroup, UserInGroup
 from utility.forms import AutoCompleteField
 
 from django.contrib.auth.models import User
         
 class UserInGroupForm(forms.Form):
-    user = AutoCompleteField(label="User", models=(User,))
+    user = AutoCompleteField(label="User", models=([User,'first_name'],))
     role = forms.ModelChoiceField(Role.objects.all())
     group = forms.ModelChoiceField(Group.objects.all())
     
@@ -24,8 +24,8 @@ class UserInGroupForm(forms.Form):
         except (KeyError, AttributeError), e:
             raise TypeError('You must validate this form before saving the underlying objects.')
         
-        role_in_group, is_new = RoleInGroup.objects.get_or_create(role=self.role, group=self.group)
-        role_in_group.users.add(user)
+        role_in_group, is_new = RoleInGroup.objects.get_or_create(role=role, group=group)
+        user_in_group = UserInGroup.objects.create(role=role_in_group, user=user)
         
         return is_new
 

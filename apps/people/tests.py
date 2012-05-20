@@ -53,7 +53,7 @@ class ProfileTests(TestCase):
         self.fail()
         
 class RoleFormTests(TestCase):
-    def test_that_form_posts_data(self):
+    def test_that_form_posts_data_and_redirects_to_confirmation_page(self):
         admin = User.objects.create(username="admin")
         admin.set_password('seamonkey')
         admin.save()
@@ -64,12 +64,15 @@ class RoleFormTests(TestCase):
         role = Role.objects.create(name="Sweeper")
         group = Group.objects.create(name="Reptile Monkey Massage INC.")
         
-        response = self.client.post('/people/role_form/', {'user':'auth.user_%s__admin' % admin.id, 'role':role, 'group':group})
+        response = self.client.post('/people/role_form/', {'user':'auth.user_%s__Jacob' % user.id, 'role':role.id, 'group':group.id})
     
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
+        
+        redirect_response = self.client.get('/people/awesome/')
+        self.assertEqual(redirect_response.status_code, 200)
         
         monkey_massage_sweepers = RoleInGroup.objects.get(role=role, group=group)
-        self.assertTrue(user in monkey_massage_sweepers.users.all() )
+        self.assertTrue(user in monkey_massage_sweepers.users.all())
         
         
         

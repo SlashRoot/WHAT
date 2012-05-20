@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 import json
 
@@ -22,7 +22,11 @@ def role_form(request):
             
         if user_in_group_form.is_valid():
             user_in_group_form.save()
+            return HttpResponseRedirect('/people/awesome/')
     else:
         user_in_group_form = UserInGroupForm()
         
     return render(request, 'people/role_form.html', locals())
+
+def awesome_o(request):
+    return render(request, 'people/awesome.html', locals())
