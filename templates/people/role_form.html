@@ -1,0 +1,7 @@
+{% extends 'brown_and_bubble_driven.html' %}
+
+{% block head %}<script type="text/javascript" src="coffee/role_form.coffee"><script>{% endblock %}
+<form action='/role_form/' method='post'>
+    {{user_in_group_form.as_ul}}
+    <button id="role-form" type="submit">Assimulate!</button>
+</form>
