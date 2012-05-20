@@ -1,5 +1,6 @@
 from django.db import models
-from people.models import Member
+from django.contrib.auth.models import User
+
 
 # Create your models here.
 class Task(models.Model):
@@ -8,7 +9,7 @@ class Task(models.Model):
     
 
 class Accomplishment(models.Model):
-    member=models.ForeignKey(Member)
+    member=models.ForeignKey(User)
     task=models.ForeignKey(Task)
     created=models.DateTimeField(auto_now_add=True)
     comments=models.CharField(max_length=200, null=True, blank=True)

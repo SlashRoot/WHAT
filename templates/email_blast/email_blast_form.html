@@ -1,0 +1,5 @@
+<form action='/blast_form/' method='post'>
+    {% csrf_token %}
+    {{form.as_ul}}
+    <button type='submit'> Blast Off!</button>
+</form>

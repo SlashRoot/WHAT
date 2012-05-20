@@ -4,7 +4,6 @@ from django.db.models.signals import pre_save
 from django.contrib.auth.models import User
 
 from commerce.models import TradeElement, RealThing
-from people.models import Member
 
 
 class IngredientInventoryIndex(models.Model):
@@ -140,7 +139,7 @@ class Beverage(Product): #Ethereal
     '''
     
     ingredients=models.ManyToManyField(Ingredient, related_name="products", blank=True, null=True)
-    inventor=models.ForeignKey(Member, blank=True, null=True)
+    inventor=models.ForeignKey(User, blank=True, null=True)
     directions=models.TextField(blank=True, null=True)
     #tags
         
@@ -160,7 +159,7 @@ class BeverageInstance(RealThing): #Literal
     cup = models.ForeignKey(Cup)
     ingredients = models.ManyToManyField('products.IngredientStock', blank=True, null=True)
     beverage = models.ForeignKey(Beverage)
-    barista = models.ForeignKey(Member)
+    barista = models.ForeignKey(User)
     
     def get_element(self):
         return self.beverage
