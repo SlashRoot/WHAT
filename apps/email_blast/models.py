@@ -1,6 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
-
 from people.models import Group, Role, RoleInGroup
 from django.core.mail import send_mail
 
@@ -34,4 +32,3 @@ class BlastMessage(models.Model):
     def send_blast(self):
         preparation_tuple = self.prepare()
         return send_mail(*preparation_tuple)
-        
