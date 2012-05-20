@@ -59,10 +59,10 @@ class Command(BaseCommand):
         
         #First of all, we're curious about whether this is a message sent to an object, in which case we're going to do something entirely different.
         subdomain=original_recipient_address.split('@')[1].split('.')[0]
-        if subdomain == "objects":
-            object_info = original_recipient_address.split('@')[0]
-            
-            
+        
+        #There may be a drier way to confirm that the user has an account.
+        #They do need one to send to blast or objects.
+        if subdomain == 'blast' or subdomain == 'objects':    
             try:
                 sender_user = User.objects.get(email = orig_sender)
             except User.DoesNotExist:
@@ -80,7 +80,30 @@ class Command(BaseCommand):
                     recipients.append('justin@justinholmes.com') #Send to Justin for debugging
                     for recipient in recipients:
                         send_mail(subject, body, sender, [recipient], fail_silently=False)
-            
+    
+        if subdomain == 'blasts':
+            group_name = original_recipient_address.split('__')[0]
+            role_name = original_recipient_address.split('__')[1]
+            try:
+                role_in_group = RoleInGroup.objects.get(group__name=group_name, role__name=role_name)
+                blast_message = BlastMessage.objects.create(subject=subject, message=message, role=role_in_group.role, group=role_in_group.group, creator=sender_user)
+                blast_message.prepare()
+                blast_message.send()
+                
+            except RoleInGroup.DoesNotExist:
+                recipients = []
+                    subject = 'No dice.'
+                    body = "It seems that there is no role in group with this name."
+                    sender = 'info@slashrootcafe.com'
+                    recipients.append(email['sender'])
+                    recipients.append('justin@justinholmes.com') #Send to Justin for debugging
+                    for recipient in recipients:
+                        send_mail(subject, body, sender, [recipient], fail_silently=False)
+                  
+        
+        if subdomain == "objects":
+            object_info = original_recipient_address.split('@')[0]
+
             #Well, we seem to have found a sender_user, so we are going to go ahead with this shindig here.
             #Before we do, let's parse the message and get rid of any old replies or signatures.
             message_lines = body.split('\n')

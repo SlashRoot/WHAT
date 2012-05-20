@@ -24,8 +24,8 @@ class BlastMessage(models.Model):
         users_in_group = role_in_group.users.all()
         user_emails = set()
         
-        for user_in_group in users_in_group:
-            user_emails.add(user_in_group.user.email)
+        for user in users_in_group:
+            user_emails.add(user.email)
         
         return user_emails
     
