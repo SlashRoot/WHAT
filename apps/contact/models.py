@@ -174,6 +174,9 @@ class MailHandler(models.Model):
     actions = models.ManyToManyField(MailHandlerAction, blank=True, null=True)
     users = models.ManyToManyField(User, blank=True, null=True)
     groups = models.ManyToManyField(Group, blank=True, null=True)
+    
+    def __unicode__(self):
+        return "'%s' mail handler" % self.address
 
 class MailMessage(models.Model):
     subject=models.TextField()

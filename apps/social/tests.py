@@ -1,12 +1,11 @@
-from django.test import TestCase
 from unittest import expectedFailure
 
+from django.test import TestCase
+from django.contrib.auth.models import User
+
 from do.tests import make_task_tree
-
 from social.models import DrawAttention, TopLevelMessage
-from django.contrib.auth.models import User, Group
-from people.models import GenericParty
-
+from people.models import GenericParty, Group
 import do.config
 from utility.tests import test_user_generic_party_factory
 
@@ -144,7 +143,7 @@ class GroupLog(TestCase):
         self.assertEqual(response.status_code, 403)
         
     def test_post_log_for_user_in_group_creates_new_group_log(self):
-        self.sender.groups.add(self.group)
+        self.sender.what_groups.add(self.group)
         self.client.login(username="sender", password="password")
         response = self.client.post('/social/log/group/test_group/', self.good_post_dict_for_group_log, follow=True)
         self.assertEqual(response.status_code, 200)

@@ -10,6 +10,8 @@ from email.Parser import Parser
 from django.contrib.auth.models import User
 from contact.models import MailHandler, MailMessage, AdditionalEmail
 from social.models import TopLevelMessage
+from people.models import RoleInGroup
+from email_blast.models import BlastMessage
 
 
 
@@ -62,7 +64,7 @@ class Command(BaseCommand):
         
         #There may be a drier way to confirm that the user has an account.
         #They do need one to send to blast or objects.
-        if subdomain == 'blast' or subdomain == 'objects':    
+        if subdomain == 'blasts' or subdomain == 'objects':    
             try:
                 sender_user = User.objects.get(email = orig_sender)
             except User.DoesNotExist:
@@ -80,49 +82,54 @@ class Command(BaseCommand):
                     recipients.append('justin@justinholmes.com') #Send to Justin for debugging
                     for recipient in recipients:
                         send_mail(subject, body, sender, [recipient], fail_silently=False)
+                    return False
     
-        if subdomain == 'blasts':
-            group_name = original_recipient_address.split('__')[0]
-            role_name = original_recipient_address.split('__')[1]
-            try:
-                role_in_group = RoleInGroup.objects.get(group__name=group_name, role__name=role_name)
-                blast_message = BlastMessage.objects.create(subject=subject, message=message, role=role_in_group.role, group=role_in_group.group, creator=sender_user)
-                blast_message.prepare()
-                blast_message.send()
-                
-            except RoleInGroup.DoesNotExist:
-                recipients = []
+            if subdomain == 'blasts':
+                blast_info = original_recipient_address.split('@')[0]
+                group_name_with_underscores = blast_info.split('__')[0]
+                group_name = group_name_with_underscores.replace('_', ' ')
+                role_name = blast_info.split('__')[1]
+                try:
+                    role_in_group = RoleInGroup.objects.get(group__name=group_name, role__name=role_name)
+                    blast_message = BlastMessage.objects.create(subject=subject, message=body, role=role_in_group.role, group=role_in_group.group, creator=sender_user)
+                    blast_message.prepare()
+                    blast_message.send_blast()
+                    
+                    return True
+                    
+                except RoleInGroup.DoesNotExist:
+                    recipients = []
                     subject = 'No dice.'
-                    body = "It seems that there is no role in group with this name."
+                    body = "There is no role called %s and / or group called %s." % (role_name, group_name)
                     sender = 'info@slashrootcafe.com'
                     recipients.append(email['sender'])
                     recipients.append('justin@justinholmes.com') #Send to Justin for debugging
                     for recipient in recipients:
                         send_mail(subject, body, sender, [recipient], fail_silently=False)
-                  
-        
-        if subdomain == "objects":
-            object_info = original_recipient_address.split('@')[0]
-
-            #Well, we seem to have found a sender_user, so we are going to go ahead with this shindig here.
-            #Before we do, let's parse the message and get rid of any old replies or signatures.
-            message_lines = body.split('\n')
-            message_text = "" #Start an empty string which we'll fill with the message text.
-            for line in message_lines:
-                if line[:2] == "--" or line[:1] == ">" or re.search(".*On.*(\\r\\n)?wrote:", line): #Let's see if the first two characters of the line are hyphens.
-                    #If so, we're going to ignore anything after this line.
-                    break #Since we have already found the end of the message, there's no need to keep iterating.
-                else:
-                    #We haven't hit the hyphens yet, so we'll add this line to the message.
-                    message_text += line + "\n"
-
-            app_name = object_info.split('.')[0]
-            model_name = object_info.split('.')[1]
-            object_id = object_info.split('.')[2]
-            Model=ContentType.objects.get(app_label=app_name, model=model_name.lower()).model_class()
-            object = Model.objects.get(id=object_id)            
-            top_level_message = TopLevelMessage.objects.create(content_object = object, creator=sender_user, message=message_text)
-            return True
+                      
+            
+            if subdomain == "objects":
+                object_info = original_recipient_address.split('@')[0]
+    
+                #Well, we seem to have found a sender_user, so we are going to go ahead with this shindig here.
+                #Before we do, let's parse the message and get rid of any old replies or signatures.
+                message_lines = body.split('\n')
+                message_text = "" #Start an empty string which we'll fill with the message text.
+                for line in message_lines:
+                    if line[:2] == "--" or line[:1] == ">" or re.search(".*On.*(\\r\\n)?wrote:", line): #Let's see if the first two characters of the line are hyphens.
+                        #If so, we're going to ignore anything after this line.
+                        break #Since we have already found the end of the message, there's no need to keep iterating.
+                    else:
+                        #We haven't hit the hyphens yet, so we'll add this line to the message.
+                        message_text += line + "\n"
+    
+                app_name = object_info.split('.')[0]
+                model_name = object_info.split('.')[1]
+                object_id = object_info.split('.')[2]
+                Model=ContentType.objects.get(app_label=app_name, model=model_name.lower()).model_class()
+                target_object = Model.objects.get(id=object_id)            
+                TopLevelMessage.objects.create(content_object = target_object, creator=sender_user, message=message_text)
+                return True
         else:
             #Nope, this is just a message to a user / group / handler (ie, not directly to an object).
             #Let's save the message object now.

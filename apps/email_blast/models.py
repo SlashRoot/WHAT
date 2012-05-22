@@ -1,6 +1,7 @@
 from django.db import models
 from people.models import Group, Role, RoleInGroup
 from django.core.mail import send_mail
+from django.core.mail.message import EmailMessage
 
 
 class BlastMessage(models.Model):
@@ -15,6 +16,9 @@ class BlastMessage(models.Model):
     creator = models.ForeignKey('auth.User', related_name='blasts_sent')
     created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     sent = models.DateTimeField(auto_now=True, blank=True, null=True)
+    
+    def get_email_address(self):
+        return "%s__%s@blasts.slashrootcafe.com" % (self.group.name, self.role.name) #TODO: Unhardcode slashrootcafe.com?
     
     def prepare(self):
         return self.subject, self.message, self.creator.email, self.populate_targets()
@@ -31,4 +35,5 @@ class BlastMessage(models.Model):
     
     def send_blast(self):
         preparation_tuple = self.prepare()
-        return send_mail(*preparation_tuple)
+        blast_email_object = EmailMessage(*preparation_tuple, headers = {'Reply-To': self.get_email_address()})
+        return blast_email_object.send()
