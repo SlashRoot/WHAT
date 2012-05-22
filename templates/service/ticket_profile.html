@@ -70,156 +70,156 @@ $(function(){
             <div class="fivecol">
                 
                 {# OWNERSHIP #}
-                <div class="tanRounded normal">                
-                        <div class="tanRounded" id="taskOwnership">
-                            {% if task.ownership.count %}
-                                <h2>Owners</h2>
-                                <ul>
-                                    {% for ownership in task.ownership.all %}
-                                        <li>{{ownership.owner}}</li>
-                                    {% endfor %}
-                                </ul>
-                            {% else %}
-                                <h2>Unclaimed Task</h2>
+                <div class="tanRounded normal the99Percent">                
+                    <div class="tanRounded" id="taskOwnership">
+                        {% if task.ownership.count %}
+                            <h2>Owners</h2>
+                            <ul>
+                                {% for ownership in task.ownership.all %}
+                                    <li>{{ownership.owner}}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <h2>Unclaimed Task</h2>
+                        {% endif %}
+                        
+                        {% if task|task_is_owned_by_user:user %}
+                            <button href="javascript:;" url="/do/disown_task/{{task.id}}/" class="submitViaAjax">
+                                Disown this task
+                        {% else %}
+                            <button href="javascript:;" url="/do/own_task/{{task.id}}/" class="submitViaAjax">
+                                Own this task    
+                        {% endif %}
+                            </button>
+                    </div>
+                </div>
+                        
+                {# PROGENY #}
+                <div class="tanRounded normal left the99Percent">
+                
+                    {# Parents #}
+                    <div class="tanRounded normal left paddedWidth">
+                            <h2>Parents</h2>
+                            {% for progeny in task.parents.all %}
+                                <a href="{{progeny.parent.get_absolute_url}}">{{progeny.parent}}</a>
+                            {% empty %}
+                                <h4>No Parents</h4>
+                            {% endfor %}
+                    </div>
+                
+                    {# Children #}
+                    <div class="tanRounded normal left paddedWidth">
+                        <h2>Children</h2>
+                        <ul>
+                            {% for progeny in task.open_children %}
+                                {% with task=progeny.child %}
+                                    {% include 'do/task_box.html' %}
+                                {% endwith %}
+                            {% endfor %}
+                            
+                            {% for progeny in task.closed_children %}
+                                <li class="strikeOut">
+                                    <a href="{{progeny.child.get_absolute_url}}">{{progeny.child}}</a>
+                                </li>
+                            {% endfor %}
+                            
+                            {% if task.children.count == 0 %}
+                                <h4>No children.</h4>
                             {% endif %}
                             
                             {% if task|task_is_owned_by_user:user %}
-                                <button href="javascript:;" url="/do/disown_task/{{task.id}}/" class="submitViaAjax">
-                                    Disown this task
-                            {% else %}
-                                <button href="javascript:;" url="/do/own_task/{{task.id}}/" class="submitViaAjax">
-                                    Own this task    
-                            {% endif %}
+                                <button class="navButton" shows="addChildForm">
+                                    Add a Child Task
                                 </button>
-                        </div>
-                  </div>
-                        
-                        {# PROGENY #}
-                        <div class="tanRounded normal left fullWidth">
-                        
-                            {# Parents #}
-                            <div class="tanRounded normal left">
-                                    <h2>Parents</h2>
-                                    {% for progeny in task.parents.all %}
-                                        <a href="{{progeny.parent.get_absolute_url}}">{{progeny.parent}}</a>
-                                    {% empty %}
-                                        <h4>No Parents</h4>
-                                    {% endfor %}
-                            </div>
-                        
-                            {# Children #}
-                            <div class="tanRounded normal left">
-                                <h2>Children</h2>
-                                <ul>
-                                    {% for progeny in task.open_children %}
-                                        {% with task=progeny.child %}
-                                            {% include 'do/task_box.html' %}
-                                        {% endwith %}
-                                    {% endfor %}
-                                    
-                                    {% for progeny in task.closed_children %}
-                                        <li class="strikeOut">
-                                            <a href="{{progeny.child.get_absolute_url}}">{{progeny.child}}</a>
-                                        </li>
-                                    {% endfor %}
-                                    
-                                    {% if task.children.count == 0 %}
-                                        <h4>No children.</h4>
-                                    {% endif %}
-                                    
-                                    {% if task|task_is_owned_by_user:user %}
-                                        <button class="navButton" shows="addChildForm">
-                                            Add a Child Task
-                                        </button>
-                                        <div class="hidden tanRounded left" set="addChildForm">
-                                            <form enctype="multipart/form-data" id="task_prototype_form" action="/do/task_form_handler/" method="post">
-                                                <input type="hidden" value="{{task.id}}" name="parentIdIpsoFacto">
-                                                {% include 'do/inner_task_prototype_form.html' %}
-                                            </form>
-                                        </div>
-                                    {% else %}
-                                        (Own this task to Add Child Tasks)
-                                    {% endif %}                                           
-                                </ul>
-                           </div>
-                           
-                        </div>
-                        
-                        {# RELATED OBJECTS #}
-                        {% for relationship in task.related_objects.all %}
-                            {# TODO: Make this generic instead of assuming that the related object is a phone call#}
-                            
-                            {% with template=relationship.object|show_related_object %}
-                                {% include template %}
-                            {% endwith %}
+                                <div class="hidden tanRounded left" set="addChildForm">
+                                    <form enctype="multipart/form-data" id="task_prototype_form" action="/do/task_form_handler/" method="post">
+                                        <input type="hidden" value="{{task.id}}" name="parentIdIpsoFacto">
+                                        {% include 'do/inner_task_prototype_form.html' %}
+                                    </form>
+                                </div>
+                            {% else %}
+                                (Own this task to Add Child Tasks)
+                            {% endif %}                                           
+                        </ul>
+                    </div>
+                   
+                </div>{# END PROGENY #}
+                
+                {# RELATED OBJECTS #}
+                {% for relationship in task.related_objects.all %}
+                    {# TODO: Make this generic instead of assuming that the related object is a phone call#}
+                    
+                    {% with template=relationship.object|show_related_object %}
+                        {% include template %}
+                    {% endwith %}
 
+                {% endfor %}
+                
+                {% if has_outgoing_call %}
+                    <div class="tanRounded normal left">
+                        <h3>
+                            <a href="/comm/review_calls_with_user/{{related_user.id}}/">Review Calls with {{call_to_name}}</a>
+                        </h3>
+                        
+                        <h3>
+                            {% for phone_number in phone_numbers %}
+                                <a href="/comm/outgoing_call_menu/?phone_number={{phone_number.id}}">Place Call to {{call_to_name}})</a>
+                            {% endfor %}
+                        </h3>
+                    
+                        {# Twilio Client #}
+                    
+                        <script type="text/javascript" src="http://static.twilio.com/libs/twiliojs/1.0/twilio.js"></script>
+                        
+                        <script type="text/javascript">
+                        
+                            $(function(){ 
+                            
+                            Twilio.Device.setup("{{capability.generate}}");
+                            
+                            Twilio.Device.ready(function(device){
+                                                                 $('#log').text('ready');
+                                                                 })
+                            
+                            Twilio.Device.error(function(error){
+                                                                $('#log').text('Error: ' + error.message);
+                                                                })
+                            
+                            Twilio.Device.connect(function(conn){
+                                                                 $('#log').text("Successfully established call")    
+                                                                 })
+                            
+                            Twilio.Device.incoming(function (conn) {
+                                                                    $("#log").text("Incoming connection from " + conn.parameters.From);
+                                                                    // accept the incoming connection and start two-way audio
+                                                                    conn.accept();
+                                                                    });
+                            
+                            
+                                                                    });
+                            
+                            function call(id) {
+                                               params = { "SuperLlama" : id };
+                                               Twilio.Device.connect(params);
+                                               }
+                        
+                        </script>
+                        
+                        <div id="log"></div>
+                        
+                        <h3>Call via Browser Client</h3>
+                        
+                        {% for phone_number in phone_numbers %}
+                        
+                            <button class="call" onclick="call({{phone_number.id}});">
+                            Call {{phone_number.type}}
+                            </button>
+                            
                         {% endfor %}
                         
-                        {% if has_outgoing_call %}
-                            <div class="tanRounded normal left">
-                                <h3>
-                                    <a href="/comm/review_calls_with_user/{{related_user.id}}/">Review Calls with {{call_to_name}}</a>
-                                </h3>
-                                
-                                <h3>
-                                    {% for phone_number in phone_numbers %}
-                                        <a href="/comm/outgoing_call_menu/?phone_number={{phone_number.id}}">Place Call to {{call_to_name}})</a>
-                                    {% endfor %}
-                                </h3>
-                            
-                                {# Twilio Client #}
-                            
-                                <script type="text/javascript" src="http://static.twilio.com/libs/twiliojs/1.0/twilio.js"></script>
-                                
-                                <script type="text/javascript">
-                                
-                                    $(function(){ 
+                    </div>
+                {% endif %}     
                                     
-                                    Twilio.Device.setup("{{capability.generate}}");
-                                    
-                                    Twilio.Device.ready(function(device){
-                                                                         $('#log').text('ready');
-                                                                         })
-                                    
-                                    Twilio.Device.error(function(error){
-                                                                        $('#log').text('Error: ' + error.message);
-                                                                        })
-                                    
-                                    Twilio.Device.connect(function(conn){
-                                                                         $('#log').text("Successfully established call")    
-                                                                         })
-                                    
-                                    Twilio.Device.incoming(function (conn) {
-                                                                            $("#log").text("Incoming connection from " + conn.parameters.From);
-                                                                            // accept the incoming connection and start two-way audio
-                                                                            conn.accept();
-                                                                            });
-                                    
-                                    
-                                                                            });
-                                    
-                                    function call(id) {
-                                                       params = { "SuperLlama" : id };
-                                                       Twilio.Device.connect(params);
-                                                       }
-                                
-                                </script>
-                                
-                                <div id="log"></div>
-                                
-                                <h3>Call via Browser Client</h3>
-                                
-                                {% for phone_number in phone_numbers %}
-                                
-                                    <button class="call" onclick="call({{phone_number.id}});">
-                                    Call {{phone_number.type}}
-                                    </button>
-                                    
-                                {% endfor %}
-                                
-                            </div>
-                        {% endif %}     
-                                        
                 </div> {# End of Left Column #}
                     
                 <div class="sevencol last">

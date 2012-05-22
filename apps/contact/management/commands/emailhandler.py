@@ -13,8 +13,6 @@ from social.models import TopLevelMessage
 from people.models import RoleInGroup
 from email_blast.models import BlastMessage
 
-
-
 #Payload is potentially more complex than meets the eye.
 
 def get_first_text_part(msg):
@@ -35,8 +33,7 @@ def get_first_text_part(msg):
 class Command(BaseCommand):
  
     def handle(self, *args, **options):
-
-        p=Parser()
+        p = Parser()
         
         #Parse the email from standard input
         

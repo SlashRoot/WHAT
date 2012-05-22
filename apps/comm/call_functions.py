@@ -19,6 +19,8 @@ from people.models import UserProfile
 from django.contrib.auth.decorators import permission_required
 from comm.services import place_deferred_outgoing_conference_call
 from django.db.models.signals import post_save
+import datetime
+import re
 
 RESOLVE_PHONE_CALL = "TaskPrototype__resolve_phone_call" #TODO: There is an instance of this string in views.py.  Dehydrate.
 ANSWER_PHONE_CALLS_PRIVILEGE = 3
@@ -56,10 +58,19 @@ def get_or_create_nice_number(incoming_number):
     '''
     A wrapper over get_or_create for a PhoneNumber object.  Gets or Creates a new PhoneNumber from various formats.
     '''
-    if incoming_number[0] == "+": #Does this number have a country code?
-        phone_number = incoming_number
-    else:#No country code.  We'll assume it's 1.
-        phone_number = "+1" + str(incoming_number)
+    number_as_list = re.findall(r"[0-9]", incoming_number) #No matter the format, grab only the numbers.
+    
+    #An unknown caller will produce a completely blank number.
+    if not number_as_list:
+        return PhoneNumber.objects.get_blank_number()
+    
+    if number_as_list[0] == '1': #If the first digit is a 1, we'll just pop it off.
+        number_as_list.pop(0)
+    if not len(number_as_list) == 10: #Now we expect to have exactly ten digits.
+        raise TypeError("I wasn't able to discern exactly ten digits from the phone number you gave me.  It was %s" % incoming_number)
+    incoming_number = ''.join(number_as_list) #Now our incoming number is properly formatted.
+
+    phone_number = "+1" + str(incoming_number)
     nice_number = phone_number[2:5] + "-" + phone_number[5:8] + "-" + phone_number[8:] #parse the number to look like django wants it: ex. 845-633-8330
     phone_number_object, new = PhoneNumber.objects.get_or_create(number = nice_number)
     return phone_number_object, new
@@ -124,6 +135,10 @@ def call_object_from_call_info(call_info):
         CommunicationInvolvement.objects.create(person=phone_numbers['recipient'].owner.userprofile.user, communication=call, direction="to")
     except (UserProfile.DoesNotExist, AttributeError): #Either the owner is None or the UserProfile doesn't exist.
         pass
+    
+    #If this this is the first time we've seen the call marked completed, we'll set the ended date.
+    if call_info['status'] == 'completed' and not call.ended:
+        call.ended = datetime.datetime.now()
 
     return call
 
@@ -141,16 +156,20 @@ def proper_verbage_for_final_call_connection(call, response_object, announce_cal
     '''
     Dehydration function for language to speak to picker-upper of a phone call.
     
+    announce_caller is defaulted to true here to let the answerer know who is calling...lets fix the issue that requires this to be true.
+    
     Takes a call and a generic response, appends the response with the appropriate say.
     Returns True on success.
     '''
     final_warning = 'Connected. ' #Start constructing the final message to be delivered to the answerer.
+    
     if announce_caller:
         final_warning += call.announce_caller()
-    current_participants = call.participants.all()
-    if current_participants:
+        
+    current_participants = call.participants.filter(direction="to")
+    if current_participants: #If there are current participants, we want to make that clear to the answerer.
         final_warning += 'Also on the call:'
-        for participant in call.participants.filter(direction="to"):
+        for participant in current_participants:
             final_warning += str(participant.person.first_name) + ','                
         voice = "Victor"
     else:

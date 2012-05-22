@@ -111,12 +111,12 @@ CORE_APPS = (
     'django.contrib.flatpages',
     'django.contrib.admindocs',
     'django.contrib.humanize',
-    'django_coverage',
 )
 
 PACKAGED_APPS = (
      'south',
      'taggit',
+     #'django_coverage',
      #'debug_toolbar',
      #'haystack',
 )

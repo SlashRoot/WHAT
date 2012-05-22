@@ -63,16 +63,16 @@ def answer(request, this_is_only_a_test=False):
     call_info = standardize_call_info(request, provider=provider)
     call = call_object_from_call_info(call_info) #Identify the call, saving it as a new object if necessary.
     
-    
-    r.say(SLASHROOT_EXPRESSIONS['public_greeting'], voice=random_tropo_voice()) #Greet them.
-    
-    r.conference_holding_pattern(call.call_id, call.from_number, "http://hosting.tropo.com/97442/www/audio/mario_world.mp3") #TODO: Vary the hold music
-    
-    dial_list = DialList.objects.get(name="SlashRoot First Dial")
-    
-    if not this_is_only_a_test:
-        #if it is only a test users' phones will not ring
-        reactor.callFromThread(place_conference_call_to_dial_list, call.id, dial_list.id) #Untested because it runs in twisted. TOOD: Ought to take a DialList as an argument
+    if not call.ended:
+        r.say(SLASHROOT_EXPRESSIONS['public_greeting'], voice=random_tropo_voice()) #Greet them.
+        
+        r.conference_holding_pattern(call.call_id, call.from_number, "http://hosting.tropo.com/97442/www/audio/mario_world.mp3") #TODO: Vary the hold music
+        
+        dial_list = DialList.objects.get(name="SlashRoot First Dial")
+        
+        if not this_is_only_a_test:
+            #if it is only a test users' phones will not ring
+            reactor.callFromThread(place_conference_call_to_dial_list, call.id, dial_list.id) #Untested because it runs in twisted. TOOD: Ought to take a DialList as an argument
 
     return r.render()
 
@@ -158,7 +158,8 @@ def pickup_connect(request, number_id, call_id, connect_regardless=False):
 
         
     if connect_regardless or affirmative_consent:
-        proper_verbage_for_final_call_connection(call, r) #Appends the appropriate say to the response
+        announce_caller = bool(connect_regardless) #If we're connecting regardless, let's assume we haven't yet heard whom the caller is.
+        proper_verbage_for_final_call_connection(call, r, announce_caller) #Appends the appropriate say to the response
         
         if not call.has_begun():
             r.join_and_begin_conference(conference_id = call.call_id, number=answerer_number)
@@ -243,7 +244,7 @@ def transcription_handler(request, object_type, id):
 @csrf_exempt
 def recording_handler(request, object_type, id):
     '''
-    Handles the mp3 file, send by tropo in the request.
+    Handles audio files sent by VOIP providers.
     '''
     provider, r = get_provider_and_response_for_request(request)
     #First we'll save the MP3 file.
@@ -257,6 +258,11 @@ def recording_handler(request, object_type, id):
         recording_object = PhoneCallRecording.objects.create(call=call)
     
     recording_object.audio_file = file.name
+    
+    #COUPLED TO TWILIO.  TODO: Fix.
+    if provider.name == "Twilio":
+        recording_object.url = request.POST['RecordingUrl']
+    
     recording_object.save()
     
     return r.render()
@@ -329,7 +335,7 @@ def watch_calls(request):
 @permission_required('comm.change_phonecall')
 def resolve_calls(request):
     resolve_protoype = FixedObject.objects.get(name="TaskPrototype__resolve_phone_call").object #SOGGY AND DISGUSTING.  Too many instaces of this string.
-    tasks = resolve_protoype.instances.filter(status__lt=2).order_by('created').exclude(id=2686)
+    tasks = resolve_protoype.instances.filter(status__lt=2).order_by('created').exclude(id=2686)[:20]
     return render(request, 'comm/resolve_calls.html', locals() )
 
 @permission_required('comm.change_phonecall')
@@ -375,7 +381,6 @@ def voicemail(request):
     task = call.resolve_task()
     task.tags.add("voicemail")
         
-    #TODO: Find the task for this call and tag it.
     prompt = 'No SlashRoot member is available to answer your call right now.  Please leave a message and a SlashRoot member will return your call.'
     r.prompt_and_record(call_id=call.id, recording_object = voicemail_recording, format="audio/mp3", url="", transcribe=True, prompt=prompt)
     return r.render()
