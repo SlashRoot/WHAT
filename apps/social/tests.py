@@ -1,12 +1,11 @@
-from django.test import TestCase
 from unittest import expectedFailure
 
+from django.test import TestCase
+from django.contrib.auth.models import User
+
 from do.tests import make_task_tree
-
 from social.models import DrawAttention, TopLevelMessage
-from django.contrib.auth.models import User, Group
-from people.models import GenericParty
-
+from people.models import GenericParty, Group, UserInGroup, Role, RoleInGroup
 import do.config
 from utility.tests import test_user_generic_party_factory
 
@@ -116,7 +115,7 @@ class GroupLog(TestCase):
     
     
     def setUp(self):
-        setUp_users_for_messages(self)
+        self.users = setUp_users_for_messages(self)
                 
         self.group = Group.objects.create(name='test_group')
         self.group_party = GenericParty.objects.get(party=self.group)     
@@ -128,8 +127,13 @@ class GroupLog(TestCase):
 
     def test_read_log_for_user_not_in_group_returns_403(self):
         group = Group.objects.create(name='billysbobs')
+#        role = Role.objects.create(name="Dingo Keeper")
+#        role_in_group = RoleInGroup.objects.create(role=role, group=group)
+#        UserInGroup.objects.create(role=role_in_group, user=self.sender)
+        
         self.client.login(username="sender", password="password")
         response = self.client.get('/social/log/group/billysbobs/')
+        
         self.assertEqual(response.status_code, 403)
         
     def test_read_log_for_user_non_existant_group_returns_404(self):
@@ -144,7 +148,8 @@ class GroupLog(TestCase):
         self.assertEqual(response.status_code, 403)
         
     def test_post_log_for_user_in_group_creates_new_group_log(self):
-        self.sender.groups.add(self.group)
+        member = Role.objects.create(name="member")
+        UserInGroup.objects.create(user=self.sender, role=RoleInGroup.objects.create(role=member, group=self.group))
         self.client.login(username="sender", password="password")
         response = self.client.post('/social/log/group/test_group/', self.good_post_dict_for_group_log, follow=True)
         self.assertEqual(response.status_code, 200)

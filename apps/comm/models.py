@@ -36,6 +36,9 @@ class CommunicationInvolvement(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     destroyed = models.DateTimeField(blank=True, null=True)
     
+    def __unicode__(self):
+        return "%s %s %s" %(self.person.username, self.direction, self.communication)
+    
     def get_absolute_url(self):
         pass
     
@@ -62,8 +65,7 @@ class CommunicationInvolvement(models.Model):
             return "%s answered " % (self.person.userprofile.user.first_name)
         if self.direction == "from":
             return "%s called " % (self.person.userprofile.user.first_name)
-            
-            
+        
 class PhoneCall(Communication):
     '''
     This model is loosely based on a twilio phone call HTTP request, which is explained here:

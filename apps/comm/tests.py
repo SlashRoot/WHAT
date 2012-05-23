@@ -1,3 +1,46 @@
+'''
+The comm tests are quite different in a number of ways from the tests in the other apps of the WHAT.
+This will be obvious even for the casual reader.
+
+The reason for this stark distinction - in style and substance - speaks to the very nature of this app.
+The comm app is about communication - outreach to another party.
+This necessaties a venture into the unknown.
+
+It means that we can't always know how the other party will respond.
+We can't always know that our response is handled gracefully.
+We can't always know what kind of request will even be made.
+
+None of this is terribly new - developers have dealt with foreign APIs, whether or not they were called that - for a long time.
+We deal with this situation in a typical and predictable way - by mocking the API calls of the services that we use.
+
+There is some debate about whether or not, as such this necessarily means that our tests have ceased to be one or another kind of test.
+
+Are they unit tests?
+Are they TDD tests?
+Are they integration tests?
+
+These questions, frankly, are rather sophomoric.
+
+The real questions are:
+
+Do these tests cover the fundamental pieces of logic that are prone to either success or failure?
+Do these tests depict a reality which is likely to occur, given the services that we have chosen to use?
+Do these tests cause greater ease in developing new features?
+Do these tests cause greater likelihood of bug-freedom?
+
+Each test here meets - at least - the following criterion:
+It depicts a situation or scenario that some human being may encounter when her desire is to communicate with - or hear from - some other human being.
+
+All of this communication is regulated by electronic media, from the utterly synchronous (ie, a phone call), to the delayed (a voicemail).
+
+Additionally, each situation or scenario needs to be tested in light of several different service providers, each with their own API.
+The APIs that the various service providers use betray an underlying philosophy about how (and sometimes why) human communication occurs.
+
+We need to test each demonstrable coherent underlying philosophy.
+This is generally not so with the other apps - this is likely the most difficult testing challenge we face in the WHAT.
+
+'''
+
 from django.test import TestCase
 
 from comm.comm_settings import SLASHROOT_EXPRESSIONS
@@ -18,7 +61,7 @@ from django.contrib.auth.models import User
 from unittest import expectedFailure
 
 from comm.services import find_command_in_tropo_command_list,\
-    standardize_call_info
+    standardize_call_info, find_command_in_twilio_response
 
 from comm.call_functions import call_object_from_call_info,\
     place_conference_call_to_dial_list
@@ -27,6 +70,7 @@ from comm.sample_requests import *
 
 from taggit.models import Tag
 from django.utils.unittest.case import _UnexpectedSuccess
+from private import resources
 
 
 PHONE_NUMBER_ID_TO_TEST = 2
@@ -72,6 +116,7 @@ def prepare_testcase_for_answer_tests(testcase):
     testcase.tropo_interpretation_of_conference_id = tropo_join_conference_command['on']['next'].split('/')[3] #Turn the list into a dict - we know there's only one conference verb.
     
     testcase.tropo_call_id = PhoneCall.objects.get(call_id = testcase.tropo_interpretation_of_conference_id).id #We need the actual ID of the phone call, and it's not clear from the dict.  This is basically a short cut. 
+    testcase.twilio_call_id = PhoneCall.objects.get(call_id = testcase.twilio_interpretation_of_conference_id).id
     
     return testcase.twilio_interpretation_of_conference_id, testcase.tropo_interpretation_of_conference_id
 
@@ -182,24 +227,36 @@ class CallerInitialExperience(TestCase):
         
     def test_twilio_answer_second_command_dial(self):
         '''
-        Test that the second very in the response is "Dial"
+        Test that the second verb in the response is "Dial"
         '''
         self.assertEqual(self.twilio_response_object.verbs[1].name, "Dial")
         
     def test_twilio_answer_dial_into_conference(self):
         self.assertEqual(self.twilio_response_object.verbs[1].verbs[0].name, "Conference")
-        
+    
+    @expectedFailure
+    def test_twilio_greeting(self):  
+        self.fail()
+          
     def test_tropo_greeting(self):
         commands_list = self.tropo_response_dict['tropo']
         first_command = commands_list[0]
         self.assertEqual(first_command.items()[0][0], 'say') #This is in fact a say command.
         self.assertEqual(first_command.items()[0][1]['value'], SLASHROOT_EXPRESSIONS['public_greeting']) #The say expression is the appropriate one for an unknown caller.
-        
-    def test_hold_music(self):
+    
+    @expectedFailure
+    def test_twilio_hold_music(self):
+        self.fail()
+            
+    def test_tropo_hold_music(self):
         commands_list = self.tropo_response_dict['tropo']
         command = find_command_in_tropo_command_list(commands_list, command_name="say", occurance=1)
         self.assertTrue('mp3' in command['say']['value'], msg="The say command for hold music was not an mp3 file.")
         
+    @expectedFailure
+    def test_twilio_hold_music_allows_stop_signal(self):
+        self.fail()
+            
     def test_tropo_hold_music_allows_stop_signal(self):
         '''
         That the hold music does allow itself to be interuppted by the "joinConference" signal.
@@ -209,7 +266,11 @@ class CallerInitialExperience(TestCase):
         
         self.assertTrue(command) #If the command exists, we're good for this test.
     
-    def test_join_conference(self):
+    @expectedFailure
+    def test_twilio_join_conference(self):
+        self.fail()
+        
+    def test_tropo_join_conference(self):
         '''
         That the method to which users are directed does in fact result in the conference being joined.
         '''
@@ -225,7 +286,7 @@ class CallerInitialExperience(TestCase):
         command_to_join_conference['conference']['id']
         
         self.assertTrue(command_to_join_conference['conference']['id'] in url, "The join conference function did not cause the caller to join the conference specified in the url")
-
+        
     def test_tropo_record_command_is_issued(self):
         commands_list = self.tropo_response_dict['tropo']
         command = find_command_in_tropo_command_list(commands_list, signal_on='joinConference')
@@ -243,7 +304,7 @@ class CallerInitialExperience(TestCase):
             record_command_value = self.twilio_response_object.verbs[1].attrs['record']
             self.assertEqual(record_command_value, True, msg="The record command was issued, but was not set to True.")
         except KeyError:    
-            self.fail("record was not in the dictionary")        
+            self.fail()("record was not in the dictionary")        
         
         
 class CallBlastsToPotentialPickerUppers(TestCase):
@@ -256,8 +317,12 @@ class CallBlastsToPotentialPickerUppers(TestCase):
         self.dial_list = DialList.objects.create(name='test_dial_list')
         DialListParticipation.objects.create(number=PhoneNumber.objects.all()[0], list=self.dial_list)
         DialListParticipation.objects.create(number=PhoneNumber.objects.all()[1], list=self.dial_list)
-        
-    def test_that_call_is_placed_from_blast_function(self):
+    
+    @expectedFailure
+    def test_that_twilio_call_is_placed_from_blast_functions(self):
+        self.fail()
+            
+    def test_that_tropo_call_is_placed_from_blast_function(self):
         '''
         Tests that an outgoing call request is properly placed in response to a tropo rest request to our outgoing call app. 
         '''
@@ -265,9 +330,13 @@ class CallBlastsToPotentialPickerUppers(TestCase):
         command = find_command_in_tropo_command_list(commands_list, command_name="call")
         self.assertTrue(command)
     
-    def test_tropo_that_alert_pickup_is_called_on_success(self):
+    @expectedFailure
+    def test_that_twilio_alert_pickup_is_called_on_success(self):
+        self.fail()
+                
+    def test_that_tropo_alert_pickup_is_called_on_success(self):
         '''
-        
+        wtf is with this empty ass doc string! RACHEL!
         '''
         commands_list = self.tropo_blast_response_dict['tropo']
         
@@ -289,15 +358,19 @@ class CallBlastsToPotentialPickerUppers(TestCase):
         
         self.assertEqual(actual_url, proper_url, "The pickup alert was not triggered upon successful pickup or it was directed at the wrong URL.")
     
-    def test_green_phone_gets_confirmation_bypass(self):
+    @expectedFailure
+    def test_twilio_green_phone_gets_confirmation_bypass(self):
+        self.fail()
+    
+    def test_tropo_green_phone_gets_confirmation_bypass(self):
         '''
-        That phones marked green_phone qualify for a confirmation bypass.  This does not test that the confirmation bypass actual does anything.
+        That phones marked house_phone qualify for a confirmation bypass.  This does not test that the confirmation bypass actual does anything.
         '''
         modified_tropo_request_dict = json.loads(self.modified_tropo_request) #Grab the JSON request as a dict.
         modified_tropo_request_dict['session']['parameters']['green_phone'] = True
-        tropo_request_dict_with_green_phone = json.dumps(modified_tropo_request_dict)
+        tropo_request_dict_with_house_phone = json.dumps(modified_tropo_request_dict)
         
-        green_outgoing_call_request = FakeRequest(tropo_request_dict_with_green_phone)
+        green_outgoing_call_request = FakeRequest(tropo_request_dict_with_house_phone)
         green_tropo_blast_response = conference_blast(green_outgoing_call_request)
         green_tropo_blast_response_dict = json.loads(green_tropo_blast_response.content)
         
@@ -314,6 +387,10 @@ class CallBlastsToPotentialPickerUppers(TestCase):
                 continue #Nothing here.  Try the next entry.
                     
         self.assertTrue('pickup_connect_auto' in actual_url)
+    
+    @expectedFailure
+    def test_twilio_conference_call_to_dial_list(self):
+        self.fail()    
         
     def test_tropo_conference_call_to_dial_list(self):
         '''
@@ -333,11 +410,22 @@ class PickingUpTheCall(TestCase):
     def tearDown(self):
         teardown_testcase_for_pickup_tests(self)
         
-    
-    def test_pickup_call_from_unknown_caller_200(self):
+    @expectedFailure
+    def test_twilio_pickup_call_from_unknown_caller_200(self):
+        self.fail()
+        
+    def test_tropo_pickup_call_from_unknown_caller_200(self):
         self.assertEqual(self.tropo_pickup_response.status_code, 200)
-            
-    def test_pickup_call_from_unknown_caller(self):
+    
+    def test_twilio_pickup_call__first_answerer_bypass_from_unknown_caller(self):
+        phone_call = PhoneCall.objects.get(call_id = self.twilio_interpretation_of_conference_id)
+        number_to_call = PhoneNumber.objects.filter(owner__isnull=False)[0]
+        
+        phone_call.participants.all().delete()
+        
+        self.client.post('/comm/pickup_connect_auto/%s/%s/' % (number_to_call.id, phone_call.id), TYPICAL_TWILIO_PICKUP_BYPASS_REQUEST )
+                
+    def test_tropo_pickup_call_from_unknown_caller(self):
         '''
         That the appropriate phrase is expressed to someone who picks up a call from an unknown caller.
         '''
@@ -346,8 +434,12 @@ class PickingUpTheCall(TestCase):
         self.assertEqual(first_command.items()[0][0], 'ask') #This is in fact a say command.
         what_we_told_them = what_we_told_them = first_command.items()[0][1]['say']['value']
         self.assertEqual(what_we_told_them, SLASHROOT_EXPRESSIONS['unknown_caller']) #The say expression is the appropriate one for an unknown caller.
-        
-    def test_pickup_call_from_known_caller(self):
+    
+    @expectedFailure
+    def test_twilio_pickup_call_from_known_caller(self):
+        self.fail()
+            
+    def test_tropo_pickup_call_from_known_caller(self):
         #Get the phone number that just called.
         tropo_phone_call = PhoneCall.objects.filter(service = self.tropo_provider)[0] #TODO: Separate logic from other tests.
         tropo_phone_call.from_number.owner = ContactInfo.objects.create()
@@ -385,13 +477,21 @@ class PickingUpTheCall(TestCase):
         '''
         self.fail()
     
-    def test_pickup_call_with_no_other_participants(self):
+    @expectedFailure
+    def test_twilio_pickup_call_with_no_other_participants(self):
+        self.fail()
+        
+    def test_tropo_pickup_call_with_no_other_participants(self):
         '''
         That a call with no other participants doesn't list any participants.
         '''
         commands_list = self.tropo_pickup_response_dict['tropo']
         self.assertFalse({u'say': {u'value': SLASHROOT_EXPRESSIONS['participants_list_phrase']}} in commands_list, msg="Even though there were no call participants, the call lists the participants.")
     
+    @expectedFailure
+    def test_twilio_pickup_call_with_other_partcipations(self):
+        self.fail()
+        
     def test_tropo_pickup_call_with_other_participants(self):
         '''
         Several phases to this test:
@@ -421,6 +521,10 @@ class PickingUpTheCall(TestCase):
         
         self.assertEqual(what_we_hope_they_heard, what_they_actually_heard, "The answerer of the call was not told who has already picked up the call.")
 
+    @expectedFailure
+    def test_twilio_additional_answerers_are_listed(self):
+        self.fail()
+        
     def test_tropo_additional_answerers_are_listed(self):
         '''
         Additional current callers, rather than "you are the first," are listed properly.
@@ -445,8 +549,12 @@ class PickingUpTheCall(TestCase):
         commands_list = connect_response_dict['tropo']
         connect_say_command = find_command_in_tropo_command_list(commands_list, command_name="say")
         self.assertEqual(connect_say_command['say']['value'], 'Connected. Also on the call:%s,' % ANSWERER_NAME)
+    
+    @expectedFailure
+    def test_twilio_confirmation_bypass_is_effective(self):
+        self.fail()
         
-    def test_confirmation_bypass_is_effective(self):
+    def test_tropo_confirmation_bypass_is_effective(self):
         '''
         That calls which are directed to bypass the confirmation in fact do so.
         '''
@@ -457,7 +565,11 @@ class PickingUpTheCall(TestCase):
         connect_response_dict = json.loads(connect_response.content)
         commands_list = connect_response_dict['tropo']
         connect_say_command = find_command_in_tropo_command_list(commands_list, command_name="say")
-        self.assertEqual(connect_say_command['say']['value'], 'Connected. %s' % SLASHROOT_EXPRESSIONS['first_answerer_alert'])
+        self.assertEqual(connect_say_command['say']['value'], 'Connected. %s%s' % (SLASHROOT_EXPRESSIONS['unknown_caller'],SLASHROOT_EXPRESSIONS['first_answerer_alert']))
+    
+    @expectedFailure
+    def test_twilio_first_answerer_alert(self):
+        self.fail()
         
     def test_tropo_first_answerer_alert(self):
         '''
@@ -473,7 +585,11 @@ class PickingUpTheCall(TestCase):
         say_command = find_command_in_tropo_command_list(command_list, command_name="say")
         self.assertEqual(say_command['say']['value'], 'Connected. %s' % SLASHROOT_EXPRESSIONS['first_answerer_alert'])
     
-    def test_conference_connection_occurs(self):
+    @expectedFailure
+    def test_twilio_conference_connection_occurs(self):
+        self.fail()
+    
+    def test_tropo_conference_connection_occurs(self):
         '''
         The proper signal is sent to the original caller so that they get dumped into the conference.
         '''
@@ -487,8 +603,12 @@ class PickingUpTheCall(TestCase):
         conference_command = find_command_in_tropo_command_list(commands_list, command_name="conference")
         conference_id = conference_command['conference']['id']
         self.assertEqual(conference_id, call.call_id, msg="The answerer was not connected to the same call as the caller.")
+    
+    @expectedFailure
+    def test_twilio_connecting_to_conference_generates_involvement_object(self):
+        self.fail()
         
-    def test_connecting_to_conference_generates_involvement_object(self):
+    def test_tropo_connecting_to_conference_generates_involvement_object(self):
         call_id = self.tropo_call_id
         call = PhoneCall.objects.get(id=call_id)
         phone_number_object = PhoneNumber.objects.get(id=PHONE_NUMBER_ID_TO_TEST)
@@ -500,6 +620,10 @@ class PickingUpTheCall(TestCase):
 class HangupTests(TestCase):
     def setUp(self):
         prepare_testcase_for_pickup_tests(self)
+    
+    @expectedFailure
+    def test_twilio_hangup_response_for_unknown_caller(self):
+        self.fail()
         
     def test_tropo_hangup_response_for_unknown_caller(self):
         hangup_request = FakeRequest(TYPICAL_TROPO_AFTER_HANGUP_REQUEST)
@@ -508,6 +632,10 @@ class HangupTests(TestCase):
         hangup_response = handle_hangup(hangup_request, call.call_id, call.from_number.id)
         call = PhoneCall.objects.get(id=self.tropo_call_id)
         self.assertTrue(call.ended, msg="The call handn't ended even after the caller hung up.")
+    
+    @expectedFailure
+    def test_twilio_hangup_response_for_known_answerer(self):
+        self.fail()
         
     def test_tropo_hangup_response_for_known_answerer(self):
         call = PhoneCall.objects.get(id=self.tropo_call_id)
@@ -530,7 +658,7 @@ class NobodyPickedUp(TestCase):
     def setUp(self):
         prepare_testcase_for_answer_tests(self)
     
-    def test_voicemail_on_timeout(self):
+    def test_tropo_voicemail_on_timeout(self):
         '''
         We're not actually going to test the delay, as this will introduce a 60 second delay to the test runner.
         We will simply test that the delayed function the proper signal sends them to voicemail.
@@ -538,8 +666,20 @@ class NobodyPickedUp(TestCase):
         commands_list = self.tropo_response_dict['tropo']
         voicemail_command = find_command_in_tropo_command_list(commands_list, signal_on="goToVoiceMail")
         self.assertTrue(voicemail_command)
+        
+    ###TODO: Test the twisted bit that makes the REST call to Twilio, yanking them into voicemail.
 
-    def test_voicemail_is_taken(self):
+    def test_twilio_voicemail_is_taken(self):
+        twilio_response = self.client.post('/comm/voicemail/', TYPICAL_TWILIO_VOICEMAIL_REQUEST)
+        self.assertEqual(twilio_response.status_code, 200)
+        
+        say_command = find_command_in_twilio_response(twilio_response, command_name='Say')
+        self.assertTrue(say_command)
+        
+        record_command = find_command_in_twilio_response(twilio_response, command_name='Record')
+        self.assertTrue(record_command)
+
+    def test_tropo_voicemail_is_taken(self):
         '''
         That upon being sent to the voicemail function, they are in fact handed the voicemail prompt and a chance to record a voicemail.
         '''
@@ -550,8 +690,12 @@ class NobodyPickedUp(TestCase):
         command_list = response_to_tropo_voicemail_request_dict['tropo']
         record_command = find_command_in_tropo_command_list(command_list, command_name="record")
         self.assertTrue(record_command)
-        
-    def test_task_to_resolve_voicemail_is_tagged_voicemail(self):
+    
+    @expectedFailure
+    def test_twilio_task_to_resolve_voicemail_is_tagged_voicemail(self):
+        self.fail()
+            
+    def test_tropo_task_to_resolve_voicemail_is_tagged_voicemail(self):
         response_to_tropo_voicemail_request_json = voicemail(FakeRequest(TYPICAL_TROPO_VOICEMAIL_REQUEST))
         response_to_tropo_voicemail_request_dict = json.loads(response_to_tropo_voicemail_request_json.content)
         
@@ -582,7 +726,18 @@ class CallInToConferenceTests(TestCase):
 class CallDocumentationTests(TestCase):
     def setUp(self):
         prepare_testcase_for_answer_tests(self)
+    
+    def test_twilio_that_voicemail_recording_is_saved(self):
+        twilio_voicemail_response = self.client.post('/comm/voicemail/', TYPICAL_TWILIO_VOICEMAIL_REQUEST)
+        self.assertEqual(twilio_voicemail_response.status_code, 200)
         
+        record_command = find_command_in_twilio_response(twilio_voicemail_response, command_name='Record')
+        url = record_command.attrs['action'].split(resources.COMM_DOMAIN)[1] #Get everything in the URL after the domain
+        
+        response = self.client.post(url, TYPICAL_TWILIO_VOICEMAIL_RECORDING)
+        
+        self.assertEqual(response.status_code, 200)
+            
     def test_tropo_that_voicemail_recording_is_saved(self):
         from django.conf import settings
         #First we need to figure out the recording URL.
@@ -601,13 +756,11 @@ class CallDocumentationTests(TestCase):
         
         call = PhoneCall.objects.get(id=self.tropo_call_id)
         self.assertTrue(call.recordings.exists())
-        
-        
-#    def test_that_playback_box_exists_for_recording_file(self):
-         #TODO: Rachel, please don't commit broken tests.
-#        response = self.client.get("/comm/resolve_calls/")
-#        self.assertTrue('<div id="jplayer_%s"' % in response.content )
-        
+
+    @expectedFailure
+    def test_twilio_voicemail_is_transcribed(self):
+        self.fail()
+            
     def test_tropo_voicemail_is_transcribed(self): 
         from django.conf import settings
         #First we need to figure out the recording URL.
@@ -630,8 +783,12 @@ class CallDocumentationTests(TestCase):
                
         response = transcription_handler(FakeRequest(TYPICAL_TROPO_TRANSCRIPTION_REQUEST), 'recording', recordings[0].id)
         self.assertEqual(recordings[0].transcription_text, SAMPLE_VOICEMAIL_WORDS)
-        
-    def test_call_events_for_impossibly_boring_call(self):
+    
+    @expectedFailure
+    def test_twilio_call_events_for_impossibly_boring_call(self):
+        self.fail()
+            
+    def test_tropo_call_events_for_impossibly_boring_call(self):
         '''
         That a call in which absolutely nothing happens returns an empty list of events (ie no voicemail, no pickup)
         In the real world, this should never happen, as the hangup handler should always modify the 'ended' attribute, and thus this list will not be empty.
@@ -641,7 +798,11 @@ class CallDocumentationTests(TestCase):
         events = call.list_events_by_time()
         self.assertFalse(events)
     
-    def test_call_events_for_call_that_went_to_voicemail(self):
+    @expectedFailure
+    def test_twilio_call_events_for_call_that_went_to_voicemail(self):
+        self.fail()
+        
+    def test_tropo_call_events_for_call_that_went_to_voicemail(self):
         from django.conf import settings
         #First we need to figure out the recording URL.
         response_to_tropo_voicemail_request_json = voicemail(FakeRequest(TYPICAL_TROPO_VOICEMAIL_REQUEST))

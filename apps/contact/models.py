@@ -60,15 +60,24 @@ PHONE_NUMBER_TYPES = (
             
             )
 
+class PhoneNumberManager(models.Manager):
+    def get_blank_number(self):
+        return self.get_or_create(number="+10000000000")       
+
+
 class PhoneNumber(models.Model):
     type = models.CharField(choices=PHONE_NUMBER_TYPES, max_length=20)
     number = PhoneNumberField(unique=True)
     created = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey('ContactInfo', related_name="phone_numbers", blank=True, null=True)
     
+    objects = PhoneNumberManager()
+    
     def __unicode__(self):
         if self.owner:
             return "%s (%s)" % (self.owner, self.type)
+        elif self.number == "+10000000000":
+            return "Blank Number"
         else:
             return "Unknown Caller #%s" % self.id
         
@@ -142,6 +151,9 @@ class PhoneProvider(models.Model):
     description = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     
+    def __unicode__(self):
+        return self.name
+    
     def get_response_object(self):
         if self.name == "Twilio":
             from twilio import twiml
@@ -174,6 +186,9 @@ class MailHandler(models.Model):
     actions = models.ManyToManyField(MailHandlerAction, blank=True, null=True)
     users = models.ManyToManyField(User, blank=True, null=True)
     groups = models.ManyToManyField(Group, blank=True, null=True)
+    
+    def __unicode__(self):
+        return "'%s' mail handler" % self.address
 
 class MailMessage(models.Model):
     subject=models.TextField()

@@ -14,7 +14,6 @@ import stomp
 
 
 from products.models import Product, Beverage, Ingredient, BeverageInstance
-from people.models import Member
 from pos.forms import BeverageSalesForm
 
 #from forms import QuickBeverageSaleForm

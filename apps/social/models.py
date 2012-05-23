@@ -72,7 +72,7 @@ class TopLevelMessageManager(models.Manager):
         if not group: #group wasn't specified.  Thus, they must want to make a log on a user.
             recipient_party = GenericParty.objects.get(party=user)            
         else: #They did specify a group!  Let's check if they are a member of that group.
-            if not user in group.user_set.all():             
+            if not user in group.users().all():             
                 return False #return False only for non-members
             else: #Yep! They're in there!  We'll set the group as the recipient.
                 recipient_party = GenericParty.objects.get(party=group)#logs are TopLevelMessages only to GenericParty objects not to the actual user or group
@@ -85,8 +85,8 @@ class TopLevelMessageManager(models.Manager):
         if party.user:
             params = Q(content_type__name='generic party', object_id=party.id)
             
-            for group in party.user.groups.all():
-                group_party = GenericParty.objects.get(party=group)
+            for user_in_group in party.user.what_groups.all():
+                group_party = GenericParty.objects.get(party=user_in_group.role.group)
                 params = params | Q(content_type__name='generic party', object_id=group_party.id)
                 
             return self.filter(params)

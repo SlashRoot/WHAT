@@ -1,13 +1,13 @@
 From twotonespirit@gmail.com  Wed Aug 24 13:21:24 2011
 Return-Path: <twotonespirit@gmail.com>
-X-Original-To: info@slashrootcafe.com
+X-Original-To: do.task.1@objects.slashrootcafe.com
 Delivered-To: djangomailhandler@margaret.local
 Received: from mail-vw0-f51.google.com (mail-vw0-f51.google.com
 	[209.85.212.51])
 	by slashrootcafe.com (Postfix) with ESMTPS id 2D7FD3D4C5
-	for <info@slashrootcafe.com>; Wed, 24 Aug 2011 13:21:24 -0400 (EDT)
+	for <do.task.1@objects.slashrootcafe.com>; Wed, 24 Aug 2011 13:21:24 -0400 (EDT)
 Received: by vws20 with SMTP id 20so1127335vws.10
-	for <info@slashrootcafe.com>; Wed, 24 Aug 2011 10:21:24 -0700 (PDT)
+	for <do.task.1@objects.slashrootcafe.com>; Wed, 24 Aug 2011 10:21:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=gamma;
 	h=mime-version:sender:date:x-google-sender-auth:message-id:subject
 	:from:to:content-type;
@@ -18,22 +18,14 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=gamma;
 MIME-Version: 1.0
 Received: by 10.52.175.100 with SMTP id bz4mr5469990vdc.174.1314206484407;
 	Wed, 24 Aug 2011 10:21:24 -0700 (PDT)
-Sender: twotonespirit@gmail.com
+Sender: ron_lumbergh@innotrode.com
 Received: by 10.52.181.165 with HTTP; Wed, 24 Aug 2011 10:21:24 -0700 (PDT)
 Date: Wed, 24 Aug 2011 13:21:24 -0400
 X-Google-Sender-Auth: gDOneRITnH091y6m1Xzv9KfylYI
 Message-ID: <CAMGywB5RtyCiEA6QkvbxCu_oBOj9OmwrqEN=kaB-Q+fVCDYK4w@mail.gmail.com>
 Subject: dingos
 From: Justin Holmes <justin@justinholmes.com>
-To: info@slashrootcafe.com
+To: do.task.1@objects.slashrootcafe.com
 Content-Type: text/plain; charset=ISO-8859-1
 
--- 
-Justin Holmes
-
-Head Instructor, SlashRoot Collective
-SlashRoot: Coffee House and Tech Dojo
-60 Main Street
-New Paltz, NY 12561
-845.633.8330
-
+Llamas are awesome.

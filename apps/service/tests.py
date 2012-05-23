@@ -11,6 +11,7 @@ from service.config import set_up as service_setup
 from mellon.config import set_up as mellon_setup
 from do.models import Task
 from utility.models import FixedObject
+from django.http import HttpResponse
 
 
 class CurrentClients(TestCase):
@@ -45,6 +46,16 @@ class CurrentClients(TestCase):
         
         return service
     
+    def test_service_ticket_raises_404_if_does_not_exist(self):
+        self.client.login(username="admin", password="admin")
+        service_id = 1234567
+        try:
+            service = Service.objects.get(id=service_id)
+            self.fail('the object wasnt supposed to exist but it does')
+        except Service.DoesNotExist:
+            response = self.client.get('/service/tickets/%s/' % service_id)
+            self.assertEqual(response.status_code, 404)
+        
     def test_service_in_our_court_at_first(self):
         service = self.test_service_check_in_form_creates_service_object()
         self.assertTrue(service in Service.objects.filter_by_needing_attention()[0])
