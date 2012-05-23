@@ -106,7 +106,8 @@ urlpatterns = patterns('',
     #(r'^users/(?P<username>\w+)/$', 'people.views.memberProfile'),
     #(r'^apply/', 'people.views.memberApply'),
     #(r'^curriculum/', 'people.views.memberCurriculm'), 
-    
+    (r'^people/role_form/$', 'people.views.role_form'),
+    (r'^people/awesome/$', 'people.views.awesome_o'),
     
     #POS
     (r'^pos/pos_modal', 'commerce.views.pos_modal'),
@@ -228,7 +229,11 @@ urlpatterns = patterns('',
      #BlastForm
      (r'^blast_form/$', 'email_blast.views.email_blast'),
      (r'^blast_form/confirmation/$', 'email_blast.views.confirmation'),
+<<<<<<< HEAD
      (r'^people/role_form/$', 'people.views.role_form'),
+=======
+     
+>>>>>>> 6fea87a5b7099cd3f02c8420274924c672850d69
 )
    
 urlpatterns += patterns('django.views.generic.simple',
