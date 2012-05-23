@@ -1,5 +1,5 @@
 from django.db import models
-from people.models import Group, Role, RoleInGroup
+from people.models import Group, Role, RoleInGroup, RoleHierarchy
 from django.core.mail import send_mail
 
 
@@ -20,14 +20,26 @@ class BlastMessage(models.Model):
         return self.subject, self.message, self.creator.email, self.populate_targets()
             
     def populate_targets(self):
-        role_in_group = RoleInGroup.objects.get(role=self.role, group=self.group)
-        users_in_group = role_in_group.users.all()
-        user_emails = set()
+        '''
         
-        for user in users_in_group:
-            user_emails.add(user.email)
-        
-        return user_emails
+        '''
+        if self.send_to_higher_roles:
+            roles = [self.role] #Start a list with this blast's role in it.            
+            role_hierarchies = RoleHierarchy.objects.filter(lower_role=self.role, jurisdiction=self.group)
+            
+            for rh in role_hierarchies:
+                roles.append(rh.higher_role)
+                #TODO: Go all the way up the role chain.
+            
+        else:
+            role_in_group = RoleInGroup.objects.get(role=self.role, group=self.group)
+            users_in_group = role_in_group.users.all()
+            user_emails = set()
+            
+            for user in users_in_group:
+                user_emails.add(user.email)
+            
+            return user_emails
     
     def send_blast(self):
         preparation_tuple = self.prepare()
