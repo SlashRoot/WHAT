@@ -12,6 +12,7 @@ from contact.models import MailHandler, MailMessage, AdditionalEmail
 from social.models import TopLevelMessage
 from people.models import RoleInGroup
 from email_blast.models import BlastMessage
+from django.db.utils import DatabaseError
 
 #Payload is potentially more complex than meets the eye.
 
@@ -129,12 +130,6 @@ class Command(BaseCommand):
                 return True
         else:
             #Nope, this is just a message to a user / group / handler (ie, not directly to an object).
-            #Let's save the message object now.
-            if not subject:
-                subject="No Subject."
-            mail = MailMessage(subject=subject, body=body, recipient=original_recipient_address, sender=sender)
-            mail.save()
-            
             
             #Who is this email to?
             recipient_name=original_recipient_address.split('@')[0]
@@ -160,3 +155,14 @@ class Command(BaseCommand):
                 
             for recipient in recipients:    
                 send_mail(subject, body, sender, [recipient], fail_silently=False)
+                
+            
+            #Last of all - assuming the database is up, we'll save the message object now.
+            if not subject:
+                subject="No Subject."
+            mail = MailMessage(subject=subject, body=body, recipient=original_recipient_address, sender=sender)
+            
+            try:
+                mail.save()
+            except: #TODO: Add reasonable and sane logging.  
+                pass #Well, you know.  Fuck.
