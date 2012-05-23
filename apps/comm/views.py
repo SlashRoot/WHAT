@@ -26,7 +26,7 @@ from comm.services import get_provider_and_response_for_request,\
     get_audio_from_provider_recording
 from comm.call_functions import call_object_from_call_info, proper_verbage_for_final_call_connection, get_or_create_nice_number,\
     place_conference_call_to_dial_list
-from people.models import UserProfile, Member
+from people.models import UserProfile
 import datetime
 
 from do.functions import get_tasks_in_prototype_related_to_object

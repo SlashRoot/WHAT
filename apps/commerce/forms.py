@@ -7,7 +7,7 @@ from commerce.models import RealThing, ExchangeInvolvement, MoneyBag, MoneyBagPi
 
 
 from hwtrack.models import Device, DeviceModel
-from people.models import CommerceGroup, Member
+from people.models import CommerceGroup
 from products.models import Beverage, IngredientStock, Ingredient, ProductBrand, IngredientProperty
 from accounting.models import BudgetLine
 from utility.forms import AutoCompleteField, MustBeUniqueField, RequiredFormSet, GenericPartyField, JqueryDatePicker
@@ -31,7 +31,7 @@ class MainPOSForm(forms.Form):
     for
      example, the member that records the sale.
     '''
-    member = AutoCompleteField(models=(Member,))
+    member = AutoCompleteField(label="Member", models=(User,))
     other_party = AutoCompleteField(label="Client", models=(User,))
     payment_method = forms.ModelChoiceField( queryset=PaymentMethod.objects.all() )
     '''
@@ -49,7 +49,7 @@ class BeverageSaleForm(SaleForm):
     record information for the beverage sale that will change with each sale.
     '''
     
-    barista = AutoCompleteField(models=(Member,))    
+    barista = AutoCompleteField(label="Member", models=(User,))
     beverage = AutoCompleteField(models=(Beverage,))
 
 class ComputerRentalForm(SaleForm):
@@ -66,7 +66,7 @@ class ConsultationSaleForm(SaleForm):
     tech, web development, radical feminism, spackling, etc. consultation
     '''
     
-    consultant = AutoCompleteField(models=(Member,))
+    consultant = AutoCompleteField(label="Member", models=(User,))
     start_time = forms.DateTimeField()
     end_time = forms.DateTimeField()
       
@@ -174,9 +174,7 @@ def exchange_from_POST(post, member, transaction_type):
     
     purchase_post = post.copy()
     
-    other_party_encrypted_info = purchase_post.pop('lookup_other_party')[0]
-    
-    other_party = party_from_encrypted_string(other_party_encrypted_info)
+    other_party = purchase_post.pop('lookup_other_party')[0]
     
     #and these get the method with which money is exchanged
     method_id = purchase_post.pop('payment_method')[0]

@@ -5,13 +5,13 @@ from django.shortcuts import render, get_object_or_404
 
 
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 
 from social.models import DrawAttention, TopLevelMessage, Acknowledgement,\
     FileAttachedToMessage, TopLevelMessageManager
 from social.forms import DrawAttentionAjaxForm, MessageForm
 
-from people.models import Member, UserProfile, GenericParty
+from people.models import UserProfile, GenericParty, Group
 
 from django.contrib.auth.decorators import login_required
 
@@ -64,7 +64,7 @@ def dashboard(request):
     completed = TaskResolution.objects.filter(creator=request.user, type=2).reverse()[:10]
     points_aggregate = Task.objects.filter(resolutions__creator=request.user, resolutions__type=2).aggregate(Sum('weight'))
     points = points_aggregate['weight__sum']
-    anchors = AnchorTime.objects.filter(member__user=request.user)
+    anchors = AnchorTime.objects.filter(member=request.user)
     count = get_messages_for_user(request.user)
     inbox_messages = get_messages_for_user(request.user)[-5:]
     try:
@@ -142,7 +142,7 @@ def log(request, username=None, group_name=None):
 #            return render(request, 'social/log_landing.html', locals())        
         if group_name:
             log_owner = get_object_or_404(Group, name=group_name)
-            if not request.user in log_owner.user_set.all():
+            if not request.user in log_owner.users().all():
                 return HttpResponseForbidden()
         if username:
             if username == request.user.username:

@@ -25,7 +25,7 @@ class BlastMessage(models.Model):
             
     def populate_targets(self):
         role_in_group = RoleInGroup.objects.get(role=self.role, group=self.group)
-        users_in_group = role_in_group.users.all()
+        users_in_group = role_in_group.users().all()
         user_emails = set()
         
         for user in users_in_group:

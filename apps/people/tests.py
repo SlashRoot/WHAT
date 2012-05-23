@@ -72,7 +72,7 @@ class RoleFormTests(TestCase):
         self.assertEqual(redirect_response.status_code, 200)
         
         monkey_massage_sweepers = RoleInGroup.objects.get(role=role, group=group)
-        self.assertTrue(user in monkey_massage_sweepers.users.all())
+        self.assertTrue(user in monkey_massage_sweepers.users().all())
         
         
         
