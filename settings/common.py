@@ -161,7 +161,7 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-EMAIL_HOST = 'smtp-server.hvc.rr.com'
+from private.email_settings import *
 
 AUTH_PROFILE_MODULE = 'people.UserProfile'
 LOGIN_URL = '/presence/login/'
