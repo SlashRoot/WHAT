@@ -1,4 +1,5 @@
 import sys, os
+import logging
 from socket import herror
 from deployment.path_settings import PROJECT_ROOT
 
@@ -188,3 +189,47 @@ LOGIN_REDIRECT_URL = "/iam/"
 #Override the Test Runner to test only local apps.
 
 TEST_RUNNER = 'utility.tests.WHATTestRunner'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'null': {
+            'level':'DEBUG',
+            'class':'django.utils.log.NullHandler',
+        },
+        'console':{
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'syslog':{
+            'level':'DEBUG',
+            'class':'logging.handlers.SysLogHandler',
+            'address':'"/dev/log"',
+            'formatter':'verbose',
+            'facility':'SysLogHandler.LOG_USER',
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers':['null'],
+            'propagate': True,
+            'level':'INFO',
+        },
+        'WHAT.custom': {
+            'handlers': ['console', 'syslog'],
+            'propagate': True,
+            'level': 'INFO',
+            
+        }
+    }
+}
