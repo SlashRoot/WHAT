@@ -288,7 +288,7 @@ def outgoing_call_menu(request):
     eligible_numbers = []
         
     for member in eligible_members:
-        for phone_number in member.user.userprofile.contact_info.phone_numbers.all():
+        for phone_number in member.userprofile.contact_info.phone_numbers.all():
             eligible_numbers.append([phone_number.id, phone_number.type, member.user.username, phone_number.number])
     
     #Hardcode the house line for now.
