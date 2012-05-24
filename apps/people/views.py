@@ -6,6 +6,7 @@ import json
 
 from django.contrib.auth.decorators import login_required
 from people.forms import UserInGroupForm
+from people.models import Role, Group, RoleInGroup, UserInGroup
 
 @login_required
 def who_am_i(request):
@@ -30,3 +31,13 @@ def role_form(request):
 
 def awesome_o(request):
     return render(request, 'people/awesome.html', locals())
+
+def membership_roles(request):
+    roles = Role.objects.all()
+    groups = Group.objects.all()
+    
+    roles_in_groups = RoleInGroup.objects.filter(id=groups)
+    users_in_group_with_roles = UserInGroup.objects.filter(id=roles_in_groups)
+    
+    return render(request, 'people/membership_roles.html', )
+    
