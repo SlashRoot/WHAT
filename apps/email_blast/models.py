@@ -2,6 +2,7 @@ from django.db import models
 from people.models import Group, Role, RoleInGroup, RoleHierarchy
 from django.core.mail import send_mail
 from django.core.mail.message import EmailMessage
+from django.contrib.auth.models import User
 
 
 class BlastMessage(models.Model):
@@ -24,27 +25,21 @@ class BlastMessage(models.Model):
         return self.subject, self.message, self.creator.email, self.populate_targets()
             
     def populate_targets(self):
-        role_in_group = RoleInGroup.objects.get(role=self.role, group=self.group)
-        users_in_group = role_in_group.users().all()
         user_emails = set()
         
         if self.send_to_higher_roles:
-            roles = [self.role] #Start a list with this blast's role in it.            
-            role_hierarchies = RoleHierarchy.objects.filter(lower_role=self.role, jurisdiction=self.group)
-            
-            for rh in role_hierarchies:
-                roles.append(rh.higher_role)
-                #TODO: Go all the way up the role chain.
-            
+            roles = self.role.get_higher_roles(self.group, include_self=True)
+            roles_in_groups = RoleInGroup.objects.filter(group=self.group, role__in=roles)
+            users =  User.objects.filter(what_groups__role__in=roles_in_groups).distinct()
         else:
             role_in_group = RoleInGroup.objects.get(role=self.role, group=self.group)
-            users_in_group = role_in_group.users.all()
-            user_emails = set()
+            users = role_in_group.users.all()
             
-            for user in users_in_group:
-                user_emails.add(user.email)
             
-            return user_emails
+        for user in users:
+            user_emails.add(user.email)
+        
+        return user_emails
     
     def send_blast(self):
         preparation_tuple = self.prepare()
