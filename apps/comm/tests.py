@@ -861,6 +861,10 @@ class OutgoingCalls(TestCase):
         response = self.client.get('/comm/outgoing_call_menu/', {'phone_number':p.id})
         self.assertEqual(response.status_code, 200)
     
+    @expectedFailure    
+    def test_outgoing_call_menu_with_users(self):
+        self.fail()
+    
     @expectedFailure
     def outgoing_call_is_placed(self):
         self.fail()

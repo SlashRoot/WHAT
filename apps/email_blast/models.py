@@ -15,8 +15,8 @@ class BlastMessage(models.Model):
     group = models.ForeignKey('people.Group')
     send_to_higher_roles = models.BooleanField(default=True)
     creator = models.ForeignKey('auth.User', related_name='blasts_sent')
-    created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-    sent = models.DateTimeField(auto_now=True, blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+    sent = models.DateTimeField(blank=True, null=True)
     
     def get_email_address(self):
         return "%s__%s@blasts.slashrootcafe.com" % (self.group.name, self.role.name) #TODO: Unhardcode slashrootcafe.com?
