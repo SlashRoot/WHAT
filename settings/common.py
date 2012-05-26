@@ -1,4 +1,5 @@
 import sys, os
+import logging
 from socket import herror
 from deployment.path_settings import PROJECT_ROOT
 
@@ -188,3 +189,4 @@ LOGIN_REDIRECT_URL = "/iam/"
 #Override the Test Runner to test only local apps.
 
 TEST_RUNNER = 'utility.tests.WHATTestRunner'
+
