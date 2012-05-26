@@ -11,6 +11,20 @@ from django.contrib.contenttypes import generic
 from south.modelsinspector import add_introspection_rules
 add_introspection_rules([], ['^utility\.models\.GenericPartyForeignKey',])
 
+
+class FixedObjectManager(models.Manager):
+    
+    #We'll override .create() because this model is often used in a get_or_create flow with the generic relation.
+    
+    def create(self, *args, **kwargs):
+        
+        try:
+            object_which_already_exists = self.get(name=kwargs['name'])
+            return object_which_already_exists
+        except FixedObject.DoesNotExist:
+            super(FixedObjectManager, self).create(*args, **kwargs)
+
+
 class FixedObject(models.Model):
     '''
     A standard set of generically related objects in the system.
@@ -21,6 +35,8 @@ class FixedObject(models.Model):
     
     For example, in the example above, we'll call it TaskAccessPrototype__customer_service
     '''
+
+    objects = FixedObjectManager()
 
     name = models.SlugField(max_length = 255, unique=True)
 

@@ -33,6 +33,7 @@ from do.functions import get_tasks_in_prototype_related_to_object
 from twilio import twiml
 from utility.models import FixedObject
 from django.core.mail.message import EmailMultiAlternatives
+from django.core.paginator import Paginator
 
 
 CUSTOMER_SERVICE_PRIVILEGE_ID = 8
@@ -42,8 +43,12 @@ from django.contrib.contenttypes.models import ContentType
 
 from twisted.internet import reactor
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 import os
 import json
+
+
 
 #TODO: Un-hardcode email to SMS
 PHONE_DISPATCH_RECIPIENTS = ['justin@justinholmes.com',
@@ -330,12 +335,37 @@ def outgoing_call(request):
 @permission_required('comm.change_phonecall')
 def watch_calls(request):
     calls=PhoneCall.objects.filter(dial=False).order_by('created').reverse()
+    paginator = Paginator(calls, 15)
+    
+    page = request.GET.get('page')
+    try:
+        watch_calls = paginator.page(page)
+    
+    except PageNotAnInteger:
+        watch_calls = paginator.page(1)
+    
+    except EmptyPage:
+        watch_calls = paginator.page(paginator.num_pages)
+    
     return render(request, 'comm/watch_calls.html', locals() )
 
 @permission_required('comm.change_phonecall')
 def resolve_calls(request):
-    resolve_protoype = FixedObject.objects.get(name="TaskPrototype__resolve_phone_call").object #SOGGY AND DISGUSTING.  Too many instaces of this string.
-    tasks = resolve_protoype.instances.filter(status__lt=2).order_by('created').exclude(id=2686)[:20]
+
+    resolve_protoype = FixedObject.objects.get(name="TaskPrototype__resolve_phone_call").object #SOGGY AND DISGUSTING.  Too many instaces of this string. (line 191)
+    tasks = resolve_protoype.instances.filter(status__lt=2).order_by('created').exclude(id=2686)
+    paginator = Paginator(tasks, 15)
+    
+    page = request.GET.get('page')
+    try:
+        resolve_calls = paginator.page(page)
+    
+    except PageNotAnInteger:
+        resolve_calls = paginator.page(1)
+    
+    except EmptyPage:
+        resolve_calls = paginator.page(paginator.num_pages)
+    
     return render(request, 'comm/resolve_calls.html', locals() )
 
 @permission_required('comm.change_phonecall')

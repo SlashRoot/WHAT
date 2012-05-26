@@ -51,8 +51,8 @@ from comm.models import PhoneCall, CommunicationInvolvement
 from contact.models import PhoneProvider, DialList, ContactInfo, PhoneNumber,\
     DialListParticipation
 
-import do.config
-import mellon.config
+import do.config as do_config
+import mellon.config as mellon_config
 
 import json
 from people.models import UserProfile
@@ -71,6 +71,7 @@ from comm.sample_requests import *
 from taggit.models import Tag
 from django.utils.unittest.case import _UnexpectedSuccess
 from private import resources
+from do import config
 
 
 PHONE_NUMBER_ID_TO_TEST = 2
@@ -91,9 +92,9 @@ def prepare_testcase_for_answer_tests(testcase):
     Takes a test case and adds proper objects for it to conduct tests about responding to incoming calls.
     Returns the PhoneCall object that is created when the call is answered.
     '''
-    do.config.set_up()
-    mellon.config.set_up()
-    do.config.set_up_privileges()
+    do_config.set_up()
+    mellon_config.set_up()
+    do_config.set_up_privileges()
     
     #Providers
     set_up_providers(testcase)
@@ -165,6 +166,21 @@ def prepare_testcase_for_pickup_tests(testcase):
 def teardown_testcase_for_pickup_tests(testcase):
     PhoneNumber.objects.all().delete()
     PhoneCall.objects.all().delete()
+    
+    
+def create_phone_calls(number_of_phone_calls_to_create):
+    do_config.set_up()
+    mellon_config.set_up()
+    do_config.set_up_privileges()
+    phone_calls = []
+    twilio = PhoneProvider.objects.get(name="Twilio")
+    from_number = PhoneNumber.objects.create(type='mobile', number='+18455551234')
+    to_number = PhoneNumber.objects.create(type='mobile', number='+18455555555')
+    
+    for x in range(number_of_phone_calls_to_create):
+        phone_calls.append(PhoneCall.objects.create(service=twilio, call_id=x, from_number=from_number, to_number=to_number))
+    return phone_calls
+
 
 class FakeRequest(object):
     '''
@@ -189,9 +205,9 @@ class FakeRequest(object):
 
 class IncomingCallInformationHandling(TestCase):
     def setUp(self):
-        do.config.set_up()
-        mellon.config.set_up()
-        do.config.set_up_privileges()
+        do_config.set_up()
+        mellon_config.set_up()
+        do_config.set_up_privileges()
         
         self.tropo_provider = PhoneProvider.objects.create(name="Tropo")
         self.twilio_provider = PhoneProvider.objects.create(name="Twilio")
@@ -826,23 +842,60 @@ class CallDocumentationTests(TestCase):
         
         
 class CallManagementExperience(TestCase):
-    
+            
     def setUp(self):
         from do import config as do_config
         do_config.set_up()
         admin = User.objects.create(is_superuser=True, username="admin", password="admin")
         admin.set_password('admin')
         admin.save()
+        set_up_providers(self)
 
     def test_watch_calls_200(self):
         self.client.login(username="admin", password="admin")
         response = self.client.get('/comm/watch_calls/')
         self.assertEqual(response.status_code, 200)
         
+    
+    def test_watch_calls_page_paginates(self):
+        self.client.login(username="admin", password="admin")
+        create_phone_calls(30)
+        
+        response_page1 = self.client.get('/comm/watch_calls/')
+        response_page2 = self.client.get('/comm/watch_calls/', {'page':2})
+        
+        self.assertFalse('displayCall_7' in response_page1.content)
+        self.assertTrue('displayCall_21' in response_page1.content)
+        self.assertTrue('<a href="?page=2">next</a>' in response_page1.content)
+        self.assertFalse('<a href="?page=1">previous</a>' in response_page1.content)
+        
+        self.assertTrue('displayCall_7' in response_page2.content)
+        self.assertFalse('displayCall_21' in response_page2.content)
+        self.assertFalse('<a href="?page=2">next</a>' in response_page2.content)
+        self.assertTrue('<a href="?page=1">previous</a>' in response_page2.content)
+        
     def test_resolve_calls_200(self):
         self.client.login(username="admin", password="admin")
         response = self.client.get('/comm/resolve_calls/')
         self.assertEqual(response.status_code, 200)
+        
+    def test_resolve_calls_paginates(self):
+        self.client.login(username="admin", password="admin")
+        create_phone_calls(30)
+        
+        response_page1 = self.client.get('/comm/resolve_calls/')
+        response_page2 = self.client.get('/comm/resolve_calls/', {'page':2})
+        
+        self.assertTrue('resolve_7' in response_page1.content)
+        self.assertFalse('resolve_21' in response_page1.content)
+        self.assertTrue('<a href="?page=2">next</a>' in response_page1.content)
+        self.assertFalse('<a href="?page=1">previous</a>' in response_page1.content)
+        
+        self.assertFalse('resolve_7' in response_page2.content)
+        self.assertTrue('resolve_21' in response_page2.content)
+        self.assertFalse('<a href="?page=2">next</a>' in response_page2.content)
+        self.assertTrue('<a href="?page=1">previous</a>' in response_page2.content)
+        
         
     @expectedFailure
     def test_sms_to_tag_user_on_call_task(self):
