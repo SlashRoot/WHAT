@@ -8,11 +8,18 @@ $(function(){
 	$('.voicemail').tooltip({ position: "right", opacity: 0.9, effect: "fade"});
 	});
 	
+	
 </script>
 <script src="/media/coffee/resolve_calls.js" type="text/javascript"></script>
 
-<input type="checkbox"> From Tech Client </input>
-<input type="checkbox"> From Member </input>
+
+
+<form name="filters" method="get" action="/comm/resolve_calls/">
+	{{resolve_calls_filter_form}}
+	<button type="submit">Filter</button>
+</form>
+
+
 
 <table style="border:auto;" border="1">
 	<td>ID</td>
@@ -22,8 +29,8 @@ $(function(){
 	<td>Resolved</td>
 	<td>Recording</td>	
 
-	{% for task in resolve_calls %}
-		{% with call=task.related_objects.all.0.object show_caller=1 show_answerers=1 show_checkbox=1 %}
+	{% for call in resolve_calls %}
+		{% with show_caller=1 show_answerers=1 show_checkbox=1 %}
 			<tr {% if not call.resolve_task.is_open %}style="background-color:gray;"{% endif %}>
 				{% include 'comm/tabular_call_data.html' %}
 			</tr>

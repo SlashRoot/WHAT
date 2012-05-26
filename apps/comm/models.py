@@ -65,6 +65,20 @@ class CommunicationInvolvement(models.Model):
             return "%s answered " % (self.person.userprofile.user.first_name)
         if self.direction == "from":
             return "%s called " % (self.person.userprofile.user.first_name)
+
+class PhoneCallManager(models.Manager):
+    def from_users(self, user_list):
+        '''
+        Takes a list of users, returns a QuerySet of PhoneCalls from those users.
+        '''
+        return self.filter(from_number__owner__userprofile__user__in=user_list)
+    
+    def unresolved(self):
+        '''
+        Takes a Queryset of PhoneCall objects, returns a Queryset of PhoneCall objects with unresolved tasks.
+        '''
+        return self.filter(tasks__task__status__lt=2)
+    
         
 class PhoneCall(Communication):
     '''
@@ -90,6 +104,8 @@ class PhoneCall(Communication):
     
     tasks = generic.GenericRelation('do.TaskRelatedObject')
     notices = generic.GenericRelation('social.DrawAttention')
+    
+    objects = PhoneCallManager()
     
     def __unicode__(self):
         if self.from_user():

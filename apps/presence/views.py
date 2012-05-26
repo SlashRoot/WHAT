@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, logout, login
 from django import forms
 from models import PresenceInstance, PresencePurpose, AnchorTime
 
+
 #Ajax
 
 import json, os

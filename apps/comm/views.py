@@ -13,6 +13,7 @@ from comm.comm_settings import SLASHROOT_EXPRESSIONS
 from private import resources
 
 from contact.models import PhoneNumber, DialList, PhoneProvider
+from comm.forms import ResolveCallsFilterForm
 
 import requests
 import urlparse
@@ -28,6 +29,7 @@ from comm.call_functions import call_object_from_call_info, proper_verbage_for_f
     place_conference_call_to_dial_list
 from people.models import UserProfile
 import datetime
+
 
 from do.functions import get_tasks_in_prototype_related_to_object
 from twilio import twiml
@@ -353,11 +355,34 @@ def watch_calls(request):
 
 @permission_required('comm.change_phonecall')
 def resolve_calls(request):
-
-    resolve_protoype = FixedObject.objects.get(name="TaskPrototype__resolve_phone_call").object #SOGGY AND DISGUSTING.  Too many instaces of this string. (line 191)
-    tasks = resolve_protoype.instances.filter(status__lt=2).order_by('created').exclude(id=2686)
-    paginator = Paginator(tasks, 15)
+#    resolve_protoype = FixedObject.objects.get(name="TaskPrototype__resolve_phone_call").object #SOGGY AND DISGUSTING.  Too many instaces of this string. (line 191)
+#    tasks = resolve_protoype.instances.filter(status__lt=2).order_by('created').exclude(id=2686)
     
+    calls = PhoneCall.objects.unresolved()
+    
+    if request.method == 'GET':
+        
+        resolve_calls_filter_form = ResolveCallsFilterForm(request.GET)
+        
+        if 'client' in request.GET and request.GET['client']:
+            pass
+        if 'member' in request.GET and request.GET['member']:
+            member_role = FixedObject.objects.get(name="RoleInGroup__slashroot_holder").object
+            eligible_members = member_role.users()
+            #TODO: Make a genuinely chainable manager.  When we've had more sleep.
+            calls = PhoneCall.objects.from_users(eligible_members).filter(tasks__task__status__lt=2)
+        if 'unknown'in request.GET and request.GET['unknown']
+            pass
+           
+    else:
+        resolve_calls_filter_form = ResolveCallsFilterForm()
+    
+    
+    
+    paginator = Paginator(calls, 15)
+    
+        
+        
     page = request.GET.get('page')
     try:
         resolve_calls = paginator.page(page)
@@ -367,7 +392,7 @@ def resolve_calls(request):
     
     except EmptyPage:
         resolve_calls = paginator.page(paginator.num_pages)
-    
+        
     return render(request, 'comm/resolve_calls.html', locals() )
 
 @permission_required('comm.change_phonecall')

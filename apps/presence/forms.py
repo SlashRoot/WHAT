@@ -21,3 +21,5 @@ class AfterHoursActivityForm(forms.Form):
     tidied_up = ManyToManyField(AfterHoursTidiness)
     are_there_dishes = forms.BooleanField(required=False),
     
+
+    

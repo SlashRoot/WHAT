@@ -56,7 +56,7 @@ import mellon.config
 import people.config
 
 import json
-from people.models import UserProfile
+from people.models import UserProfile, UserInGroup
 from django.contrib.auth.models import User
 
 from unittest import expectedFailure
@@ -68,11 +68,13 @@ from comm.call_functions import call_object_from_call_info,\
     place_conference_call_to_dial_list
 from comm.sample_requests import *
 
+from utility.models import FixedObject
 
 from taggit.models import Tag
 from django.utils.unittest.case import _UnexpectedSuccess
 from private import resources
 from do import config
+from people import config
 
 
 PHONE_NUMBER_ID_TO_TEST = 2
@@ -169,16 +171,22 @@ def teardown_testcase_for_pickup_tests(testcase):
     PhoneCall.objects.all().delete()
     
     
-def create_phone_calls(number_of_phone_calls_to_create):
+def create_phone_calls(number_of_phone_calls_to_create, from_number=None, to_number=None):
     do.config.set_up()
     mellon.config.set_up()
     do.config.set_up_privileges()
     phone_calls = []
     twilio = PhoneProvider.objects.get(name="Twilio")
-    from_number = PhoneNumber.objects.create(type='mobile', number='+18455551234')
-    to_number = PhoneNumber.objects.create(type='mobile', number='+18455555555')
     
-    for x in range(number_of_phone_calls_to_create):
+    if not from_number:        
+        from_number = PhoneNumber.objects.get_or_create(type='mobile', number='+18455551234')[0]
+    
+    if not to_number:
+        to_number = PhoneNumber.objects.get_or_create(type='mobile', number='+18455555555')[0]
+    
+    number_of_existing_calls = PhoneCall.objects.count()
+    
+    for x in range(number_of_existing_calls+1, number_of_existing_calls+number_of_phone_calls_to_create):
         phone_calls.append(PhoneCall.objects.create(service=twilio, call_id=x, from_number=from_number, to_number=to_number))
     return phone_calls
 
@@ -850,6 +858,7 @@ class CallManagementExperience(TestCase):
         admin.set_password('admin')
         admin.save()
         set_up_providers(self)
+        people.config.set_up()
 
     def test_watch_calls_200(self):
         self.client.login(username="admin", password="admin")
@@ -895,7 +904,23 @@ class CallManagementExperience(TestCase):
         self.assertTrue('resolve_21' in response_page2.content)
         self.assertFalse('<a href="?page=2">next</a>' in response_page2.content)
         self.assertTrue('<a href="?page=1">previous</a>' in response_page2.content)
+    
+    def test_resolve_calls_filter_from_members(self):
+        rusty = User.objects.create(first_name='Rusty', username="RustySpike")
+        UserProfile.objects.create(user=rusty, contact_info=ContactInfo.objects.create())
+        member_role = FixedObject.objects.get(name="RoleInGroup__slashroot_holder").object
+        UserInGroup.objects.create(role=member_role, user=rusty)
         
+        jingle = PhoneNumber.objects.create(owner=rusty.userprofile.contact_info, number="+18456797779")
+        
+        calls_from_rusty = create_phone_calls(14, from_number=jingle)
+        calls_not_from_rusty = create_phone_calls(10)
+        
+        self.client.login(username="admin", password="admin")
+        response = self.client.get('/comm/resolve_calls/', {'member':True})
+        
+        self.assertTrue('resolve_%s' % calls_from_rusty[0].id in response.content)
+        self.assertFalse('resolve_%s' % calls_not_from_rusty[0].id in response.content)
         
     @expectedFailure
     def test_sms_to_tag_user_on_call_task(self):
