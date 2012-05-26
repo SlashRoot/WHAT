@@ -21,9 +21,8 @@ $(function(){
 	<td>Answerers</td>
 	<td>Resolved</td>
 	<td>Recording</td>	
-    {% regroup tasks by DateTime as call_list %}
-    {{call_list|slice:"10"}}
-	{% for task in call_list %}
+
+	{% for task in resolve_calls %}
 		{% with call=task.related_objects.all.0.object show_caller=1 show_answerers=1 show_checkbox=1 %}
 			<tr {% if not call.resolve_task.is_open %}style="background-color:gray;"{% endif %}>
 				{% include 'comm/tabular_call_data.html' %}
@@ -31,5 +30,21 @@ $(function(){
 		{% endwith %}
 	{% endfor %}
 </table>
+<div>
+    <span>
+        {% if resolve_calls.has_previous %}
+            <a href="?page={{ resolve_calls.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ resolve_calls.number }} of {{ resolve_calls.paginator.num_pages }}.
+        </span>
+
+        {% if resolve_calls.has_next %}
+            <a href="?page={{ resolve_calls.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+
 
 {% endblock %}
