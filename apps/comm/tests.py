@@ -93,9 +93,9 @@ def prepare_testcase_for_answer_tests(testcase):
     Takes a test case and adds proper objects for it to conduct tests about responding to incoming calls.
     Returns the PhoneCall object that is created when the call is answered.
     '''
-    do_config.set_up()
-    mellon_config.set_up()
-    do_config.set_up_privileges()
+    do.config.set_up()
+    mellon.config.set_up()
+    do.config.set_up_privileges()
     
     #Providers
     set_up_providers(testcase)
@@ -170,9 +170,9 @@ def teardown_testcase_for_pickup_tests(testcase):
     
     
 def create_phone_calls(number_of_phone_calls_to_create):
-    do_config.set_up()
-    mellon_config.set_up()
-    do_config.set_up_privileges()
+    do.config.set_up()
+    mellon.config.set_up()
+    do.config.set_up_privileges()
     phone_calls = []
     twilio = PhoneProvider.objects.get(name="Twilio")
     from_number = PhoneNumber.objects.create(type='mobile', number='+18455551234')
@@ -206,9 +206,9 @@ class FakeRequest(object):
 
 class IncomingCallInformationHandling(TestCase):
     def setUp(self):
-        do_config.set_up()
-        mellon_config.set_up()
-        do_config.set_up_privileges()
+        do.config.set_up()
+        mellon.config.set_up()
+        do.config.set_up_privileges()
         
         self.tropo_provider = PhoneProvider.objects.create(name="Tropo")
         self.twilio_provider = PhoneProvider.objects.create(name="Twilio")
@@ -845,8 +845,7 @@ class CallDocumentationTests(TestCase):
 class CallManagementExperience(TestCase):
             
     def setUp(self):
-        from do import config as do_config
-        do_config.set_up()
+        do.config.set_up()
         admin = User.objects.create(is_superuser=True, username="admin", password="admin")
         admin.set_password('admin')
         admin.save()
