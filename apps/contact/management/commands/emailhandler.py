@@ -13,6 +13,7 @@ from social.models import TopLevelMessage
 from people.models import RoleInGroup
 from email_blast.models import BlastMessage
 from django.db.utils import DatabaseError
+from django.core.mail.backends import smtp
 
 #Payload is potentially more complex than meets the eye.
 
@@ -55,7 +56,7 @@ class Command(BaseCommand):
 
         body = get_first_text_part(email) + "\n\n This message was handled by Justin's Django Email handler (replace with some meaningful message)."
         sender = email['from']
-        orig_sender = email['sender']
+        orig_sender = email['sender'] or email['from']
         
         #First of all, we're curious about whether this is a message sent to an object, in which case we're going to do something entirely different.
         subdomain=original_recipient_address.split('@')[1].split('.')[0]
@@ -76,10 +77,10 @@ class Command(BaseCommand):
                     subject = 'No dice.'
                     body = "It seems that your email address, %s, is not associated with a username.  Thus, you can't post a message." % (orig_sender)
                     sender = 'info@slashrootcafe.com'
-                    recipients.append(email['sender'])
+                    recipients.append(orig_sender)
                     recipients.append('justin@justinholmes.com') #Send to Justin for debugging
                     for recipient in recipients:
-                        send_mail(subject, body, sender, [recipient], fail_silently=False)
+                        send_mail(subject, body, sender, [recipient], fail_silently=False)#, connection=smtp.EmailBackend()) #To test smtp backend
                     return False
     
             if subdomain == 'blasts':

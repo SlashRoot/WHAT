@@ -229,7 +229,9 @@ urlpatterns = patterns('',
      #BlastForm
      (r'^blast_form/$', 'email_blast.views.email_blast'),
      (r'^blast_form/confirmation/$', 'email_blast.views.confirmation'),
-     
+     (r'^people/role_form/$', 'people.views.role_form'),
+     (r'^people/membership_roles/$', 'people.views.membership_roles'),
+
 )
    
 urlpatterns += patterns('django.views.generic.simple',

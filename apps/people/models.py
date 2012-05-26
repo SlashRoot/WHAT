@@ -64,6 +64,8 @@ class Group(models.Model):
     '''
     name = models.CharField(max_length=30)
 
+    def __unicode__(self):
+        return self.name
     
     def users(self):
         return User.objects.filter(what_groups__role__group=self).distinct()
@@ -73,6 +75,21 @@ class Role(models.Model):
     A role that someone has.
     '''
     name = models.CharField(max_length=30)
+    
+    def __unicode__(self):
+        return self.name
+    
+    def get_higher_roles(self, jurisdiction, include_self=False):
+        higher_roles = set()
+        
+        if include_self:
+            higher_roles.add(self) 
+        
+        for role_hierarchy in self.higher_roles.all():
+            higher_roles.add(role_hierarchy.higher_role)
+            higher_roles = higher_roles.union(role_hierarchy.higher_role.get_higher_roles(jurisdiction))
+        return list(higher_roles)
+            
     
 
 class RoleInGroup(models.Model):
