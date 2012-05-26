@@ -211,13 +211,13 @@ LOGGING = {
             'class':'logging.StreamHandler',
             'formatter': 'simple'
         },
-        'syslog':{
-            'level':'DEBUG',
-            'class':'logging.handlers.SysLogHandler',
-            'address':'"/dev/log"',
-            'formatter':'verbose',
-            'facility':'SysLogHandler.LOG_USER',
-        }
+#        'syslog':{
+#            'level':'DEBUG',
+#            'class':'logging.handlers.SysLogHandler',
+#            'address':'"/dev/log"',
+#            'formatter':'verbose',
+#            'facility':'SysLogHandler.LOG_USER',
+#        }
     },
     'loggers': {
         'django': {
@@ -225,11 +225,11 @@ LOGGING = {
             'propagate': True,
             'level':'INFO',
         },
-        'WHAT.custom': {
-            'handlers': ['console', 'syslog'],
-            'propagate': True,
-            'level': 'INFO',
-            
-        }
+#        'WHAT.custom': {
+#            'handlers': ['console', 'syslog'],
+#            'propagate': True,
+#            'level': 'INFO',
+#            
+#        }
     }
 }
