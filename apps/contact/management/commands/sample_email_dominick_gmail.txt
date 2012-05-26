@@ -1,0 +1,33 @@
+From dpiaquadio@gmail.com  Sat May 26 02:24:29 2012
+Return-Path: <dpiaquadio@gmail.com>
+X-Original-To: slashRoot__Holder@blasts.slashrootcafe.com
+Delivered-To: slashroot@localhost
+Received: from mail-bk0-f44.google.com (mail-bk0-f44.google.com
+ [209.85.214.44])
+ by what-remote.localdomain (Postfix) with ESMTPS id CC8E85A10E
+ for <slashRoot__Holder@blasts.slashrootcafe.com>;
+ Sat, 26 May 2012 02:24:28 +0000 (UTC)
+Received: by bkty8 with SMTP id y8so1130474bkt.3
+ for <slashRoot__Holder@blasts.slashrootcafe.com>;
+ Fri, 25 May 2012 19:23:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+ h=mime-version:date:message-id:subject:from:to:content-type;
+ bh=zS7KNTV0HyeorkDDGwxB1AV6enuRKzO5rthkhdHIRnY=;
+ b=qfRYMzeGdlASoo7Kjdn9uSsjyo5ulyY3QGTv0M2VVuMwDy9jYU59lOQhrG01bpDLX+
+ aGD9xxatXS+ppJdsh/cLSIOhEbN/mXaivIcfbQcKE8zZ1hdGpd2CrT0xOON1kdfe9Rtp
+ NHyw18EFnH8BeOFeNFgkmN7D2Sfos/WZBaYyREe9QJWcyi/NvKA9Tc/79VOVgrMzAEnI
+ RZmLzDxQMULR8Ie1RXWnsPCZMaB9y+CH6OxJc50cJWK/ERuknWTiR330r444M6HolTlS
+ nmecVK5+rxUxaNTIpRa3WzU35m2uBU+cLLTmyeCqOJV1G3n1lOKdA1oSZql2oHGvd7PK
+ dk8A==
+MIME-Version: 1.0
+Received: by 10.204.133.200 with SMTP id g8mr387088bkt.110.1337999011397; Fri,
+ 25 May 2012 19:23:31 -0700 (PDT)
+Received: by 10.204.174.136 with HTTP; Fri, 25 May 2012 19:23:31 -0700 (PDT)
+Date: Fri, 25 May 2012 22:23:31 -0400
+Message-ID: <CAE0cSgV43k+yP9C4yH005jGhCL7DaYdqZztYJHO3L0nDB8Cn9A@mail.gmail.com>
+Subject: this is onlya test
+From: Dominick Piaquadio <dpiaquadio@gmail.com>
+To: slashRoot__Holder@blasts.slashrootcafe.com
+Content-Type: text/plain; charset=ISO-8859-1
+
+hello

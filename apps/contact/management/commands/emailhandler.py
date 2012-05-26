@@ -1,6 +1,7 @@
 #Justin here.  This is, as I understand it, the first django email handler. :-)
 
 import sys, re, os
+from email import utils as email_utils
 
 from django.core.mail import send_mail
 from django.core.management.base import BaseCommand
@@ -56,7 +57,9 @@ class Command(BaseCommand):
 
         body = get_first_text_part(email) + "\n\n This message was handled by Justin's Django Email handler (replace with some meaningful message)."
         sender = email['from']
-        orig_sender = email['sender'] or email['from']
+        sender_info = email_utils.parseaddr(sender)
+        sender_name = sender_info[0]
+        sender_email = sender_info[1]
         
         #First of all, we're curious about whether this is a message sent to an object, in which case we're going to do something entirely different.
         subdomain=original_recipient_address.split('@')[1].split('.')[0]
@@ -65,19 +68,19 @@ class Command(BaseCommand):
         #They do need one to send to blast or objects.
         if subdomain == 'blasts' or subdomain == 'objects':    
             try:
-                sender_user = User.objects.get(email = orig_sender)
+                sender_user = User.objects.get(email = sender_email)
             except User.DoesNotExist:
                 #This wasn't anybody's primary email.  Let's see if it's an additional email.
                 try:
-                    additional_email = AdditionalEmail.objects.get(email=orig_sender)
+                    additional_email = AdditionalEmail.objects.get(email=sender_email)
                     sender_user = additional_email.contact_info.userprofile.user
                 except AdditionalEmail.DoesNotExist:
                     #If the use doesn't exist, we have no idea as whom to post the message.  We'll just have to tell them so.
                     recipients = []
                     subject = 'No dice.'
-                    body = "It seems that your email address, %s, is not associated with a username.  Thus, you can't post a message." % (orig_sender)
+                    body = "It seems that your email address, %s, is not associated with a username.  Thus, you can't post a message." % (sender_email)
                     sender = 'info@slashrootcafe.com'
-                    recipients.append(orig_sender)
+                    recipients.append(sender_email)
                     recipients.append('justin@justinholmes.com') #Send to Justin for debugging
                     for recipient in recipients:
                         send_mail(subject, body, sender, [recipient], fail_silently=False)#, connection=smtp.EmailBackend()) #To test smtp backend
@@ -93,8 +96,6 @@ class Command(BaseCommand):
                     blast_message = BlastMessage.objects.create(subject=subject, message=body, role=role_in_group.role, group=role_in_group.group, creator=sender_user)
                     blast_message.prepare()
                     blast_message.send_blast()
-                    
-                    return True
                     
                 except RoleInGroup.DoesNotExist:
                     recipients = []
@@ -128,7 +129,6 @@ class Command(BaseCommand):
                 Model=ContentType.objects.get(app_label=app_name, model=model_name.lower()).model_class()
                 target_object = Model.objects.get(id=object_id)            
                 TopLevelMessage.objects.create(content_object = target_object, creator=sender_user, message=message_text)
-                return True
         else:
             #Nope, this is just a message to a user / group / handler (ie, not directly to an object).
             

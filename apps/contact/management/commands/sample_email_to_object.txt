@@ -18,13 +18,13 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=gamma;
 MIME-Version: 1.0
 Received: by 10.52.175.100 with SMTP id bz4mr5469990vdc.174.1314206484407;
 	Wed, 24 Aug 2011 10:21:24 -0700 (PDT)
-Sender: ron_lumbergh@innotrode.com
+Sender: Ron Lumbergh <ron_lumbergh@innotrode.com>
 Received: by 10.52.181.165 with HTTP; Wed, 24 Aug 2011 10:21:24 -0700 (PDT)
 Date: Wed, 24 Aug 2011 13:21:24 -0400
 X-Google-Sender-Auth: gDOneRITnH091y6m1Xzv9KfylYI
 Message-ID: <CAMGywB5RtyCiEA6QkvbxCu_oBOj9OmwrqEN=kaB-Q+fVCDYK4w@mail.gmail.com>
 Subject: dingos
-From: Justin Holmes <justin@justinholmes.com>
+From: Ron Lumbergh <ron_lumbergh@innotrode.com>
 To: do.task.1@objects.slashrootcafe.com
 Content-Type: text/plain; charset=ISO-8859-1
 

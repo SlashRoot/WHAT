@@ -59,10 +59,10 @@ class IncomingEmailTests(TestCase):
         role = Role.objects.create(name="scholar")
         group = Group.objects.create(name="Knights of the Round Table")
         role_in_group = RoleInGroup.objects.create(role=role, group=group)
-        brother_maynard = User.objects.create(username="brother_maynard", email="bmaynard@camelot.co.uk")
+        brother_maynard = User.objects.create(username="brother_maynard", email="bmaynard@armaments.camelot.co.uk")
         
         email_handler_command = EmailHandlerCommand()
-        email_msg = email_handler_command.handle('%s/apps/contact/management/commands/sample_email_to_blast.txt' % settings.PROJECT_ROOT )
+        email_handler_command.handle('%s/apps/contact/management/commands/sample_email_to_blast.txt' % settings.PROJECT_ROOT )
         
         self.assertTrue(BlastMessage.objects.filter(message__contains="Llamas are awesome.").exists())
 
