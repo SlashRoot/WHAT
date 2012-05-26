@@ -371,8 +371,6 @@ def resolve_calls(request):
             eligible_members = member_role.users()
             #TODO: Make a genuinely chainable manager.  When we've had more sleep.
             calls = PhoneCall.objects.from_users(eligible_members).filter(tasks__task__status__lt=2)
-        if 'unknown'in request.GET and request.GET['unknown']
-            pass
            
     else:
         resolve_calls_filter_form = ResolveCallsFilterForm()
