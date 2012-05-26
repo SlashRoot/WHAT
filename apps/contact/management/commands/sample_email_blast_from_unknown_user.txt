@@ -1,0 +1,94 @@
+From rachel.lagodka@gmail.com  Fri May 25 15:00:19 2012
+Return-Path: <rachel.lagodka@gmail.com>
+X-Original-To: slashRoot__Holder@blasts.slashrootcafe.com
+Delivered-To: slashroot@localhost
+Received: from mail-gg0-f172.google.com (mail-gg0-f172.google.com
+ [209.85.161.172])
+ by what-remote.localdomain (Postfix) with ESMTPS id 45FFB5A10E
+ for <slashRoot__Holder@blasts.slashrootcafe.com>;
+ Fri, 25 May 2012 15:00:19 +0000 (UTC)
+Received: by ggnc4 with SMTP id c4so851435ggn.3
+ for <slashRoot__Holder@blasts.slashrootcafe.com>;
+ Fri, 25 May 2012 07:59:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+ h=x-rim-org-msg-ref-id:message-id:reply-to:x-priority:references
+ :in-reply-to:sensitivity:importance:subject:to:from:date
+ :content-type:mime-version;
+ bh=crT4tiBHwCENzlA65YHmS/aYiS28usZ5dm++oUeOBkM=;
+ b=mon3v2YkjRpokd9yXULnGR3o46+zfpx+DxkcQILVOlAowm9SNXG/QNZO9xTdEJ5Jz1
+ geLHfK0vH18UOwZzdqQ0oqsMKp+/O4OXBfBmaMT8fsV1ItCy+FkhAGV1YbVW33XOTTKx
+ bpv8EB5tyZFIBCim9H56P+dl3V71GxJkJgxeovDq+m0nytDQ4CxmeJh1AedecFRiGJ5d
+ 3liucmCSC3ywaf5jaB9xfVppDBMVboYONEuzFal3z0pomWUUyQCcRkg1JCD9hsJkBCx8
+ qGUP0ENhgYmQKgxoW9jOxPSiucF5YoMbkA0bhOW2T0y+O5uuFXyotcAEDH/r3ZBLMLim
+ zrOA==
+Received: by 10.50.181.225 with SMTP id dz1mr3260585igc.2.1337957962270;
+ Fri, 25 May 2012 07:59:22 -0700 (PDT)
+Received: from 172.29.220.207 (bda-74-82-86-223.bis6.us.blackberry.com.
+ [74.82.86.223])
+ by mx.google.com with ESMTPS id wh8sm7468587igb.11.2012.05.25.07.59.19
+ (version=SSLv3 cipher=OTHER); Fri, 25 May 2012 07:59:20 -0700 (PDT)
+X-rim-org-msg-ref-id: 1216450034
+Message-ID: <1216450034-1337957958-cardhu_decombobulator_blackberry.rim.net-1176307607-@b1.c27.bise6.blackberry>
+Reply-To: rachel.lagodka@gmail.com
+X-Priority: Normal
+References: <20120524182206.11390.74497@what-remote>
+In-Reply-To: <20120524182206.11390.74497@what-remote>
+Sensitivity: Normal
+Importance: Normal
+Subject: Re: Outgoing Calls
+To: slashRoot__Holder@blasts.slashrootcafe.com
+From: rachel.lagodka@gmail.com
+Date: Fri, 25 May 2012 14:59:11 +0000
+Content-Type: multipart/alternative;
+ boundary="part2438-boundary-1750793521-105995953"
+MIME-Version: 1.0
+
+
+--part2438-boundary-1750793521-105995953
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"
+
+VGVzdGluZw0KU2VudCBvbiB0aGUgU3ByaW50wq4gTm93IE5ldHdvcmsgZnJvbSBteSBCbGFja0Jl
+cnJ5wq4NCg0KLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IGp1c3RpbkBqdXN0aW5o
+b2xtZXMuY29tDQpEYXRlOiBUaHUsIDI0IE1heSAyMDEyIDE4OjIyOjA2IA0KVG86IDxkcGlhcXVh
+ZGlvQGdtYWlsLmNvbT47IDxqdXN0aW5AanVzdGluaG9sbWVzLmNvbT47IDxraWVyYW5wcmFzY2hA
+Z21haWwuY29tPjsgPHJhY2hlbC5sYWdvZGthQGdtYWlsLmNvbT47IDxzb25zb2Y3MEB5YWhvby5j
+b20+OyA8bGJzY19sZWFkQHlhaG9vLmNvbT47IDxjYXJseXRob21hc3NldEB5YWhvby5jb20+OyA8
+ZGlydHloaXBwaWU1MDJAeWFob28uY29tPg0KUmVwbHktVG86IHNsYXNoUm9vdF9fSG9sZGVyQGJs
+YXN0cy5zbGFzaHJvb3RjYWZlLmNvbQ0KU3ViamVjdDogT3V0Z29pbmcgQ2FsbHMNCg0KSSBoYXZl
+IGNvbW1pdHRlZCB0aGUgZml4LiAgSXQncyBydW5uaW5nIG9uIHN0YWdpbmcuDQoNCi0tIA0KSnVz
+dGluIEhvbG1lcw0KDQpIZWFkIEluc3RydWN0b3IsIFNsYXNoUm9vdCBDb2xsZWN0aXZlDQpTbGFz
+aFJvb3Q6IENvZmZlZSBIb3VzZSBhbmQgVGVjaCBEb2pvDQo2MCBNYWluIFN0cmVldA0KTmV3IFBh
+bHR6LCBOWSAxMjU2MQ0KODQ1LjYzMy44MzMwDQoNCg0KIFRoaXMgbWVzc2FnZSB3YXMgaGFuZGxl
+ZCBieSBKdXN0aW4ncyBEamFuZ28gRW1haWwgaGFuZGxlciAocmVwbGFjZSB3aXRoIHNvbWUgbWVh
+bmluZ2Z1bCBtZXNzYWdlKS4NCg0K
+
+--part2438-boundary-1750793521-105995953
+Content-Transfer-Encoding: base64
+Content-Type: text/html; charset="utf-8"
+
+PGh0bWw+PGhlYWQ+PE1FVEEgaHR0cC1lcXVpdj0iQ29udGVudC1UeXBlIiBjb250ZW50PSJ0ZXh0
+L2h0bWw7IGNoYXJzZXQ9dXRmLTgiPjwvaGVhZD48Ym9keT5UZXN0aW5nPGRpdj5TZW50IG9uIHRo
+ZSBTcHJpbnTCriBOb3cgTmV0d29yayBmcm9tIG15IEJsYWNrQmVycnnCrjwvZGl2Pjxoci8+PGRp
+dj48Yj5Gcm9tOiA8L2I+IGp1c3RpbkBqdXN0aW5ob2xtZXMuY29tDQo8L2Rpdj48ZGl2PjxiPkRh
+dGU6IDwvYj5UaHUsIDI0IE1heSAyMDEyIDE4OjIyOjA2IC0wMDAwPC9kaXY+PGRpdj48Yj5Ubzog
+PC9iPiZsdDtkcGlhcXVhZGlvQGdtYWlsLmNvbSZndDs7ICZsdDtqdXN0aW5AanVzdGluaG9sbWVz
+LmNvbSZndDs7ICZsdDtraWVyYW5wcmFzY2hAZ21haWwuY29tJmd0OzsgJmx0O3JhY2hlbC5sYWdv
+ZGthQGdtYWlsLmNvbSZndDs7ICZsdDtzb25zb2Y3MEB5YWhvby5jb20mZ3Q7OyAmbHQ7bGJzY19s
+ZWFkQHlhaG9vLmNvbSZndDs7ICZsdDtjYXJseXRob21hc3NldEB5YWhvby5jb20mZ3Q7OyAmbHQ7
+ZGlydHloaXBwaWU1MDJAeWFob28uY29tJmd0OzwvZGl2PjxkaXY+PGI+UmVwbHlUbzogPC9iPiBz
+bGFzaFJvb3RfX0hvbGRlckBibGFzdHMuc2xhc2hyb290Y2FmZS5jb20NCjwvZGl2PjxkaXY+PGI+
+U3ViamVjdDogPC9iPk91dGdvaW5nIENhbGxzPC9kaXY+PGRpdj48YnIvPjwvZGl2Pg0KPHA+SSBo
+YXZlIGNvbW1pdHRlZCB0aGUgZml4LiAgSXQncyBydW5uaW5nIG9uIHN0YWdpbmcuPC9wPg0KPHA+
+Jm1kYXNoOyBKdXN0aW4gSG9sbWVzPC9wPg0KPHA+SGVhZCBJbnN0cnVjdG9yLCBTbGFzaFJvb3Qg
+Q29sbGVjdGl2ZSBTbGFzaFJvb3Q6IENvZmZlZSBIb3VzZSBhbmQgVGVjaCBEb2pvIDYwIE1haW4g
+U3RyZWV0IE5ldyBQYWx0eiwgTlkgMTI1NjEgODQ1LjYzMy44MzMwPC9wPg0KPHByZT5UaGlzIG1l
+c3NhZ2Ugd2FzIGhhbmRsZWQgYnkgSnVzdGluJ3MgRGphbmdvIEVtYWlsIGhhbmRsZXIgKHJlcGxh
+Y2Ugd2l0aCBzb21lIG1lYW5pbmdmdWwgbWVzc2FnZSkuPC9wcmU+DQoNDQo8aW1nIHNyYz0iaHR0
+cDovL3UyMDI4MTYuc2VuZGdyaWQub3JnL3dmL29wZW4/dXBuPXoyd2JkLTJGNEZZUlFLMG9nQjd0
+RzJNa0YtMkJXeWpuNlYtMkYtMkZUeG9aeVhnVmNXMk5paUM0NU54UEtXSEZLaEtVdEx3NDlKNnRW
+aUhZZnUxeFpiakxVdC0yRi0yRi0yRjktMkZzT3BueVJmc3dnQ2JzWGNzT29RdENCemdVNlZFLTJC
+R01ELTJCNnBKYVZwUVRUR0JxMVJKN2dKQVVBTFVEY0RIeTJoQ0s2YlNuR0c5ZVhia29CeVhnbjVr
+LTNEIiBhbHQ9IiI+DQ0KPC9ib2R5PjwvaHRtbD4NDQoNCg==
+
+--part2438-boundary-1750793521-105995953--

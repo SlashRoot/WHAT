@@ -8,7 +8,7 @@ Replace these with more appropriate tests for your application.
 from django.test import TestCase
 from django.contrib.auth.models import User
 
-from people.models import Group, Role, RoleInGroup
+from people.models import Group, Role, RoleInGroup, RoleHierarchy
 
 import json
 from unittest.case import expectedFailure
@@ -51,6 +51,24 @@ class ProfileTests(TestCase):
     @expectedFailure    
     def test_avatar_upload(self):
         self.fail()
+
+
+class RoleStructureTests(TestCase):
+    def test_role_returns_upward_hierarchy(self):
+        group = Group.objects.create(name="some_group")
+        
+        low_role = Role.objects.create(name='lowest_role')
+        medium_role = Role.objects.create(name="medium_role")
+        high_role = Role.objects.create(name="highest_role")
+        
+        RoleHierarchy.objects.create(lower_role=low_role, higher_role=medium_role, jurisdiction=group)
+        RoleHierarchy.objects.create(lower_role=medium_role, higher_role=high_role, jurisdiction=group)
+        
+        higher_roles = low_role.get_higher_roles(group)
+        
+        expected_role_list = [medium_role, high_role]
+        self.assertTrue(higher_roles == expected_role_list)
+
         
 class RoleFormTests(TestCase):
     def test_that_form_posts_data_and_redirects_to_confirmation_page(self):

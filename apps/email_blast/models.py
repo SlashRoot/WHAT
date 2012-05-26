@@ -1,7 +1,8 @@
 from django.db import models
-from people.models import Group, Role, RoleInGroup
+from people.models import Group, Role, RoleInGroup, RoleHierarchy
 from django.core.mail import send_mail
 from django.core.mail.message import EmailMessage
+from django.contrib.auth.models import User
 
 
 class BlastMessage(models.Model):
@@ -14,8 +15,8 @@ class BlastMessage(models.Model):
     group = models.ForeignKey('people.Group')
     send_to_higher_roles = models.BooleanField(default=True)
     creator = models.ForeignKey('auth.User', related_name='blasts_sent')
-    created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-    sent = models.DateTimeField(auto_now=True, blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+    sent = models.DateTimeField(blank=True, null=True)
     
     def get_email_address(self):
         return "%s__%s@blasts.slashrootcafe.com" % (self.group.name, self.role.name) #TODO: Unhardcode slashrootcafe.com?
@@ -24,11 +25,18 @@ class BlastMessage(models.Model):
         return self.subject, self.message, self.creator.email, self.populate_targets()
             
     def populate_targets(self):
-        role_in_group = RoleInGroup.objects.get(role=self.role, group=self.group)
-        users_in_group = role_in_group.users().all()
         user_emails = set()
         
-        for user in users_in_group:
+        if self.send_to_higher_roles:
+            roles = self.role.get_higher_roles(self.group, include_self=True)
+            roles_in_groups = RoleInGroup.objects.filter(group=self.group, role__in=roles)
+            users =  User.objects.filter(what_groups__role__in=roles_in_groups).distinct()
+        else:
+            role_in_group = RoleInGroup.objects.get(role=self.role, group=self.group)
+            users = role_in_group.users.all()
+            
+            
+        for user in users:
             user_emails.add(user.email)
         
         return user_emails

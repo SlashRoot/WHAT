@@ -66,6 +66,11 @@ class IncomingEmailTests(TestCase):
         
         self.assertTrue(BlastMessage.objects.filter(message__contains="Llamas are awesome.").exists())
 
+    def test_email_to_blast_from_unknown_user(self):
+        email_handler_command = EmailHandlerCommand()
+        email_msg = email_handler_command.handle('%s/apps/contact/management/commands/sample_email_blast_from_unknown_user.txt' % settings.PROJECT_ROOT )
+        self.assertFalse(email_msg)
+
 class ContactInfoTests(TestCase):
     
 

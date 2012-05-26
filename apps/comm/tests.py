@@ -53,6 +53,7 @@ from contact.models import PhoneProvider, DialList, ContactInfo, PhoneNumber,\
 
 import do.config
 import mellon.config
+import people.config
 
 import json
 from people.models import UserProfile
@@ -852,6 +853,18 @@ class OutgoingCalls(TestCase):
     '''
     We're no longer answering the phone; now we need to initiate a call.
     '''
+    def setUp(self):
+        people.config.set_up()
+    
+    def test_outgoing_call_menu_200(self):
+        p = PhoneNumber.objects.create(number="5551231234")
+        response = self.client.get('/comm/outgoing_call_menu/', {'phone_number':p.id})
+        self.assertEqual(response.status_code, 200)
+    
+    @expectedFailure    
+    def test_outgoing_call_menu_with_users(self):
+        self.fail()
+    
     @expectedFailure
     def outgoing_call_is_placed(self):
         self.fail()

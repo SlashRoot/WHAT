@@ -281,12 +281,14 @@ def simple_phone_lookup(request):
 def outgoing_call_menu(request):
     outgoing_number = request.GET['phone_number']
     outgoing_number_object = PhoneNumber.objects.get(id=outgoing_number)
-    eligible_members = Member.objects.exclude(user__userprofile__contact_info__phone_numbers = None) #Members who have a phone number
+    
+    member_role = FixedObject.objects.get(name="RoleInGroup__slashroot_holder").object
+    eligible_members = member_role.users()
     
     eligible_numbers = []
         
     for member in eligible_members:
-        for phone_number in member.user.userprofile.contact_info.phone_numbers.all():
+        for phone_number in member.userprofile.contact_info.phone_numbers.all():
             eligible_numbers.append([phone_number.id, phone_number.type, member.user.username, phone_number.number])
     
     #Hardcode the house line for now.
