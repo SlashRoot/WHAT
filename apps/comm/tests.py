@@ -860,21 +860,42 @@ class CallManagementExperience(TestCase):
     def test_watch_calls_page_paginates(self):
         self.client.login(username="admin", password="admin")
         create_phone_calls(30)
-        response = self.client.get('/comm/watch_calls/')
-        self.assertTrue('displayCall_7' in response.content)
-        self.assertFalse('displayCall_21' in response.content)
+        
+        response_page1 = self.client.get('/comm/watch_calls/')
+        response_page2 = self.client.get('/comm/watch_calls/', {'page':2})
+        
+        self.assertFalse('displayCall_7' in response_page1.content)
+        self.assertTrue('displayCall_21' in response_page1.content)
+        self.assertTrue('<a href="?page=2">next</a>' in response_page1.content)
+        self.assertFalse('<a href="?page=1">previous</a>' in response_page1.content)
+        
+        self.assertTrue('displayCall_7' in response_page2.content)
+        self.assertFalse('displayCall_21' in response_page2.content)
+        self.assertFalse('<a href="?page=2">next</a>' in response_page2.content)
+        self.assertTrue('<a href="?page=1">previous</a>' in response_page2.content)
         
     def test_resolve_calls_200(self):
         self.client.login(username="admin", password="admin")
         response = self.client.get('/comm/resolve_calls/')
         self.assertEqual(response.status_code, 200)
         
-    @expectedFailure
     def test_resolve_calls_paginates(self):
         self.client.login(username="admin", password="admin")
-        create_phone_calls(150)
-        response = self.client.get('/comm/resolve_calls/')
-        self.fail()
+        create_phone_calls(30)
+        
+        response_page1 = self.client.get('/comm/resolve_calls/')
+        response_page2 = self.client.get('/comm/resolve_calls/', {'page':2})
+        
+        self.assertTrue('resolve_7' in response_page1.content)
+        self.assertFalse('resolve_21' in response_page1.content)
+        self.assertTrue('<a href="?page=2">next</a>' in response_page1.content)
+        self.assertFalse('<a href="?page=1">previous</a>' in response_page1.content)
+        
+        self.assertFalse('resolve_7' in response_page2.content)
+        self.assertTrue('resolve_21' in response_page2.content)
+        self.assertFalse('<a href="?page=2">next</a>' in response_page2.content)
+        self.assertTrue('<a href="?page=1">previous</a>' in response_page2.content)
+        
         
     @expectedFailure
     def test_sms_to_tag_user_on_call_task(self):

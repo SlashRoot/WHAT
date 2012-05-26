@@ -27,7 +27,21 @@ $(function(){
 		{% endwith %}
 	{% endfor %}
 </table>
+<div>
+    <span>
+        {% if resolve_calls.has_previous %}
+            <a href="?page={{ resolve_calls.previous_page_number }}">previous</a>
+        {% endif %}
 
+        <span class="current">
+            Page {{ resolve_calls.number }} of {{ resolve_calls.paginator.num_pages }}.
+        </span>
+
+        {% if resolve_calls.has_next %}
+            <a href="?page={{ resolve_calls.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
 
 
 {% endblock %}
