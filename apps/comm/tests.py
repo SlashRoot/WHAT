@@ -176,7 +176,7 @@ def create_phone_calls(number_of_phone_calls_to_create, from_number=None, to_num
     mellon.config.set_up()
     do.config.set_up_privileges()
     phone_calls = []
-    twilio = PhoneProvider.objects.get(name="Twilio")
+    twilio = PhoneProvider.objects.get_or_create(name="Twilio")[0]
     
     if not from_number:        
         from_number = PhoneNumber.objects.get_or_create(type='mobile', number='+18455551234')[0]
@@ -186,7 +186,7 @@ def create_phone_calls(number_of_phone_calls_to_create, from_number=None, to_num
     
     number_of_existing_calls = PhoneCall.objects.count()
     
-    for x in range(number_of_existing_calls+1, number_of_existing_calls+number_of_phone_calls_to_create):
+    for x in range(number_of_existing_calls+1, number_of_existing_calls+number_of_phone_calls_to_create+1):
         phone_calls.append(PhoneCall.objects.create(service=twilio, call_id=x, from_number=from_number, to_number=to_number))
     return phone_calls
 

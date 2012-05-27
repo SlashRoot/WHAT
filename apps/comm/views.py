@@ -27,7 +27,7 @@ from comm.services import get_provider_and_response_for_request,\
     get_audio_from_provider_recording
 from comm.call_functions import call_object_from_call_info, proper_verbage_for_final_call_connection, get_or_create_nice_number,\
     place_conference_call_to_dial_list
-from people.models import UserProfile
+from people.models import UserProfile, GenericParty
 import datetime
 
 
@@ -355,33 +355,36 @@ def watch_calls(request):
 
 @permission_required('comm.change_phonecall')
 def resolve_calls(request):
-#    resolve_protoype = FixedObject.objects.get(name="TaskPrototype__resolve_phone_call").object #SOGGY AND DISGUSTING.  Too many instaces of this string. (line 191)
-#    tasks = resolve_protoype.instances.filter(status__lt=2).order_by('created').exclude(id=2686)
     
-    calls = PhoneCall.objects.unresolved()
-    
-    if request.method == 'GET':
+    calls = PhoneCall.objects.all()
         
-        resolve_calls_filter_form = ResolveCallsFilterForm(request.GET)
+    resolve_calls_filter_form = ResolveCallsFilterForm(request.GET)     
         
-        if 'client' in request.GET and request.GET['client']:
-            pass
-        if 'member' in request.GET and request.GET['member']:
-            member_role = FixedObject.objects.get(name="RoleInGroup__slashroot_holder").object
-            eligible_members = member_role.users()
-            #TODO: Make a genuinely chainable manager.  When we've had more sleep.
-            calls = PhoneCall.objects.involving_users(eligible_members, to_users=False).filter(tasks__task__status__lt=2)
-           
-    else:
-        resolve_calls_filter_form = ResolveCallsFilterForm()
+    if not (resolve_calls_filter_form.cleaned_data['client']):
+        client_parties = GenericParty.objects.filter(service__isnull=False)
+        calls = calls.involving_parties(party_list=client_parties, invert=True)
+        
+    if not (resolve_calls_filter_form.cleaned_data['member']):
+        member_role = FixedObject.objects.get(name="RoleInGroup__slashroot_holder").object
+        eligible_members = member_role.users()
+        #TODO: Make a genuinely chainable manager.  When we've had more sleep.
+        calls = calls.involving(user_list=eligible_members, include_to=False, invert=True)
     
+    if not ('unknown callers' in request.GET and request.GET['unknown callers']):
+        pass
     
+    if not ('unresolved' in request.GET and request.GET['unresolved']):
+        pass
     
+    if not ('resolved' in request.GET and request.GET['resolved']):
+        pass
+            
+    if not ('other known callers' in request.GET and request.GET['other known callers']):    
+        pass
+        
     paginator = Paginator(calls, 15)
-    
-        
-        
     page = request.GET.get('page')
+    
     try:
         resolve_calls = paginator.page(page)
     

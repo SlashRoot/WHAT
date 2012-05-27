@@ -12,7 +12,10 @@ from mellon.config import set_up as mellon_setup
 from do.models import Task
 from utility.models import FixedObject
 from django.http import HttpResponse
-
+from comm.tests import create_phone_calls
+from people.models import UserProfile
+from contact.models import ContactInfo, PhoneNumber
+import people.config
 
 class CurrentClients(TestCase):
     def setUp(self):
@@ -22,6 +25,8 @@ class CurrentClients(TestCase):
         mellon_setup()
         set_up_privileges()
         
+        people.config.set_up()
+        
         self.admin = User.objects.create(is_superuser=True, username="admin", password="admin", first_name="Youhan")
         self.admin.set_password('admin')
         self.admin.save()
@@ -29,6 +34,19 @@ class CurrentClients(TestCase):
     def tearDown(self):
         ServiceStatusLog.objects.all().delete()
         Task.objects.all().delete()
+        
+    def test_service_client_is_listed_among_clients_on_resolve_calls_page_only_with_client_checked (self):
+        self.client.login(username="admin", password="admin")    
+        service = self.test_service_check_in_form_creates_service_object()
+        UserProfile.objects.create(user=service.recipient.user, contact_info=ContactInfo.objects.create())       
+        jingle = PhoneNumber.objects.create(owner=service.recipient.user.userprofile.contact_info, number="+18456797779")
+        calls = create_phone_calls(1,from_number=jingle)
+
+        response = self.client.get('/comm/resolve_calls/', {'client':True})
+        self.assertTrue('resolve_%s' % calls[0].id in response.content)
+
+        response = self.client.get('/comm/resolve_calls/', {'client':False})
+        self.assertFalse('resolve_%s' % calls[0].id in response.content)
 
     def test_service_check_in_form_creates_proper_task(self):
         self.client.login(username="admin", password="admin")
@@ -36,7 +54,6 @@ class CurrentClients(TestCase):
         task = Task.objects.all()[0]
         tp = FixedObject.objects.get(name="TaskPrototype__tech_service").object
         self.assertTrue(task.prototype, tp)
-        
 
     def test_service_check_in_form_creates_service_object(self):
         self.client.login(username="admin", password="admin")

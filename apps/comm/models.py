@@ -69,12 +69,54 @@ class CommunicationInvolvement(models.Model):
             return "%s called " % (self.person.userprofile.user.first_name)
 
 class PhoneCallQuerySet(QuerySet):
-    def involving_users(self, user_list, from_users=True, to_users=True):
+    def involving(self, user_list=None, party_list=None, include_from=True, include_to=True, invert=False):
         '''
-        Takes a list of users, returns a QuerySet of PhoneCalls involving those users.
+        Takes a list of users and / or parties, returns a QuerySet of PhoneCalls involving those users.
         By default, includes calls both from and to these users; can be changed with kwargs.
         '''
-        return self.filter(Q(from_number__owner__userprofile__user__in=user_list) | Q(to_number__owner__userprofile__user__in=user_list))
+        if not user_list and not party_list:
+            return self #If we don't get one list or another, there's no reason to pretend we're going to modify the QuerySet.
+        
+        if not include_from and not include_to:
+            raise TypeError("You must include either 'from' or 'to' calls.")
+
+        '''
+        We've precluded the impossible use cases.
+        Now we'll start with an empty Q() and populate accordingly.
+        '''
+        filter_args = Q()
+        
+        def apply_Q(filter_args, match_list):
+            if include_from:
+                filter_args = filter_args | Q(from_number__owner__userprofile__user__genericparty__in=match_list)
+            if include_to:
+                filter_args = filter_args | Q(to_number__owner__userprofile__user__genericparty__in=match_list)
+            
+            return filter_args
+            
+        if user_list:
+            filter_args = apply_Q(filter_args, user_list)
+        if party_list:
+            filter_args = apply_Q(filter_args, party_list)
+        
+        if not invert:            
+            return self.filter(filter_args)
+        else:
+            return self.exclude(filter_args)
+        
+        
+
+    
+    def involving_parties (self, party_list, from_parties=True, to_parties=True, invert=False):
+        '''
+        I already told you once. Same as above but takes a list of GenericParty objects.
+        '''
+        #TODO: Make this work for group parties, not just users.
+        filter_args = Q(from_number__owner__userprofile__user__genericparty__in=party_list) | Q(to_number__owner__userprofile__user__genericparty__in=party_list)
+        if not invert:            
+            return self.filter(filter_args)
+        else:
+            return self.exclude(filter_args)
     
     def unresolved(self):
         '''
