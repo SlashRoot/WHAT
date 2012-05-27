@@ -12,6 +12,8 @@ from do.models import Task, TaskRelatedObject, TaskAccess
 from django.core.exceptions import MultipleObjectsReturned
 
 from comm import comm_settings
+from model_utils.managers import PassThroughManager
+from django.db.models.query import QuerySet
 
 
 class Communication(models.Model):
@@ -66,12 +68,13 @@ class CommunicationInvolvement(models.Model):
         if self.direction == "from":
             return "%s called " % (self.person.userprofile.user.first_name)
 
-class PhoneCallManager(models.Manager):
-    def from_users(self, user_list):
+class PhoneCallQuerySet(QuerySet):
+    def involving_users(self, user_list, from_users=True, to_users=True):
         '''
-        Takes a list of users, returns a QuerySet of PhoneCalls from those users.
+        Takes a list of users, returns a QuerySet of PhoneCalls involving those users.
+        By default, includes calls both from and to these users; can be changed with kwargs.
         '''
-        return self.filter(from_number__owner__userprofile__user__in=user_list)
+        return self.filter(Q(from_number__owner__userprofile__user__in=user_list) | Q(to_number__owner__userprofile__user__in=user_list))
     
     def unresolved(self):
         '''
@@ -79,6 +82,13 @@ class PhoneCallManager(models.Manager):
         '''
         return self.filter(tasks__task__status__lt=2)
     
+    def has_recording(self, voicemail=True):
+        calls_with_recordings = self.filter(recordings__is_null=False)
+        
+        if voicemail:
+            return calls_with_recordings
+        else:
+            return calls_with_recordings.filter(tasks__tags__name="voicemail")
         
 class PhoneCall(Communication):
     '''
@@ -105,7 +115,7 @@ class PhoneCall(Communication):
     tasks = generic.GenericRelation('do.TaskRelatedObject')
     notices = generic.GenericRelation('social.DrawAttention')
     
-    objects = PhoneCallManager()
+    objects = PassThroughManager.for_queryset_class(PhoneCallQuerySet)()
     
     def __unicode__(self):
         if self.from_user():

@@ -370,7 +370,7 @@ def resolve_calls(request):
             member_role = FixedObject.objects.get(name="RoleInGroup__slashroot_holder").object
             eligible_members = member_role.users()
             #TODO: Make a genuinely chainable manager.  When we've had more sleep.
-            calls = PhoneCall.objects.from_users(eligible_members).filter(tasks__task__status__lt=2)
+            calls = PhoneCall.objects.involving_users(eligible_members, to_users=False).filter(tasks__task__status__lt=2)
            
     else:
         resolve_calls_filter_form = ResolveCallsFilterForm()

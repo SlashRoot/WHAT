@@ -19,5 +19,4 @@ requests
 twill
 tropo-webapi-python
 mechanize
-http://install.amon.cx/amon-0.7.tar.gz
-python-varnish
+django-model-utils
