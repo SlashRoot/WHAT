@@ -358,7 +358,8 @@ def resolve_calls(request):
     
     calls = PhoneCall.objects.all()
         
-    resolve_calls_filter_form = ResolveCallsFilterForm(request.GET)     
+    resolve_calls_filter_form = ResolveCallsFilterForm(request.GET)
+    resolve_calls_filter_form.is_valid() #To get cleaned data.  TODO: Sometime useful if the form ain't valid.
         
     if not (resolve_calls_filter_form.cleaned_data['client']):
         client_parties = GenericParty.objects.filter(service__isnull=False)
@@ -367,7 +368,6 @@ def resolve_calls(request):
     if not (resolve_calls_filter_form.cleaned_data['member']):
         member_role = FixedObject.objects.get(name="RoleInGroup__slashroot_holder").object
         eligible_members = member_role.users()
-        #TODO: Make a genuinely chainable manager.  When we've had more sleep.
         calls = calls.involving(user_list=eligible_members, include_to=False, invert=True)
     
     if not ('unknown callers' in request.GET and request.GET['unknown callers']):
