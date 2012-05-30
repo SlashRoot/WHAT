@@ -116,27 +116,27 @@ def call_object_from_call_info(call_info):
         
         phone_numbers[key] = phone_number_object #Put this phone number object in the dict.            
         
-        if not is_this_a_new_number:
+        if not is_this_a_new_number: #  TODO: do we even use this block and if we do is this right?
             phone_numbers[key].unknown = True #This number is unknown.  We'll want to know that for the template.
 
     #Save the numbers (but not their owners) as part of the call.            
-    call.from_number = phone_numbers['caller']
+    call.from_number = phone_numbers['caller']#  reminder: this is now a phone_number object
     call.to_number = phone_numbers['recipient']
   
     call.save()
     
-    #Determine if there's a user with the same number as either the caller or the recipient and isolate them.    
+    # Determine if there's a user with the same number as either the caller or the recipient and isolate them.    
 
     if phone_numbers['caller'].owner:
-        #TODO: Handle situations where a user represents a party
+        # TODO: Handle situations where a user represents a party
         CommunicationInvolvement.objects.create(person=phone_numbers['caller'].owner.userprofile.user, communication=call, direction="from") 
 
     try:    
         CommunicationInvolvement.objects.create(person=phone_numbers['recipient'].owner.userprofile.user, communication=call, direction="to")
-    except (UserProfile.DoesNotExist, AttributeError): #Either the owner is None or the UserProfile doesn't exist.
+    except (UserProfile.DoesNotExist, AttributeError):  # Either the owner is None or the UserProfile doesn't exist.
         pass
     
-    #If this this is the first time we've seen the call marked completed, we'll set the ended date.
+    # If this this is the first time we've seen the call marked completed, we'll set the ended date.
     if call_info['status'] == 'completed' and not call.ended:
         call.ended = datetime.datetime.now()
 

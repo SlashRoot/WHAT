@@ -215,7 +215,7 @@ class DialList(models.Model):
         return self.name
     
     def get_active_numbers(self):
-        #TODO: Make this query more efficient
+        #  TODO: Make this query more efficient. also this is where the "sleep" mode comes in if we are going to implement it.
         active = self.numbers.all()
         return active
         

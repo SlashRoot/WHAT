@@ -15,7 +15,22 @@ $(function(){
 
 
 <form name="filters" method="get" action="/comm/resolve_calls/">
-	{{resolve_calls_filter_form}}
+<table>
+	
+	<tr>
+		<td>Caller</td>
+		<td>To</td>
+		<td>From</td>
+	</tr>
+	{% for caller_type in caller_types %}
+		<tr>
+		    <td>{{caller_type}}</td>
+		    <td><input type="checkbox" name="{{caller_type}}_to" checked="checked"/></td>
+		    <td><input type="checkbox" name="{{caller_type}}_from" checked="checked"/></td>
+		</tr>
+	{% endfor %}
+	
+	</table>	
 	<button type="submit">Filter</button>
 </form>
 

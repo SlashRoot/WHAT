@@ -171,23 +171,48 @@ def teardown_testcase_for_pickup_tests(testcase):
     PhoneCall.objects.all().delete()
     
     
-def create_phone_calls(number_of_phone_calls_to_create, from_number=None, to_number=None):
+def create_phone_calls(number_of_phone_calls_to_create, from_user=None, to_user=None, from_number=None, to_number=None):
     do.config.set_up()
     mellon.config.set_up()
     do.config.set_up_privileges()
     phone_calls = []
     twilio = PhoneProvider.objects.get_or_create(name="Twilio")[0]
     
-    if not from_number:        
+    if from_user and from_number:
+        raise TypeError('Specify either from_user or from_number - not both.')
+    
+    if to_user and to_number:
+        raise TypeError('Specify either to_user or to_number - not both.')
+    
+    #From
+    
+    if from_number:
+        pass #We'll just use this.
+    elif from_user:
+        UserProfile.objects.get_or_create(user=from_user, defaults={'contact_info':ContactInfo.objects.create()})
+        from_number = PhoneNumber.objects.create(owner=from_user.userprofile.contact_info, number="+15551231234")        
+    else:
         from_number = PhoneNumber.objects.get_or_create(type='mobile', number='+18455551234')[0]
     
-    if not to_number:
-        to_number = PhoneNumber.objects.get_or_create(type='mobile', number='+18455555555')[0]
+    if to_number:
+        pass #We'll just use this.
+    elif to_user:
+        UserProfile.objects.get_or_create(user=to_user, defaults={'contact_info':ContactInfo.objects.create()})
+        to_number = PhoneNumber.objects.create(owner=to_user.userprofile.contact_info, number="+15551231234")        
+    else:
+        to_number = PhoneNumber.objects.get_or_create(type='mobile', number='+18455551234')[0]
     
     number_of_existing_calls = PhoneCall.objects.count()
     
     for x in range(number_of_existing_calls+1, number_of_existing_calls+number_of_phone_calls_to_create+1):
-        phone_calls.append(PhoneCall.objects.create(service=twilio, call_id=x, from_number=from_number, to_number=to_number))
+        phone_call = PhoneCall.objects.create(service=twilio, call_id=x, from_number=from_number, to_number=to_number)
+        phone_calls.append(phone_call)
+        
+        if from_user:
+            CommunicationInvolvement.objects.create(communication=phone_call, person=from_user, direction="from")
+        if to_user:
+            CommunicationInvolvement.objects.create(communication=phone_call, person=to_user, direction="to")
+        
     return phone_calls
 
 

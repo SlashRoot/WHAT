@@ -8,6 +8,10 @@ from django.contrib.auth.decorators import user_passes_test, permission_required
 from django.contrib.auth.models import User
 from django.views.decorators.http import require_http_methods
 
+from django.core.mail.message import EmailMultiAlternatives
+from django.core.paginator import Paginator
+
+from django import forms
 
 from comm.comm_settings import SLASHROOT_EXPRESSIONS
 from private import resources
@@ -18,7 +22,8 @@ from comm.forms import ResolveCallsFilterForm
 import requests
 import urlparse
 
-from comm.models import PhoneCall, PhoneCallRecording, CommunicationInvolvement
+from comm.models import PhoneCall, PhoneCallRecording, CommunicationInvolvement,\
+    PhoneCallQuerySet
 from comm.services import get_provider_and_response_for_request,\
     standardize_call_info, random_tropo_voice,\
     discern_intention_to_connect_from_answerer,\
@@ -33,9 +38,10 @@ import datetime
 
 from do.functions import get_tasks_in_prototype_related_to_object
 from twilio import twiml
+
 from utility.models import FixedObject
-from django.core.mail.message import EmailMultiAlternatives
-from django.core.paginator import Paginator
+from utility.forms import get_bool_from_html
+
 
 
 CUSTOMER_SERVICE_PRIVILEGE_ID = 8
@@ -293,7 +299,7 @@ def outgoing_call_menu(request):
     eligible_members = member_role.users()
     
     eligible_numbers = []
-        
+    
     for member in eligible_members:
         for phone_number in member.userprofile.contact_info.phone_numbers.all():
             eligible_numbers.append([phone_number.id, phone_number.type, member.username, phone_number.number])
@@ -357,31 +363,44 @@ def watch_calls(request):
 def resolve_calls(request):
     
     calls = PhoneCall.objects.all()
-        
-    resolve_calls_filter_form = ResolveCallsFilterForm(request.GET)
-    resolve_calls_filter_form.is_valid() #To get cleaned data.  TODO: Sometime useful if the form ain't valid.
-        
-    if not (resolve_calls_filter_form.cleaned_data['client']):
-        client_parties = GenericParty.objects.filter(service__isnull=False)
-        calls = calls.involving_parties(party_list=client_parties, invert=True)
-        
-    if not (resolve_calls_filter_form.cleaned_data['member']):
-        member_role = FixedObject.objects.get(name="RoleInGroup__slashroot_holder").object
-        eligible_members = member_role.users()
-        calls = calls.involving(user_list=eligible_members, include_to=False, invert=True)
     
-    if not ('unknown callers' in request.GET and request.GET['unknown callers']):
-        pass
+    types_of_callers = ['client',
+                        'member',
+                        'other_known_caller',
+                        'unknown_caller',
+                        ]
     
-    if not ('unresolved' in request.GET and request.GET['unresolved']):
-        pass
+    if 'client_to' in request.GET:
+        
+        filter_form_results = {}
+        
+        for c in types_of_callers:
+            try:
+                filter_form_results["%s_to" % c] = get_bool_from_html(request.GET["%s_to" % c])
+                filter_form_results["%s_from" % c] = get_bool_from_html(request.GET["%s_from" % c])
+            except KeyError:
+                return HttpResponseBadRequest('If you specify one type of caller, you must specify them all.')
     
-    if not ('resolved' in request.GET and request.GET['resolved']):
-        pass
+    
+        #We're being subtractive, so if *both* are checked, we can move on.
+        #Client
+        if not (filter_form_results['client_to'] and filter_form_results['client_from']):
+            clients = User.objects.filter(genericparty__service__isnull=False)
+            calls = calls.involving(user_list=clients, 
+                                            include_to=not filter_form_results['client_to'],
+                                            include_from=not filter_form_results['client_from'],
+                                            subtractive=True
+                                            )
             
-    if not ('other known callers' in request.GET and request.GET['other known callers']):    
-        pass
-        
+        if not (filter_form_results['member_to'] and filter_form_results['member_from']):
+            member_role = FixedObject.objects.get(name="RoleInGroup__slashroot_holder").object
+            eligible_members = member_role.users()
+            calls = calls.involving(user_list=eligible_members,
+                                            include_to=not filter_form_results['member_to'],
+                                            include_from=not filter_form_results['member_from'],
+                                            subtractive=True
+                                            )
+
     paginator = Paginator(calls, 15)
     page = request.GET.get('page')
     
@@ -394,7 +413,14 @@ def resolve_calls(request):
     except EmptyPage:
         resolve_calls = paginator.page(paginator.num_pages)
         
-    return render(request, 'comm/resolve_calls.html', locals() )
+    return render(request, 
+                  'comm/resolve_calls.html', 
+                  {
+                   'resolve_calls':resolve_calls,
+                   'caller_types':types_of_callers,
+                   } 
+                  )
+    
 
 @permission_required('comm.change_phonecall')
 def resolve_call(request):

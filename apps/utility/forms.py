@@ -232,4 +232,8 @@ class MustBeUniqueField(forms.Field):
         self.widget.attrs['class'] = 'mustBeUniqueField'
         self.widget.attrs['elephant_data'] = str(encrypted_field)
 
-        
+def get_bool_from_html(piece):
+    if piece in ['False', 'false', '0', 0]:
+        return False
+    else:
+        return True  

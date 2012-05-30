@@ -235,7 +235,7 @@ def place_deferred_outgoing_conference_call(participant, conference_id, provider
     '''
     Calls the function below.  Refactor both!
     '''
-    #TODO: Make this a REST call instead.
+    # TODO: Make this a REST call instead.
     place_call_to_number(str(participant.number.id), str(conference_id), provider, green_phone=participant.green_phone)
 
 def place_call_to_number(number, conference_id, provider, green_phone=False):
@@ -243,10 +243,10 @@ def place_call_to_number(number, conference_id, provider, green_phone=False):
     Stupid name.  Refactor please.
     '''
     if provider.name=="Tropo":
-        #This function causes tropo to hit /comm/conference_blast/
+        # This function causes tropo to hit /comm/conference_blast/
         deferToThread(requests.get, 'https://api.tropo.com/1.0/sessions?action=create&token=%s&number_to_call=%s&call_to_join=%s&green_phone=%s' % (API_tokens.TROPO_BLAST_TOKEN, number, str(conference_id), str(green_phone)))
     if provider.name=="Twilio":        
-        twilio_client = TwilioRestClient(API_tokens.TWILIO_SID, API_tokens.TWILIO_AUTH_TOKEN)
+        twilio_client = TwilioRestClient(API_tokens.TWILIO_SID, API_tokens.TWILIO_AUTH_TOKEN)  # dehydrate.
         number_object = PhoneNumber.objects.get(id=number)
         # TODO: No if machine detection for green phone, and timeout issues
         deferToThread(twilio_client.calls.create, if_machine="Hangup", to=number_object.number, from_="8456338330", url="http://60main.slashrootcafe.com/comm/pickup_connect_auto/%s/%s/" % (number, conference_id))
@@ -254,7 +254,7 @@ def place_call_to_number(number, conference_id, provider, green_phone=False):
 def get_audio_from_provider_recording(request, provider):
     
     if provider.name == "Twilio":
-        #TODO: Provide support for Twilio
+        # TODO: Provide support for Twilio
         recording_url = request.POST['RecordingUrl']
         recording_file_name = recording_url.split('/')[-1]
         recording_audio = urllib2.urlopen(recording_url)
