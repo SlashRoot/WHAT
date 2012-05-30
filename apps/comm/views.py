@@ -369,6 +369,12 @@ def resolve_calls(request):
                         'other_known_caller',
                         'unknown_caller',
                         ]
+    clients = User.objects.filter(genericparty__service__isnull=False)
+    
+    member_role = FixedObject.objects.get(name="RoleInGroup__slashroot_holder").object
+    members = member_role.users()
+    
+    unknown_callers = PhoneNumber.objects.filter(owner__isnull=True)
     
     if 'client_to' in request.GET:
         
@@ -392,14 +398,30 @@ def resolve_calls(request):
                                             subtractive=True
                                             )
             
-        if not (filter_form_results['member_to'] and filter_form_results['member_from']):
-            member_role = FixedObject.objects.get(name="RoleInGroup__slashroot_holder").object
-            eligible_members = member_role.users()
-            calls = calls.involving(user_list=eligible_members,
+        if not (filter_form_results['member_to'] and filter_form_results['member_from']):            
+            calls = calls.involving(user_list=members,
                                             include_to=not filter_form_results['member_to'],
                                             include_from=not filter_form_results['member_from'],
                                             subtractive=True
                                             )
+        
+        if not (filter_form_results['other_known_caller_to'] and filter_form_results['other_known_caller_from']):
+            #Doing this by PhoneNumber.  Is there a (better?) way to do it by User?
+            numbers = PhoneNumber.objects.exclude(owner__userprofile__user__in=members).exclude(owner__userprofile__user__in=clients).exclude(owner__isnull=True)
+            
+            if not filter_form_results['other_known_caller_to']:
+                calls = calls.exclude(to_number__in=numbers)
+            
+            if not filter_form_results['other_known_caller_from']:
+                calls = calls.exclude(from_number__in=numbers)
+                
+        if not (filter_form_results['unknown_caller_to'] and filter_form_results['unknown_caller_from']):
+            if not filter_form_results['unknown_caller_to']:
+                calls = calls.exclude(to_number__in=unknown_callers)
+            
+            if not filter_form_results['unknown_caller_from']:
+                calls = calls.exclude(from_number__in=unknown_callers)
+                
 
     paginator = Paginator(calls, 15)
     page = request.GET.get('page')
