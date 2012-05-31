@@ -370,16 +370,16 @@ def resolve_calls(request):
                         'unknown_caller',
                         ]
     
-    if 'client_to' in request.GET:
+    if 'submitted_filter_form' in request.GET:
         
         filter_form_results = {}
         
-        for c in types_of_callers:
-            try:
-                filter_form_results["%s_to" % c] = get_bool_from_html(request.GET["%s_to" % c])
-                filter_form_results["%s_from" % c] = get_bool_from_html(request.GET["%s_from" % c])
-            except KeyError:
-                return HttpResponseBadRequest('If you specify one type of caller, you must specify them all.')
+        for direction in ['from', 'to']:
+            for c in types_of_callers:
+                try:
+                    filter_form_results["%s_%s" % (c, direction)] = get_bool_from_html(request.GET["%s_%s" % (c, direction)])
+                except KeyError:
+                    filter_form_results["%s_%s" % (c, direction)] = False
     
     
         #We're being subtractive, so if *both* are checked, we can move on.
