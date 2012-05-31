@@ -190,7 +190,7 @@ def create_phone_calls(number_of_phone_calls_to_create, from_user=None, to_user=
         pass #We'll just use this.
     elif from_user:
         UserProfile.objects.get_or_create(user=from_user, defaults={'contact_info':ContactInfo.objects.create()})
-        from_number = PhoneNumber.objects.create(owner=from_user.userprofile.contact_info, number="+15551231234")        
+        from_number = PhoneNumber.objects.get_or_create(owner=from_user.userprofile.contact_info, defaults=dict(number="+15551231234"))[0]        
     else:
         from_number = PhoneNumber.objects.get_or_create(type='mobile', number='+18455551234')[0]
     

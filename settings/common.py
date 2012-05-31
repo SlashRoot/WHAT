@@ -147,6 +147,7 @@ LOCAL_APPS = (
     'commerce',
     'mellon',
     'email_blast',
+    'slashroot',
 )
 
 INSTALLED_APPS = PACKAGED_APPS + CORE_APPS + LOCAL_APPS

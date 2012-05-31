@@ -362,8 +362,6 @@ def watch_calls(request):
 @permission_required('comm.change_phonecall')
 def resolve_calls(request):
     
-    calls = PhoneCall.objects.all()
-    
     types_of_callers = ['client',
                         'member',
                         'other_known_caller',
@@ -375,9 +373,13 @@ def resolve_calls(request):
     members = member_role.users()
     
     unknown_callers = PhoneNumber.objects.filter(owner__isnull=True)
+
+    if not 'submitted_filter_form' in request.GET:
+        calls = PhoneCall.objects.all()
     
-    if 'submitted_filter_form' in request.GET:
+    else:
         
+                
         filter_form_results = {}
         
         for direction in ['from', 'to']:
@@ -387,43 +389,43 @@ def resolve_calls(request):
                 except KeyError:
                     filter_form_results["%s_%s" % (c, direction)] = False
     
-    
+        calls_universe = PhoneCall.objects.unresolved()
+        calls = set() 
+        
         #We're being subtractive, so if *both* are checked, we can move on.
         #Client
-        if not (filter_form_results['client_to'] and filter_form_results['client_from']):
+        if filter_form_results['client_to'] or filter_form_results['client_from']:
             clients = User.objects.filter(genericparty__service__isnull=False)
-            calls = calls.involving(user_list=clients, 
-                                            include_to=not filter_form_results['client_to'],
-                                            include_from=not filter_form_results['client_from'],
-                                            subtractive=True
-                                            )
+            calls = calls.union(calls_universe.involving(user_list=clients, 
+                                            include_to=filter_form_results['client_to'],
+                                            include_from=filter_form_results['client_from'],
+                                            ))
             
-        if not (filter_form_results['member_to'] and filter_form_results['member_from']):            
-            calls = calls.involving(user_list=members,
-                                            include_to=not filter_form_results['member_to'],
-                                            include_from=not filter_form_results['member_from'],
-                                            subtractive=True
-                                            )
+        if filter_form_results['member_to'] or filter_form_results['member_from']:            
+            calls = calls.union(calls_universe.involving(user_list=members,
+                                            include_to=filter_form_results['member_to'],
+                                            include_from=filter_form_results['member_from'],
+                                            ))
         
-        if not (filter_form_results['other_known_caller_to'] and filter_form_results['other_known_caller_from']):
+        if filter_form_results['other_known_caller_to'] or filter_form_results['other_known_caller_from']:
             #Doing this by PhoneNumber.  Is there a (better?) way to do it by User?
             numbers = PhoneNumber.objects.exclude(owner__userprofile__user__in=members).exclude(owner__userprofile__user__in=clients).exclude(owner__isnull=True)
             
-            if not filter_form_results['other_known_caller_to']:
-                calls = calls.exclude(to_number__in=numbers)
+            if filter_form_results['other_known_caller_to']:
+                calls = calls.union(calls_universe.filter(to_number__in=numbers))
             
-            if not filter_form_results['other_known_caller_from']:
-                calls = calls.exclude(from_number__in=numbers)
+            if filter_form_results['other_known_caller_from']:
+                calls = calls.union(calls_universe.filter(from_number__in=numbers))
                 
-        if not (filter_form_results['unknown_caller_to'] and filter_form_results['unknown_caller_from']):
-            if not filter_form_results['unknown_caller_to']:
-                calls = calls.exclude(to_number__in=unknown_callers)
+        if filter_form_results['unknown_caller_to'] or filter_form_results['unknown_caller_from']:
+            if filter_form_results['unknown_caller_to']:
+                calls = calls.union(calls_universe.filter(to_number__in=unknown_callers))
             
-            if not filter_form_results['unknown_caller_from']:
-                calls = calls.exclude(from_number__in=unknown_callers)
+            if filter_form_results['unknown_caller_from']:
+                calls = calls.union(calls_universe.filter(from_number__in=unknown_callers))
                 
 
-    paginator = Paginator(calls, 15)
+    paginator = Paginator(list(calls), 15)
     page = request.GET.get('page')
     
     try:

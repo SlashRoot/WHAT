@@ -35,37 +35,7 @@ class CurrentClients(TestCase):
         ServiceStatusLog.objects.all().delete()
         Task.objects.all().delete()
         
-    def test_service_client_is_listed_among_clients_on_resolve_calls_page_only_with_client_checked (self):
-        self.client.login(username="admin", password="admin")    
-        service = self.test_service_check_in_form_creates_service_object()
-        UserProfile.objects.create(user=service.recipient.user, contact_info=ContactInfo.objects.create())       
-        jingle = PhoneNumber.objects.create(owner=service.recipient.user.userprofile.contact_info, number="+18456797779")
-        calls = create_phone_calls(1,from_user=service.recipient.user)
-
-        inclusive_response = self.client.get('/comm/resolve_calls/', {'client_to':True, 
-                                                            'client_from':True,
-                                                            'member_to':False, 
-                                                            'member_from':False,
-                                                            'other_known_caller_to':False, 
-                                                            'other_known_caller_from':False,
-                                                            'unknown_caller_to':False, 
-                                                            'unknown_caller_from':False,
-                                                            })
-        self.assertTrue('resolve_%s' % calls[0].id in inclusive_response.content)
-
-        exclusive_response = self.client.get('/comm/resolve_calls/', {'client_to':False, 
-                                                            'client_from':False,
-                                                            'member_to':True, 
-                                                            'member_from':True,
-                                                            'other_known_caller_to':True, 
-                                                            'other_known_caller_from':True,
-                                                            'unknown_caller_to':True, 
-                                                            'unknown_caller_from':True,
-                                                            })
-        self.assertFalse('resolve_%s' % calls[0].id in exclusive_response.content)
-
-
-
+ 
     def test_service_check_in_form_creates_proper_task(self):
         self.client.login(username="admin", password="admin")
         response = self.client.post('/service/check_in/', {'customer':'auth.user_2___admin', 'projected':'12/21/2012'}, follow=True)
