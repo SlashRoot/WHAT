@@ -378,8 +378,6 @@ def resolve_calls(request):
         calls = PhoneCall.objects.unresolved()
     
     else:
-        
-                
         filter_form_results = {}
         
         for direction in ['from', 'to']:
@@ -399,6 +397,8 @@ def resolve_calls(request):
         else:
             if not filter_form_results['include_without_recordings']:
                 calls_universe = PhoneCall.objects.unresolved().exclude(recordings__isnull=True)
+            else:
+                calls_universe = PhoneCall.objects.unresolved()
         calls = set() 
         
         #We're being subtractive, so if *both* are checked, we can move on.

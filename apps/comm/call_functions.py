@@ -31,28 +31,7 @@ from push.functions import push_with_template
 
 
 
-def notifyCallSave(instance, **kwargs):
-    '''
-    When phone calls are saved, push to watch_calls
-    ''' 
-    if instance.__class__ == PhoneCall:
-        call = instance
-        
-        if kwargs['created']:
-            resolve_protoype = FixedObject.objects.get(name=RESOLVE_PHONE_CALL).object        
-            resolve_task = resolve_protoype.instantiate()
-            resolve_relationship = TaskRelatedObject.objects.create(task = resolve_task, object = call)
-            try:
-                access = TaskAccess.objects.create(task=resolve_task, prototype = FixedObject.objects.get(name="TaskAccessPrototype__answer_phone_calls").object)
-            except FixedObject.DoesNotExist:
-                #TODO: The FixedObject isn't in the DB yet.  Run the setup.
-                raise
-    if instance.__class__ == CommunicationInvolvement:
-        call = instance.communication.phonecall #TODO: This will break when we introduce non-phonecall CommunicationInvolvement objects.
-    push_with_template('comm/call_alert.html', {'call': call}, "/incomingCall")
 
-post_save.connect(notifyCallSave, sender=PhoneCall)
-post_save.connect(notifyCallSave, sender=CommunicationInvolvement)
 
 def get_or_create_nice_number(incoming_number):
     '''

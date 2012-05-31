@@ -60,9 +60,12 @@ class CallResponse(object):
         if self.provider.name == "Tropo":
             return self.response_object.transfer(*args, **kwargs)
         
-    def conference(self, *args, **kwargs):
+    def conference(self, start_recording=False, *args, **kwargs):
         if self.provider.name == "Twilio":
-            dial = self.response_object.addDial()
+            if start_recording:
+                dial = self.response_object.addDial(record=True, action='http://slashrootcafe.com/comm/recording_handler/call/%s/' % kwargs['conference_id'])
+            else:
+                dial = self.response_object.addDial()
             startConferenceOnEnter = True if 'start_now' in kwargs and kwargs['start_now'] else False #Sometimes we want this joiner to start the conference.  Sometimes not.
             return dial.addConference(kwargs['conference_id'], startConferenceOnEnter=startConferenceOnEnter)
         if self.provider.name == "Tropo":
@@ -76,7 +79,7 @@ class CallResponse(object):
         Put someone on hold, perparing them for a conference.  During their hold, play the hold music.
         '''
         if self.provider.name == "Twilio":
-            dial = self.response_object.addDial(record=True)
+            dial = self.response_object.addDial()
             reactor.callFromThread(twilio_deferred_voicemail_determination, conference_id, 40)
             return dial.addConference(conference_id)#TODO: waitUrl=hold_music)
          

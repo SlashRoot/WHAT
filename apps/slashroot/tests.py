@@ -78,7 +78,8 @@ class ResolveCallsModels(TestCase):
 
     def test_client_is_listed_among_clients(self):
         inclusive_response = self.client.get('/comm/resolve_calls/', {'client_to':True, 
-                                                            'client_from':True,                                                            
+                                                            'client_from':True,         
+                                                            'include_without_recordings':True,                                                   
                                                             'submitted_filter_form':True
                                                             })
         self.assertTrue('resolve_%s' % self.call_from_client.id in inclusive_response.content)
@@ -91,13 +92,15 @@ class ResolveCallsModels(TestCase):
                                                             'other_known_caller_from':True,
                                                             'unknown_caller_to':True, 
                                                             'unknown_caller_from':True,
+                                                            'include_without_recordings':True,
                                                             'submitted_filter_form':True
                                                             })
         self.assertFalse('resolve_%s' % self.call_from_client.id in exclusive_response.content)
         
     def test_member_is_listed_among_members(self):
         inclusive_response = self.client.get('/comm/resolve_calls/', {'member_to':True, 
-                                                            'member_from':True,                                                            
+                                                            'member_from':True,
+                                                            'include_without_recordings':True,                                               
                                                             'submitted_filter_form':True
                                                             })
         self.assertTrue('resolve_%s' % self.call_from_member.id in inclusive_response.content)
@@ -105,14 +108,16 @@ class ResolveCallsModels(TestCase):
     def test_member_is_not_listed_among_non_members(self):
         inclusive_response = self.client.get('/comm/resolve_calls/', {
                                                             'client_to':True, 
-                                                            'unknown_caller_from':True,                                                            
+                                                            'unknown_caller_from':True,
+                                                            'include_without_recordings':True,                                                            
                                                             'submitted_filter_form':True
                                                             })
         self.assertFalse('resolve_%s' % self.call_from_member.id in inclusive_response.content)
         
     def test_other_known_caller_is_listed_among_other_known_callers(self):
         inclusive_response = self.client.get('/comm/resolve_calls/', { 
-                                                            'other_known_caller_from':True,                                                            
+                                                            'other_known_caller_from':True,
+                                                            'include_without_recordings':True,                                                         
                                                             'submitted_filter_form':True
                                                             })
         self.assertTrue('resolve_%s' % self.call_from_other_known.id in inclusive_response.content)
@@ -120,7 +125,8 @@ class ResolveCallsModels(TestCase):
     def test_other_known_caller_aint_listed_among_non_other_known_callers(self):
         inclusive_response = self.client.get('/comm/resolve_calls/', {
                                                             'client_to':True,
-                                                            'member_from':True,                                                            
+                                                            'member_from':True,
+                                                            'include_without_recordings':True,                                             
                                                             'submitted_filter_form':True
                                                             })
         self.assertFalse('resolve_%s' % self.call_from_other_known.id in inclusive_response.content)
@@ -128,6 +134,7 @@ class ResolveCallsModels(TestCase):
     def test_unknown_caller_is_listed_among_unknown_callers(self):
         inclusive_response = self.client.get('/comm/resolve_calls/', {
                                                             'unknown_caller_from':True,
+                                                            'include_without_recordings':True,
                                                             'client_to':True,                                                        
                                                             'submitted_filter_form':True
                                                             })
@@ -136,7 +143,8 @@ class ResolveCallsModels(TestCase):
     def test_unknown_caller_aint_listed_among_non_unknown_callers(self):
         exclusive_response = self.client.get('/comm/resolve_calls/', {
                                                             'client_to':True,
-                                                            'member_from':True,                                                            
+                                                            'member_from':True,
+                                                            'include_without_recordings':True,                                             
                                                             'submitted_filter_form':True
                                                             })
         self.assertFalse('resolve_%s' % self.call_from_unknown.id in exclusive_response.content)

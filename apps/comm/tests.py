@@ -348,8 +348,12 @@ class CallerInitialExperience(TestCase):
         response_commands_list = response_commands_dict['tropo']
         command_to_join_conference = find_command_in_tropo_command_list(response_commands_list, command_name="startRecording")
         self.assertTrue(command_to_join_conference)  
-        
+    
+    @expectedFailure    
     def test_twilio_record_command_is_issued(self):
+        #TODO: This test previously looked for the command in the wrong place.
+        #The command now appears in our response when an answerer joins a conference, not in our response when a caller reaches us.
+        #This is so that we no longer record hold music.
         try:
             record_command_value = self.twilio_response_object.verbs[1].attrs['record']
             self.assertEqual(record_command_value, True, msg="The record command was issued, but was not set to True.")
@@ -929,24 +933,7 @@ class CallManagementExperience(TestCase):
         self.assertTrue('resolve_21' in response_page2.content)
         self.assertFalse('<a href="?page=2">next</a>' in response_page2.content)
         self.assertTrue('<a href="?page=1">previous</a>' in response_page2.content)
-    
-    def test_resolve_calls_filter_from_members(self):
-        rusty = User.objects.create(first_name='Rusty', username="RustySpike")
-        UserProfile.objects.create(user=rusty, contact_info=ContactInfo.objects.create())
-        member_role = FixedObject.objects.get(name="RoleInGroup__slashroot_holder").object
-        UserInGroup.objects.create(role=member_role, user=rusty)
-        
-        jingle = PhoneNumber.objects.create(owner=rusty.userprofile.contact_info, number="+18456797779")
-        
-        calls_from_rusty = create_phone_calls(14, from_number=jingle)
-        calls_not_from_rusty = create_phone_calls(10)
-        
-        self.client.login(username="admin", password="admin")
-        response = self.client.get('/comm/resolve_calls/', {'member':True})
-        
-        self.assertTrue('resolve_%s' % calls_from_rusty[0].id in response.content)
-        self.assertFalse('resolve_%s' % calls_not_from_rusty[0].id in response.content)
-        
+           
     @expectedFailure
     def test_sms_to_tag_user_on_call_task(self):
         self.fail()
