@@ -375,7 +375,7 @@ def resolve_calls(request):
     unknown_callers = PhoneNumber.objects.filter(owner__isnull=True)
 
     if not 'submitted_filter_form' in request.GET:
-        calls = PhoneCall.objects.all()
+        calls = PhoneCall.objects.unresolved()
     
     else:
         
@@ -388,8 +388,17 @@ def resolve_calls(request):
                     filter_form_results["%s_%s" % (c, direction)] = get_bool_from_html(request.GET["%s_%s" % (c, direction)])
                 except KeyError:
                     filter_form_results["%s_%s" % (c, direction)] = False
+                    
+        try:
+            filter_form_results['include_without_recordings'] = get_bool_from_html(request.GET['include_without_recordings'])
+        except KeyError:
+            filter_form_results['include_without_recordings'] = False
     
-        calls_universe = PhoneCall.objects.unresolved()
+        if False not in filter_form_results.values():
+            calls_universe = PhoneCall.objects.unresolved()
+        else:
+            if not filter_form_results['include_without_recordings']:
+                calls_universe = PhoneCall.objects.unresolved().exclude(recordings__isnull=True)
         calls = set() 
         
         #We're being subtractive, so if *both* are checked, we can move on.

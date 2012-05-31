@@ -27,9 +27,9 @@ $(function(){
 		    <td><input type="checkbox" name="{{caller_type}}_to" checked="checked"/></td>
 		    <td><input type="checkbox" name="{{caller_type}}_from" checked="checked"/></td>
 		</tr>
-	{% endfor %}
-	
-	</table>	
+	{% endfor %}	
+	</table>
+	<span>Include calls without recordings:</span><input type="checkbox" name="include_without_recordings" checked="checked"/>
 	<button type="submit">Filter</button>
 </form>
 

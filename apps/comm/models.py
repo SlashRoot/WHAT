@@ -284,6 +284,9 @@ class PhoneCallRecording(models.Model):
         '''
         A shameful fucking hack.
         '''
+        if self.url:
+            return self.url
+        
         try:
             supposed_to_be_the_url = self.audio_file.url
             split_url = supposed_to_be_the_url.split('/')
