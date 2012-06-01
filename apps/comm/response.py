@@ -101,7 +101,7 @@ class CallResponse(object):
         if self.provider.name == "Tropo":
             reactor.callFromThread(send_deferred_tropo_signal, conference_id, 'joinConference', 0)
             
-        self.conference(**conference_kwargs)
+        self.conference(start_recording=True, **conference_kwargs)
         return True #We can't know anything meaningful because we aren't going to wait around for the signal.
     
     def on(self, *args, **kwargs):

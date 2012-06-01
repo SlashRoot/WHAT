@@ -17,7 +17,6 @@ from comm.comm_settings import SLASHROOT_EXPRESSIONS
 from private import resources
 
 from contact.models import PhoneNumber, DialList, PhoneProvider
-from comm.forms import ResolveCallsFilterForm
 
 import requests
 import urlparse
