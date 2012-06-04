@@ -31,7 +31,12 @@ from comm.services import get_provider_and_response_for_request,\
     get_audio_from_provider_recording
 from comm.call_functions import call_object_from_call_info, proper_verbage_for_final_call_connection, get_or_create_nice_number,\
     place_conference_call_to_dial_list
+<<<<<<< HEAD
 from people.models import UserProfile, GenericParty
+=======
+from comm.rest import PhoneProviderRESTObject
+from people.models import UserProfile
+>>>>>>> refs/remotes/origin/uncouple_tropo_from_outcalling_call
 import datetime
 
 
@@ -307,31 +312,28 @@ def outgoing_call_menu(request):
         
     return render(request, 'comm/outgoing_call_menu.html', locals()) 
 
-def outgoing_call(request):
+def outgoing_call(request, phone_provider_name=None):
     '''
     Make an outgoing call.  Duh.  :-)
     
     TODO: Uncouple from Tropo
     '''
-    tropo_provider = PhoneProvider.objects.get(name="Tropo")
+    if not phone_provider_name:
+        #TODO: Get default phone provider
+        pass
+    else:
+        phone_provider = PhoneProvider.objects.get(name=phone_provider_name)
     
     call_from_phone = PhoneNumber.objects.get(id=request.POST['callFrom'])
     call_to_phone = PhoneNumber.objects.get(id=request.POST['callTo'])
 
     from_number = resources.SLASHROOT_MAIN_LINE
     
+    p = PhoneProviderRESTObject(phone_provider)
     
-    response = requests.post('https://api.tropo.com/1.0/sessions/', 
-                      data={
-                            'token':'0aaea1598824a846a340ea4b597fc9672cfa5734fc4a2edcf8c2de5101277f765ec7e8743d379495f7969bc7', 
-                            'toNumber':call_to_phone.remove_dashes(), 
-                            'fromNumber':call_from_phone.remove_dashes(),
-                            }
-                      )
+    call_id = p.place_new_call(call_from_phone, call_to_phone)
     
-    session_id = urlparse.parse_qs(response.content)['id'][0].rstrip()
-    
-    call = PhoneCall.objects.create(service=tropo_provider, call_id=session_id, dial=True, from_number=call_from_phone, to_number=call_to_phone)
+    call = PhoneCall.objects.create(service=tropo_provider, call_id=call_id, dial=True, from_number=call_from_phone, to_number=call_to_phone)
     
     task = call.resolve_task()
     task.ownership.create(owner=request.user)
