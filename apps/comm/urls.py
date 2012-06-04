@@ -42,6 +42,8 @@ urlpatterns = patterns('comm.views',
     
     #Try with GET - feel like I've done this before?
     (r'outgoing_call/', 'outgoing_call'),
+    (r'outgoing_call_callback/', 'outgoing_call_callback'),
+    
     #Urgent - go to all phones / record
     #(r'second_leg_temp/$', 'redirect_to_tropo'),
     

@@ -62,7 +62,8 @@ from django.contrib.auth.models import User
 from unittest import expectedFailure
 
 from comm.services import find_command_in_tropo_command_list,\
-    standardize_call_info, find_command_in_twilio_response
+    standardize_call_info, find_command_in_twilio_response,\
+    SLASHROOT_TWILIO_ACCOUNT
 
 from comm.call_functions import call_object_from_call_info,\
     place_conference_call_to_dial_list
@@ -943,8 +944,18 @@ class OutgoingCalls(TestCase):
         self.fail()
     
     @expectedFailure
-    def outgoing_call_is_placed(self):
+    def outgoing_call_is_placed_with_tropo(self):
         self.fail()
+    
+    @expectedFailure
+    def test_outgoing_call_is_placed_with_twilio(self):
+        to_number = 18452343919
+        from_number = 18453456789
+        
+        SLASHROOT_TWILIO_ACCOUNT.calls.create(to_number, from_number, url="%s/comm/outgoing_call_callback/%s/%s/" % (resources.COMM_DOMAIN, from_number.id))
+        
+        
+        
         
     @expectedFailure
     def outgoing_call_initator_gets_call(self):
