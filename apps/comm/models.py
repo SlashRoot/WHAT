@@ -262,7 +262,7 @@ class PhoneCall(Communication):
         try:
             related_object = self.tasks.get(task__prototype__name="Resolved Call: [[0]]")
             return related_object.task #TODO: Ask ourselves - is this how we want to do this?  Or create a utility.ConfigurationOption object?
-        except Task.DoesNotExist:
+        except Task.DoesNotExist, TaskRelatedObject.DoesNotExist:
             raise RuntimeError('Unable to get the task to resolve this call.  Tell Justin to raise ReallyFuckedUpError.')
 
 

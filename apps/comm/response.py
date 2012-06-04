@@ -63,7 +63,7 @@ class CallResponse(object):
     def conference(self, start_recording=False, *args, **kwargs):
         if self.provider.name == "Twilio":
             if start_recording:
-                dial = self.response_object.addDial(record=True, action='http://slashrootcafe.com/comm/recording_handler/call/%s/' % kwargs['conference_id'])
+                dial = self.response_object.addDial(record=True, action='%s/comm/recording_handler/call/%s/' % (resources.COMM_DOMAIN, kwargs['conference_id']))
             else:
                 dial = self.response_object.addDial()
             startConferenceOnEnter = True if 'start_now' in kwargs and kwargs['start_now'] else False #Sometimes we want this joiner to start the conference.  Sometimes not.
@@ -71,7 +71,7 @@ class CallResponse(object):
         if self.provider.name == "Tropo":
             self.response_object.on("hangup", next="/comm/handle_hangup/%s/%s/" % (kwargs['conference_id'], kwargs['number'].id))
             if 'record' in kwargs and kwargs['record']:
-                self.response_object.startRecording('http://slashrootcafe.com/comm/recording_handler/call/%s/' % kwargs['conference_id'], format="audio/mp3")
+                self.response_object.startRecording('%s/comm/recording_handler/call/%s/' % (resources.COMM_DOMAIN, kwargs['conference_id']), format="audio/mp3")
             return self.response_object.conference(kwargs['conference_id'], allowSignals=['leaveConference',], *args, **kwargs)
     
     def conference_holding_pattern(self, conference_id, number_object, hold_music):

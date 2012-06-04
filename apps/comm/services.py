@@ -21,7 +21,7 @@ from comm.response import CallResponse
 from comm import comm_settings
 from comm.models import PhoneCall
 
-from private import API_tokens
+from private import API_tokens, resources
 
 SLASHROOT_TWILIO_ACCOUNT = TwilioRestClient(API_tokens.TWILIO_SID, API_tokens.TWILIO_AUTH_TOKEN)
 
@@ -249,7 +249,7 @@ def place_call_to_number(number, conference_id, provider, green_phone=False):
         twilio_client = TwilioRestClient(API_tokens.TWILIO_SID, API_tokens.TWILIO_AUTH_TOKEN)  # dehydrate.
         number_object = PhoneNumber.objects.get(id=number)
         # TODO: No if machine detection for green phone, and timeout issues
-        deferToThread(twilio_client.calls.create, if_machine="Hangup", to=number_object.number, from_="8456338330", url="http://60main.slashrootcafe.com/comm/pickup_connect_auto/%s/%s/" % (number, conference_id))
+        deferToThread(twilio_client.calls.create, if_machine="Hangup", to=number_object.number, from_="8456338330", url="%s/comm/pickup_connect_auto/%s/%s/" % (resources.COMM_DOMAIN, number, conference_id))
 
 def get_audio_from_provider_recording(request, provider):
     
@@ -263,7 +263,7 @@ def get_audio_from_provider_recording(request, provider):
         local_recording_file.write(recording_audio.read())
         local_recording_file.close()
         
-        return local_recording_file
+        return local_recording_file, recording_url
     
     if provider.name == "Tropo":
         filename = str(request.FILES['filename'])
@@ -272,4 +272,4 @@ def get_audio_from_provider_recording(request, provider):
             destination.write(chunk)
         destination.close()
         
-        return destination
+        return destination, False

@@ -260,7 +260,7 @@ def recording_handler(request, object_type, id):
     '''
     provider, r = get_provider_and_response_for_request(request)
     #First we'll save the MP3 file.
-    file = get_audio_from_provider_recording(request, provider)
+    file, url = get_audio_from_provider_recording(request, provider)
     
     #Now we need to figure out whether we already have a recording object to pair it with.
     if object_type == "recording":
@@ -271,9 +271,8 @@ def recording_handler(request, object_type, id):
     
     recording_object.audio_file = file.name
     
-    #COUPLED TO TWILIO.  TODO: Fix.
-    if provider.name == "Twilio":
-        recording_object.url = request.POST['RecordingUrl']
+    if url:
+        recording_object.url = url
     
     recording_object.save()
     
