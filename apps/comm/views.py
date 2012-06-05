@@ -1,62 +1,26 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect,\
-    HttpResponseBadRequest, HttpResponseNotAllowed
-from django.views.decorators.csrf import csrf_exempt
-from django.conf import settings
-
-from django.contrib.auth.decorators import user_passes_test, permission_required
-from django.contrib.auth.models import User
-from django.views.decorators.http import require_http_methods
-
-from django.core.mail.message import EmailMultiAlternatives
-from django.core.paginator import Paginator
-
-from django import forms
-
-from comm.comm_settings import SLASHROOT_EXPRESSIONS
-from private import resources
-
-from contact.models import PhoneNumber, DialList, PhoneProvider
-
-import requests
 import urlparse
-
-from comm.models import PhoneCall, PhoneCallRecording, CommunicationInvolvement,\
-    PhoneCallQuerySet
-from comm.services import get_provider_and_response_for_request,\
-    standardize_call_info, random_tropo_voice,\
-    discern_intention_to_connect_from_answerer,\
-    discern_destination_from_tropo_request, \
-    SLASHROOT_TWILIO_ACCOUNT, extract_transcription_as_text,\
-    get_audio_from_provider_recording
-from comm.call_functions import call_object_from_call_info, proper_verbage_for_final_call_connection, get_or_create_nice_number,\
-    place_conference_call_to_dial_list
-from people.models import UserProfile, GenericParty
-from comm.rest import PhoneProviderRESTObject
-import datetime
-
-
-from do.functions import get_tasks_in_prototype_related_to_object
-from twilio import twiml
-
-from utility.models import FixedObject
-from utility.forms import get_bool_from_html
-
-
-
-CUSTOMER_SERVICE_PRIVILEGE_ID = 8
-
-from django.core.mail import send_mail
-from django.contrib.contenttypes.models import ContentType
-
-from twisted.internet import reactor
-
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
 import os
 import json
+import logging
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect
 
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.models import User
+
+from comm.models import PhoneCall
+from comm.call_functions import get_or_create_nice_number
+from comm.rest import PhoneProviderRESTObject
+
+from do.functions import get_tasks_in_prototype_related_to_object
+from utility.models import FixedObject
+from utility.forms import get_bool_from_html
+from private import resources
+from contact.models import PhoneNumber, PhoneProvider
+
+comm_logger = logging.getLogger('comm')
 
 def simple_phone_lookup(request):
     phone_number, created = get_or_create_nice_number(request.GET['phone_number'])
@@ -119,6 +83,8 @@ def outgoing_call(request, phone_provider_name=None):
 
 @permission_required('comm.change_phonecall')
 def watch_calls(request):
+    
+    
     calls=PhoneCall.objects.filter(dial=False).order_by('created').reverse()
     paginator = Paginator(calls, 15)
     
@@ -136,6 +102,7 @@ def watch_calls(request):
 
 @permission_required('comm.change_phonecall')
 def resolve_calls(request):
+    comm_logger.info('Resolve Calls was accessed by %s.' % request.user.username)
     
     types_of_callers = ['client',
                         'member',
@@ -244,9 +211,6 @@ def resolve_call(request):
     resolve_task.set_status(status, request.user)
 
     return HttpResponse(status)
-
-
-
 
 @permission_required('comm.change_phonecall')
 def phone_call_details(request, phone_call_id):
