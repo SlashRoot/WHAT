@@ -20,10 +20,11 @@ from comm.comm_settings import SLASHROOT_EXPRESSIONS
 from comm.response import CallResponse
 from comm import comm_settings
 from comm.models import PhoneCall
+from comm.rest import SLASHROOT_TWILIO_ACCOUNT
 
 from private import API_tokens, resources
 
-SLASHROOT_TWILIO_ACCOUNT = TwilioRestClient(API_tokens.TWILIO_SID, API_tokens.TWILIO_AUTH_TOKEN)
+
 
 def incoming_twilio_phone_client_loader(request):
     from twilio.util import TwilioCapability

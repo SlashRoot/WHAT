@@ -44,8 +44,7 @@ This is generally not so with the other apps - this is likely the most difficult
 from django.test import TestCase
 
 from comm.comm_settings import SLASHROOT_EXPRESSIONS
-from comm.views import answer, alert_pickup, conference_blast, pickup_connect,\
-    voicemail, transcription_handler, handle_hangup
+from comm.provider_views import answer, alert_pickup, conference_blast, pickup_connect, voicemail, transcription_handler, handle_hangup
 from comm.models import PhoneCall, CommunicationInvolvement
 
 from contact.models import PhoneProvider, DialList, ContactInfo, PhoneNumber,\

@@ -1,5 +1,7 @@
-from comm.service import SLASHROOT_TWILIO_ACCOUNT
-from private import API_Tokens, resources
+from private import API_tokens, resources
+from twilio.rest import TwilioRestClient
+
+SLASHROOT_TWILIO_ACCOUNT = TwilioRestClient(API_tokens.TWILIO_SID, API_tokens.TWILIO_AUTH_TOKEN)
 
 class PhoneProviderRESTObject(object):
     def __init__(self, provider_object):
