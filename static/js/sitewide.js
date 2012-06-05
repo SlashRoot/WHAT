@@ -186,6 +186,10 @@ $(function(){
 	            	   //Some submission elements may specify a success callback function.  If so, let's execute it.
             		   window[f].apply(null, Array(responseDICT, clickedElement));
             	   }
+            	   
+            	   if (responseDICT['alert']){
+            		   alert(responseDICT['alert']);
+            	   }
                    
                }
                
