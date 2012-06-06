@@ -20,6 +20,8 @@ from twisted.internet import reactor
 
 from private import API_tokens, resources
 
+import logging
+comm_logger = logging.getLogger('comm')
 
 class CallResponse(object):
     '''
@@ -67,7 +69,9 @@ class CallResponse(object):
             else:
                 dial = self.response_object.addDial()
             startConferenceOnEnter = True if 'start_now' in kwargs and kwargs['start_now'] else False #Sometimes we want this joiner to start the conference.  Sometimes not.
-            return dial.addConference(kwargs['conference_id'], startConferenceOnEnter=startConferenceOnEnter)
+            command = dial.addConference(kwargs['conference_id'], startConferenceOnEnter=startConferenceOnEnter)
+            comm_logger.info('Telling Twilio: %s' % command)
+            return command
         if self.provider.name == "Tropo":
             self.response_object.on("hangup", next="/comm/handle_hangup/%s/%s/" % (kwargs['conference_id'], kwargs['number'].id))
             if 'record' in kwargs and kwargs['record']:
@@ -95,6 +99,7 @@ class CallResponse(object):
         '''
         Join the user to a conference that started with a holding pattern and begin the conference.
         '''
+        comm_logger.info('%s is beginning conference %s', number, conference_id)
         conference_kwargs = {'conference_id':conference_id, 'number':number}
         if self.provider.name == "Twilio":
             conference_kwargs['start_now'] = True

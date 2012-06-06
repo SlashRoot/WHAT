@@ -24,7 +24,6 @@ import datetime
 from django.conf import settings
 
 import logging
-
 comm_logger = logging.getLogger('comm')
 
 @require_http_methods(["POST"])
