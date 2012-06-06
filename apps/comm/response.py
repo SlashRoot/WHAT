@@ -70,7 +70,7 @@ class CallResponse(object):
                 dial = self.response_object.addDial()
             startConferenceOnEnter = True if 'start_now' in kwargs and kwargs['start_now'] else False #Sometimes we want this joiner to start the conference.  Sometimes not.
             command = dial.addConference(kwargs['conference_id'], startConferenceOnEnter=startConferenceOnEnter)
-            comm_logger.info('Telling Twilio: %s' % command)
+            comm_logger.info('Telling Twilio: %s' % dial)
             return command
         if self.provider.name == "Tropo":
             self.response_object.on("hangup", next="/comm/handle_hangup/%s/%s/" % (kwargs['conference_id'], kwargs['number'].id))

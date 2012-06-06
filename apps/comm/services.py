@@ -24,7 +24,8 @@ from comm.rest import SLASHROOT_TWILIO_ACCOUNT
 
 from private import API_tokens, resources
 
-
+import logging
+comm_logger = logging.getLogger('comm')
 
 def incoming_twilio_phone_client_loader(request):
     from twilio.util import TwilioCapability
@@ -258,10 +259,12 @@ def get_audio_from_provider_recording(request, provider):
         # TODO: Provide support for Twilio
         recording_url = request.POST['RecordingUrl']
         recording_file_name = recording_url.split('/')[-1]
-        recording_audio = urllib2.urlopen(recording_url)
+        recording_audio = urllib2.urlopen("%s.mp3" % recording_url)
+        comm_logger.info('Opened %s' % recording_audio)
         
         local_recording_file = open(settings.PUBLIC_FILE_UPLOAD_DIRECTORY + "audio/call_recordings/" + recording_file_name, 'wb+')
-        local_recording_file.write(recording_audio.read())
+        local_recording_file.write(recording_audio.read())        
+        comm_logger.info('Saved %s' % recording_audio)
         local_recording_file.close()
         
         return local_recording_file, recording_url
