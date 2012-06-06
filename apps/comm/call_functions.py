@@ -114,10 +114,11 @@ def call_object_from_call_info(call_info):
         # TODO: Handle situations where a user represents a party
         CommunicationInvolvement.objects.create(person=phone_numbers['caller'].owner.userprofile.user, communication=call, direction="from") 
 
-    try:    
-        CommunicationInvolvement.objects.create(person=phone_numbers['recipient'].owner.userprofile.user, communication=call, direction="to")
-    except (UserProfile.DoesNotExist, AttributeError):  # Either the owner is None or the UserProfile doesn't exist.
-        pass
+#Deprecated.  What was the point of this block?  Why might we want to create a "to" participant for an outgoing call?
+#    try:    
+#        CommunicationInvolvement.objects.create(person=phone_numbers['recipient'].owner.userprofile.user, communication=call, direction="to")
+#    except (UserProfile.DoesNotExist, AttributeError):  # Either the owner is None or the UserProfile doesn't exist.
+#        pass
     
     # If this this is the first time we've seen the call marked completed, we'll set the ended date.
     if call_info['status'] == 'completed' and not call.ended:
