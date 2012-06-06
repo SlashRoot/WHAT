@@ -137,6 +137,7 @@ class CallResponse(object):
             self.response_object.say(prompt)
             recording_kwargs = {}
             recording_kwargs['action'] = "%s/comm/recording_handler/%s/%s/" % ((resources.COMM_DOMAIN,) + recording_url_args)
+            recording_kwargs['timeout'] = 20
             if transcribe:
                 recording_kwargs['transcribe'] = True
                 recording_kwargs['transcribeCallback'] = "%s/comm/transcription_handler/%s/%s/" % ((resources.COMM_DOMAIN,) + recording_url_args)
