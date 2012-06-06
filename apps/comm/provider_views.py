@@ -25,7 +25,7 @@ from django.conf import settings
 
 import logging
 
-comm_logger = logger.getLogger('comm')
+comm_logger = logging.getLogger('comm')
 
 @require_http_methods(["POST"])
 @csrf_exempt
@@ -33,17 +33,14 @@ def answer(request, this_is_only_a_test=False):
     '''
     The first response to a basic incoming call.  Can take requests from multiple providers.
     '''
-    
     #First, let's figure out which provider is making this request.
     provider, r = get_provider_and_response_for_request(request) #Now we have a response object that we can use to build our response to the provider.
-    
-   
     
     #Now we need a call object with the appropriate details, regardless of the provider.
     call_info = standardize_call_info(request, provider=provider)
     call = call_object_from_call_info(call_info) #Identify the call, saving it as a new object if necessary.
     
-    comm_logger(' %s %s call from %s' % (call_info['status'], provider, call.from_number))
+    comm_logger.info('%s %s call from %s' % (call_info['status'], provider, call.from_number))
     
     if not call.ended:
         r.say(SLASHROOT_EXPRESSIONS['public_greeting'], voice=random_tropo_voice()) #Greet them.
@@ -151,7 +148,7 @@ def pickup_connect(request, number_id, call_id, connect_regardless=False):
         #Create a participant object for this answerer (they are receiving the call, so it's "to" them)   
         call.participants.create(person=answerer_user, direction="to")
         
-        comm_logger('%s answered call %s' % (answerer_user, call))
+        comm_logger.info('%s answered call %s' % (answerer_user, call))
         
         #Make sure the answerer is an owner of the task and it's tagged "answered."
         task = call.resolve_task()
@@ -196,7 +193,7 @@ def handle_hangup(request, conference_id, number_id):
         phone_call_object.ended = datetime.datetime.now()
         phone_call_object.save()
         
-    comm_logger('%s hung up' % phone_call_object)
+    comm_logger.info('%s hung up' % phone_call_object)
     
     return r.render()
 
@@ -210,7 +207,7 @@ def simply_join_conference(request, conference_id, number_id):
     number = PhoneNumber.objects.get(id=number_id)
     r.conference(conference_id = conference_id, number=number, record=True)
     
-    comm_logger('%s joined the conference' % number)
+    comm_logger.info('%s joined the conference' % number)
     return r.render()
 
 @csrf_exempt
@@ -227,7 +224,7 @@ def transcription_handler(request, object_type, id):
     recording_object.transcription_text = transcription_text
     recording_object.save()
     
-    comm_logger('Phone call %s was transcribed at %s' )
+    comm_logger.info('%s %s was transcribed - saved on recording %s' % (object_type, id, recording_object.id) )
     
     return r.render()
 
@@ -236,6 +233,8 @@ def recording_handler(request, object_type, id):
     '''
     Handles audio files sent by VOIP providers.
     '''
+    comm_logger.info('Recording provided for %s %s' % (object_type, id))
+    
     provider, r = get_provider_and_response_for_request(request)
     #First we'll save the MP3 file.
     file, url = get_audio_from_provider_recording(request, provider)
@@ -254,7 +253,7 @@ def recording_handler(request, object_type, id):
     
     recording_object.save()
     
-    comm_logger('Here is the recording for %s' % recording_object.url)
+    comm_logger.info('Recording for %s %s saved as #%s' % (object_type, id, recording_object.id))
     
     return r.render()
 
@@ -272,7 +271,7 @@ def voicemail(request):
     prompt = 'No SlashRoot member is available to answer your call right now.  Please leave a message and a SlashRoot member will return your call.'
     r.prompt_and_record(call_id=call.id, recording_object = voicemail_recording, format="audio/mp3", url="", transcribe=True, prompt=prompt)
     
-    comm_logger('Voicemail from %s' % call)
+    comm_logger.info('Voicemail from %s' % call)
     
     return r.render()
 

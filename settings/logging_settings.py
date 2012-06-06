@@ -6,7 +6,7 @@ LOGGING = {
             'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
         },
         'standard': {
-            'format': '%(levelname)s %(name)s %(asctime)s %(pathname)s: %(message)s'
+            'format': '%(levelname)s %(name)s %(asctime)s %(message)s'
         },
         'simple': {
             'format': '%(levelname)s %(name)s: %(message)s'
@@ -17,11 +17,6 @@ LOGGING = {
             'level':'DEBUG',
             'class':'django.utils.log.NullHandler',
         },
-        'console':{
-            'level':'INFO',
-            'class':'logging.StreamHandler',
-            'formatter': 'simple'
-        },
         'file':{
             'level':'WARNING',
             'class':'logging.handlers.TimedRotatingFileHandler',
@@ -29,7 +24,6 @@ LOGGING = {
             'filename': '/var/log/what/general.log',
             'formatter': 'standard'
         },
-        
         'comm_file':{
             'level':'INFO',
             'class':'logging.handlers.TimedRotatingFileHandler',
@@ -56,7 +50,7 @@ LOGGING = {
             'propagate': False,
         },
         '': {
-            'handlers': ['console', 'file', 'mail_admins'],
+            'handlers': ['file', 'mail_admins'],
             'level': 'ERROR',
         },
         'comm': {

@@ -29,7 +29,8 @@ from contact.models import PhoneNumber, PhoneProvider, DialList
 
 from push.functions import push_with_template
 
-
+import logging
+comm_logger = logging.getLogger('comm')
 
 
 
@@ -66,6 +67,9 @@ def call_object_from_call_info(call_info):
         call = PhoneCall.objects.get(call_id=call_id) #Set call to a phone call matching the call_id we just got.
         return call #We already know about this call.  Let's just dispense with the formalities and return the call.
     except PhoneCall.DoesNotExist, e: #This call does not exist in our database.
+        
+        comm_logger.info('NEW CALL %s (%s)' % (call_id, call_info['provider']))
+        
         #Start to populate our PhoneCall object                
         call = PhoneCall(
                          service        = call_info['provider'],
