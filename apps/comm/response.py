@@ -139,7 +139,7 @@ class CallResponse(object):
             recording_kwargs['action'] = "%s/comm/recording_handler/%s/%s/" % ((resources.COMM_DOMAIN,) + recording_url_args)
             if transcribe:
                 recording_kwargs['transcribe'] = True
-                recording_kwargs['transcribe_callback'] = "%s/comm/transcription_handler/%s/%s/" % ((resources.COMM_DOMAIN,) + recording_url_args)
+                recording_kwargs['transcribeCallback'] = "%s/comm/transcription_handler/%s/%s/" % ((resources.COMM_DOMAIN,) + recording_url_args)
             self.response_object.record(**recording_kwargs)
             
         if self.provider.name == "Tropo":

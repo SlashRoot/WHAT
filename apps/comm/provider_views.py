@@ -223,7 +223,8 @@ def transcription_handler(request, object_type, id):
     recording_object.transcription_text = transcription_text
     recording_object.save()
     
-    comm_logger.info('%s %s was transcribed - saved on recording %s' % (object_type, id, recording_object.id) )
+    comm_logger.info('%s %s was transcribed - saved on recording %s.  Reads: %s' % (object_type, id, recording_object.id, transcription_text) )
+    
     
     return r.render()
 
