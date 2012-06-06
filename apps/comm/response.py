@@ -84,7 +84,7 @@ class CallResponse(object):
         '''
         if self.provider.name == "Twilio":
             dial = self.response_object.addDial()
-            reactor.callFromThread(twilio_deferred_voicemail_determination, conference_id, 33)
+            reactor.callFromThread(twilio_deferred_voicemail_determination, conference_id, 30)
             return dial.addConference(conference_id)#TODO: waitUrl=hold_music)
          
         if self.provider.name == "Tropo":

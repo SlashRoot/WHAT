@@ -251,7 +251,7 @@ def place_call_to_number(number, conference_id, provider, green_phone=False):
         twilio_client = TwilioRestClient(API_tokens.TWILIO_SID, API_tokens.TWILIO_AUTH_TOKEN)  # dehydrate.
         number_object = PhoneNumber.objects.get(id=number)
         # TODO: No if machine detection for green phone, and timeout issues
-        deferToThread(twilio_client.calls.create, if_machine="Hangup", to=number_object.number, from_="8456338330", timeout=22, url="%s/comm/pickup_connect_auto/%s/%s/" % (resources.COMM_DOMAIN, number, conference_id))
+        deferToThread(twilio_client.calls.create, if_machine="Hangup", to=number_object.number, from_="8456338330", timeout=20, url="%s/comm/pickup_connect_auto/%s/%s/" % (resources.COMM_DOMAIN, number, conference_id))
 
 def get_audio_from_provider_recording(request, provider):
     

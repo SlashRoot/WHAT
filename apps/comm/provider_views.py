@@ -271,9 +271,11 @@ def voicemail(request):
     prompt = 'No SlashRoot member is available to answer your call right now.  Please leave a message and a SlashRoot member will return your call.'
     r.prompt_and_record(call_id=call.id, recording_object = voicemail_recording, format="audio/mp3", url="", transcribe=True, prompt=prompt)
     
-    comm_logger.info('Voicemail from %s' % call)
+    rendered_response = r.render()
     
-    return r.render()
+    comm_logger.info('%s went to voicemail.  Telling Twilio: %s' % (call, rendered_response))
+    
+    return rendered_response
 
 #@csrf_exempt
 #def outgoing_callback(request):
