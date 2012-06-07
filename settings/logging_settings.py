@@ -1,4 +1,8 @@
-LOGGING = {
+import sys
+
+if not 'test' in sys.argv or 'test_coverage' in sys.argv:
+
+ LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
     'formatters': {
