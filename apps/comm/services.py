@@ -259,9 +259,9 @@ def get_audio_from_provider_recording(request, provider):
         # At the moment we've commented out the actual audio download from Twilio.
         # We need to re-implement asynchronously.
         # The best way is probably to make a cronjob that grabs them every night or something. 
-        recording_url = request.POST['RecordingUrl']
+        recording_url = "%s.mp3" % request.POST['RecordingUrl']
 #        recording_file_name = recording_url.split('/')[-1]
-#        recording_audio = urllib2.urlopen("%s.mp3" % recording_url)
+#        recording_audio = urllib2.urlopen(recording_url)
 #        comm_logger.info('Opened %s' % recording_audio)
         
 #        local_recording_file = open(settings.PUBLIC_FILE_UPLOAD_DIRECTORY + "audio/call_recordings/" + recording_file_name, 'wb+')
