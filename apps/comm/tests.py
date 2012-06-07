@@ -268,11 +268,12 @@ class CallerInitialExperience(TestCase):
     def setUp(self):
         prepare_testcase_for_answer_tests(self)
 
-    def test_twilio_answer_first_command_say(self):
+    def test_twilio_greeting(self):
         '''
-        That the name of the first verb in the response is "Say"
+    Tests that the greeting is equal to the say command
         '''
         self.assertEqual(self.twilio_response_object.verbs[0].name, 'Say')
+        self.assertEqual(self.twilio_response_object.verbs[0].body, SLASHROOT_EXPRESSIONS['public_greeting'])
         
     def test_twilio_answer_second_command_dial(self):
         '''
@@ -283,10 +284,6 @@ class CallerInitialExperience(TestCase):
     def test_twilio_answer_dial_into_conference(self):
         self.assertEqual(self.twilio_response_object.verbs[1].verbs[0].name, "Conference")
     
-    @expectedFailure
-    def test_twilio_greeting(self):  
-        self.fail()
-          
     def test_tropo_greeting(self):
         commands_list = self.tropo_response_dict['tropo']
         first_command = commands_list[0]
