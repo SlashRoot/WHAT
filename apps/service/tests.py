@@ -151,8 +151,20 @@ class CurrentClients(TestCase):
         self.fail()
     
     @expectedFailure    
-    def test_add_billable_hour_to_service(self):
+    def test_add_billable_hour_to_service_price_tag(self):
         self.fail()
+        
+    @expectedFailure
+    def test_add_billable_hour_to_list_of_charges(self):
+        self.fail()
+        
+    @expectedFailure
+    def test_list_of_charges_creates_a_dict_listing_amounts_charged_and_for_what(self):
+        self.Fail()
+        
+    @expectedFailure
+    def test_pricetagprototype_is_specific_to_individual_customer(self):
+        self.Fail()
     
     def test_status_ball_in_bearer_court_needs_attention(self):
         '''

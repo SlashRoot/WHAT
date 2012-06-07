@@ -214,6 +214,19 @@ class Service(models.Model):
         
     def service_log_display(self):
         return "Service Began"
+    
+    class PriceTagPrototype(models.Model):
+        '''
+        A running tally for the suggested price for the customer.
+        '''
+        price_tag = int()
+        list_of_charges = dict()
+        def register(self):
+            charge = models.IntegerField()
+            reason = models.CharField(max_length=50)
+            self.PriceTagPrototype.price_tag += charge
+            self.PriceTagPrototype.list_of_charges.append(reason:charge)
+    
 
 class ServiceStatusPrototype(models.Model):
     name = models.CharField(max_length=30)
@@ -251,6 +264,7 @@ class SymptomPrototype(models.Model):
     name = models.CharField(max_length=40)
     description = models.TextField()
     
+
     
 #class SymptomPrototypeEvolution(models .Model):
 #    '''
