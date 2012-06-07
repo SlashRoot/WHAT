@@ -246,9 +246,12 @@ def recording_handler(request, object_type, id):
         call = PhoneCall.objects.get(call_id=id)
         recording_object = PhoneCallRecording.objects.create(call=call)
     
-    recording_object.audio_file = file.name
+    if file:
+        recording_object.audio_file = file.name
+        comm_logger.info('Got a recording file: %s' % (file.name))
     
     if url:
+        comm_logger.info('Got a recording url: %s' % (url))
         recording_object.url = url
     
     recording_object.save()
