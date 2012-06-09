@@ -25,7 +25,7 @@ from django.conf import settings
 
 import logging
 
-comm_logger = logger.getLogger('comm')
+#comm_logger = logger.getLogger('comm')
 
 @require_http_methods(["POST"])
 @csrf_exempt
@@ -43,7 +43,7 @@ def answer(request, this_is_only_a_test=False):
     call_info = standardize_call_info(request, provider=provider)
     call = call_object_from_call_info(call_info) #Identify the call, saving it as a new object if necessary.
     
-    comm_logger(' %s %s call from %s' % (call_info['status'], provider, call.from_number))
+#    comm_logger(' %s %s call from %s' % (call_info['status'], provider, call.from_number))
     
     if not call.ended:
         r.say(SLASHROOT_EXPRESSIONS['public_greeting'], voice=random_tropo_voice()) #Greet them.

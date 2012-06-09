@@ -4,7 +4,7 @@ from deployment.path_settings import PROJECT_ROOT
 
 from private.database_settings import DATABASE_DICT
 
-from logging_settings import *
+#from logging_settings import *
 
 ADMINS = (
     ('Justin Holmes', 'justin@justinholmes.com'),
