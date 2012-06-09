@@ -63,6 +63,7 @@ class ServiceGridColumns(object):
         self.columns.append(Column('Most Recent Action', icon="last_action.png"))
         self.columns.append(Column('Whose Court is the Ball In?', icon="court.png"))
         self.columns.append(Column('Status', icon="status.png"))
+        self.columns.append(Column('Price Tag', icon="price_tag"))
 
     
 @login_required

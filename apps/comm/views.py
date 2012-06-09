@@ -304,28 +304,28 @@ def outgoing_call_menu(request):
         
     return render(request, 'comm/outgoing_call_menu.html', locals()) 
 
-def outgoing_call(request, phone_provider_name=None):
+def outgoing_call(request, phone_provider_name='Twilio'):
     '''
     Make an outgoing call.  Duh.  :-)
     
     TODO: Uncouple from Tropo
     '''
-    if not phone_provider_name:
-        #TODO: Get default phone provider
-        pass
-    else:
-        phone_provider = PhoneProvider.objects.get(name=phone_provider_name)
+#    if not phone_provider_name:
+#        #TODO: Get default phone provider
+#        pass
+#    else:
+    phone_provider = PhoneProvider.objects.get(name=phone_provider_name)
     
     call_from_phone = PhoneNumber.objects.get(id=request.POST['callFrom'])
     call_to_phone = PhoneNumber.objects.get(id=request.POST['callTo'])
 
     from_number = resources.SLASHROOT_MAIN_LINE
     
-    p = PhoneProviderRESTObject(phone_provider)
+    p = PhoneProviderRESTObject(phone_provider_name)
     
     call_id = p.place_new_call(call_from_phone, call_to_phone)
     
-    call = PhoneCall.objects.create(service=tropo_provider, call_id=call_id, dial=True, from_number=call_from_phone, to_number=call_to_phone)
+    call = PhoneCall.objects.create(service=phone_provider_name, call_id=call_id, dial=True, from_number=call_from_phone, to_number=call_to_phone)
     
     task = call.resolve_task()
     task.ownership.create(owner=request.user)
