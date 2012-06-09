@@ -1,0 +1,24 @@
+<div id="global_nav">
+	
+	{% if request.user.is_authenticated %}
+	
+	<ul>
+		<li><a href="/" >/Home</a></li>
+		<li><a href="/service/the_situation" >/The Situation</a></li>
+		<li><a href="/comm/resolve_calls" >/Resolve Calls</a></li>
+		<li><a href="/comm/watch_calls" >/Watch Calls</a></li>
+		<li><a href="/do" >/Do</a></li>
+		<li><a href="/blog" >/Blog</a></li>
+		<li><a href="/contact/contact_list" >/Contact List</a></li>
+		<li><a href="/pos" >/Pos</a></li>
+	</ul>
+	
+    {% else %}	
+    
+    <ul>	
+		<li><a href="presence/login.html">Login</a>	
+	</ul>
+	
+	{% endif %}	
+	
+</div>
