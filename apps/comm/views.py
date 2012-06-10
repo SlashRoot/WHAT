@@ -2,6 +2,7 @@ import urlparse
 import os
 import json
 import logging
+import requests
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
