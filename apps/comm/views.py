@@ -208,8 +208,7 @@ def resolve_call(request):
     else:
         status = 1
     
-    resolve_task = call.resolve_task()
-    resolve_task.set_status(status, request.user)
+    call.set_resolve_status(status, request.user)
 
     return HttpResponse(status)
 

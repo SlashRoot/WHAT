@@ -1,16 +1,16 @@
 <div id="global_nav">
 	
 	{% if request.user.is_authenticated %}
-	
+	<span>Logged in as {{request.user.username}}</span>
 	<ul>
 		<li><a href="/" >/Home</a></li>
-		<li><a href="/service/the_situation" >/The Situation</a></li>
-		<li><a href="/comm/resolve_calls" >/Resolve Calls</a></li>
+		<li><a href="/service/the_situation" >/The Situation ({{tech_jobs}})</a></li>
+		<li><a href="/comm/resolve_calls" >/Resolve Calls ({{calls}})</a></li>
 		<li><a href="/comm/watch_calls" >/Watch Calls</a></li>
 		<li><a href="/do" >/Do</a></li>
 		<li><a href="/blog" >/Blog</a></li>
 		<li><a href="/contact/contact_list" >/Contact List</a></li>
-		<li><a href={{LINK_TO_POS}} >/Pos</a></li>
+		<li><a href="{{pos_url}}" >/Pos</a></li>
 	</ul>
 	
     {% else %}	

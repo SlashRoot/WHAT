@@ -498,6 +498,15 @@ class Task(models.Model):
     
     
     def set_status(self, status, creator):
+        '''
+        Takes a status number and a user.
+        
+        If the status is different than the current status,
+        create a status object and set the current status,
+        returning True.
+        
+        Otherwise, return False.
+        '''
         if self.status == status:
             return False
         else:
