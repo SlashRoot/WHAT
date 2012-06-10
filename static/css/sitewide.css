@@ -29,15 +29,18 @@ cursor: pointer;
 	margin-bottom: 10px;
 }
 
+#global_nav ul {
+    text-align:justify;
+}
+
 #global_nav li {
   float: left;
   list-style: none outside none;
 }
 
-#global_nav li a {
+#global_nav li a, #global_nav span {
     color: white;
     font-family: veteran typewriter;
-    letter-spacing: 0.3em;
     list-style: none outside none;
     margin-left: 42px;
 }
