@@ -1,7 +1,9 @@
 <div id="global_nav">
 	
 	{% if request.user.is_authenticated %}
-	<span style="float:right;">Logged in as {{request.user.username}}</span>
+	
+	<a> (logout) </a> <span style="float:right;">Logged in as {{request.user.username}}</span>
+	
 	<ul>
 		<li><a href="/" >/Home</a></li>
 		<li><a href="/service/the_situation" >/The Situation ({{tech_jobs}})</a></li>
