@@ -31,23 +31,25 @@ top:0px;
 
 .ui-icon {
     float: right;
-    margin-top: 5px;
+    margin-top: -90px;
     padding-right: 10px;
 }
 
 
 .ui-dialog-titlebar {
-    background-color: Thistle;
-    border-radius: 5px 5px 5px 5px;
+    background-color: #75a4c7;
+    border-radius: 5px 5px 0px 0px;
+    margin-bottom:1px;
     height: 30px;
     min-width: 500px;
 }
 
 .ui-dialog-content {
-    background-color: #F1C493;
-    border-radius: 5px 5px 5px 5px;
+    background-color: #000000;
+    border-radius: 0px 0px 5px 5px;
     min-height: 200px;
     min-width: 500px;
+    opacity:0.5;
 }
 
 .ui-dialog-content p {
@@ -57,7 +59,7 @@ top:0px;
 
 .ui-dialog-title {
 	float: left;
-	margin-top: 5px;
+	margin-top: -90px;
 	padding-left: 10px;
 }
 
@@ -168,6 +170,14 @@ float:right;
 	left:269px;
 	z-index:1;
 }
+
+#dialog{
+	text-align:center;
+	font-family:veteran-typewriter;
+	color:#FFFFFF;
+	padding-top:25px;
+	position:absolute;
+	}
 
 #treeBorder_3 {
 	width:140px;
@@ -345,7 +355,7 @@ z-index:2
 #blue-box-header {
 	height:39px; 
 	width:100%; 
-	background-color:#757BC7;
+	background-color:#75a4c7;
 }
 
 #red-box-header {
@@ -372,6 +382,7 @@ z-index:2
     margin-top: 10px;
     overflow: hidden;
     width: 340px;
+    color: #FFFFFF
 }
 
 #booking-inquiries {
