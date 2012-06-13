@@ -19,17 +19,46 @@ top:0px;
 }
 
 .ui-dialog {
-background-color:white;
-
+    display: block;
+    height: auto;
+    left: 405px;
+    outline: 0 none;
+    position: relative;
+    top: -1184.1px;
+    width: 300px;
+    z-index: 1001;
 }
 
-.ui-dialog-titlebar{
-background-color:black;
+.ui-icon {
+    float: right;
+    margin-top: 5px;
+    padding-right: 10px;
 }
 
-#ui-dialog-title-dialog{}
+.ui-dialog-titlebar {
+    background-color: Thistle;
+    border-radius: 5px 5px 5px 5px;
+    height: 30px;
+    min-width: 500px;
+}
 
-.ui-dialog-titlebar-close{}
+.ui-dialog-content {
+    background-color: #F1C493;
+    border-radius: 5px 5px 5px 5px;
+    min-height: 200px;
+    min-width: 500px;
+}
+
+.ui-dialog-content p {
+	padding-left: 10px;
+	padding-bottom: 5px;
+}
+
+.ui-dialog-title {
+	float: left;
+	margin-top: 5px;
+	padding-left: 10px;
+}
 
 .backgroundElements {
     margin-top: 55px;
