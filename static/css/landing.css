@@ -19,12 +19,12 @@ top:0px;
 }
 
 .ui-dialog {
-background-color:white;
+background-color:#FADEE9;
 
 }
 
 .ui-dialog-titlebar{
-background-color:black;
+background-color:#0E170E;
 }
 
 #ui-dialog-title-dialog{}
@@ -51,7 +51,7 @@ float:right;
 }
 
 .nav_1 {
-	color: black;
+	color: #0E170E;
     font-family: veteran-typewriter;
     font-size: 20px;
     float: right;
@@ -61,7 +61,7 @@ float:right;
 }
 
 .nav_2 {
-	color: black;
+	color: #0E170E;
     font-family: veteran-typewriter;
     font-size: 20px;
     float: right;
@@ -70,19 +70,19 @@ float:right;
     right: 9px;
 }
 
-.nav_3 {#8CA7DD;
-	color: black;
+.nav_3 {
+	color: #0E170E;
     font-family: veteran-typewriter;
     font-size: 20px;
     float: right;
     position: relative;
-    top:1px;Magenta;
+    top:1px;#EE00EE;
     right: 20px;
 }
 
 #treeImage_1 {
     border-radius: 1000px 1000px 1000px 1000px;
-    box-shadow: 0 0 0px 3px black;
+    box-shadow: 0 0 0px 3px #0E170E;
     left: 328px;
     opacity: 0.85;
     position: absolute;
@@ -93,7 +93,7 @@ float:right;
 
 #treeImage_2 {
     border-radius: 500px 500px 500px 500px;
-    box-shadow: 0 0 0px 3px black;
+    box-shadow: 0 0 0px 3px #0E170E;
     height: 115px;
     left: 299px;
     opacity: 0.85;
@@ -114,7 +114,7 @@ float:right;
 
 #treeImage_4 {
     border-radius: 500px 500px 500px 500px;
-    box-shadow: 0 0 0px 3px black;
+    box-shadow: 0 0 0px 3px #0E170E;
     left: 10px;
     position: absolute;
     top: 501px;
@@ -152,17 +152,17 @@ float:right;
 	position:absolute;
 	top:486px;
 	left:0px;
-	z-index:1;B0B0F5
+	z-index:1;#B0B0F5
 }
 
 
 .hoverThings a:hover {
-	color:purple;
+	color:#A232CF;
 
 }
 
 .hoverThings a {
-	color:black;
+	color:#0E170E;
 
 }
 
@@ -178,11 +178,11 @@ float:right;
 }
 
 .aboutText a:hover {
-	color:purple;
+	color:#730173;
 
 }
 .aboutText a{
-	color:maroon;
+	color:#69071C;
 
 }
 
@@ -199,7 +199,7 @@ z-index:2
     margin-left: 165px;
     margin-bottom:65px;
     width: 100%;
-    border-left:2px solid black;
+    border-left:2px solid #0E170E;
     padding:10px;
 }
 
@@ -223,7 +223,7 @@ z-index:2
 #mask {
 	height:47%;
 	width:100%
-	background-color:white;
+	background-color:#EBCDF7;
 
 }
 #tree {
@@ -235,7 +235,7 @@ z-index:2
 
 #logoBig {
     clear: right;
-    color: menu;
+    color: #0E170E;
     font-family: veteran-typewriter;
     font-size: 60px;
     letter-spacing: -1px;
@@ -246,7 +246,7 @@ z-index:2
 }
 
 #logoBigBlog {
-    color: black;
+    color: #0E170E;
     font-family: veteran-typewriter;
     font-size: 42px;
 	left:581px;
@@ -284,7 +284,7 @@ z-index:2
 }
 
 #labels {
-    color: black;
+    color: #0E170E;
     display: inline;
     font-family: veteran-typewriter;
     font-size: 35px;
@@ -315,17 +315,18 @@ z-index:2
 #blue-box-header {
 	height:39px; 
 	width:100%; 
-	background-color:slateGrey;
+	background-color:#757BC7;
 }
 
 #red-box-header {
 	height:39px; 
 	width:100%; 
-	background-color:Thistle;
+	background-color:#D8BFD8;
 	font-family:veteran-typewriter;
 	font-size:24px;
 	padding-left:2px;
 	padding-top:2px;
+	text-align:center;
 }
 
 
@@ -365,7 +366,7 @@ z-index:2
 }
 
 #map {
-    background-color: rosyBrown;
+    background-color: #CD9B9B;
     border: 5px ridge #543302;
     border-radius: 12px 12px 12px 12px;
     float: left;
@@ -576,7 +577,7 @@ width:300px;
 margin-top:0px;
 }
 .icon {
-color:black;
+color:#0E170E;
 float:left;
 font-family:veteran-typewriter;
 font-size:58px;
@@ -824,7 +825,7 @@ text-align:center;
 
 #incomingCall
 {   
-background-color: yellow;
+background-color: #EDFA5F;
 height: 110px;
 margin-left: -30px;
 margin-top: -30px;
@@ -842,7 +843,7 @@ clear:left;
     background-color: #1D4378;
     bottom: 0;
     clear: both;
-    color: white;
+    color: #EBCDF7;
     font-family: veteran-typewriter;
     height: 15px;
     opacity: 0.465;
