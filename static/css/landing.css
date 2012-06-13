@@ -15,8 +15,21 @@ top:0px;
 }
 
 #tree {
-	width:65%;
+	width:45%;
 }
+
+.ui-dialog {
+background-color:white;
+
+}
+
+.ui-dialog-titlebar{
+background-color:black;
+}
+
+#ui-dialog-title-dialog{}
+
+.ui-dialog-titlebar-close{}
 
 .backgroundElements {
     margin-top: 55px;
@@ -142,11 +155,35 @@ float:right;
 	z-index:1;B0B0F5
 }
 
+
+.hoverThings a:hover {
+	color:purple;
+
+}
+
+.hoverThings a {
+	color:black;
+
+}
+
 .aboutText {
+    font-family: Times New Roman;
+    font-size: 15px;
     height: 361px;
-    margin-top: -20px;
-    max-width: 580px;
+    letter-spacing: 2px;
+    line-height: 20px;
+    width: 600px;
     text-align: center;
+
+}
+
+.aboutText a:hover {
+	color:purple;
+
+}
+.aboutText a{
+	color:maroon;
+
 }
 
 #schematic {
@@ -158,22 +195,54 @@ left:-447px;
 z-index:2
 }
 
-#centerBidniss {
-    margin-left: 20%;
+#slides {
+    margin-left: 165px;
+    margin-bottom:65px;
+    width: 100%;
+    border-left:2px solid black;
+    padding:10px;
+}
+
+.slides_container {
+    font-family: Times New Roman;
+    font-size: 16px;
+    line-height: 42px;
+    margin-top: -18px;
+    text-align: center;
+}
+
+#front-schematic {
+    float: right;
+    left: 40px;
+    opacity: 0.15;
+    position: absolute;
+    top: 698px;
+    z-index:-1;
+}
+
+#mask {
+	height:47%;
+	width:100%
+	background-color:white;
+
+}
+#tree {
+    margin-left: 300px;
     position: relative;
     width: 49%px;
+    margin-top:20px;
 }
 
 #logoBig {
-    color: black;
+    clear: right;
+    color: menu;
     font-family: veteran-typewriter;
-    font-size: 69px;
+    font-size: 60px;
     letter-spacing: -1px;
     line-height: 0;
-    margin-left: 25px;
+    margin-left: 41px;
     position: absolute;
-    right: 6%;
-    top: 37.5%;
+    top: 61px;
 }
 
 #logoBigBlog {
@@ -236,9 +305,6 @@ z-index:2
 }
 
 #below_the_fold {
-    border-left: 2px solid black;
-    border-radius: 4px 4px 4px 4px;
-    border-right: 2px solid black;
     height: 329px;
     margin-bottom: 200px;
     margin-left: 5%;
@@ -271,6 +337,15 @@ z-index:2
     margin-top: 10px;
     overflow: hidden;
     width: 340px;
+}
+
+#booking-inquiries {
+    font-family: veteran-typewriter;
+    font-size: 16px;
+    height: auto;
+    left: -5px;
+    letter-spacing: 1px;
+    position: relative;
 }
 
 #google-calender {
@@ -421,6 +496,7 @@ top:0px;
 }
 .isLoggedIn {
 line-height:5px;
+display:none;
 }
 .isLoggedIn #loginLabel {
 -moz-border-radius:0 0 15px 15px;
@@ -428,12 +504,14 @@ border-top:medium none;
 padding-left:10px;
 padding-right:10px;
 white-space:nowrap;
+display:none;
 }
 .loggedInLabel {
     color: #000000;
     font-size: 25px;
     margin-right: 10px;
     text-align: center;
+    display:none
 }
 #loginLabel {
 margin-bottom: 6px;
@@ -447,7 +525,10 @@ font-size: 20px;
 text-decoration:underline;
 }
 .loginBox {
+    margin-left: -33px;
+    margin-top: 108px;
     overflow: hidden;
+    position: absolute;
     text-align: center;
     width: 263px;
 }
