@@ -2,8 +2,6 @@
 
 {% block head %}
 
-
-
 	<link rel="stylesheet" href="/media/css/tree.css" type="text/css" media="screen" />
 	<link rel="stylesheet" href="/media/css/landing.css" type="text/css" media="screen" />
 	<link rel="stylesheet" href="/media/css/forms.css" type="text/css" media="screen" />
@@ -11,15 +9,10 @@
 	<link rel="stylesheet" href="/media/css/bubble_locations.css" type="text/css" media="screen" />
 	<link rel="stylesheet" href="/media/css/slides.css" type="text/css" media="screen" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-	  <script src="/media/js/jquery-ui.min.js"></script>
-	
-	<style type="text/css" media="screen">
-
-        </style>
+	<script src="/media/js/jquery-ui.min.js"></script>
+    <script src="/media/js/slides.min.jquery.js"></script>
     
-        <script src="/media/js/slides.min.jquery.js"></script>
-    
-        <script>
+    <script>
 
 	$(function(){
 			// Set starting slide to 1
@@ -42,32 +35,30 @@
 				}
 			});
 		});
-		
-		
-		
-	$(function() {
-                  $( "#dialog" ).dialog({ height: 550, width: 500,  position: [350, 50] });
 
+		$(document).ready(function() {
+		    //$('#dialog').dialog();
+		    $('#dialog_link').click(function() {
+		        $('#dialog').dialog();
+		        return false;
+		    });
+		});
 
-
-    });
-	</script>
-		
-<div id="dialog" title="Basic dialog">
-	<p>This should say something important about slashroot and llamas.</p>
-</div>
+</script>
 
 {% endblock head %}
 
 {% block content %}
 
 	{# Login widget. #}
-
-	<div class="container nav" id="trunk">
+<div id="dialog" title="Basic dialog">
+	<p>	<div class="container nav" id="trunk">
 	    <div class="rightmostInTitle">
 			{% include 'widgets/login.html' %}
 		</div>
-	</div>
+	</div></p>
+</div>
+
 
 	
 		<img id="tree" src="/media/images/tree-cropped.png" />
