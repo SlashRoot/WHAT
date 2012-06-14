@@ -14,14 +14,13 @@
         <link rel="stylesheet" href="/media/css/jquery.qtip.min.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="/media/css/jquery/base/jquery.ui.slider.css" type="text/css" media="screen" />
         <link type="text/css" href="/media/js/jPlayer/skins/blue_monday/jplayer.blue.monday.css" rel="stylesheet" />
-
+        <link rel="stylesheet" href="/media/css/forms.css" type="text/css" media="screen" />
     	
         <script>document.domain=document.domain;</script>
         <meta http-equiv="Content-type" content="text/html; charset=utf-8">
         
         <script type="text/javascript" src="/media/js/jquery.tools.min.js"></script>  
         <script type="text/javascript" src="/media/js/jquery-ui-1.8.13.custom.min.js"></script>
-
         <script type="text/javascript" src="/media/js/sitewide.js"></script>
         <script type="text/javascript" src="/media/js/tree.js"></script>    	
     	<script type="text/javascript" src="/media/js/jquery.qtip.min.js"></script>
@@ -32,36 +31,25 @@
     	<script type="text/javascript" src="/media/js/jquery.tablesorter.js"></script>
     	<script type="text/javascript" src="/media/js/jquery.validate.min.js"></script>
     	<script type="text/javascript" src="/media/js/jquery.timeago.js"></script>
-    	
     	<script type="text/javascript" src="/media/js/tiny_mce/tiny_mce_src.js"></script>
         <script type="text/javascript" src="/media/js/jPlayer/jquery.jplayer.min.js"></script>
-    	
-    	
-	
+    	<script src="/media/js/stomp.js"></script>  
+        <script src="/media/js/forms.js"></script>
+        <script type="text/javascript" src="/media/js/autocomplete.js"></script> 
+
 		<script>
+        
 			Orbited.settings.port = 6050;
 			TCPSocket = Orbited.TCPSocket
+            
 		</script>
 		
-		<script src="/media/js/stomp.js"></script>
-
-		
-		
-		{# TODO: Move this to a more appropriate location. #}
-		<link rel="stylesheet" href="/media/css/forms.css" type="text/css" media="screen" />
-		<script src="/media/js/forms.js"></script>
-		
-		<script type="text/javascript" src="/media/js/autocomplete.js"></script> 
-
 			{% block head %}{% endblock %} {# For adding extra scripts and styles in <head> #}
 	</head>
-
 
     {% navigation_bar %}
 	
 	<div id="messageContainer" class="container">
-		
-		
 						
 			<ul class="messages">
 			    {% for message in messages %}
@@ -74,9 +62,7 @@
 	            {% include 'social/notifications.html' %}
 			</ul>				
 	</div>
-	
-	
-	
+
 <div class="right">
 	{% block rightbar %}{% endblock %}
 </div>
