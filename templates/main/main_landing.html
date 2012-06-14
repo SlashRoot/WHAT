@@ -35,7 +35,8 @@
 				}
 			});
 		});
-
+	
+	$('#dialog').dialog();
 
 
 </script>
@@ -45,44 +46,28 @@
 {% block content %}
 
 	{# Login widget. #}
-<div id="dialog" title="Basic dialog">
-	<p>	<div class="container nav" id="trunk">
-	    <div class="rightmostInTitle">
+	<div id="dialog" title="Basic dialog">
+	<p><div class="container nav" id="trunk">
+		<div class="rightmostInTitle">
 			{% include 'widgets/login.html' %}
 		</div>
 	</div></p>
-</div>
+	</div>
 
+	<img id="tree" src="/media/images/tree-cropped.png" />
+	<img id="front-schematic" src="/media/images/schematic2.png" ></img>	
 
-	
-		<img id="tree" src="/media/images/tree-cropped.png" />
-		<img id="front-schematic" src="/media/images/schematic2.png" ></img>	
-	
-		
-	
-						<div id="logoBig"> 
-						SlashRoot 
-						<span id="subLogo">
-							:coffee house and tech dojo
-						</span>
-					</div>
-	
-{% comment %}
+	<div id="logoBig"> 
+	SlashRoot 
+	<span id="subLogo"> :coffee house and tech dojo </span>
+	</div>
 
-
-{% endcomment %}
-
-
-        <div id="slides">
+    <div id="slides">
         <strong><a id="return" href="#1" class="link">< return</a></strong>
 				<div class="slides_container">
-				
 					<div class="slide">
-					
 						<div class="row aboutText">
-			
-			
-								<br><span style="color:#48515A;"><h2> We Practice and Teach Five Things. </h2> <br><br> </span>
+							<br><span style="color:#48515A;"><h2> We Practice and Teach Five Things. </h2> <br><br> </span>
 						
 								<strong><a style="" href="#2" class="link">1: Technology Service:</a></strong>
 									We love to fix things!  
@@ -91,10 +76,8 @@
 									<strong><a href="#3" class="link"> 2: Software Development: </a></strong>
 									Web applications, phone routing, mobile apps – whatever gets the job done. <br><br>
 								
-									
 								<strong><a href="#4" class="link">3: Networking:</a></strong>
 									We help to connect people, wireless routers, etc.<br><br>
-									
 									
 								<strong><a href="#5" class="link">4: Live Events:</a></strong> 
 									Acoustic Music, Poetry, Art, Classes, Workshops, etc.<br><br>
@@ -111,79 +94,45 @@
 						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
 						<p><a href="#5" class="link">Check out the fifth slide &rsaquo;</a></p>
 					</div>
+					
 					<div class="slide">
 						<h1>Software Development</h1>
 						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
 						<p><a href="#1" class="link">Check out the first slide &rsaquo;</a></p>
 					</div>
+					
 					<div class="slide">
 						<h1>Networking</h1>
 						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
 						<p><a href="#6" class="link">Check out the sixth slide &rsaquo;</a></p>
 					</div>
+					
 					<div class="slide">
+					
 						<h1>Live Events</h1>
 						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
 						<p><a href="#7" class="link">Check out the seventh slide &rsaquo;</a></p>
 					</div>
+					
 					<div class="slide">
 						<h1>Organic Beverages</h1>
 						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
 						<p><a href="#1" class="link">Check out the first slide &rsaquo;</a></p>
 					</div>
+					
 					<div class="slide">
 						<h1>Classes and Membership</h1>
 						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
 						<p><a href="#3" class="link">Check out the third slide &rsaquo;</a></p>
 					</div>
 				</div>
-				
 			</div>
-			
 		</div>
-    
-	
 
-
-{% comment %}
-
-
-
-
-		
-				{# Navigation. #}	
-					
-				{# The circular hand drawn boarders, and their underling photos #}
-	
-				<div id="halfMoonNav">
-				
-				    <a href="/" title="About">
-						<img id="treeBorder_1" src="/media/images/treeborder.png" />
-					
-					</a>
-					
-				    <a href="/blog/" title="Blog">
-						<img id="treeBorder_2" src="/media/images/circleborder2.png" /> 
-					
-					</a>
-					
-				    
-				    <a href="/commerce/fluidbarter/" title="FluidBarter">
-						<img id="treeBorder_4" src="/media/images/lacey.png" /> 
-					
-					</a>
-					
-				</div> {# halfMoonNav #}
-				
-				{% endcomment %}
-
-			</div> {# centerBidniss #}
+{# centerBidniss #}
 	
     <div id="below_the_fold">	
 	{# About Text #}
-	
-	
-	
 	<div id="front-page-blog-preview">
 	<div id="blue-box-header"></div>
 		<img class="left leftVert" src="/media/images/border2.png"/>
@@ -203,14 +152,12 @@
 		</iframe>
 	</div>
 	
-	
-	
 	<div id="map">
 		<div id="red-box-header">Hours of Operation </div>
 		<img class="left leftVert" src="/media/images/border2.png"/>
 	</div>	
   
-  <div id="booking-inquiries">Booking Inquires booking@slashrootcafe.com </div>
+    <div id="booking-inquiries">Booking Inquires booking@slashrootcafe.com </div>
   
 </div>
 
@@ -219,8 +166,6 @@
 
 {% block footer %}
 
-	
-	
 	<div id="contact"> 60 Main st. New Paltz, NY, 12561 845.633.8330 info@slashrootcafe.com </div>
 	
 		{% if request.user.is_authenticated and not disable_incoming_calls %}
