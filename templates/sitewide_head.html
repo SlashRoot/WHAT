@@ -33,28 +33,22 @@
     	<script type="text/javascript" src="/media/js/jquery.timeago.js"></script>
     	<script type="text/javascript" src="/media/js/tiny_mce/tiny_mce_src.js"></script>
         <script type="text/javascript" src="/media/js/jPlayer/jquery.jplayer.min.js"></script>
-    	<script src="/media/js/stomp.js"></script>  
         <script src="/media/js/forms.js"></script>
         <script type="text/javascript" src="/media/js/autocomplete.js"></script> 
 
-		<script>
-        
+		{# Permanent Orbited script. Do not change; please make any additions below. #}
+         
+        <script src="/media/js/stomp.js">       
 			Orbited.settings.port = 6050;
 			TCPSocket = Orbited.TCPSocket
-            
-            
-            $(document).ready(function() {
-            $('#dialog').dialog();
-            $('#services').click(function() {
-                                                $('#dialog').dialog();
-                                                return false;
-                                            });
-                                        });
-
-            
 		</script>
-		
-			{% block head %}{% endblock %} {# For adding extra scripts and styles in <head> #}
+        
+        {% block head %}
+        
+          {# Add extra scripts and styles here. ( still in <head> ) #}
+        
+        {% endblock %}
+                                
 	</head>
 
     {% navigation_bar %}
