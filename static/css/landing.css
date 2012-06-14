@@ -33,6 +33,7 @@ top:0px;
     float: right;
     margin-top: -90px;
     padding-right: 10px;
+    background-image:url('')
 }
 
 
@@ -208,7 +209,7 @@ float:right;
 
 .aboutText {
     font-family: Times New Roman;
-    font-size: 15px;
+    font-size: 14px;
     height: 361px;
     letter-spacing: 2px;
     line-height: 20px;
@@ -391,7 +392,7 @@ z-index:2
     height: auto;
     left: -5px;
     letter-spacing: 1px;
-    position: relative;
+    position: static;
 }
 
 #google-calender {
@@ -783,9 +784,10 @@ color: #E6A370;
 text-decoration:none;
 }
 
-#return{
-color:#69071C;
-margin-left:-70px;
+#return {
+    color: #69071C;
+    font-size: 12px;
+    margin-left: -100px;
 }
 
 .loggedInBubble.crumb {
