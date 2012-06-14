@@ -42,12 +42,24 @@
 			Orbited.settings.port = 6050;
 			TCPSocket = Orbited.TCPSocket
             
+            
+            $(document).ready(function() {
+            $('#dialog').dialog();
+            $('#services').click(function() {
+                                                $('#dialog').dialog();
+                                                return false;
+                                            });
+                                        });
+
+            
 		</script>
 		
 			{% block head %}{% endblock %} {# For adding extra scripts and styles in <head> #}
 	</head>
 
     {% navigation_bar %}
+    
+
 	
 	<div id="messageContainer" class="container">
 						
