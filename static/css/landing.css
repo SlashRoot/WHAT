@@ -34,7 +34,15 @@ top:0px;
     float: right;
     margin-top: -90px;
     padding-right: 10px;
-    background-image:url('')
+    background-image:url('/media/images/close_button.jpg');
+    background-repeat:none;
+}
+
+.ui-dialog-titlebar-close {
+	background-image:url('/media/images/close_button.jpg');
+	color: pink;
+	background-repeat:none;
+
 }
 
 .ui-dialog-titlebar {
