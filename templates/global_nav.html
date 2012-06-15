@@ -1,5 +1,29 @@
 {% block head %}
 
+<script>
+
+	$(document).ready(function() { 
+		$("#services").click(function(){
+					  $( "#services-modal" ).dialog({ height: 125, width: 200,  position: [25, 50], show: "fade" });
+					  return false;
+					  });				
+	}); 
+	
+		$(document).ready(function() { 
+		$("#membership").click(function(){
+					  $( "#membership-modal" ).dialog({ height: 125, width: 200,  position: [25, 50], show: "fade" });
+					  return false;
+					  });				
+	}); 
+	
+		$(document).ready(function() { 
+		$("#contact").click(function(){
+					  $( "#contact-modal" ).dialog({ height: 125, width: 200,  position: [25, 50], show: "fade" });
+					  return false;
+					  });				
+	}); 
+	
+</script>		  
 
 {% endblock head %}
 
@@ -25,12 +49,13 @@
     
     <ul>	
 		<li><a href="/presence/login.html">Login</a></li>	
-		<li><a href=""> Technology Services </a> </li>
-		<li><a href="/presence/login.html"> About Membership</a> </li>
-		<li><a href="/presence/login.html"> Contact </a></li>
+		<li id="services"><a> Technology Services </a> </li>
+		<li id="membership"><a href="/presence/login.html"> About Membership</a> </li>
+		<li id="contact"><a href="/presence/login.html"> Contact </a></li>
 		
 	</ul>
 	
 	{% endif %}	
 	
 </div>
+
