@@ -1,21 +1,21 @@
-from django.test import TestCase
-
-from django.contrib.auth.models import User
-
-from unittest import expectedFailure
-from service.models import Service, ServiceStatusLog, ServiceStatusPrototype
-
-from do.config import set_up as do_setup
-from do.config import set_up_privileges
-from service.config import set_up as service_setup
-from mellon.config import set_up as mellon_setup
-from do.models import Task
-from utility.models import FixedObject
-from django.http import HttpResponse
 from comm.tests import create_phone_calls
-from people.models import UserProfile
 from contact.models import ContactInfo, PhoneNumber
+from django.contrib.auth.models import User
+from django.http import HttpResponse
+from django.test import TestCase
+from do.config import set_up as do_setup, set_up_privileges
+from do.models import Task
+from mellon.config import set_up as mellon_setup
+from people.models import UserProfile
+from service.config import set_up as service_setup
+from service.models import Service, ServiceStatusLog, ServiceStatusPrototype
+from unittest import expectedFailure
+from utility.models import FixedObject
+import datetime
 import people.config
+
+
+
 
 class CurrentClients(TestCase):
     def setUp(self):
@@ -81,6 +81,8 @@ class CurrentClients(TestCase):
         profile_response = self.client.get(service.get_absolute_url())
         for status in ServiceStatusPrototype.objects.filter(retired__isnull=True):
             self.assertTrue(status.name in profile_response.content)
+            
+        return service
 
 
     def test_service_archive_not_logged_redirect_to_login(self):
@@ -167,4 +169,70 @@ class CurrentClients(TestCase):
     def test_most_recent_call_unresolved_needs_attention(self):
         service = self.test_service_check_in_form_creates_service_object()
         self.fail()
+        
+    def test_status_duration_is_detected(self):
+        service = self.test_service_profile_page_lists_statuses()
+        status = ServiceStatusPrototype.objects.create(name="test_status", always_in_bearer_court=True)
+        now = ServiceStatusLog.objects.create(prototype=status,
+                                        service=service,
+                                        creator=self.admin,
+                                        )
+        before = ServiceStatusLog.objects.create(prototype=status,
+                                        service=service,
+                                        creator=self.admin,
+                                        )
+        before.created -= datetime.timedelta(17)
+        before.duration()
+        self.assertEqual(before.duration().days, 
+                               17,
+                               )
+        return service, status
     
+    def test_how_many_times_in_status(self):
+        service, status = self.test_status_duration_is_detected()  # Status has already been set twice.
+        instances = service.total_time_in_status(status)[0]
+        self.assertEqual(instances, 2)
+        
+    def test_timedelta_of_total_duration(self):
+        service = self.test_service_profile_page_lists_statuses()
+        old_prototype = ServiceStatusPrototype.objects.create(name="old_status", always_in_bearer_court=True)
+        new_prototype = ServiceStatusPrototype.objects.create(name="new_status", always_in_bearer_court=True)
+        
+        total_time_in_new_status = service.total_time_in_status("new_status")[1]
+        self.assertFalse(total_time_in_new_status)  # We haven't spent any time in this status yet.
+        
+        old_status = ServiceStatusLog.objects.create(service=service, prototype=old_prototype, creator=self.admin)
+        new_status = ServiceStatusLog.objects.create(service=service, prototype=new_prototype, creator=self.admin)
+        
+        
+        old_status.created -= datetime.timedelta(11)
+        old_status.save()
+        
+        total_time_in_old_status = service.total_time_in_status(old_status)[1]
+        
+        self.assertTrue(total_time_in_old_status > total_time_in_new_status)
+        self.assertEqual(total_time_in_old_status.days, 11)
+        
+        old_status_redux = ServiceStatusLog.objects.create(service=service, prototype=old_prototype, creator=self.admin)
+        new_status_redux = ServiceStatusLog.objects.create(service=service, prototype=new_prototype, creator=self.admin)
+        
+        old_status_redux.created -= datetime.timedelta(4)
+        old_status_redux.save()
+        
+        number_of_times_in_old_status, total_time_in_old_status = service.total_time_in_status(old_status)
+        
+        self.assertEqual(number_of_times_in_old_status, 2)
+        self.assertEqual(total_time_in_old_status.days, 15)
+        
+        return service
+    
+    def test_service_status_summary(self):
+        service = self.test_timedelta_of_total_duration()
+        summary = service.status_summary()
+        self.assertEqual(summary[0][0], 'old_status')
+        self.assertEqual(summary[1][0], 'new_status')
+        
+    def test_service_status_summary_on_template(self):
+        service = self.test_timedelta_of_total_duration()
+        response = self.client.get(service.get_absolute_url())
+        self.assertTrue('15 days' in response.content) #TODO: This is not ideal - it just proves that the phrase appears, not that it appears near the appropriate status.  Make this a better test.
