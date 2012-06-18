@@ -20,6 +20,8 @@ from twisted.internet import reactor
 
 from private import API_tokens, resources
 
+import logging
+comm_logger = logging.getLogger('comm')
 
 class CallResponse(object):
     '''
@@ -67,7 +69,9 @@ class CallResponse(object):
             else:
                 dial = self.response_object.addDial()
             startConferenceOnEnter = True if 'start_now' in kwargs and kwargs['start_now'] else False #Sometimes we want this joiner to start the conference.  Sometimes not.
-            return dial.addConference(kwargs['conference_id'], startConferenceOnEnter=startConferenceOnEnter)
+            command = dial.addConference(kwargs['conference_id'], startConferenceOnEnter=startConferenceOnEnter)
+            comm_logger.info('Telling Twilio: %s' % dial)
+            return command
         if self.provider.name == "Tropo":
             self.response_object.on("hangup", next="/comm/handle_hangup/%s/%s/" % (kwargs['conference_id'], kwargs['number'].id))
             if 'record' in kwargs and kwargs['record']:
@@ -80,7 +84,7 @@ class CallResponse(object):
         '''
         if self.provider.name == "Twilio":
             dial = self.response_object.addDial()
-            reactor.callFromThread(twilio_deferred_voicemail_determination, conference_id, 40)
+            reactor.callFromThread(twilio_deferred_voicemail_determination, conference_id, 30)
             return dial.addConference(conference_id)#TODO: waitUrl=hold_music)
          
         if self.provider.name == "Tropo":
@@ -95,6 +99,7 @@ class CallResponse(object):
         '''
         Join the user to a conference that started with a holding pattern and begin the conference.
         '''
+        comm_logger.info('%s is beginning conference %s', number, conference_id)
         conference_kwargs = {'conference_id':conference_id, 'number':number}
         if self.provider.name == "Twilio":
             conference_kwargs['start_now'] = True
@@ -132,9 +137,10 @@ class CallResponse(object):
             self.response_object.say(prompt)
             recording_kwargs = {}
             recording_kwargs['action'] = "%s/comm/recording_handler/%s/%s/" % ((resources.COMM_DOMAIN,) + recording_url_args)
+            recording_kwargs['timeout'] = 20
             if transcribe:
                 recording_kwargs['transcribe'] = True
-                recording_kwargs['transcribe_callback'] = "%s/comm/transcription_handler/%s/%s/" % ((resources.COMM_DOMAIN,) + recording_url_args)
+                recording_kwargs['transcribeCallback'] = "%s/comm/transcription_handler/%s/%s/" % ((resources.COMM_DOMAIN,) + recording_url_args)
             self.response_object.record(**recording_kwargs)
             
         if self.provider.name == "Tropo":

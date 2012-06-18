@@ -2,6 +2,7 @@ import urlparse
 import os
 import json
 import logging
+import requests
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
@@ -51,28 +52,30 @@ def outgoing_call_menu(request):
         
     return render(request, 'comm/outgoing_call_menu.html', locals()) 
 
-def outgoing_call(request, phone_provider_name=None):
+def outgoing_call(request):
     '''
-    Make an outgoing call.  Duh.  :-)
-    
-    TODO: Uncouple from Tropo
-    '''
-    if not phone_provider_name:
-        #TODO: Get default phone provider
-        pass
-    else:
-        phone_provider = PhoneProvider.objects.get(name=phone_provider_name)
+Make an outgoing call. Duh. :-)
+TODO: Uncouple from Tropo
+'''
+    tropo_provider = PhoneProvider.objects.get(name="Tropo")
     
     call_from_phone = PhoneNumber.objects.get(id=request.POST['callFrom'])
     call_to_phone = PhoneNumber.objects.get(id=request.POST['callTo'])
 
     from_number = resources.SLASHROOT_MAIN_LINE
     
-    p = PhoneProviderRESTObject(phone_provider)
     
-    call_id = p.place_new_call(call_from_phone, call_to_phone)
+    response = requests.post('https://api.tropo.com/1.0/sessions/',
+                      data={
+                            'token':'0aaea1598824a846a340ea4b597fc9672cfa5734fc4a2edcf8c2de5101277f765ec7e8743d379495f7969bc7',
+                            'toNumber':call_to_phone.remove_dashes(),
+                            'fromNumber':call_from_phone.remove_dashes(),
+                            }
+                      )
     
-    call = PhoneCall.objects.create(service=tropo_provider, call_id=call_id, dial=True, from_number=call_from_phone, to_number=call_to_phone)
+    session_id = urlparse.parse_qs(response.content)['id'][0].rstrip()
+    
+    call = PhoneCall.objects.create(service=tropo_provider, call_id=session_id, dial=True, from_number=call_from_phone, to_number=call_to_phone)
     
     task = call.resolve_task()
     task.ownership.create(owner=request.user)
@@ -80,7 +83,6 @@ def outgoing_call(request, phone_provider_name=None):
     #Creating the call will have created a call task.
     
     return HttpResponseRedirect(task.get_absolute_url())
-
 @permission_required('comm.change_phonecall')
 def watch_calls(request):
     
@@ -207,8 +209,7 @@ def resolve_call(request):
     else:
         status = 1
     
-    resolve_task = call.resolve_task()
-    resolve_task.set_status(status, request.user)
+    call.set_resolve_status(status, request.user)
 
     return HttpResponse(status)
 

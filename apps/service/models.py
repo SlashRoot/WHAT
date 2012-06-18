@@ -214,18 +214,67 @@ class Service(models.Model):
         
     def service_log_display(self):
         return "Service Began"
-
+    
+    def total_time_in_status(self, status):
+        '''
+        Takes a ServiceStatusPrototype and returns a tuple of:
+        
+        1)How many times in that status
+        2)timedelta of total duration
+        '''
+        try:
+            status_instances = self.status_history.filter(prototype=status)
+        except ValueError: #Maybe they provided a status name instead of a ServiceStatusPrototype object.
+            status_instances = self.status_history.filter(prototype__name=status)
+            
+        number = len(status_instances)
+        duration = timedelta(0)
+        for instance in status_instances:
+            duration += instance.duration()
+        
+        return number, duration
+    
+    def status_summary(self):
+        prototypes = ServiceStatusPrototype.objects.filter(instances__service=self).distinct()
+        
+        entries = []
+        for prototype in prototypes:
+            total_time = self.total_time_in_status(prototype)  # Remember, a tuple.
+            
+            entries.append( (prototype.name,) + total_time )  # three-element tuple starting with the name
+        
+        sorted_entries = sorted(entries, key = lambda entry: entry[2], reverse=True)
+        
+        return sorted_entries
+    
 class ServiceStatusPrototype(models.Model):
     name = models.CharField(max_length=30)
     always_in_bearer_court = models.BooleanField(help_text="True if this status indicates that action is required by the party in possession of the device.")
     retired = models.DateTimeField(blank=True, null=True)
 
 class ServiceStatusLog(models.Model):
-    prototype = models.ForeignKey('service.ServiceStatusPrototype')
+    prototype = models.ForeignKey('service.ServiceStatusPrototype', related_name="instances")
     service = models.ForeignKey('service.Service', related_name="status_history")
     creator = models.ForeignKey('auth.User', related_name="assigned_service_statuses")
     created = models.DateTimeField(auto_now_add=True)
     
+    def __unicode__(self):
+        return "%s %s on %s" % (self.prototype.name, self.service, self.created)
+    
+    def subsequent(self):
+        try:
+            return ServiceStatusLog.objects.filter(service=self.service, created__gt=self.created)[0]
+        except IndexError:
+            return None
+    
+    def duration(self):    
+        if self.subsequent():
+            end = self.subsequent().created
+        else:
+            end = datetime.now()
+        duration = end - self.created
+        return duration
+        
     def service_log_display(self):
         return "%s set status" % (self.creator.username)
 
