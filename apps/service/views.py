@@ -63,7 +63,8 @@ class ServiceGridColumns(object):
         self.columns.append(Column('Most Recent Action', icon="last_action.png"))
         self.columns.append(Column('Whose Court is the Ball In?', icon="court.png"))
         self.columns.append(Column('Status', icon="status.png"))
-        self.columns.append(Column('Suggested Charge'))
+        self.columns.append(Column('Suggested Charge', icon='suggested_price.jpg'))
+        self.columns.append(Column('Customer Expectation', icon="customer_expectation.jpg"))
 
     
 @login_required
@@ -72,6 +73,8 @@ def the_situation(request):
     columns = ServiceGridColumns().columns
     
     needing_attention, not_needing_attention = Service.objects.filter_by_needing_attention()
+    
+    suggested_price = Service.PriceTagPrototype.list_of_charges
 
 #    tp = TaskPrototype.objects.filter(name__icontains="completed")[4]
 #    tasks = tp.instances.all()
