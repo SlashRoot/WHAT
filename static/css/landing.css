@@ -217,12 +217,14 @@ float:right;
 
 .aboutText {
     font-family: Times New Roman;
-    font-size: 14px;
+    font-size: 16px;
     height: 361px;
     letter-spacing: 2px;
     line-height: 20px;
     width: 600px;
     text-align: center;
+    line-height: 18px; 
+    
 
 }
 
@@ -368,14 +370,14 @@ z-index:2
 }
 
 #red-box-header {
-	height:39px; 
-	width:100%; 
-	background-color:#D8BFD8;
-	font-family:veteran-typewriter;
-	font-size:24px;
-	padding-left:2px;
-	padding-top:2px;
-	text-align:center;
+    background-color: #E5ECF9;
+    font-family: veteran-typewriter;
+    font-size: 24px;
+    height: 39px;
+    padding-left: 2px;
+    padding-top: 2px;
+    text-align: center;
+    width: 100%;
 }
 
 
@@ -416,7 +418,7 @@ z-index:2
 }
 
 #map {
-    background-color: #CD9B9B;
+    background-color: whiteSmoke;
     border: 5px ridge #543302;
     border-radius: 12px 12px 12px 12px;
     float: left;
@@ -426,6 +428,20 @@ z-index:2
     overflow: hidden;
     padding: 1px;
     width: 340px;
+}
+
+#map-text {
+    color: black;
+    font-family: veteran-typewriter;
+    font-size: 23px;
+    line-height: 24px;
+    padding: 14px;
+    text-align: center;
+}
+
+#google-map-iframe {
+    border-top: 2px solid black;
+	height:0;
 }
 
 #front-page-blog-preview h1 {

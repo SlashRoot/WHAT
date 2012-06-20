@@ -1,8 +1,14 @@
 {% extends 'brown_and_bubble_driven.html' %}
 
 {% block content %}
-	
+
+<script type="text/javascript" src="/media/js/jquery.tablesorter.js"></script>  	
 <script type="text/javascript">
+
+$(function() {		
+	$("#resolve_calls_table").tablesorter({sortList:[[0,0],[2,1]], widgets: ['zebra']});
+	$("#options").tablesorter({sortList: [[0,0]], headers: { 3:{sorter: false}, 4:{sorter: false}}});
+});
 
 $(function(){
 	$('.voicemail').tooltip({ position: "right", opacity: 0.9, effect: "fade"});
@@ -35,7 +41,7 @@ $(function(){
 
 
 
-<table style="border:auto;" border="1">
+<table id="resolve_calls_table" style="border:auto;" border="1">
 	<td>ID</td>
 	<td>DateTime</td>
 	<td>Caller</td>
