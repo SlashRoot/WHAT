@@ -41,13 +41,13 @@ $(function(){
 
 
 
-<table id="resolve_calls_table" style="border:auto;" border="1">
-	<td>ID</td>
-	<td>DateTime</td>
-	<td>Caller</td>
-	<td>Answerers</td>
-	<td>Resolved</td>
-	<td>Recording</td>	
+<table id="resolve_calls_table" >
+	<td class="resolve-column">ID</td>
+	<td class="resolve-column">DateTime</td>
+	<td class="resolve-column">Caller</td>
+	<td class="resolve-column">Answerers</td>
+	<td class="resolve-column">Resolved</td>
+	<td class="resolve-column">Recording</td>	
 
 	{% for call in resolve_calls %}
 		{% with show_caller=1 show_answerers=1 show_checkbox=1 %}

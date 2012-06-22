@@ -185,3 +185,9 @@ border: 1px solid #DCDCDC;
 .resolve_filter {
 	margin-top: 20px;
 }
+
+.resolve-column {
+	/*background-image: url("/media/images/wood-grain.jpg");*/
+    border: 1px solid black;
+    padding: 5px;
+}
