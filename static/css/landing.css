@@ -33,8 +33,8 @@ top:0px;
     background-image: url("/media/images/close_button.jpg");
     background-repeat: no-repeat;
     float: right;
-    margin-top: -92px;
-    padding-right: 12px;
+    margin-top: -87px;
+    padding-right: 21px;
 }
 
 .ui-dialog-titlebar-close {
@@ -47,8 +47,8 @@ top:0px;
 
 .ui-dialog-titlebar {
     background-color: #75a4c7;
+    border-bottom: 1px solid #000000;
     border-radius: 5px 5px 0px 0px;
-    margin-bottom:1px;
     height: 30px;
     min-width: 500px;
 }
@@ -58,7 +58,7 @@ top:0px;
     border-radius: 0px 0px 5px 5px;
     min-height: 200px;
     min-width: 500px;
-    opacity:0.5;
+    opacity:0.75;
 }
 
 .ui-dialog-content p {
