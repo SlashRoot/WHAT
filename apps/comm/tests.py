@@ -44,8 +44,7 @@ This is generally not so with the other apps - this is likely the most difficult
 from django.test import TestCase
 
 from comm.comm_settings import SLASHROOT_EXPRESSIONS
-from comm.views import answer, alert_pickup, conference_blast, pickup_connect,\
-    voicemail, transcription_handler, handle_hangup
+from comm.provider_views import answer, alert_pickup, conference_blast, pickup_connect, voicemail, transcription_handler, handle_hangup
 from comm.models import PhoneCall, CommunicationInvolvement
 
 from contact.models import PhoneProvider, DialList, ContactInfo, PhoneNumber,\
@@ -269,11 +268,12 @@ class CallerInitialExperience(TestCase):
     def setUp(self):
         prepare_testcase_for_answer_tests(self)
 
-    def test_twilio_answer_first_command_say(self):
+    def test_twilio_greeting(self):
         '''
-        That the name of the first verb in the response is "Say"
+    Tests that the greeting is equal to the say command
         '''
         self.assertEqual(self.twilio_response_object.verbs[0].name, 'Say')
+        self.assertEqual(self.twilio_response_object.verbs[0].body, SLASHROOT_EXPRESSIONS['public_greeting'])
         
     def test_twilio_answer_second_command_dial(self):
         '''
@@ -284,10 +284,6 @@ class CallerInitialExperience(TestCase):
     def test_twilio_answer_dial_into_conference(self):
         self.assertEqual(self.twilio_response_object.verbs[1].verbs[0].name, "Conference")
     
-    @expectedFailure
-    def test_twilio_greeting(self):  
-        self.fail()
-          
     def test_tropo_greeting(self):
         commands_list = self.tropo_response_dict['tropo']
         first_command = commands_list[0]

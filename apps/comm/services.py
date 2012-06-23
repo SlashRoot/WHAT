@@ -20,10 +20,12 @@ from comm.comm_settings import SLASHROOT_EXPRESSIONS
 from comm.response import CallResponse
 from comm import comm_settings
 from comm.models import PhoneCall
+from comm.rest import SLASHROOT_TWILIO_ACCOUNT
 
-from private import API_tokens
+from private import API_tokens, resources
 
-SLASHROOT_TWILIO_ACCOUNT = TwilioRestClient(API_tokens.TWILIO_SID, API_tokens.TWILIO_AUTH_TOKEN)
+import logging
+comm_logger = logging.getLogger('comm')
 
 def incoming_twilio_phone_client_loader(request):
     from twilio.util import TwilioCapability
@@ -249,21 +251,25 @@ def place_call_to_number(number, conference_id, provider, green_phone=False):
         twilio_client = TwilioRestClient(API_tokens.TWILIO_SID, API_tokens.TWILIO_AUTH_TOKEN)  # dehydrate.
         number_object = PhoneNumber.objects.get(id=number)
         # TODO: No if machine detection for green phone, and timeout issues
-        deferToThread(twilio_client.calls.create, if_machine="Hangup", to=number_object.number, from_="8456338330", url="http://60main.slashrootcafe.com/comm/pickup_connect_auto/%s/%s/" % (number, conference_id))
+        deferToThread(twilio_client.calls.create, if_machine="Hangup", to=number_object.number, from_="8456338330", timeout=20, url="%s/comm/pickup_connect_auto/%s/%s/" % (resources.COMM_DOMAIN, number, conference_id))
 
 def get_audio_from_provider_recording(request, provider):
     
     if provider.name == "Twilio":
-        # TODO: Provide support for Twilio
-        recording_url = request.POST['RecordingUrl']
-        recording_file_name = recording_url.split('/')[-1]
-        recording_audio = urllib2.urlopen(recording_url)
+        # At the moment we've commented out the actual audio download from Twilio.
+        # We need to re-implement asynchronously.
+        # The best way is probably to make a cronjob that grabs them every night or something. 
+        recording_url = "%s.mp3" % request.POST['RecordingUrl']
+#        recording_file_name = recording_url.split('/')[-1]
+#        recording_audio = urllib2.urlopen(recording_url)
+#        comm_logger.info('Opened %s' % recording_audio)
         
-        local_recording_file = open(settings.PUBLIC_FILE_UPLOAD_DIRECTORY + "audio/call_recordings/" + recording_file_name, 'wb+')
-        local_recording_file.write(recording_audio.read())
-        local_recording_file.close()
+#        local_recording_file = open(settings.PUBLIC_FILE_UPLOAD_DIRECTORY + "audio/call_recordings/" + recording_file_name, 'wb+')
+#        local_recording_file.write(recording_audio.read())        
+#        comm_logger.info('Saved %s' % recording_audio)
+#        local_recording_file.close()
         
-        return local_recording_file
+        return None, recording_url
     
     if provider.name == "Tropo":
         filename = str(request.FILES['filename'])
@@ -272,4 +278,5 @@ def get_audio_from_provider_recording(request, provider):
             destination.write(chunk)
         destination.close()
         
-        return destination
+        return destination, False
+    

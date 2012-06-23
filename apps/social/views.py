@@ -40,15 +40,21 @@ def draw_attention_ajax(request):
         object = Model.objects.get(id=object_id)
         
     
+        target = form.cleaned_data['share_with']
     
         DrawAttention.objects.create(
                                          creator = request.user,
-                                         target = form.cleaned_data['share_with'],
+                                         target = target,
                                          content_object = object,
                                          )
         
         object.save() #Cause any post-save hooks to fire.
-        return HttpResponse(1)
+        
+        alert_message = "You have alerted %s to %s." % (target, object)
+        response_dict = dict(success=True, alert=alert_message)
+        response_dict_json = json.dumps(response_dict)
+        
+        return HttpResponse(response_dict_json)
     
     else:
         errors = []
@@ -56,7 +62,7 @@ def draw_attention_ajax(request):
             errors.append(error)
         dumps = simplejson.dumps(errors)
         return HttpResponse(dumps)
-    
+
 
 @login_required
 def dashboard(request):
@@ -79,10 +85,12 @@ def dashboard(request):
     
     return render(request, 'social/dashboard.html', locals())
 
+
 def profile(request, username):        
     person = get_object_or_404(User, username = username)
     completed = TaskResolution.objects.filter(creator=person, type=2).reverse()[:10]
     return render(request, 'social/profile.html',locals())
+
 
 def post_top_level_message(request, object_info):
     app_name = object_info.split('__')[0]
@@ -100,7 +108,7 @@ def post_top_level_message(request, object_info):
             FileAttachedToMessage.objects.create(message=message, creator=request.user, file=file_object)
             
     return HttpResponseRedirect(object.get_absolute_url())
-    
+
 
 def acknowledge_notification(request, attention_id):
     attention = DrawAttention.objects.get(id=attention_id)
@@ -155,7 +163,8 @@ def log(request, username=None, group_name=None):
         
     return render(request, 'social/log.html', locals())
     
-    
+def media_player(request):
+    return render(request, 'social/media_player.html', locals())
     
     
     

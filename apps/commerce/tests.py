@@ -9,14 +9,14 @@ class BasicCommerceViewsTests(TestCase):
         response = self.client.get('/commerce/record_purchase/')
         self.assertEqual(response.status_code, 200, "The record purchase page did not return a 200.")
     
-    @expectedFailure
+    
     def test_record_purchase_submit(self):
         purchase_form_dict = {
                               'other_party':1,
                               'payment_method':1,
                               'purchase_date':10/10/2010,
                               }
-        self.client.post('/commerce/record_purchase', purchase_form_dict)
+        response = self.client.post('/commerce/record_purchase/', purchase_form_dict)
         self.fail()
     
     def test_record_bill_page(self):

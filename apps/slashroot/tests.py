@@ -13,7 +13,47 @@ import mellon.config
 import people.config
 from comm.tests import create_phone_calls
 from utility.models import FixedObject
+from people.config import set_up as people_set_up
+from django.core.cache import cache
 
+class NavigationTests(TestCase):
+    
+    def setUp(self):
+        cache.clear()
+        people_set_up()
+        self.rusty = User.objects.create(is_superuser=True, username="rusty", first_name="Rusty", last_name="Spike")
+        UserProfile.objects.create(user=self.rusty, contact_info=ContactInfo.objects.create())
+        member_role = FixedObject.objects.get(name="RoleInGroup__slashroot_holder").object
+        UserInGroup.objects.create(role=member_role, user=self.rusty)
+                
+        self.rusty.set_password('password')
+        self.rusty.save()
+        
+        self.client.login(username="rusty", password="password")
+    
+    def test_no_unresolved_calls_are_listed_in_navigation_bar(self):
+        response = self.client.get('/')
+        self.assertTrue("Resolve Calls (0)" in response.content)
+        
+    def test_some_unresolved_calls_are_listed_in_nav_bar(self):
+        calls = create_phone_calls(17, from_user=self.rusty)
+        response = self.client.get('/')
+        self.assertTrue("Resolve Calls (17)" in response.content)
+
+        return calls
+
+    def test_resolved_calls_are_not_counted_in_nav_bar(self):
+        calls = self.test_some_unresolved_calls_are_listed_in_nav_bar()
+        calls_to_resolve = calls[0:3] #Grab three of the calls....
+        
+        #And loop through them, resolving each.
+        for call in calls_to_resolve:
+            call.set_resolve_status(2, self.rusty)
+        
+        response = self.client.get('/')
+        
+        #This will be 14 because there were 17 calls originally.
+        self.assertTrue("Resolve Calls (14)" in response.content)
 
 class ResolveCallsModels(TestCase):
     def setUp(self):
@@ -29,7 +69,6 @@ class ResolveCallsModels(TestCase):
         operator = User.objects.create(username="operator", first_name="Operator")
         UserProfile.objects.create(user=operator, contact_info=ContactInfo.objects.create())
         self.known_number = PhoneNumber.objects.create(owner=operator.userprofile.contact_info, number="+11231231234")
-        
         
         
         #Create a member and login.

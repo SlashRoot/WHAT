@@ -29,7 +29,8 @@ from contact.models import PhoneNumber, PhoneProvider, DialList
 
 from push.functions import push_with_template
 
-
+import logging
+comm_logger = logging.getLogger('comm')
 
 
 
@@ -66,6 +67,9 @@ def call_object_from_call_info(call_info):
         call = PhoneCall.objects.get(call_id=call_id) #Set call to a phone call matching the call_id we just got.
         return call #We already know about this call.  Let's just dispense with the formalities and return the call.
     except PhoneCall.DoesNotExist, e: #This call does not exist in our database.
+        
+        comm_logger.info('NEW CALL %s (%s)' % (call_id, call_info['provider']))
+        
         #Start to populate our PhoneCall object                
         call = PhoneCall(
                          service        = call_info['provider'],
@@ -110,10 +114,11 @@ def call_object_from_call_info(call_info):
         # TODO: Handle situations where a user represents a party
         CommunicationInvolvement.objects.create(person=phone_numbers['caller'].owner.userprofile.user, communication=call, direction="from") 
 
-    try:    
-        CommunicationInvolvement.objects.create(person=phone_numbers['recipient'].owner.userprofile.user, communication=call, direction="to")
-    except (UserProfile.DoesNotExist, AttributeError):  # Either the owner is None or the UserProfile doesn't exist.
-        pass
+#Deprecated.  What was the point of this block?  Why might we want to create a "to" participant for an outgoing call?
+#    try:    
+#        CommunicationInvolvement.objects.create(person=phone_numbers['recipient'].owner.userprofile.user, communication=call, direction="to")
+#    except (UserProfile.DoesNotExist, AttributeError):  # Either the owner is None or the UserProfile doesn't exist.
+#        pass
     
     # If this this is the first time we've seen the call marked completed, we'll set the ended date.
     if call_info['status'] == 'completed' and not call.ended:

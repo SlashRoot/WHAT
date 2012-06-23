@@ -15,6 +15,7 @@ from comm import comm_settings
 from model_utils.managers import PassThroughManager
 from django.db.models.query import QuerySet
 from utility.models import FixedObject
+from django.core.cache import cache
 
 
 class Communication(models.Model):
@@ -262,10 +263,19 @@ class PhoneCall(Communication):
         try:
             related_object = self.tasks.get(task__prototype__name="Resolved Call: [[0]]")
             return related_object.task #TODO: Ask ourselves - is this how we want to do this?  Or create a utility.ConfigurationOption object?
-        except Task.DoesNotExist:
+        except Task.DoesNotExist, TaskRelatedObject.DoesNotExist:
             raise RuntimeError('Unable to get the task to resolve this call.  Tell Justin to raise ReallyFuckedUpError.')
 
-
+    def set_resolve_status(self, status, user):
+        '''
+        A wrapper around Task.set_status. 
+        Sets the status of the task object to resolve this call.
+        '''
+        status_is_changed = self.resolve_task().set_status(status, user)
+        if status_is_changed:
+            cache.delete('number_of_unresolved_calls')
+        resolve_task = self.resolve_task()
+        return status_is_changed
     
 class PhoneCallRecording(models.Model):
     '''
