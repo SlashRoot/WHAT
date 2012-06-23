@@ -225,7 +225,9 @@ class Service(models.Model):
             charge = models.IntegerField()
             reason = models.CharField(max_length=50)
             self.PriceTagPrototype.price_tag += charge
-            self.PriceTagPrototype.list_of_charges.append(reason:charge)
+            self.PriceTagPrototype.list_of_charges.append({reason:charge})
+            
+            
     
 
 class ServiceStatusPrototype(models.Model):
