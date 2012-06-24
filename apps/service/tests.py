@@ -14,9 +14,6 @@ from utility.models import FixedObject
 import datetime
 import people.config
 
-
-
-
 class CurrentClients(TestCase):
     def setUp(self):
         do_setup()
@@ -248,3 +245,11 @@ class CurrentClients(TestCase):
         service = self.test_timedelta_of_total_duration()
         response = self.client.get(service.get_absolute_url())
         self.assertTrue('15 days' in response.content) #TODO: This is not ideal - it just proves that the phrase appears, not that it appears near the appropriate status.  Make this a better test.
+
+    def test_total_price_of_service(self):
+        service = Service.objects.create(recipient_id=4900, pay_per_hour=70.00, manual_override=20.00, status_id=2)
+        pay_per_hour = service.pay_per_hour
+        time_spent = service.time_spent()
+        manual_override = service.manual_override
+        total = service.total()
+        self.assertEqual(total, 90)

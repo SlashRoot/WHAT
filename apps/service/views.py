@@ -6,7 +6,7 @@ from do.models import Task, TaskPrototype, TaskRelatedObject, TaskAccess,\
 from django.contrib.auth.decorators import login_required
 from service.models import Service, ServiceStatusPrototype
 
-from service.forms import MostBasicServiceCheckInForm
+from service.forms import MostBasicServiceCheckInForm, RateForm
 from utility.models import FixedObject
 from django.utils.datastructures import MultiValueDictKeyError
 from social.views import post_top_level_message
@@ -100,6 +100,7 @@ def tickets(request, service_id):
     status_prototypes = ServiceStatusPrototype.objects.all() #TODO: Filter for "active" statuses (ie, allow some to be retired)
     service = get_object_or_404(Service, id=service_id)
     task = service.task
+    rate = RateForm()
     return render(request, 'service/ticket_profile.html', locals())
 
 @login_required

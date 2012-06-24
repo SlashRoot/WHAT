@@ -68,6 +68,8 @@ class Service(models.Model):
     task = models.OneToOneField('do.Task')
     recipient = GenericPartyForeignKey()
     status = models.ForeignKey('service.ServiceStatusPrototype')
+    pay_per_hour = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    manual_override = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 #    flat = models.BooleanField()
 #    device = models.ForeignKey('hwtrack.Device')
 
@@ -215,17 +217,45 @@ class Service(models.Model):
     def service_log_display(self):
         return "Service Began"
     
-    class PriceTagPrototype(models.Model):
+    def total_time_in_status(self, status):
         '''
-        A running tally for the suggested price for the customer.
-        '''
-        price_tag = int()
-        list_of_charges = dict()
-        def register(self):
-            charge = models.IntegerField()
-            reason = models.CharField(max_length=50)
-            self.PriceTagPrototype.price_tag += charge
-            self.PriceTagPrototype.list_of_charges.append({reason:charge})
+        Takes a ServiceStatusPrototype and returns a tuple of:
+        1)How many times in that status
+        2)timedelta of total duration
+'''
+        try:
+            status_instances = self.status_history.filter(prototype=status)
+        except ValueError: #Maybe they provided a status name instead of a ServiceStatusPrototype object.
+            status_instances = self.status_history.filter(prototype__name=status)
+            
+        number = len(status_instances)
+        duration = timedelta(0).seconds
+        for instance in status_instances:
+            duration += instance.duration()
+        
+        return number, duration
+    #Dominick's Sandbox
+    
+    def time_spent(self):
+        return self.total_time_in_status('On the Bench')[1] * 3600
+    
+    def total(self):
+        return (self.pay_per_hour * self.time_spent()) + self.manual_override
+    
+    ## End of Dominick's Sandbox
+    
+    ## There seems to be a lack of understanding as to where this is going. --Dominick
+#    class PriceTagPrototype(models.Model):
+#        '''
+#        A running tally for the suggested price for the customer.
+#        '''
+#        price_tag = int()
+#        list_of_charges = dict()
+#        def register(self):
+#            charge = models.IntegerField()
+#            reason = models.CharField(max_length=50)
+#            self.PriceTagPrototype.price_tag += charge
+#            self.PriceTagPrototype.list_of_charges.append({reason:charge})
             
             
 
