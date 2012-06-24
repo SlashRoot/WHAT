@@ -8,8 +8,6 @@ It surely needs to be dehydrated.
 {% endcomment %}
 
 
-
-
 {% load social_tags %}
 {% load do_tags %}
 
@@ -24,35 +22,6 @@ It surely needs to be dehydrated.
 {% endblock %}
 
 {% block more_content %}
-
-<script type="text/javascript">
-
-$(function(){ 
-
-    //Refresh messages on new message
-    
-    stomp = new STOMPClient();
-    stomp.onopen = function() {
-    };
-    stomp.onclose = function(c) { alert('Lost Connection, Code: ' + c);};
-    stomp.onerror = function(error) {
-        alert("Error: " + error);
-    };
-    stomp.onerrorframe = function(frame) {
-        alert("Error: " + frame.body);
-    };
-    stomp.onconnectedframe = function() {
-        stomp.subscribe("/social/new_messages/task__{{task.id}}/");        
-    };
-    
-    
-    stomp.onmessageframe = function(frame) {
-        messagesRefresh();            
-    };
-    stomp.connect('localhost', 61613);
-});
-</script>
-
 
     <div class="container">
         <div class="row">
@@ -70,6 +39,20 @@ $(function(){
             <div class="fivecol">
                 
                 {# OWNERSHIP #}
+                <div class="tanRounded normal the99Percent">
+                    <table>
+                    {% for entry in service.status_summary %}
+                        <tr>
+                            {% for element in entry %}
+                            <td>
+                                {{element}}
+                            <td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </table>
+                </div>
+                 
                 <div class="tanRounded normal the99Percent">                
                     <div class="tanRounded" id="taskOwnership">
                         {% if task.ownership.count %}

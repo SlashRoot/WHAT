@@ -14,12 +14,12 @@ width:885px;
 top:0px;
 }
 
-#tree {B0B0F5
-	width:100%;
+#tree {
+	width:65%;
 }
 
 .backgroundElements {
-    margin-top: 75px;
+    margin-top: 55px;
     position: relative;
 }
 
@@ -34,6 +34,7 @@ top:0px;
 #logo {
 top:0px;
 margin-left:100px;
+float:right;
 }
 
 .nav_1 {
@@ -142,9 +143,9 @@ margin-left:100px;
 }
 
 .aboutText {
-    height: 380px;
-    margin-top: 20px;
-    max-width: 650px;
+    height: 361px;
+    margin-top: -20px;
+    max-width: 580px;
     text-align: center;
 }
 
@@ -158,21 +159,22 @@ z-index:2
 }
 
 #centerBidniss {
-    margin-left: 16em;
+    margin-left: 20%;
     position: relative;
-    width: 950px;
+    width: 49%px;
 }
 
 #logoBig {
     color: black;
     font-family: veteran-typewriter;
-    font-size: 62px;
-    left: 8%;
+    font-size: 69px;
     letter-spacing: -1px;
     line-height: 0;
+    margin-left: 25px;
     position: absolute;
-    top: 44.5%;
-    }
+    right: 6%;
+    top: 37.5%;
+}
 
 #logoBigBlog {
     color: black;
@@ -234,36 +236,76 @@ z-index:2
 }
 
 #below_the_fold {
-    background-color: #BA97A9;
+    border-left: 2px solid black;
     border-radius: 4px 4px 4px 4px;
-    border-top: 1px solid black;
-    margin-left: 12em;
+    border-right: 2px solid black;
+    height: 329px;
+    margin-bottom: 200px;
+    margin-left: 5%;
     position: relative;
-    width: 66em;
+    width: 70em;
 }
+
+#blue-box-header {
+	height:39px; 
+	width:100%; 
+	background-color:slateGrey;
+}
+
+#red-box-header {
+	height:39px; 
+	width:100%; 
+	background-color:Thistle;
+}
+
 
 #front-page-blog-preview {
     background-color: #48515A;
-    border-radius: 20px;
-    float: left;
-    height: 490px;
-    margin-bottom: 200px;
-    margin-left: 12em;
-    margin-top: 40px;
-    overflow: hidden;
-    padding: 30px;
     border: 5px ridge #543302;
-    width: 990px;
+    border-radius: 12px 12px 12px 12px;
+    float: left;
+    font-size: 12px;
+    height: 505px;
+    margin-bottom: 100px;
+    margin-left: 35px;
+    margin-top: 10px;
+    overflow: hidden;
+    width: 340px;
+}
+
+#google-calender {
+    border: 5px ridge #543302;
+    border-radius: 12px 12px 12px 12px;
+    float: left;
+    height: 505px;
+    margin-left: 4px;
+    margin-top: 10px;
+    overflow: hidden;
+    padding: 1px;
+    width: 348px;
+}
+
+#map {
+    background-color: rosyBrown;
+    border: 5px ridge #543302;
+    border-radius: 12px 12px 12px 12px;
+    float: left;
+    height: 505px;
+    margin-left: 4px;
+    margin-top: 10px;
+    overflow: hidden;
+    padding: 1px;
+    width: 340px;
 }
 
 #front-page-blog-preview h1 {
+    margin-bottom: 40px;
+    margin-top: -30px;
     text-align: center;
     width: 100%;
-    margin-bottom:20px;
-	}
-	
+}
+
 #front-page-blog-preview .blogContent {
-	width:85%;
 }
 
 #leftbar {

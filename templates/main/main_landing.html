@@ -96,71 +96,62 @@
 		<div class="tanRoundedMain normal left">				
 		
 				
-				<br><h2>	We do five things! Usually! </h2> <br><br>
-	            {% comment %}
-	                                                <ul id=photostrip>
-	        <li> <img class="photostrip" id="photostrip-1" src="/media/images/devlounge.png" /> </li> 
-	        <li> <img class="photostrip" id="photostrip-2" src="/media/images/cafebar.png" /> </li> 
-	        <li> <img class="photostrip" id="photostrip-3" src="/media/images/timcloseup.png" /> </li> 
-	      
-	        <li> <img class="photostrip" id="photostrip-1" src="/media/images/devlounge.png" /> </li> 
-	        <li> <img class="photostrip" id="photostrip-2" src="/media/images/cafebar.png" /> </li> 
-	        <li> <img class="photostrip" id="photostrip-3" src="/media/images/timcloseup.png" /> </li> 
-	
-	    </ul>
-	    
-	    <ul id=labels>
-	        <li id="bafoons-1"> Label  </li> 
-	        <li id="bafoons-2"> Llamas </li> 
-	        <li id="bafoons-3"> Like </li> 
-	        <li id="bafoons-4"> Labels </li> 
-	    </ul>
-	    {% endcomment %}
-			
-			<strong>The Best Organic / Local Beverages in New Paltz:</strong>
-			Hand-crafted teas, locally roasted coffee and espresso, the freshest local milk money can buy.  Drink up!<br><br>
-			
-			
-			<strong>Technology Service:</strong>
+			<br><span style="color:#48515A;"><h2>	We do five things! Usually! </h2> <br><br> </span>
+
+			<strong>1: Technology Service:</strong>
 			We love to fix things!  
 			We make computers and their owners get along.  <br><br>
 			
-			
-			<strong>Networking:</strong>
-			We help to connect people, wireless routers, etc.<br><br>
-			
-			
-			<strong>Software Development:</strong>
+			<strong>2: Software Development:</strong>
 			Web applications, phone routing, mobile apps – whatever gets the job done.  We're one of the top development shops in New York State.<br><br>
 			
 			
-			<strong>Live Events:</strong> 
+			<strong>3: Networking:</strong>
+			We help to connect people, wireless routers, etc.<br><br>
+			
+			
+			<strong>4: Live Events:</strong> 
 			Acoustic Music, Poetry, Art, Classes, Workshops, etc.<br><br>
 				
+			<strong>5: The Best Organic / Local Beverages in New Paltz:</strong>
+			Hand-crafted teas, locally roasted coffee and espresso, the freshest local milk money can buy.  Drink up!<br><br>
 		
 		</div>
 	
 	</div>
+	
+	<div id="front-page-blog-preview">
+	<div id="blue-box-header"></div>
+		<img class="left leftVert" src="/media/images/border2.png"/>
+		<h1>Latest <a href="/blog/">Blog</a> Posts</h1>
+		{% for block in blog_blocks %}				
+				<div class="blogContent" style="float:left;">
+					<h2><a href="{{block.get_absolute_url}}">{{block.headline}}</a></h2>
+					<h3>by {{block.creator}}</h3>
+					<h4>{{block.created}}</h4>
+				</div>
+		{% endfor %}
+	</div>
+	
+	<div id="google-calender">
+		<iframe src="https://www.google.com/calendar/embed?title=slashRoot%20Cafe%20Happenings&amp;showNav=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;showTz=0&amp;mode=AGENDA&amp;height=500&amp;wkst=1&amp;bgcolor=%23ffffff&amp;src=6r7vrl45g52rb520ml3mhrgna8%40group.calendar.google.com&amp;color=%23125A12&amp;src=sjvh3ctocfptqnp2ohmtn71k4s%40group.calendar.google.com&amp;color=%23182C57&amp;ctz=America%2FNew_York" 
+		style=" border-width:0 " width="348" height="505" frameborder="0" scrolling="no">
+		</iframe>
+	</div>
+	
+	<div id="map">
+		<div id="red-box-header"></div>
+		<img class="left leftVert" src="/media/images/border2.png"/>
+	</div>	
   
 </div>
 
-<div id="front-page-blog-preview">
-	<img class="left leftVert" src="/media/images/border2.png"/>
-	<h1>Latest <a href="/blog/">Blog</a> Posts</h1>
-	{% for block in blog_blocks %}				
-			<div class="blogContent" style="float:left;">
-				<h2><a href="{{block.get_absolute_url}}">{{block.headline}}</a></h2>
-				<h3>by {{block.creator}}</h3>
-				<h4>{{block.created}}</h4>
-			</div>
-	{% endfor %}
-</div>
 
 {% endblock %}
 
 {% block footer %}
 
-	<div>
+	
 	
 	<div id="contact"> 60 Main st. New Paltz, NY, 12561 845.633.8330 </div>
 	
