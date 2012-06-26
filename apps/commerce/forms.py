@@ -131,8 +131,8 @@ def purchase_meta_factory(form_model, exclude_fields=None, include_fields=None):
 PurchaseItemForm = purchase_form_factory('PurchaseItemForm', forms.Form, {
     'unit of quantification': forms.ModelChoiceField(queryset=QuantificationUnit.objects.all() ),
     'amount':forms.IntegerField(widget=forms.TextInput(attrs={'size':'4'})),
-    'item_name': AutoCompleteField(models=(TradeElement,), new_buttons=True),
-    'description': forms.CharField(widget=forms.Textarea),
+    'element': AutoCompleteField(models=(TradeElement,), new_buttons=True),
+    #'description': forms.CharField(widget=forms.Textarea),
     })
     
 PurchaseIngredientForm = purchase_form_factory('PurchaseIngredientForm', forms.Form, {
@@ -154,7 +154,7 @@ PurchaseDeviceForm = purchase_form_factory('PurchaseDeviceForm', forms.Form, {
 THINGS_WE_PURCHASE = {
                       'Ingredient': [IngredientStock, PurchaseIngredientForm], 
                       'Device': [Device, PurchaseDeviceForm],
-                      'Other_Item': [TradeElement, PurchaseItemForm],                          
+                      'Other_Item': [RealThing, PurchaseItemForm],
                       }
 
 

@@ -87,29 +87,32 @@ def donation_from_POST(post, member):
     donor_pledge.deliver()
 
     return exchange
-        
-        
 
-def buy_item(group=False, deliver=False, seller_involvement=None, buyer_involvement=None, trade_element=None, trade_element_kwargs=None, money_bag=None, price=None, quantity=None):
+
+def buy_item(group=False,
+             deliver=False,
+             seller_involvement=None,
+             buyer_involvement=None,
+             trade_element=None,
+             trade_element_kwargs=None,
+             money_bag=None,
+             price=None,
+             quantity=None,
+             ):
     '''
     A dehydration method specially for trading a real thing for a money bag.
-    
-    Makes pledges and returns them.
+    Returns a tuple of seller Pledge and buyer Pledge.
     
     Pledges will be delivered if deliver=True.
-    
     If quantity is more than one, items will each be assigned their own pledge unless group=True.
     '''
-    count = quantity
-    
     if group:
         buyer_pledge, seller_pledge = pledges_from_involvements(buyer_involvement=buyer_involvement, seller_involvement=seller_involvement)
-    
-    for counter in range(count): #We'll iterate through once for each item in the quantity.
 
-        if not group:
+    for counter in range(quantity): #We'll iterate through once for each item in the quantity.
+        if not group:  # We didn't get the pledges above, so we'll need to get them for each item now.
             buyer_pledge, seller_pledge = pledges_from_involvements(buyer_involvement=buyer_involvement, seller_involvement=seller_involvement)
-    
+        
         #Get the size details
         try:
             quantification_method = trade_element_kwargs.pop('unit of quantification')
@@ -118,21 +121,21 @@ def buy_item(group=False, deliver=False, seller_involvement=None, buyer_involvem
             #Guess they don't have an amount for their quantification method.
             #TODO: Neaten this.
             pass
+
+        # Make the thing
+        # The kwargs will have come most recently from get_purchase_details, which in turns gets them from a form.
+        real_thing = trade_element.objects.create(**trade_element_kwargs)
         
         try:
             property = trade_element_kwargs.pop('property')
+            if property:
+                real_thing.properties.add(property)
         except:
             #TODO: This is pretty lame. Property is supposed to be ManyToMany.
             pass 
         
-        #Make the thing
-        real_thing = trade_element.objects.create(**trade_element_kwargs) #The kwargs will have come most recently from get_purchase_details, which in turns gets them from a form.             
-        
         #Make and associate the size of the thing
         size = RealThingSize.objects.create(unit=quantification_method, number=amount, thing=real_thing)
-        
-        if property:
-            real_thing.properties.add(property)
         
         seller_pledge.items.add(real_thing)
         
@@ -220,7 +223,8 @@ def get_purchase_details(main_form, item_forms, member, receipt_image=None, date
                 #TODO: Figure out why some forms come in blank (and thus produce KeyError)
                 continue
     
-            vendor_pledge, our_pledge = buy_item(seller_involvement = vendor_involvement, 
+            vendor_pledge, our_pledge = buy_item(
+                     seller_involvement = vendor_involvement, 
                      buyer_involvement = our_involvement,
                      trade_element = model,
                      trade_element_kwargs = trade_element_dict,

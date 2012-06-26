@@ -48,7 +48,7 @@ def record_purchase(request, is_bill=False):
         valid, details = get_purchase_details(
                                               main_form, 
                                               item_forms, 
-                                              request.user.member, 
+                                              request.user, 
                                               receipt_image = receipt_image,
                                               date = purchase_date,
                                               )

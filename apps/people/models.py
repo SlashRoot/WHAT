@@ -1,12 +1,12 @@
-from django.db import models
-from django.db.models.signals import post_save
-from django.db.models.query_utils import Q
-from django.db.utils import DatabaseError
-from django.core.exceptions import ValidationError
-
-from django.contrib.contenttypes import generic 
-from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
+from django.contrib.contenttypes import generic
+from django.contrib.sessions.models import Session
+from django.core.exceptions import ValidationError
+from django.db import models
+from django.db.models.query_utils import Q
+from django.db.models.signals import post_save
+from django.db.utils import DatabaseError
+
 
 
 

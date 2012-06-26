@@ -165,7 +165,7 @@ class CurrentClients(TestCase):
         
         self.assertTrue(service in Service.objects.filter_by_needing_attention()[0])
 
-    @expectedFailure        
+    @expectedFailure
     def test_most_recent_call_unresolved_needs_attention(self):
         service = self.test_service_check_in_form_creates_service_object()
         self.fail()

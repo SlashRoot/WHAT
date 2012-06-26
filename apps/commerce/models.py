@@ -1,10 +1,12 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Sum, Variance
-from django.core.exceptions import ValidationError
+from utility.models import GenericPartyForeignKey, FixedObject
+from people.models import GenericParty
+from model_utils.models import TimeStampedModel
 
 #TODO: Create a fixture for the concept of "SlashRoot as GenericParty" - this app is going to be installed at other places on other servers as well.
 #from people.models import SLASHROOT_AS_GENERICPARTY, GenericParty
-from utility.models import GenericPartyForeignKey
 
 '''
 This app covers three major types of knowledge:
@@ -62,13 +64,11 @@ class TradeElementProgeny(models.Model):
     child = models.ForeignKey(TradeElement, related_name="parents")
     parent = models.ForeignKey(TradeElement, related_name="children")
 
-class TradeItem(models.Model): #Literal
+class TradeItem(TimeStampedModel): #Literal
     '''
     A single instance of a thing that exists in the universe that we are buying, selling, or trading right now.
     ie, a sum of money, a cup of coffee, a computer, an hour of service, etc.
     '''
-    created = models.DateTimeField(auto_now_add=True)
-    description = models.TextField(blank=True, null=True)
     
     def drill_down(self):
         '''
@@ -101,6 +101,7 @@ class RealThing(TradeItem): #Literal
     ''' 
     A TradeItem that is not currency.
     '''
+    element = models.ForeignKey('commerce.TradeElement', related_name="instances")
     name = models.CharField(max_length=80, blank=True, null=True)
     
 #    def __unicode__(self):
@@ -236,7 +237,7 @@ class Pledge(models.Model):
         
         In the example of a coffee sale, we don't bother assigning an owner.  Nobody cares who owns a cup of coffee.
         '''
-        from commerce.models import Delivery, Ownership #Fucked up.  I do not understand why this line is needed or throws an error in PyDev.
+        from commerce.models import  Delivery #Fucked up.  I do not understand why this line is needed or throws an error in PyDev.
         new, delivery = Delivery.objects.get_or_create(pledge=self)
         
         if not new:
@@ -376,10 +377,11 @@ class ExchangeInvolvement(models.Model):
     
     def slashroot_as_party(self):
         '''
-        Conveinence method for setting SlashRoot as the party.
+        Conveinence void for setting SlashRoot as the party.
         Does not save.
         '''
-        self.party = SLASHROOT_AS_GENERICPARTY
+        slashroot = FixedObject.objects.get(name="Group__slashRoot")
+        self.party = GenericParty.objects.get(group=slashroot)
     
     def get_other_involvements(self):
         '''
