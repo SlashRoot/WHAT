@@ -261,6 +261,25 @@ z-index:2
     margin-top: -18px;
     text-align: center;
 }
+#services-modal {
+    float: left;
+    margin-top: -64;
+    font-size: 90%;
+    line-height: 42px;
+    text-align: center;
+    color: white;
+    display: none;
+    width: 500px;
+}
+
+#membership-modal {
+    font-size: 90%;
+    line-height: 42px;
+    text-align: center;
+    color: white;
+    display: none;
+    width: 500px;
+}
 
 #front-schematic {
     float: right;
