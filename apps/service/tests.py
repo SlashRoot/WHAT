@@ -190,7 +190,7 @@ class CurrentClients(TestCase):
                                         service=service,
                                         creator=self.admin,
                                         )
-        before.created -= datetime.timedelta(17)
+        before.created -= datetime.timedelta(days=17, hours=12)
         before.duration()
         self.assertEqual(before.duration().days, 
                                17,
@@ -214,7 +214,7 @@ class CurrentClients(TestCase):
         new_status = ServiceStatusLog.objects.create(service=service, prototype=new_prototype, creator=self.admin)
         
         
-        old_status.created -= datetime.timedelta(11)
+        old_status.created -= datetime.timedelta(days=11, hours=2) #So that the duration of the test doesn't screw it up
         old_status.save()
         
         total_time_in_old_status = service.total_time_in_status(old_status)[1]
@@ -242,14 +242,19 @@ class CurrentClients(TestCase):
         self.assertEqual(summary[1][0], 'new_status')
         
     def test_service_status_summary_on_template(self):
+        
         service = self.test_timedelta_of_total_duration()
         response = self.client.get(service.get_absolute_url())
         self.assertTrue('15 days' in response.content) #TODO: This is not ideal - it just proves that the phrase appears, not that it appears near the appropriate status.  Make this a better test.
 
     def test_total_price_of_service(self):
-        service = Service.objects.create(recipient_id=4900, pay_per_hour=70.00, manual_override=20.00, status_id=2)
-        pay_per_hour = service.pay_per_hour
-        time_spent = service.time_spent()
-        manual_override = service.manual_override
-        total = service.total()
-        self.assertEqual(total, 90)
+        '''
+        Takes the duration of time spent 'On the bench', multiplies by 
+        pay_per_hour(rate we charge for service per hour) and either
+        adds or subtracts from manual_override (should one exist).
+        '''
+        service_instance = self.test_timedelta_of_total_duration()
+        
+        service_price = Service.objects.create(recipient_id=4900, pay_per_hour=70.00, manual_override=20.00, status_id=2)
+        total = service_price.total()
+        self.assertEqual(total, 90.0)

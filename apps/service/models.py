@@ -227,20 +227,20 @@ class Service(models.Model):
             status_instances = self.status_history.filter(prototype=status)
         except ValueError: #Maybe they provided a status name instead of a ServiceStatusPrototype object.
             status_instances = self.status_history.filter(prototype__name=status)
-            
+
         number = len(status_instances)
-        duration = timedelta(0).seconds
+        duration = timedelta(0) #Start with an empty timedelta; we'll add to it for each instance.
         for instance in status_instances:
             duration += instance.duration()
         
         return number, duration
-    #Dominick's Sandbox
+        
+    #Dominick's Sandbox]
     
-    def time_spent(self):
-        return self.total_time_in_status('On the Bench')[1] * 3600
-    
-    def total(self):
-        return (self.pay_per_hour * self.time_spent()) + self.manual_override
+    def total_price(self, status='On the Bench'):
+        time_spent_on_the_bench = self.total_time_in_status(status)[1]
+        
+        return (self.pay_per_hour * ((time_spent_on_the_bench.seconds//60) % 60)) + self.manual_override
     
     ## End of Dominick's Sandbox
     
@@ -256,27 +256,7 @@ class Service(models.Model):
 #            reason = models.CharField(max_length=50)
 #            self.PriceTagPrototype.price_tag += charge
 #            self.PriceTagPrototype.list_of_charges.append({reason:charge})
-            
-            
 
-    def total_time_in_status(self, status):
-        '''
-        Takes a ServiceStatusPrototype and returns a tuple of:
-        
-        1)How many times in that status
-        2)timedelta of total duration
-        '''
-        try:
-            status_instances = self.status_history.filter(prototype=status)
-        except ValueError: #Maybe they provided a status name instead of a ServiceStatusPrototype object.
-            status_instances = self.status_history.filter(prototype__name=status)
-            
-        number = len(status_instances)
-        duration = timedelta(0)
-        for instance in status_instances:
-            duration += instance.duration()
-        
-        return number, duration
     
     def status_summary(self):
         prototypes = ServiceStatusPrototype.objects.filter(instances__service=self).distinct()
@@ -369,3 +349,14 @@ class SymptomPrototype(models.Model):
 #
 #    class Meta:
 #        unique_together = (('child', 'parent'), ('parent', 'priority'))
+
+class ManualPriceOverride(models.Model): 
+    amount = models.DecimalField()
+    description = models.TextField()
+    service = models.ForeignKey(Service)
+    created = models.DateTimeField(auto_now_add=True)
+    
+    
+    
+
+
