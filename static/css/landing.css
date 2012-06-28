@@ -44,7 +44,6 @@ top:0px;
 
 }
 
-
 .ui-dialog-titlebar {
     background-color: #75a4c7;
     border-bottom: 1px solid #000000;
@@ -260,6 +259,26 @@ z-index:2
     line-height: 42px;
     margin-top: -18px;
     text-align: center;
+}
+
+#services-modal {
+    float: left;
+    margin-top: -64;
+    font-size: 90%;
+    line-height: 42px;
+    text-align: center;
+    color: white;
+    display: none;
+    width: 500px;
+}
+
+#membership-modal {
+    font-size: 90%;
+    line-height: 42px;
+    text-align: center;
+    color: white;
+    display: none;
+    width: 500px;
 }
 
 #front-schematic {

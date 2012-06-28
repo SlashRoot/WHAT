@@ -24,7 +24,9 @@
 		$("#contact").click(function(){
 					  $("#membership-modal").dialog("close", {show:"fade"});
 					  $("#services-modal").dialog("close", {show:"fade"});
-					  $( "#contact-modal" ).dialog({ height: 346, width: 200,  position: [360, 27], show: "fade" });
+
+					  $("#contact-modal" ).dialog({ height: 346, width: 200,  position: [360, 27], show: "fade" });
+
 					  return false;
 					  });				
 	}); 
@@ -60,6 +62,8 @@
 		<li id="services"><a> Technology Services </a> </li>
 		<li id="membership"><a href="/presence/login.html"> About Membership </a> </li>
 		<li id="contact-modal"><a href="/presence/login.html"> Contact </a> </li>
+		<li id="membership"><a> About Membership </a> </li>
+		<li id="contact"><a> Contact </a> </li>
 		
 	</ul>
 	
