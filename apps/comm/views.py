@@ -315,7 +315,7 @@ def outgoing_call(request, phone_provider_name='Twilio'):
 #        pass
 #    else:
     phone_provider = PhoneProvider.objects.get(name=phone_provider_name)
-    
+
     call_from_phone = PhoneNumber.objects.get(id=request.POST['callFrom'])
     call_to_phone = PhoneNumber.objects.get(id=request.POST['callTo'])
 

@@ -947,14 +947,14 @@ class OutgoingCalls(TestCase):
     def outgoing_call_is_placed_with_tropo(self):
         self.fail()
     
-    @expectedFailure
+    
     def test_outgoing_call_is_placed_with_twilio(self):
-        to_number = 18452343919
+        to_number = 18452345678
         from_number = 18453456789
         
-        SLASHROOT_TWILIO_ACCOUNT.calls.create(to_number, from_number, url="%s/comm/outgoing_call_callback/%s/%s/" % (resources.COMM_DOMAIN, from_number.id))
+        response = SLASHROOT_TWILIO_ACCOUNT.calls.create(to_number, from_number, url="%s/comm/outgoing_call_callback/%s/%s/" % (resources.COMM_DOMAIN, from_number.id))
         
-        
+        self.assertTrue(response)
         
         
     @expectedFailure

@@ -5,7 +5,7 @@ class PhoneProviderRESTObject(object):
     def __init__(self, provider_object):
         self.provider = provider_object
         
-    def place_new_call(self, from_number, to_number):
+    def place_new_call(self, from_, to_number):
          if self.provider == "Tropo":
              response = requests.post('https://api.tropo.com/1.0/sessions/', 
                       data={
@@ -17,7 +17,6 @@ class PhoneProviderRESTObject(object):
              return session_id
 
          if self.provider == "Twilio":
-             ## THis is wet and ugly like your mom
-             response = SLASHROOT_TWILIO_ACCOUNT.calls.create(to=to_number.number, from_=resources.SLASHROOT_MAIN_LINE, url="%s/comm/pickup_connect_auto/%s/%s/" % (resources.COMM_DOMAIN, _number.id))
+             response = SLASHROOT_TWILIO_ACCOUNT.calls.create(to=to_number.number, from_number=resources.SLASHROOT_MAIN_LINE, url="%s/comm/pickup_connect_auto/%s/%s/" % (resources.COMM_DOMAIN, from_.id))
              print response
         
