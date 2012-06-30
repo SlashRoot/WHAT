@@ -252,9 +252,9 @@ class CurrentClients(TestCase):
         Takes the duration of time spent 'On the bench', multiplies by 
         pay_per_hour(rate we charge for service per hour) and either
         adds or subtracts from manual_override (should one exist).
-        '''
-        service_instance = self.test_timedelta_of_total_duration()
+        '''   
         
         service_price = Service.objects.create(recipient_id=4900, pay_per_hour=70.00, manual_override=20.00, status_id=2)
-        total = service_price.total()
+        
+        total = service_price.total_price(1)
         self.assertEqual(total, 90.0)

@@ -234,15 +234,26 @@ class Service(models.Model):
             duration += instance.duration()
         
         return number, duration
+
+    def time_spent_on_bench_in_hours(self):
+        '''
+        Takes timedelta and does two things:
         
-    #Dominick's Sandbox]
-    
-    def total_price(self, status='On the Bench'):
-        time_spent_on_the_bench = self.total_time_in_status(status)[1]
+        1) Accessing the seconds attribute(?) converts to minutes
+        2) Divides the minutes by 60 to get hours spent
+        '''
+        time_spent_on_bench = self.total_time_in_status('On the Bench')[1]
+        return time_spent_on_the_bench.seconds // 60 / 60
         
-        return (self.pay_per_hour * ((time_spent_on_the_bench.seconds//60) % 60)) + self.manual_override
-    
-    ## End of Dominick's Sandbox
+    def total_price(self, time_spent_on_bench_in_hours):
+        '''
+        Gathers the pay_per_hour, multiplies by time_spent_on_bench_in_hours,
+        and adds a manual override (if there is one).
+        
+        For testing purposes, this particular method takes two arguments
+        '''
+        return (self.pay_per_hour * time_spent_on_bench_in_hours) + self.manual_override
+
     
     ## There seems to be a lack of understanding as to where this is going. --Dominick
 #    class PriceTagPrototype(models.Model):
@@ -351,7 +362,7 @@ class SymptomPrototype(models.Model):
 #        unique_together = (('child', 'parent'), ('parent', 'priority'))
 
 class ManualPriceOverride(models.Model): 
-    amount = models.DecimalField()
+    amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     description = models.TextField()
     service = models.ForeignKey(Service)
     created = models.DateTimeField(auto_now_add=True)
