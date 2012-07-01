@@ -1,7 +1,7 @@
 from datetime import date, datetime, timedelta
 
 from django.db import models
-from django.db.models import Q
+from django.db.models import Q, Sum
 
 from hwtrack.models import Device
 from utility.models import GenericPartyForeignKey, FixedObject
@@ -69,7 +69,6 @@ class Service(models.Model):
     recipient = GenericPartyForeignKey()
     status = models.ForeignKey('service.ServiceStatusPrototype')
     pay_per_hour = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    manual_override = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 #    flat = models.BooleanField()
 #    device = models.ForeignKey('hwtrack.Device')
 
@@ -235,24 +234,25 @@ class Service(models.Model):
         
         return number, duration
 
-    def time_spent_on_bench_in_hours(self):
-        '''
-        Takes timedelta and does two things:
-        
-        1) Accessing the seconds attribute(?) converts to minutes
-        2) Divides the minutes by 60 to get hours spent
-        '''
-        time_spent_on_bench = self.total_time_in_status('On the Bench')[1]
-        return time_spent_on_the_bench.seconds // 60 / 60
-        
-    def total_price(self, time_spent_on_bench_in_hours):
+#    def time_spent_on_bench_in_hours(self):
+#        '''
+#        Takes timedelta and does two things:
+#        
+#        1) Accessing the seconds attribute(?) converts to minutes
+#        2) Divides the minutes by 60 to get hours spent
+#        '''
+#        time_spent_on_bench = self.total_time_in_status('On the Bench')[1]
+#        return time_spent_on_the_bench.seconds // 60 / 60
+#        
+    def total_price(self):
         '''
         Gathers the pay_per_hour, multiplies by time_spent_on_bench_in_hours,
         and adds a manual override (if there is one).
-        
-        For testing purposes, this particular method takes two arguments
         '''
-        return (self.pay_per_hour * time_spent_on_bench_in_hours) + self.manual_override
+        time_spent_on_the_bench = self.total_time_in_status('On The Bench')[1]
+        time_spent_on_bench_in_hours = time_spent_on_the_bench.total_seconds() / 3600
+        adjustment_amount = float(self.adjustments.aggregate(Sum('amount'))['amount__sum'])    
+        return round((self.pay_per_hour * time_spent_on_bench_in_hours) + adjustment_amount)
 
     
     ## There seems to be a lack of understanding as to where this is going. --Dominick
@@ -361,10 +361,10 @@ class SymptomPrototype(models.Model):
 #    class Meta:
 #        unique_together = (('child', 'parent'), ('parent', 'priority'))
 
-class ManualPriceOverride(models.Model): 
-    amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+class ManualPriceAdjustment(models.Model): 
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField()
-    service = models.ForeignKey(Service)
+    service = models.ForeignKey(Service, related_name='adjustments')
     created = models.DateTimeField(auto_now_add=True)
     
     

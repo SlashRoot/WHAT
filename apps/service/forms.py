@@ -1,6 +1,6 @@
 from django import forms
 from utility.forms import GenericPartyField, JqueryDatePicker
-from service.models import Service, ManualPriceOverride
+from service.models import Service, ManualPriceAdjustment
 
 class MostBasicServiceCheckInForm(forms.Form):
     customer = GenericPartyField()
@@ -14,5 +14,5 @@ class RateForm(forms.ModelForm):
 
 class ManualOverrideForm(forms.ModelForm):
     class Meta:
-        model = ManualPriceOverride
+        model = ManualPriceAdjustment
          

@@ -8,7 +8,7 @@ from do.models import Task
 from mellon.config import set_up as mellon_setup
 from people.models import UserProfile
 from service.config import set_up as service_setup
-from service.models import Service, ServiceStatusLog, ServiceStatusPrototype
+from service.models import Service, ServiceStatusLog, ServiceStatusPrototype, ManualPriceAdjustment
 from unittest import expectedFailure
 from utility.models import FixedObject
 import datetime
@@ -204,7 +204,7 @@ class CurrentClients(TestCase):
         
     def test_timedelta_of_total_duration(self):
         service = self.test_service_profile_page_lists_statuses()
-        old_prototype = ServiceStatusPrototype.objects.create(name="old_status", always_in_bearer_court=True)
+        old_prototype = ServiceStatusPrototype.objects.create(name="On The Bench", always_in_bearer_court=True)
         new_prototype = ServiceStatusPrototype.objects.create(name="new_status", always_in_bearer_court=True)
         
         total_time_in_new_status = service.total_time_in_status("new_status")[1]
@@ -238,7 +238,7 @@ class CurrentClients(TestCase):
     def test_service_status_summary(self):
         service = self.test_timedelta_of_total_duration()
         summary = service.status_summary()
-        self.assertEqual(summary[0][0], 'old_status')
+        self.assertEqual(summary[0][0], 'On The Bench')
         self.assertEqual(summary[1][0], 'new_status')
         
     def test_service_status_summary_on_template(self):
@@ -254,7 +254,10 @@ class CurrentClients(TestCase):
         adds or subtracts from manual_override (should one exist).
         '''   
         
-        service_price = Service.objects.create(recipient_id=4900, pay_per_hour=70.00, manual_override=20.00, status_id=2)
+        service = self.test_timedelta_of_total_duration()  # service has already spent (some time) on the bench
+        service.pay_per_hour = 70.00
+        service.adjustments.create(amount=20.00, service=service, description="awesome person")
         
-        total = service_price.total_price(1)
-        self.assertEqual(total, 90.0)
+        total = service.total_price()
+        
+        self.assertEqual(total, 25360.0)
