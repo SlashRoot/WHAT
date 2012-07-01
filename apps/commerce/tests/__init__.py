@@ -1,5 +1,5 @@
 from commerce.models import TradeItem, TradeElement, PaymentMethod,\
-    QuantificationUnit, QuantificationDimension
+    QuantificationUnit, QuantificationDimension, ExchangeInvolvement
 from django.test import TestCase
 from unittest import expectedFailure
 from utility.tests.factories import UserFactory, GroupFactory
@@ -15,7 +15,7 @@ class BasicCommerceViewsTests(TestCase):
         self.member = UserFactory.create(password="password")
 
     def test_record_purchase_page_200(self):
-        response = self.client.get('/commerce/record_purchase/')
+        response = self.client.get('/commerce/record_purchase/slashRoot/')
         self.assertEqual(response.status_code, 200, "The record purchase page did not return a 200.")
     
     def test_record_purchase_submit(self):
@@ -50,11 +50,19 @@ class BasicCommerceViewsTests(TestCase):
                               u'Other_Item-0-amount': [u'2'],
                               u'Other_Item-0-element': [u'commerce.tradeelement_%s___%s' % (te.id, te.name)]
                               }
-        response = self.client.post('/commerce/record_purchase/', purchase_form_dict)
-        self.fail()
+        response = self.client.post('/commerce/record_purchase/slashRoot/', purchase_form_dict, follow=True)
+        self.assertEqual(response.status_code, 200)
+        
+        seller_involvement = ExchangeInvolvement.objects.get(party__group=group)
+        
+        redirected_to = response.redirect_chain[0][0]
+        proper_url = seller_involvement.get_absolute_url()
+        
+        self.assertTrue( redirected_to.endswith(proper_url) )
+
     
     def test_record_bill_page(self):
-        response = self.client.get('/commerce/record_bill/')
+        response = self.client.get('/commerce/record_bill/slashRoot/')
         self.assertEqual(response.status_code, 200)
 
 

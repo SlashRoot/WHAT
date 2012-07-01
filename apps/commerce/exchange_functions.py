@@ -2,7 +2,7 @@
 from commerce.models import ReceiptFile, RealThingSize, ExchangeInvolvement, MoneyBag, MoneyBagPiece, Exchange, PaymentMethod, Pledge    
 from people.models import GenericParty    
     
-def exchange_with_other_party(party, member, receipt_image=None, date=None):
+def exchange_between_two_parties(seller, buyer, user, receipt_image=None, date=None):
     '''
     Dehydration Function.
     
@@ -15,25 +15,20 @@ def exchange_with_other_party(party, member, receipt_image=None, date=None):
     
     if receipt_image:
         receipt = ReceiptFile.objects.create(file=receipt_image)
-        exchange = Exchange.objects.create(manager=member, invoice_data=receipt)
+        exchange = Exchange.objects.create(manager=user, invoice_data=receipt)
         
     else:
-        exchange = Exchange.objects.create(manager=member)
+        exchange = Exchange.objects.create(manager=user)
         
     if date:
         exchange.start_date = date
         exchange.save()
     
 
-    their_involvement = ExchangeInvolvement.objects.create(exchange = exchange, party = party )
+    seller_involvement = ExchangeInvolvement.objects.create(exchange = exchange, party = seller )
+    buyer_involvement = ExchangeInvolvement.objects.create(exchange = exchange, party = buyer )
     
-    our_involvement = ExchangeInvolvement(exchange=exchange)
-    our_involvement.slashroot_as_party()
-    our_involvement.save()
-    
-
-    
-    return exchange, their_involvement, our_involvement
+    return exchange, seller_involvement, buyer_involvement
 
 def pledges_from_involvements(buyer_involvement=None, seller_involvement=None):
     '''
@@ -153,17 +148,24 @@ def buy_item(group=False,
         
     
 
-def get_purchase_details(main_form, item_forms, member, receipt_image=None, date=None):    
+def get_purchase_details(main_form, item_forms, user, buyer_group=None, receipt_image=None, date=None):    
     '''
     Takes the following:
     
     *A main_form, which has information about the overall puchase.
     *item_forms, each of which should a tuple of a formset and a model
-    *member - the member who is entering the transaction
+    *buyer_group - A Group who is the buyer.  Otherwise the buyer is the user.
+    *user - the group member who is entering the transaction
     *deliver - a boolean about whether delivery has yet been made.
     
     TODO: Fix and finish.
+    TODO: Ensure that the user is in fact a member of buyer_group
     '''
+    
+    if buyer_group:
+        buyer_party = GenericParty.objects.get(group=buyer_group)
+    else:
+        buyer_party = GenericParty.objects.get(user=user)
     
     houston_we_have_a_problem = False if main_form.is_valid() else True
     
@@ -179,7 +181,7 @@ def get_purchase_details(main_form, item_forms, member, receipt_image=None, date
     #Nothing seems to have caused a problem.  Proceed.    
     vendor = main_form.cleaned_data['other_party']
     
-    exchange, vendor_involvement, our_involvement = exchange_with_other_party(vendor, member, receipt_image=receipt_image, date=date)
+    exchange, vendor_involvement, our_involvement = exchange_between_two_parties(vendor, buyer_party, user, receipt_image=receipt_image, date=date)
     
     SlashRoot = our_involvement.party
     

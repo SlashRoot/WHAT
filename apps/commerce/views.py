@@ -12,14 +12,31 @@ from forms import DonationForm, SimpleMoneyForm, DonationRealThingForm, THINGS_W
 
 from products.models import BeverageInstance
 from contact.forms import UserContactForm, UserContactInfoForm, UserProfileForm
-from people.models import GenericParty
+from people.models import GenericParty, Group
+from django.contrib.auth.models import User
 
-def record_purchase(request, is_bill=False):
+def record_purchase(request, buyer_name, is_bill=False):
+    '''
+    Deal with a traditional "I'll give you this money bag for that donkey harness" transaction.
+    Buyer name is either a User.username or Group.name.
+    We assume Group first.
+    TODO: Deal with situations where both exist with the same name.
+    '''
 
     if is_bill:
         proper_form = BillForm
     else:
         proper_form = PurchaseForm
+
+    try:
+        buyer_group = Group.objects.get(name=buyer_name)
+        buyer = GenericParty.objects.get(group=buyer_group)
+    except Group.DoesNotExist:
+        buyer_group = None
+        buyer_user = User.objects.get(username=buyer_name)
+        buyer = GenericParty.objects.get(user=buyer_user)
+    except Group.MultipleObjectsReturned:
+        raise #ReallyFuckedUpError
     
     main_form = proper_form()
     item_forms = []
@@ -51,6 +68,7 @@ def record_purchase(request, is_bill=False):
                                               request.user, 
                                               receipt_image = receipt_image,
                                               date = purchase_date,
+                                              buyer_group=buyer_group,
                                               )
     
         if not valid: #valid will be false if the forms were bunk.
@@ -59,7 +77,7 @@ def record_purchase(request, is_bill=False):
             show_errors = True
             return render(request, 'commerce/record_transaction.html', locals())
         else:
-            return HttpResponseRedirect('/commerce/view_purchase/' + str(details[0].id))
+            return HttpResponseRedirect('/commerce/view_purchase/%s/' % str(details[0].id))
     
       
     return render(request, 'commerce/record_transaction.html', locals())

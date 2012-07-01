@@ -310,6 +310,8 @@ class Pledge(models.Model):
     def character(self):
         '''
         Get the character of each drilled-down item for the purposes of telling if this pledge's items are exactly the same as another's.
+        
+        TODO: Change implementation to use django-model-utils instead of the manual drill_down()
         '''
         try: #This branch will work if the items are all RealThings.
             so_far = ""
@@ -375,10 +377,22 @@ class ExchangeInvolvement(models.Model):
     #In what exchange?
     exchange = models.ForeignKey('Exchange', related_name="parties")
     
+    def __unicode__(self):
+        return "Involvement of " + self.party.lookup() + " in Exchange #" + str(self.exchange.id)
+    
+    def get_absolute_url(self):
+        '''
+        This is a difficult method to represent in barter terms.  Is this a "selling" URL or "buying" URL?
+        For now, it's selling.  It will point to the page about this purchase and use those terms.
+        TODO: Make more progressive.
+        '''
+        return "/commerce/view_purchase/%s/" % self.id
+    
     def slashroot_as_party(self):
         '''
         Conveinence void for setting SlashRoot as the party.
         Does not save.
+        TODO: Move to slashroot app
         '''
         slashroot = FixedObject.objects.get(name="Group__slashRoot")
         self.party = GenericParty.objects.get(group=slashroot)
@@ -443,10 +457,6 @@ class ExchangeInvolvement(models.Model):
                 grouped_pledges[pledge.character()][2] += p.amount()
         
         return grouped_pledges
-    
-    
-    def __unicode__(self):
-        return "Involvement of " + self.party.lookup().get_full_name() + " in Exchange #" + str(self.exchange.id)
     
 
 

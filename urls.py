@@ -43,8 +43,8 @@ urlpatterns = patterns('',
     (r'^utility/submit_generic_partial/(?P<object_type>\w+)/(?P<object_id>\d+)/$', 'utility.views.submit_generic_partial'),
     
     #Commerce
-    (r'^commerce/record_purchase/$', 'commerce.views.record_purchase'),
-    (r'^commerce/record_bill/$', 'commerce.views.record_purchase', {'is_bill': True}),
+    (r'^commerce/record_purchase/(?P<buyer_name>\w+)/$', 'commerce.views.record_purchase'),
+    (r'^commerce/record_bill/(?P<buyer_name>\w+)/$', 'commerce.views.record_purchase', {'is_bill': True}),
     (r'^commerce/record_donation', 'commerce.views.record_donation'),
     (r'^commerce/record_ingredient_order', 'commerce.views.record_ingredient_order'),
     (r'^commerce/view_exchange/(?P<id>\d+)/$', 'commerce.views.view_exchange'),

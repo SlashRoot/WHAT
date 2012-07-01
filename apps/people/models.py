@@ -7,9 +7,6 @@ from django.db.models.query_utils import Q
 from django.db.models.signals import post_save
 from django.db.utils import DatabaseError
 
-
-
-
 POLITICAL_PARTIES = (
                      (0, "Republican"),
                      (1, "Democrat"),
@@ -207,6 +204,9 @@ class GenericParty(models.Model):
     
     budget_perspectives = models.ManyToManyField('commerce.BudgetPerspective', blank=True, null=True, help_text="This entity's view of the relationship between RealThings and BudgetLines.")
     
+    def __unicode__(self):
+        return str(self.lookup())
+    
     def clean(self):
         if self.user and self.group:
             raise ValidationError('CommerceParty must refer to either a user or a group - not both.')
@@ -232,12 +232,6 @@ class GenericParty(models.Model):
         else:
             return self.group.contact_info
         
-     
-             
-        
-    
-    def __unicode__(self):
-        return str(self.lookup())
     
     class Meta:
         verbose_name_plural = "Generic Parties"

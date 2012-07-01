@@ -115,7 +115,6 @@ $(function(){
 			<form method="post" action="/commerce/individual_delivery/">
 			{% csrf_token %}
 				{% for character, pledge_cluster in involvement.get_pledge_clusters.items %}
-					{# pledge_roup will be a three-part list: 0 is the character, 1 is the list of pledges, and 2 is the total amount #}
 					<tr>
 						
 						{% if request.GET.show_pledges %}
