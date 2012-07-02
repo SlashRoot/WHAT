@@ -262,10 +262,10 @@ z-index:2
 }
 
 #services-modal {
-    float: left;
+    float: center;
     margin-top: -64;
     font-size: 90%;
-    line-height: 42px;
+    line-height: 34px;
     text-align: center;
     color: white;
     display: none;
@@ -273,8 +273,9 @@ z-index:2
 }
 
 #membership-modal {
+    float:center;
     font-size: 90%;
-    line-height: 42px;
+    line-height: 34px;
     text-align: center;
     color: white;
     display: none;
