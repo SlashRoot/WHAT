@@ -273,13 +273,25 @@ z-index:2
 }
 
 #membership-modal {
-    float:center;
+    float: center;
+    margin-top: -64;
     font-size: 90%;
     line-height: 34px;
     text-align: center;
     color: white;
     display: none;
     width: 500px;
+}
+
+#contact-modal {
+    float: center;
+    font-size: 90%;
+    margin-top: -64
+    line-height: 34px;
+    text-align: center;
+    color: white;
+    display: none;
+    width: 500;
 }
 
 #front-schematic {
