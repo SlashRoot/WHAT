@@ -50,28 +50,29 @@
         {% endblock %}
                                 
 	</head>
-    <div style="margin-bottom: 20px;"></div> {# this is a hack to keep the nav bar from overlapping the top of the page #}
+
     {% navigation_bar %}
 
-	<div id="messageContainer" style="position:relative; top:20px; width: 100%;">
-						
-			<ul class="messages">
-			    {% for message in messages %}
-			    	<div class="row messagesRow">
-						<div class="twelvecol">
-			    			<li{% if message.tags %} class="{{ message.tags }} systemMessage"{% endif %}>{{ message|safe }}</li>
-			    		</div>
-					</div>
-			    {% endfor %}
-	            {% include 'social/notifications.html' %}
-			</ul>				
-	</div>
+	
 
 <div class="right">
 	{% block rightbar %}{% endblock %}
 </div>
 
-<div class="content">	
+<div class="content" style="padding-top: 20px;">
+    <div id="messageContainer" style="position:relative; top:20px; width: 100%;">
+                        
+            <ul class="messages">
+                {% for message in messages %}
+                    <div class="row messagesRow">
+                        <div class="twelvecol">
+                            <li{% if message.tags %} class="{{ message.tags }} systemMessage"{% endif %}>{{ message|safe }}</li>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% include 'social/notifications.html' %}
+            </ul>                
+    </div>	
 	{% block content %}{% endblock %}
 </div>
 
