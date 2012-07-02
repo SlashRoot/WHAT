@@ -4,6 +4,7 @@ from django.db.models import Sum, Variance
 from utility.models import GenericPartyForeignKey, FixedObject
 from people.models import GenericParty
 from model_utils.models import TimeStampedModel
+from model_utils.managers import InheritanceManager
 
 #TODO: Create a fixture for the concept of "SlashRoot as GenericParty" - this app is going to be installed at other places on other servers as well.
 #from people.models import SLASHROOT_AS_GENERICPARTY, GenericParty
@@ -69,31 +70,12 @@ class TradeItem(TimeStampedModel): #Literal
     A single instance of a thing that exists in the universe that we are buying, selling, or trading right now.
     ie, a sum of money, a cup of coffee, a computer, an hour of service, etc.
     '''
-    
-    def drill_down(self):
-        '''
-        Stupid and hopefully temporary.  Some of the worst code of my life in this function here.
-        
-        TODO: Unstupify.
-        
-        See http://stackoverflow.com/questions/5348157/find-object-in-child-class-from-object-in-parent-class-in-django
-        '''
-        try:             
-            return self.moneybagpiece
-        except:
-            try:
-                return self.realthing.ingredientstock
-            except:
-                try:
-                    return self.realthing.device
-                except:
-                    return self.realthing
-            
+    objects = InheritanceManager()            
 
     '''
     You'd think relating to element would be, well, elemental.
-    But it turns out not to be.  Instead, we have literal and ethereal versions
-    of our products and services as subclasses, and then get down with one another directly.
+    But it turns out not to be.  The relationship instead is from RealThing.
+    We don't want each MoneyBagPiece to have a different element (ie, a MoneyBag is all one currency).
     '''
     #element = models.ForeignKey(TradeElement) #Keep this line as a reminder
     
@@ -102,7 +84,6 @@ class RealThing(TradeItem): #Literal
     A TradeItem that is not currency.
     '''
     element = models.ForeignKey('commerce.TradeElement', related_name="instances")
-    name = models.CharField(max_length=80, blank=True, null=True)
     
 #    def __unicode__(self):
 #        return self.name
@@ -114,7 +95,7 @@ class RealThing(TradeItem): #Literal
         
         For example, we can group milk objects together if they're the same brand and the same fat content.
         '''
-        return self.name
+        return self.element.name
         
     
 class MoneyBag(models.Model): #Literal
@@ -279,15 +260,15 @@ class Pledge(models.Model):
         Returns the drill-down of the first incoming item.
         '''
         first_incoming_pledge = self.incoming_pledges.all()[0]
-        first_item = first_incoming_pledge.items.all()[0]
-        return first_item.drill_down()
+        first_item = first_incoming_pledge.items.select_subclasses()[0]
+        return first_item
     
     def first_outgoing_item(self):
         '''
         Returns the drill-down of the first outgoing item.
         '''
-        first_item = self.items.all()[0]
-        return first_item.drill_down()            
+        first_item = self.items.select_subclasses()[0]
+        return first_item
     
     def first_incoming_item_amount(self):
         '''
@@ -303,8 +284,8 @@ class Pledge(models.Model):
         Get the drilled-down items in this pledge and return them as a list.
         '''
         items = []    
-        for item in self.items.all(): #Go through each item in the pledge
-            items.append(item.drill_down()) #Append the drill_down result to the list
+        for item in self.items.select_subclasses(): #Go through each item in the pledge
+            items.append(item) #Append the drill_down result to the list
         return items
     
     def character(self):

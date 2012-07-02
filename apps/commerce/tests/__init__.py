@@ -21,10 +21,11 @@ class BasicCommerceViewsTests(TestCase):
     def test_record_purchase_submit(self):
         group = GroupFactory.create(name="test_group")
         te = TradeElementFactory.create(name="test_element")
-        paymeth = PaymentMethod.objects.create(name="test_payment_method")
+        pay_meth = PaymentMethod.objects.create(name="test_payment_method")
         testdim = QuantificationDimension.objects.create(name="test_dimension")
         qu = QuantificationUnit.objects.create(name="test_unit", abbreviation="tu", dimension=testdim)
-
+        quantity = 5
+        
         self.client.login(username=self.member.username, password="password")
         purchase_form_dict = {
                               'other_party': [u'people.group_%s___%s' % (group.id, group.name)],
@@ -34,7 +35,7 @@ class BasicCommerceViewsTests(TestCase):
                               u'Other_Item-0-deliver': [u'on'],
                               u'Device-TOTAL_FORMS': [u'0'],
                               u'Ingredient-INITIAL_FORMS': [u'0'],
-                              u'payment_method': paymeth.id,
+                              u'payment_method': pay_meth.id,
                               u'Ingredient-TOTAL_FORMS': [u'0'],
                               u'purchase_date': [u'06/23/2012'],
                               u'csrfmiddlewaretoken': [u'VzeQ8IC0Hv9jeNikXjqqLeHaGGiYbqzl'],
@@ -46,21 +47,25 @@ class BasicCommerceViewsTests(TestCase):
                               u'Device-MAX_NUM_FORMS': [u''],
                               u'Other_Item-0-unit of quantification': qu.id,
                               u'Other_Item-0-price_per': [u'2.00'],
-                              u'Other_Item-0-quantity': [u'14'],
+                              u'Other_Item-0-quantity': quantity,
                               u'Other_Item-0-amount': [u'2'],
                               u'Other_Item-0-element': [u'commerce.tradeelement_%s___%s' % (te.id, te.name)]
                               }
         response = self.client.post('/commerce/record_purchase/slashRoot/', purchase_form_dict, follow=True)
         self.assertEqual(response.status_code, 200)
-        
+
         seller_involvement = ExchangeInvolvement.objects.get(party__group=group)
-        
+
         redirected_to = response.redirect_chain[0][0]
         proper_url = seller_involvement.get_absolute_url()
-        
-        self.assertTrue( redirected_to.endswith(proper_url) )
+        url_is_proper = redirected_to.endswith(proper_url)
 
-    
+        self.assertTrue(url_is_proper)
+
+        group = seller_involvement.get_pledge_clusters().values()[0][1][0].group()
+        self.assertEqual(group['display'], te.name)
+        self.assertEqual(group['quantity'], quantity)
+
     def test_record_bill_page(self):
         response = self.client.get('/commerce/record_bill/slashRoot/')
         self.assertEqual(response.status_code, 200)
