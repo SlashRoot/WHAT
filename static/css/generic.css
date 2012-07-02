@@ -191,3 +191,16 @@ border: 1px solid #DCDCDC;
     border: 1px solid black;
     padding: 5px;
 }
+
+#service-check-in {
+    color: #000000;
+    float: left;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+#need-attention {
+	clear: both;
+	margin-top: 20px;
+	margin-left: 10px;
+}

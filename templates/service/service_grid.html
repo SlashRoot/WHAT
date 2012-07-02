@@ -31,9 +31,9 @@ text-align:center;
 
 </style>
 
-<a href="/service/check_in">Service Check-In</a>
+<a href="/service/check_in" id="service-check-in"><button>Service Check-In</button></a>
 
-<h2 style="margin-top:100px;">Need Attention</h2>
+<h2 style="margin-top:100px;" id="need-attention">Need Attention</h2>
 <table id="current-clients" style="border:auto;" border="1">
     {% with service_objects_to_be_displayed=needing_attention %}
         {% include 'service/service_grid_table_contents.html' %}
