@@ -5,9 +5,9 @@ from django import forms
 from django.forms.formsets import formset_factory
 from django.utils.datastructures import MultiValueDictKeyError 
 
-from commerce.models import ExchangeInvolvement, Exchange, Pledge
-from commerce.forms import ComputerRentalForm, PurchaseForm, MainPOSForm, BeverageSaleForm, BillForm
-from commerce.exchange_functions import get_purchase_details, donation_from_POST
+from fluidbarter.models import ExchangeInvolvement, Exchange, Pledge
+from fluidbarter.forms import ComputerRentalForm, PurchaseForm, MainPOSForm, BeverageSaleForm, BillForm
+from fluidbarter.exchange_functions import get_purchase_details, donation_from_POST
 from forms import DonationForm, SimpleMoneyForm, DonationRealThingForm, THINGS_WE_PURCHASE, PurchaseIngredientForm
 
 from products.models import BeverageInstance

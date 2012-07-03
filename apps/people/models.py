@@ -197,12 +197,9 @@ class GenericParty(models.Model):
     '''
     user = models.OneToOneField(User, blank=True, null=True)
     group = models.OneToOneField(Group, blank=True, null=True)
-    
     objects = GenericPartyManager()
-    
     messages = generic.GenericRelation('social.TopLevelMessage')
     
-    budget_perspectives = models.ManyToManyField('commerce.BudgetPerspective', blank=True, null=True, help_text="This entity's view of the relationship between RealThings and BudgetLines.")
     
     def __unicode__(self):
         return str(self.lookup())

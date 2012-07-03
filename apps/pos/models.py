@@ -2,7 +2,7 @@ from django.db import models
 
 from products.models import BeverageInstance
 
-from commerce.models import Exchange 
+from fluidbarter.models import Exchange 
 
 from hwtrack.models import Computer
 

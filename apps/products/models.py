@@ -3,7 +3,7 @@ from django.db.models.signals import pre_save
 
 from django.contrib.auth.models import User
 
-from commerce.models import TradeElement, RealThing
+from fluidbarter.models import TradeElement, RealThing
 
 
 class IngredientInventoryIndex(models.Model):

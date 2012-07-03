@@ -7,4 +7,4 @@ class ExchangeAdmin(admin.ModelAdmin):
     list_display =  ('list_parties_as_string',)
 
 admin.site.register(Exchange, ExchangeAdmin)
-autoregister('commerce')
+autoregister('fluidbarter')

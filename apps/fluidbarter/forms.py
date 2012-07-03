@@ -3,7 +3,7 @@ from django.forms.formsets import formset_factory
 
 from django.contrib.auth.models import User
 
-from commerce.models import RealThing, ExchangeInvolvement, MoneyBag, MoneyBagPiece, Exchange, PaymentMethod, TradeElement, QuantificationUnit
+from fluidbarter.models import RealThing, ExchangeInvolvement, MoneyBag, MoneyBagPiece, Exchange, PaymentMethod, TradeElement, QuantificationUnit
 
 
 from hwtrack.models import Device, DeviceModel

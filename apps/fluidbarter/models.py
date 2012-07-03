@@ -29,7 +29,7 @@ class BudgetLinePerspective(models.Model):
     
     For example, for us, the trade category "computer hardware" might be on the incoming budget line "hardware aquisition" and the outgoing budget line "hardware retail."
     '''
-    trade_element = models.ForeignKey('commerce.TradeElement', related_name="budget_perspectives")
+    trade_element = models.ForeignKey('fluidbarter.TradeElement', related_name="budget_perspectives")
     incoming_budget_line = models.ForeignKey('accounting.BudgetLine', related_name="incoming_perspectives")
     outgoing_budget_line = models.ForeignKey('accounting.BudgetLine', related_name="outgoing_perspectives")
     
@@ -42,7 +42,7 @@ class BudgetPerspective(models.Model):
     
     Perhaps interesting BudgetPerspectives can be shared.
     '''
-    budget_lines = models.ManyToManyField('commerce.BudgetLinePerspective')
+    budget_lines = models.ManyToManyField('fluidbarter.BudgetLinePerspective')
     #TODO: Perhaps a creator in the form of the organization who coined it?    
         
 class TradeElement(models.Model): #Ethereal
@@ -83,7 +83,7 @@ class RealThing(TradeItem): #Literal
     ''' 
     A TradeItem that is not currency.
     '''
-    element = models.ForeignKey('commerce.TradeElement', related_name="instances")
+    element = models.ForeignKey('fluidbarter.TradeElement', related_name="instances")
     
 #    def __unicode__(self):
 #        return self.name
@@ -106,7 +106,7 @@ class MoneyBag(models.Model): #Literal
     
     (Now split into several "pieces" - see below.)
     '''
-    currency = models.ForeignKey('commerce.TradeElement', default=1)
+    currency = models.ForeignKey('fluidbarter.TradeElement', default=1)
     method = models.ForeignKey('PaymentMethod')
     
     def amount(self):
@@ -117,7 +117,7 @@ class MoneyBagPiece(TradeItem):
     '''
     A piece of that same moneybag - the $2.71 that Joe spent on spam during his trip to the grocery store.
     '''
-    money_bag = models.ForeignKey('commerce.MoneyBag', related_name="pieces")
+    money_bag = models.ForeignKey('fluidbarter.MoneyBag', related_name="pieces")
     amount = models.DecimalField(max_digits=16, decimal_places=2)
     
     def __unicode__(self):
@@ -177,7 +177,7 @@ class RealThingSize(models.Model): #Literal
     '''
     unit = models.ForeignKey(QuantificationUnit)
     number = models.DecimalField(max_digits=8, decimal_places=2)
-    thing = models.ForeignKey('commerce.RealThing', related_name="size")
+    thing = models.ForeignKey('fluidbarter.RealThing', related_name="size")
 
 '''
 CHAPTER TWO: CONTRACTS AND EXCHANGES (How)
@@ -218,7 +218,7 @@ class Pledge(models.Model):
         
         In the example of a coffee sale, we don't bother assigning an owner.  Nobody cares who owns a cup of coffee.
         '''
-        from commerce.models import  Delivery #Fucked up.  I do not understand why this line is needed or throws an error in PyDev.
+        from fluidbarter.models import  Delivery #Fucked up.  I do not understand why this line is needed or throws an error in PyDev.
         new, delivery = Delivery.objects.get_or_create(pledge=self)
         
         if not new:
@@ -509,7 +509,7 @@ class Bill(models.Model):
     period_end = models.DateTimeField(help_text="The end of the billing period.")
     date = models.DateTimeField(help_text="The date printed on the bill.")
     due_date = models.DateTimeField(help_text="The due date of the bill.")
-    pledge = models.ForeignKey('commerce.Pledge')
+    pledge = models.ForeignKey('fluidbarter.Pledge')
    
 class Custody(models.Model): 
     '''
@@ -535,7 +535,7 @@ class Custody(models.Model):
     '''
     
     created = models.DateTimeField(auto_now_add=True)
-    realthing = models.ForeignKey('commerce.RealThing')
+    realthing = models.ForeignKey('fluidbarter.RealThing')
     bearer = GenericPartyForeignKey()
     ownership = models.BooleanField()
  

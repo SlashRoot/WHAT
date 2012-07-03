@@ -9,7 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.forms import fields
 
 from products.models import Product, ProductBrand
-from commerce.models import RealThing
+from fluidbarter.models import RealThing
 
 MAC_RE = r'^([0-9a-fA-F]{2}([:-]?|$)){6}$'
 mac_re = re.compile(MAC_RE)
@@ -55,7 +55,7 @@ class QuickId(models.Model):
     Nothing but an int field.  Maybe some methods someday?
     '''
     id = models.CharField(max_length=10, primary_key=True)
-    thing = models.OneToOneField('commerce.RealThing', related_name="quick")
+    thing = models.OneToOneField('fluidbarter.RealThing', related_name="quick")
 
 
 class Device(RealThing): 

@@ -1,12 +1,13 @@
-from commerce.models import TradeItem, TradeElement, PaymentMethod,\
+from fluidbarter.models import TradeItem, TradeElement, PaymentMethod,\
     QuantificationUnit, QuantificationDimension, ExchangeInvolvement
 from django.test import TestCase
 from unittest import expectedFailure
 from utility.tests.factories import UserFactory, GroupFactory
 from django.contrib.auth.models import Group
-from commerce.tests.factories import TradeElementFactory
+from fluidbarter.tests.factories import TradeElementFactory
 
 import people.config
+from fluidbarter.tests.test_functions import response_from_purchase_form
 
 class BasicCommerceViewsTests(TestCase):
     def setUp(self):
@@ -18,13 +19,15 @@ class BasicCommerceViewsTests(TestCase):
         response = self.client.get('/commerce/record_purchase/slashRoot/')
         self.assertEqual(response.status_code, 200, "The record purchase page did not return a 200.")
     
-    def test_record_purchase_submit(self):
+    def test_record_purchase_submit_redirects_to_seller_involvement(self):
         group = GroupFactory.create(name="test_group")
         te = TradeElementFactory.create(name="test_element")
         pay_meth = PaymentMethod.objects.create(name="test_payment_method")
         testdim = QuantificationDimension.objects.create(name="test_dimension")
         qu = QuantificationUnit.objects.create(name="test_unit", abbreviation="tu", dimension=testdim)
         quantity = 5
+        
+        llamas = response_from_purchase_form(self)
         
         self.client.login(username=self.member.username, password="password")
         purchase_form_dict = {
@@ -49,7 +52,7 @@ class BasicCommerceViewsTests(TestCase):
                               u'Other_Item-0-price_per': [u'2.00'],
                               u'Other_Item-0-quantity': quantity,
                               u'Other_Item-0-amount': [u'2'],
-                              u'Other_Item-0-element': [u'commerce.tradeelement_%s___%s' % (te.id, te.name)]
+                              u'Other_Item-0-element': [u'fluidbarter.tradeelement_%s___%s' % (te.id, te.name)]
                               }
         response = self.client.post('/commerce/record_purchase/slashRoot/', purchase_form_dict, follow=True)
         self.assertEqual(response.status_code, 200)

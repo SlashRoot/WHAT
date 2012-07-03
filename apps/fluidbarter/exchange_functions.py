@@ -1,5 +1,5 @@
   
-from commerce.models import ReceiptFile, RealThingSize, ExchangeInvolvement, MoneyBag, MoneyBagPiece, Exchange, PaymentMethod, Pledge    
+from fluidbarter.models import ReceiptFile, RealThingSize, ExchangeInvolvement, MoneyBag, MoneyBagPiece, Exchange, PaymentMethod, Pledge    
 from people.models import GenericParty    
     
 def exchange_between_two_parties(seller, buyer, user, receipt_image=None, date=None):

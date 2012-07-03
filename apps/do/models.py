@@ -19,7 +19,7 @@ from social.models import TopLevelMessage
 from utility.models import GenericPartyManyToManyField, GenericPartyForeignKey
 from push.functions import push_with_template
 from people.models import GenericParty
-from commerce.models import TradeItem
+from fluidbarter.models import TradeItem
 from mellon.models import get_privileges_for_user
 
 

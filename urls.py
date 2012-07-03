@@ -43,19 +43,19 @@ urlpatterns = patterns('',
     (r'^utility/submit_generic_partial/(?P<object_type>\w+)/(?P<object_id>\d+)/$', 'utility.views.submit_generic_partial'),
     
     #Commerce
-    (r'^commerce/record_purchase/(?P<buyer_name>\w+)/$', 'commerce.views.record_purchase'),
-    (r'^commerce/record_bill/(?P<buyer_name>\w+)/$', 'commerce.views.record_purchase', {'is_bill': True}),
-    (r'^commerce/record_donation', 'commerce.views.record_donation'),
-    (r'^commerce/record_ingredient_order', 'commerce.views.record_ingredient_order'),
-    (r'^commerce/view_exchange/(?P<id>\d+)/$', 'commerce.views.view_exchange'),
-    (r'^commerce/view_purchase/(?P<seller_involvement_id>\d+)/$', 'commerce.views.view_purchase'),
-    (r'^commerce/view_pledge/(?P<pledge_id>\d+)/$', 'commerce.views.view_pledge'),
-    (r'^commerce/individual_delivery', 'commerce.views.individual_delivery'),
-    (r'^commerce/fluidbarter', 'commerce.views.fluidbarter_main'), 
+    (r'^commerce/record_purchase/(?P<buyer_name>\w+)/$', 'fluidbarter.views.record_purchase'),
+    (r'^commerce/record_bill/(?P<buyer_name>\w+)/$', 'fluidbarter.views.record_purchase', {'is_bill': True}),
+    (r'^commerce/record_donation', 'fluidbarter.views.record_donation'),
+    (r'^commerce/record_ingredient_order', 'fluidbarter.views.record_ingredient_order'),
+    (r'^commerce/view_exchange/(?P<id>\d+)/$', 'fluidbarter.views.view_exchange'),
+    (r'^commerce/view_purchase/(?P<seller_involvement_id>\d+)/$', 'fluidbarter.views.view_purchase'),
+    (r'^commerce/view_pledge/(?P<pledge_id>\d+)/$', 'fluidbarter.views.view_pledge'),
+    (r'^commerce/individual_delivery', 'fluidbarter.views.individual_delivery'),
+    (r'^commerce/fluidbarter', 'fluidbarter.views.fluidbarter_main'), 
     
     #Commerce: Front-facing eshu
-    (r'^eshu$', 'commerce.views.eshu_main'),
-    (r'^eshu/list_purchases/(?P<party_id>\d+)/$', 'commerce.views.list_purchases'),
+    (r'^eshu$', 'fluidbarter.views.eshu_main'),
+    (r'^eshu/list_purchases/(?P<party_id>\d+)/$', 'fluidbarter.views.list_purchases'),
 
     #Static
 #    (r'^media/css/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '%s/static/css' % settings.PROJECT_ROOT}),                           
@@ -110,7 +110,7 @@ urlpatterns = patterns('',
     (r'^people/awesome/$', 'people.views.awesome_o'),
     
     #POS
-    (r'^pos/pos_modal', 'commerce.views.pos_modal'),
+    (r'^pos/pos_modal', 'fluidbarter.views.pos_modal'),
     #Temporary solution until better way
     (r'^pos/$', 'pos.views.pos_landing'),
     (r'^pos/sales/$', 'pos.views.sales'),

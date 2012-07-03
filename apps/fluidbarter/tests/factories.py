@@ -1,5 +1,5 @@
 import factory
-from commerce.models import TradeElement
+from fluidbarter.models import TradeElement
 
 
 class TradeElementFactory(factory.Factory):

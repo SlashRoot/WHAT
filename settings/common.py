@@ -144,7 +144,7 @@ LOCAL_APPS = (
     'sandbox',
     'social',
     'do',
-    'commerce',
+    'fluidbarter',
     'mellon',
     'email_blast',
     'slashroot',
