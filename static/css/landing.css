@@ -286,7 +286,7 @@ z-index:2
 #contact-modal {
     float: center;
     font-size: 90%;
-    margin-top: -64
+    margin-top: -64;
     line-height: 34px;
     text-align: center;
     color: white;
@@ -963,11 +963,9 @@ clear:left;
     width: 100%;
 color:#ffffff;
 }
-
-#contact {
-	font-family:veteran-typewriter;
-	font-size:15px;
-	color:captiontext;
-	text-align:center;
-	
+#contactbottom {
+    color: captiontext;
+    font-family: veteran-typewriter;
+    font-size: 15px;
+    text-align: center;
 }
