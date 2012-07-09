@@ -1,6 +1,6 @@
 #Justin here.  This is, as I understand it, the first django email handler. :-)
 
-import sys, re, os
+import sys, re, os, logging
 from email import utils as email_utils
 
 from django.core.mail import send_mail
@@ -17,6 +17,8 @@ from django.db.utils import DatabaseError
 from django.core.mail.backends import smtp
 
 #Payload is potentially more complex than meets the eye.
+
+email_logger = logging.getLogger('comm')
 
 def get_first_text_part(msg):
     '''
@@ -45,7 +47,7 @@ class Command(BaseCommand):
             sample_email_file = open(sample_email_filename)
             email = p.parse(sample_email_file)
         else:
-            email = p.parse(sys.stdin)       
+            email = p.parse(sys.stdin)
         
         #f = open('/out.txt','w')
         
@@ -54,6 +56,8 @@ class Command(BaseCommand):
         #Here are the relevant details.
         subject = email['subject']
         original_recipient_address = email['X-Original-To']
+        
+        email_logger.info('Got email to %s.' % original_recipient_address)
 
         body = get_first_text_part(email) + "\n\n This message was handled by Justin's Django Email handler (replace with some meaningful message)."
         sender = email['from']
@@ -66,7 +70,7 @@ class Command(BaseCommand):
         
         #There may be a drier way to confirm that the user has an account.
         #They do need one to send to blast or objects.
-        if subdomain == 'blasts' or subdomain == 'objects':    
+        if subdomain == 'blasts' or subdomain == 'objects':
             try:
                 sender_user = User.objects.get(email = sender_email)
             except User.DoesNotExist:
@@ -141,12 +145,14 @@ class Command(BaseCommand):
                 user = User.objects.get(userprofile__email_prefix__iexact=recipient_name)
                 recipients.append(user.email)
             except User.DoesNotExist: #We don't need a MultipleObjectsReturned case because username is constrained unique.
+                email_logger.info('User did not exist.  Looking for handler.')
                 try:
                     handler = MailHandler.objects.get(address=recipient_name)
                     #TODO: Put amazing, mind-blowing shit here.
                     for user in handler.users.all():
                         recipients.append(user.email)
                 except MailHandler.DoesNotExist:
+                    email_logger.info('No match found at all - sending bounce.')
                     subject = 'No dice.'
                     body = "We don't know " + email['to'] + ".  If you want to introduce us, send a message to info@slashrootcafe.com + \n Headers Follow: \n " + str(email)
                     sender = 'info@slashrootcafe.com'
@@ -154,7 +160,8 @@ class Command(BaseCommand):
                     recipients.append('justin@justinholmes.com') #Send to Justin for debugging
                 
                 
-            for recipient in recipients:    
+            for recipient in recipients:
+                email_logger.info('Sending to %s.' % recipient)
                 send_mail(subject, body, sender, [recipient], fail_silently=False)
                 
             
