@@ -19,6 +19,7 @@ urlpatterns = patterns('',
 
     #MAIN
     (r'^$', 'main.views.main_landing'),
+    (r'^moving_2012$', 'main.views.moving'),
     
     #CMS
 #    (r'^hack-and-tell/apply/$', 'cms.views.q_and_a_form', {'q_and_a_id': 1}),

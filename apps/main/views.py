@@ -102,3 +102,6 @@ def rightSideWidgets(request):
 def hack_and_tell(request):
     
     return render(request,'main/hack_and_tell/info.html', locals())
+
+def moving(request):
+    return render(request, 'main/moving.html', locals())
