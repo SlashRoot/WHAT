@@ -18,7 +18,7 @@ from django.core.mail.backends import smtp
 
 #Payload is potentially more complex than meets the eye.
 
-email_logger = logging.getLogger('comm')
+email_logger = logging.getLogger('email')
 
 def get_first_text_part(msg):
     '''
