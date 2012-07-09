@@ -2,15 +2,11 @@
 from fluidbarter.models import ReceiptFile, RealThingSize, ExchangeInvolvement, MoneyBag, MoneyBagPiece, Exchange, PaymentMethod, Pledge    
 from people.models import GenericParty    
     
-def exchange_between_two_parties(seller, buyer, user, receipt_image=None, date=None):
+def exchange_between_parties(party_list, user, receipt_image=None, date=None, return_involvements=False):
     '''
     Dehydration Function.
     
-    Takes the name of some other party and some member, and returns the following in a tuple:
-    
-    *an exchange object
-    *the other party's involvement object
-    *our involvement object
+    A list of parties and the user who is recording the exchange, and returns an Exchange object.
     '''    
     
     if receipt_image:
@@ -24,11 +20,23 @@ def exchange_between_two_parties(seller, buyer, user, receipt_image=None, date=N
         exchange.start_date = date
         exchange.save()
     
-
-    seller_involvement = ExchangeInvolvement.objects.create(exchange = exchange, party = seller )
-    buyer_involvement = ExchangeInvolvement.objects.create(exchange = exchange, party = buyer )
+    if return_involvements:
+        involvements = dict()
     
-    return exchange, seller_involvement, buyer_involvement
+    for party in party_list:
+        try:
+            involvement = ExchangeInvolvement.objects.create(exchange=exchange, party=party)
+        except ValueError: #In case they passed us a User or Group instead of GenericParty
+            gp = GenericParty.objects.get(party=party)
+            involvement = ExchangeInvolvement.objects.create(exchange=exchange, party=gp)
+            
+        if return_involvements:
+            involvements[party] = involvement
+
+    if not return_involvements:
+        return exchange
+    else:
+        return exchange, involvements
 
 def pledges_from_involvements(buyer_involvement=None, seller_involvement=None):
     '''
@@ -91,6 +99,8 @@ def buy_item(group=False,
              trade_element=None,
              trade_element_kwargs=None,
              money_bag=None,
+             currency_element=None, #Defaults to Federal Reserve Notes in the model.  For the moment.
+             payment_method=None,
              price=None,
              quantity=None,
              ):
@@ -101,6 +111,9 @@ def buy_item(group=False,
     Pledges will be delivered if deliver=True.
     If quantity is more than one, items will each be assigned their own pledge unless group=True.
     '''
+    if not (money_bag or payment_method):
+        raise TypeError('You must specify either money_bag or payment_method')
+    
     if group:
         buyer_pledge, seller_pledge = pledges_from_involvements(buyer_involvement=buyer_involvement, seller_involvement=seller_involvement)
 
@@ -135,6 +148,9 @@ def buy_item(group=False,
         seller_pledge.items.add(real_thing)
         
         #..and we give them some money.
+        if not money_bag:
+            money_bag = MoneyBag.objects.create(method=payment_method)
+        
         piece = MoneyBagPiece.objects.create(money_bag = money_bag, amount = price)
         buyer_pledge.items.add(piece)
         
@@ -181,18 +197,15 @@ def get_purchase_details(main_form, item_forms, user, buyer_group=None, receipt_
     #Nothing seems to have caused a problem.  Proceed.    
     vendor = main_form.cleaned_data['other_party']
     
-    exchange, vendor_involvement, our_involvement = exchange_between_two_parties(vendor, buyer_party, user, receipt_image=receipt_image, date=date)
-    
-    SlashRoot = our_involvement.party
-    
+    exchange, involvements = exchange_between_parties([vendor, buyer_party], user, receipt_image=receipt_image, date=date, return_involvements=True)
+    seller_involvement = involvements[vendor]
+    buyer_involvement = involvements[buyer_party]
     
     #For the moment, we're assuming that the first formset is device, the second is item, the third is ingredient.
         
     #Assume this is one money bag for the entire purchase.
     method = main_form.cleaned_data['payment_method']    
     money_bag = MoneyBag.objects.create(method = method)
-    
-    
     
     for formset, model in item_forms:
         #Each formset is for a type of purchase (device, ingredient, etc)
@@ -224,10 +237,12 @@ def get_purchase_details(main_form, item_forms, user, buyer_group=None, receipt_
             except KeyError:
                 #TODO: Figure out why some forms come in blank (and thus produce KeyError)
                 continue
+
+
     
             vendor_pledge, our_pledge = buy_item(
-                     seller_involvement = vendor_involvement, 
-                     buyer_involvement = our_involvement,
+                     seller_involvement = seller_involvement, 
+                     buyer_involvement = buyer_involvement,
                      trade_element = model,
                      trade_element_kwargs = trade_element_dict,
                      price = price,
@@ -236,4 +251,4 @@ def get_purchase_details(main_form, item_forms, user, buyer_group=None, receipt_
                      deliver = deliver,
                      group = group,
                      )
-    return True, [vendor_involvement, our_involvement]
+    return True, [seller_involvement, buyer_involvement]

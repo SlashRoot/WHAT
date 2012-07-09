@@ -70,7 +70,7 @@ class TradeItem(TimeStampedModel): #Literal
     A single instance of a thing that exists in the universe that we are buying, selling, or trading right now.
     ie, a sum of money, a cup of coffee, a computer, an hour of service, etc.
     '''
-    objects = InheritanceManager()            
+    objects = InheritanceManager()
 
     '''
     You'd think relating to element would be, well, elemental.
@@ -359,7 +359,7 @@ class ExchangeInvolvement(models.Model):
     exchange = models.ForeignKey('Exchange', related_name="parties")
     
     def __unicode__(self):
-        return "Involvement of " + self.party.lookup() + " in Exchange #" + str(self.exchange.id)
+        return "Involvement of %s in Exchange #%s" % (self.party, str(self.exchange.id))
     
     def get_absolute_url(self):
         '''

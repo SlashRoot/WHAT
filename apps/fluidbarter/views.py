@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django import forms
@@ -14,6 +14,7 @@ from products.models import BeverageInstance
 from contact.forms import UserContactForm, UserContactInfoForm, UserProfileForm
 from people.models import GenericParty, Group
 from django.contrib.auth.models import User
+
 
 def record_purchase(request, buyer_name, is_bill=False):
     '''
@@ -33,7 +34,7 @@ def record_purchase(request, buyer_name, is_bill=False):
         buyer = GenericParty.objects.get(group=buyer_group)
     except Group.DoesNotExist:
         buyer_group = None
-        buyer_user = User.objects.get(username=buyer_name)
+        buyer_user = get_object_or_404(User, username=buyer_name)
         buyer = GenericParty.objects.get(user=buyer_user)
     except Group.MultipleObjectsReturned:
         raise #ReallyFuckedUpError

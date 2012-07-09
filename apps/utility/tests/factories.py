@@ -17,7 +17,7 @@ class UserFactory(factory.Factory):
         return user
 
 
-    username = factory.Sequence(lambda u: "WNYC Listener %s" %  u)
+    username = factory.Sequence(lambda u: "Test User %s" %  u)
 
 class GroupFactory(factory.Factory):
     FACTORY_FOR = Group
