@@ -261,3 +261,40 @@ class CurrentClients(TestCase):
         total = service.total_price()
         
         self.assertEqual(total, 25360.0)
+
+
+class AdjustmentFormTests(TestCase):
+    def setUp(self):
+        do_setup()
+        service_setup()
+        
+        mellon_setup()
+        set_up_privileges()
+        
+        people.config.set_up()
+        
+        self.admin = User.objects.create(is_superuser=True, username="admin", password="admin", first_name="Youhan")
+        self.admin.set_password('admin')
+        self.admin.save()
+                    
+    def test_rate_and_adjustment(self):
+
+        self.client.login(username="admin", password="admin")
+        check_in_response = self.client.post('/service/check_in/', {'customer':'auth.user_2___admin', 'projected':'12/21/2012'}, follow=True)
+        service = Service.objects.all()[0]
+        ticket_dict = {'pay_per_hour':70.00, 
+                       'amount':20.00,
+                       'description':'awesome!'}
+        ticket_response = self.client.post(service.get_absolute_url(), ticket_dict)
+        
+        pay_per_hour = service.pay_per_hour
+        self.assertEqual(pay_per_hour, 70.00)
+    
+        try:
+            adjustment = service.adjustments.get(amount=20.00)
+        except Service.DoesNotExist, Service.MultipleObjectsReturned:
+            self.fail('%s adjustment objects were created.  Expecting 1.' % ManualPriceAdjustment.objects.count())
+
+        #If we got this far, exactly one adjustment exists.  Good.
+        
+        

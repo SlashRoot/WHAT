@@ -1,7 +1,7 @@
 $ ->
   $('#widgetLogout').click ->
     $('#loadingAnimationSmall').fadeIn(500)
-    $.post '/bare_logout',
+    $.post '/bare_logout/',
       logMeOut:1
       (data) ->
         if data == 1
@@ -12,8 +12,8 @@ $ ->
     username = $('#widgetLoginUsername').val()
     password = $('#widgetLoginPassword').val()
 
-    $.post '/bare_login',
-      username: username 
+    $.post '/bare_login/',
+      username: username
       password: password
       (data) ->
         if data == 0

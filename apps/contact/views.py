@@ -22,7 +22,7 @@ from people.models import UserProfile
 class ContactForm(ModelForm):
     class Meta:
         model = Message
-
+ 
 def contact_form(request):
     form=ContactForm()
     

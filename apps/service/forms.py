@@ -12,7 +12,8 @@ class RateForm(forms.ModelForm):
         fields = ('pay_per_hour',)
         
 
-class ManualOverrideForm(forms.ModelForm):
+class ManualAdjustmentForm(forms.ModelForm):
     class Meta:
         model = ManualPriceAdjustment
+        fields = ('amount', 'description')
          

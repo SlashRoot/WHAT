@@ -7,7 +7,6 @@ It surely needs to be dehydrated.
 
 {% endcomment %}
 
-
 {% load social_tags %}
 {% load do_tags %}
 
@@ -23,6 +22,34 @@ It surely needs to be dehydrated.
 
 {% block more_content %}
 
+<script type="text/javascript">
+
+$(function(){ 
+
+    //Refresh messages on new message
+    
+    stomp = new STOMPClient();
+    stomp.onopen = function() {
+    };
+    stomp.onclose = function(c) { alert('Lost Connection, Code: ' + c);};
+    stomp.onerror = function(error) {
+        alert("Error: " + error);
+    };
+    stomp.onerrorframe = function(frame) {
+        alert("Error: " + frame.body);
+    };
+    stomp.onconnectedframe = function() {
+        stomp.subscribe("/social/new_messages/task__{{task.id}}/");        
+    };
+    
+    
+    stomp.onmessageframe = function(frame) {
+        messagesRefresh();            
+    };
+    stomp.connect('localhost', 61613);
+});
+</script>
+
     <div class="container">
         <div class="row">
             <div class="twelvecol">
@@ -34,34 +61,11 @@ It surely needs to be dehydrated.
                         {% endfor %}
                 </div>
             </div>
-        "this box is going to be where the dollar amount that is owed by the client is placed and or calculated"
-         <div class="container">
-        <div class="row">
-            <div class="twelvecol">
-                <div class="tanRounded normal">
-                                        
-                       "" >>> f = PricetagForm()""
-
-                        {}
-                </div>
-            </div>
+        
+        
             <div class="fivecol">
                 
                 {# OWNERSHIP #}
-                <div class="tanRounded normal the99Percent">
-                    <table>
-                    {% for entry in service.status_summary %}
-                        <tr>
-                            {% for element in entry %}
-                            <td>
-                                {{element}}
-                            <td>
-                            {% endfor %}
-                        </tr>
-                    {% endfor %}
-                    </table>
-                </div>
-                 
                 <div class="tanRounded normal the99Percent">                
                     <div class="tanRounded" id="taskOwnership">
                         {% if task.ownership.count %}
@@ -229,7 +233,7 @@ It surely needs to be dehydrated.
                             </div>
                             <br/>
                             <button id="add_messageFile" class="hidden quickClone" type="button" style="display: inline;">Add File</button>
-                            
+                                
                             <h2>Status</h2>
                             
                             <select name="service_status">
@@ -241,6 +245,7 @@ It surely needs to be dehydrated.
                             <button type="submit">Submit Message</button>
                             <input type="checkbox" name="completed"/>Mark Task Complete
                         </form>
+                       
                     </div>
                     
                     {# DRAW ATTENTION #}
@@ -251,7 +256,20 @@ It surely needs to be dehydrated.
                             {{service|draw_attention}}
                         {% endwith %}                    
                     </div>
-                  
+                    <div class="tanRounded normal">
+                        <h2>Rate and Adjustment</h2>
+                        <form action='' method='POST'>
+                        {% csrf_token %}
+                        {{rate}}
+                        {{adjustment}}
+                        <input type='submit' value='Calculate' />
+                    </form>
+                    </div>  
+                    <div class="tanRounded normal">
+                        <h2>Total Price</h2>
+                        ${{service.total_price}}
+                 
+                    </div>                  
                     
                 </div>
             </div>

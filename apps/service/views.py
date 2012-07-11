@@ -6,7 +6,7 @@ from do.models import Task, TaskPrototype, TaskRelatedObject, TaskAccess,\
 from django.contrib.auth.decorators import login_required
 from service.models import Service, ServiceStatusPrototype
 
-from service.forms import MostBasicServiceCheckInForm, RateForm
+from service.forms import MostBasicServiceCheckInForm, RateForm, ManualAdjustmentForm
 from utility.models import FixedObject
 from django.utils.datastructures import MultiValueDictKeyError
 from social.views import post_top_level_message
@@ -74,8 +74,6 @@ def the_situation(request):
     
     needing_attention, not_needing_attention = Service.objects.filter_by_needing_attention()
     
-    suggested_price = Service.PriceTagPrototype.list_of_charges
-
 #    tp = TaskPrototype.objects.filter(name__icontains="completed")[4]
 #    tasks = tp.instances.all()
 #    
@@ -100,7 +98,25 @@ def tickets(request, service_id):
     status_prototypes = ServiceStatusPrototype.objects.all() #TODO: Filter for "active" statuses (ie, allow some to be retired)
     service = get_object_or_404(Service, id=service_id)
     task = service.task
-    rate = RateForm()
+
+    ## Implement rate and adjustment. First we will validate the form, then
+    ## we will apply to service
+    if request.method == 'POST':
+        rate = RateForm(request.POST)
+        adjustment = ManualAdjustmentForm(request.POST)
+        if rate.is_valid():
+            service.pay_per_hour = rate.cleaned_data['pay_per_hour']
+            service.save()
+        if adjustment.is_valid():
+            service.adjustments = adjustment.cleaned_data['amount']
+            service.description = adjustment.cleaned_data['description']
+            
+            service.save()
+    
+    else:
+        rate = RateForm()
+        adjustment = ManualAdjustmentForm()
+    
     return render(request, 'service/ticket_profile.html', locals())
 
 @login_required
