@@ -14,7 +14,10 @@ from utility.models import FixedObject
 import datetime
 import people.config
 
+import factory
 
+class ServiceStatusLogFactory(factory.Factory):
+    FACTORY_FOR = ServiceStatusLog
 
 
 class CurrentClients(TestCase):
@@ -173,11 +176,7 @@ class CurrentClients(TestCase):
     def test_status_duration_is_detected(self):
         service = self.test_service_profile_page_lists_statuses()
         status = ServiceStatusPrototype.objects.create(name="test_status", always_in_bearer_court=True)
-        now = ServiceStatusLog.objects.create(prototype=status,
-                                        service=service,
-                                        creator=self.admin,
-                                        )
-        before = ServiceStatusLog.objects.create(prototype=status,
+        before, now = ServiceStatusLogFactory.create_batch(2, prototype=status,
                                         service=service,
                                         creator=self.admin,
                                         )
