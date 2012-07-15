@@ -104,4 +104,5 @@ def hack_and_tell(request):
     return render(request,'main/hack_and_tell/info.html', locals())
 
 def moving(request):
+    moving_content_blocks = ContentBlock.objects.filter(tags__name='moving_2012_blocks')
     return render(request, 'main/moving.html', locals())

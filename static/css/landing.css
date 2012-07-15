@@ -16,6 +16,11 @@ top:0px;
 
 #tree {
 	width:45%;
+    margin-left: 380px;
+    position: relative;
+    width: 49%px;
+    margin-top:27px;
+}
 }
 
 .ui-dialog {
@@ -247,11 +252,12 @@ z-index:2
 }
 
 #slides {
-    margin-left: 165px;
-    margin-bottom:65px;
-    width: 100%;
-    border-left:2px solid #0E170E;
-    padding:10px;
+    background-color: #FFEDD3;
+    border: 6px groove #0E170E;
+    margin-bottom: 65px;
+    margin-left: 145px;
+    padding: 10px;
+    width: 65%;
 }
 
 .slides_container {
@@ -285,8 +291,7 @@ z-index:2
     float: right;
     left: 40px;
     opacity: 0.15;
-    position: absolute;
-    top: 698px;
+    position: fixed;
     z-index:-1;
 }
 
@@ -295,12 +300,6 @@ z-index:2
 	width:100%
 	background-color:#EBCDF7;
 
-}
-#tree {
-    margin-left: 300px;
-    position: relative;
-    width: 49%px;
-    margin-top:20px;
 }
 
 #logoBig {

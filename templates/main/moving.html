@@ -1,5 +1,76 @@
-{% extends 'brown_and_bubble_driven.html' %}
+{% extends 'sitewide_head.html' %}
+
+{% block head %}
+
+    <link rel="stylesheet" href="/media/css/tree.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/landing.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/forms.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/cms.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/bubble_locations.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/slides.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/moving.css" type="text/css" media="screen" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <script src="/media/js/jquery-ui.min.js"></script>
+    <script src="/media/js/slides.min.jquery.js"></script>
+    
+    <script>
+
+    $(function(){
+            // Set starting slide to 1
+            var startSlide = 1;
+            // Get slide number if it exists
+            if (window.location.hash) {
+                startSlide = window.location.hash.replace('#','');
+            }
+            // Initialize Slides
+            $('#slides').slides({
+                preload: true,
+                preloadImage: 'img/loading.gif',
+                generatePagination: true,
+                hoverPause: true,
+                // Get the starting slide
+                start: startSlide,
+                animationComplete: function(current){
+                    // Set the slide number as a hash
+                    window.location.hash = '#' + current;
+                }
+            });
+        });
+
+</script>
+
+{% endblock head %}
 
 {% block content %}
+
+
+<img id="tree" src="/media/images/tree-cropped.png" />
+<img id="front-schematic" src="/media/images/schematic2.png" ></img>    
+
+<div id="logoBig"> 
+    <img id="new_logo" src="/media/images/current-logo.png"></img>
+</div>
+
+<div id="slides">
+    <div class="slides_container">
+        
+        {% for block in moving_content_blocks %}
+        <div class="slide">
+            <h1>{{block.headline|safe}}</h1>
+            <p>
+                {{block.content|safe}}
+            </p>                        
+        
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+{# centerBidniss #}
+  
+</div>
+
 
 {% endblock %}
