@@ -1,5 +1,7 @@
 {% extends 'sitewide_head.html' %}
 
+{% block navigation %}{% endblock %}
+
 {% block head %}
 
     <link rel="stylesheet" href="/media/css/tree.css" type="text/css" media="screen" />
@@ -24,13 +26,14 @@
                 startSlide = window.location.hash.replace('#','');
             }
             // Initialize Slides
-            $('#slides').slides({
+            $('#slides-moving').slides({
                 preload: true,
                 preloadImage: 'img/loading.gif',
                 generatePagination: true,
                 hoverPause: true,
                 // Get the starting slide
                 start: startSlide,
+                next: 'next',
                 animationComplete: function(current){
                     // Set the slide number as a hash
                     window.location.hash = '#' + current;
@@ -42,8 +45,6 @@
 
 {% endblock head %}
 
-{% block navigation %}{% endblock %}
-
 {% block content %}
 
 
@@ -54,17 +55,25 @@
     <img id="moving_tree" src="/media/images/tree-cropped.png"></img>
 </div>
 
-<div id="slides">
+<div id="slide-wrapper"></div>
+
+<div id="slides-moving">
     <div class="slides_container">
         
         {% for block in moving_content_blocks %}
         <div class="slide">
-            <h1>{{block.headline}}</h1>
-            <p>
-                {{block.content}}
-            </p>                        
+        	<div class="slide-content">
+	            <h1>{{block.headline}}</h1>
+	            <p>
+	                {{block.content}}
+	            </p>
+	         </div>
+        <div class="arrow-wrapper">
+             <img class="next" src="/media/images/icons/right_arrow.png">
+        </div>
         
         </div>
+        
         {% endfor %}
 
     </div>
@@ -76,5 +85,4 @@
 
 
 {% endblock %}
-
 {% block footer %}{% endblock %}
