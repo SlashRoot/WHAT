@@ -51,7 +51,7 @@
                                 
 	</head>
 
-    {% navigation_bar %}
+    {% block navigation %}{% navigation_bar %}{% endblock %}
 
 	<div id="messageContainer" style="position:relative; top:20px; width: 100%;">
 						
@@ -74,9 +74,9 @@
 <div class="content">	
 	{% block content %}{% endblock %}
 </div>
-{% if not invisible_footer %}
-<div class="footer">
-	{% block footer %}{% endblock %}
-</div>
-{% endif %}
+
+
+{% block footer %}<div class="footer"></div>{% endblock %}
+
+
 </html>
