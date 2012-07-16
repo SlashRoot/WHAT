@@ -6,7 +6,8 @@
 
 .pagination {
 	margin-top:45px;
-	width:100px;
+	width:120px;
+	float:left;
 }
 
 .pagination li {
@@ -14,20 +15,22 @@
 	margin:0 1px;
 	list-style:none;
 	z-index:999;
+	background-position:2px 0px;
 }
 
 .pagination li a {
 	display:block;
-	width:12px;
-	height:0;
+	width:53px;
+	height:17px;
 	padding-top:12px;
 	background-image:url(/media/images/pagination.png);
-	background-position:0 0;
+	background-position:2px -3px;
 	float:left;
 	overflow:hidden;
 }
 
 .pagination li.current a {
-	background-position:0 -12px;
+	background-position:2px -40px;
+	float:left;
 }
 
