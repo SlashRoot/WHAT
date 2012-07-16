@@ -1,8 +1,14 @@
 {% extends 'brown_and_bubble_driven.html' %}
 
 {% block content %}
-	
+
+<script type="text/javascript" src="/media/js/jquery.tablesorter.js"></script>  	
 <script type="text/javascript">
+
+$(function() {		
+	$("#resolve_calls_table").tablesorter({sortList:[[0,0],[2,1]], widgets: ['zebra']});
+	$("#options").tablesorter({sortList: [[0,0]], headers: { 3:{sorter: false}, 4:{sorter: false}}});
+});
 
 $(function(){
 	$('.voicemail').tooltip({ position: "right", opacity: 0.9, effect: "fade"});
@@ -14,7 +20,7 @@ $(function(){
 
 <form name="filters" method="get" action="/comm/resolve_calls/">
 <input type="hidden" name="submitted_filter_form" value="1"/>
-<table>
+<table class="resolve_filter">
 	
 	<tr>
 		<td>Caller</td>
@@ -35,13 +41,13 @@ $(function(){
 
 
 
-<table style="border:auto;" border="1">
-	<td>ID</td>
-	<td>DateTime</td>
-	<td>Caller</td>
-	<td>Answerers</td>
-	<td>Resolved</td>
-	<td>Recording</td>	
+<table id="resolve_calls_table" >
+	<td class="resolve-column">ID</td>
+	<td class="resolve-column">DateTime</td>
+	<td class="resolve-column">Caller</td>
+	<td class="resolve-column">Answerers</td>
+	<td class="resolve-column">Resolved</td>
+	<td class="resolve-column">Recording</td>	
 
 	{% for call in resolve_calls %}
 		{% with show_caller=1 show_answerers=1 show_checkbox=1 %}

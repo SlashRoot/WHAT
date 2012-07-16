@@ -181,3 +181,13 @@ border: 1px solid #DCDCDC;
     font-size: 12px;
     line-height: 13px;
 }
+
+.resolve_filter {
+	margin-top: 20px;
+}
+
+.resolve-column {
+	/*background-image: url("/media/images/wood-grain.jpg");*/
+    border: 1px solid black;
+    padding: 5px;
+}

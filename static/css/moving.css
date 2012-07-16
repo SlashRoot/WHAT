@@ -1,0 +1,67 @@
+#moving_logo {
+position: absolute;
+left: 117px;
+top: 119px;
+}
+
+#moving_logoBig {
+    color: #0E170E;
+    font-family: veteran-typewriter;
+    font-size: 60px;
+    letter-spacing: -1px;
+    line-height: 0;
+    margin-auto;
+    text-align:center;
+    position:relative;
+    width:665px;
+    bottom:30px;
+}
+
+#moving_tree {
+    margin-left: 196px;
+    margin-top: 20px;
+}
+
+#slides-moving {
+margin: auto;
+padding: 10px;
+margin: auto;
+position: relative;
+bottom: 140px;
+color: #3C3C3C;
+left: -60px;
+	}
+#slides-moving .slide {
+	width: 920px;
+}
+
+
+#slide-wrapper {
+background-color: #FFEDD3;
+margin: auto;
+width: 100%;
+opacity: 0.7;
+position: absolute;
+height: 233px;
+margin-top:-215px;	
+}
+	
+#slides-moving h1 {
+	font-size:70px;
+	}
+	
+.arrow-wrapper {
+width:100%;
+}
+	
+.right-arrow {
+	font-size:100px;
+	}
+	
+.slide-content {
+	width:100%;
+}
+
+.content {
+	padding-left:100px;
+}
