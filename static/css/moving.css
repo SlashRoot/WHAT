@@ -1,4 +1,18 @@
-#new_logo {
-	float: left;
-	margin-left: 100px;
+#moving_logo {
+    margin-top: 121px;
+    position: absolute;
+}
+
+#moving_logoBig {
+    color: #0E170E;
+    font-family: veteran-typewriter;
+    font-size: 60px;
+    letter-spacing: -1px;
+    line-height: 0;
+    margin-left: 100px;
+}
+
+#moving_tree {
+    margin-left: 196px;
+    margin-top: 20px;
 }
