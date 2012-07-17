@@ -68,16 +68,6 @@ color: #F1C493;
 }
 
 
-.slides_container {
-            width:900px;
-            height:270px;
-            }
-.slides_container div {
-            width:900px;
-            height:270px;
-            display:block;
-            }
-
 .peopleText{
 	float:right;
 	clear:right;

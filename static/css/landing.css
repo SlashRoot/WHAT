@@ -264,9 +264,11 @@ z-index:2
     font-family: Times New Roman;
     font-size: 16px;
     line-height: 42px;
-    margin-top: -18px;
     text-align: center;
+    padding-top:10px;
+    min-height: 180px;
 }
+
 .slides_container h1{
 					opacity:1;
 					display:block;
