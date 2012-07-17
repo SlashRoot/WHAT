@@ -2,6 +2,7 @@ from django.db import models
 from taggit.managers import TaggableManager
 from taggit.models import Tag
 from django.template.defaultfilters import slugify
+from model_utils.models import TimeStampedModel
 
 class Page(models.Model):
     created = models.DateField(auto_now_add=True)
@@ -42,6 +43,13 @@ class ContentBlock(models.Model):
                 slug = slugify(self.content)            
             self.slug = slug[:50]        
         super(ContentBlock, self).save(*args, **kwargs)
+
+
+class BlockOnPage(TimeStampedModel):
+    page = models.ForeignKey('cms.Page')
+    block = models.ForeignKey('cms.ContentBlock')
+    
+    
     
 class QandA(models.Model):
     '''
