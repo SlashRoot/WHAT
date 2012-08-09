@@ -43,15 +43,28 @@
 {% block content %}
 
 	<div id="services-modal" title="Services">
-	<p>slashRoot has a continuing commitment to customer service.<br> We bring an assortment of skills to the table.<br> We offer consultations, starting at $15 for three questions.<br> We also offer computer repair.<br> We offer a flat rate of $35 for a diagnosis of what is wrong with your computer.</p>
+		<p>slashRoot has a continuing commitment to customer service.<br/> 
+		We bring an assortment of skills to the table.<br/>
+		We offer consultations, starting at $15 for three questions.<br/>
+		We also offer computer repair.<br/>
+	       	We offer a flat rate of $35 for a diagnosis of what is wrong with your computer.</p>
 	</div>
 	
 	<div id="membership-modal" title="Membership& Classes">
-	<p></p>
+		<p>slashRoot offers classes and instruction<br/>
+		relating to its four point curriculum<br/>
+		as well as technology in general.<br/>
+		Members have an opportunity to earn ranks<br/>
+	       	relating to their skill level<br/>
+		based on a martial arts structure.</p>
 	</div>
 	
 	<div id="contact-modal" title="Contact Us">
-	<p></p>
+		<p>slashRoot would love to hear from you</br>
+		feel free to call us: 845.633.8330</br>
+		or send us an email:</p>
+		<a href="mailto:info@slashrootcafe.com">Info</a></br>
+		<a href="mailto:booking@slashrootcafe.com">Bookings</a>
 	</div>
 
 	<img id="tree" src="/media/images/tree-cropped.png" />
@@ -105,6 +118,7 @@
 					
 					<div class="slide">
 						<h1>Software Development</h1>
+
 						<p>The slashRoot Technology Group is dedicated to excellence in the design and implementation of software.<br>
 						We are glad to use and support Free and Open Source technologies,<br>
 						 as well as philosophies of liberty and transparency.<br>
@@ -116,6 +130,7 @@
 					
 					<div class="slide">
 						<h1>Networking</h1>
+
 						<p>slashRoot is commited to organic networking.<br>
 						 We believe people can be brought together to create a stronger sense of community<br>
 						 We feel technologies can be used to connect people and ideas in ways previously not concieved of.<br>
@@ -127,6 +142,7 @@
 					<div class="slide">
 					
 						<h1>Live Events</h1>
+
 						<p>We regularly feature local poets, artist, musicians, and other creative types at slashRoot.<br>
 						We try to cultivate a vibe that we think independant, intelligent people will enjoy.<br>
 						slashRoot has also hosted members of the community for a village debate,<br>
@@ -138,6 +154,7 @@
 					
 					<div class="slide">
 						<h1>Organic Beverages</h1>
+
 						<p>The slashRoot Cafe continues to serve local and organic beverages.<br>
 						 Some of which have been crafted in the wild and cultivated from local farms and the mountain.<br>
 						 We serve responsably sourced beverages, especially fair trade coffee.</p>
@@ -146,6 +163,7 @@
 					
 					<div class="slide">
 						<h1>Classes and Membership</h1>
+
 						<p>The slashRoot Technology Group has a four point curriculum.<br>
 						This includes Logical Expression, Material Application,<br>
 						Organic Networking, and Wholesome Commerce.<br>
@@ -203,7 +221,7 @@
 
 {% block footer %}
 
-	<div id="contact"> 60 Main st. New Paltz, NY, 12561 845.633.8330 info@slashrootcafe.com </div>
+	<div id="contactbottom"> 60 Main st. New Paltz, NY, 12561 845.633.8330 info@slashrootcafe.com </div>
 	
 		{% if request.user.is_authenticated and not disable_incoming_calls %}
 		

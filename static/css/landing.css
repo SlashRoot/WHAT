@@ -33,7 +33,6 @@ top:0px;
     z-index: 1001;
 }
 
-
 .ui-icon {
     background-image: url("/media/images/close_button.jpg");
     background-repeat: no-repeat;
@@ -269,15 +268,16 @@ z-index:2
     min-height: 180px;
 }
 
-.slides_container h1{
+.slides_container h1 {
 					opacity:1;
 					display:block;
-					}
+}
+
 #services-modal {
-    float: left;
+    float: center;
     margin-top: -64;
     font-size: 90%;
-    line-height: 42px;
+    line-height: 34px;
     text-align: center;
     color: white;
     display: none;
@@ -285,12 +285,25 @@ z-index:2
 }
 
 #membership-modal {
+    float: center;
+    margin-top: -64;
     font-size: 90%;
-    line-height: 42px;
+    line-height: 34px;
     text-align: center;
     color: white;
     display: none;
     width: 500px;
+}
+
+#contact-modal {
+    float: center;
+    font-size: 90%;
+    margin-top: -64;
+    line-height: 34px;
+    text-align: center;
+    color: white;
+    display: none;
+    width: 500;
 }
 
 #front-schematic {
@@ -955,11 +968,9 @@ clear:left;
     width: 100%;
 color:#ffffff;
 }
-
-#contact {
-	font-family:veteran-typewriter;
-	font-size:15px;
-	color:captiontext;
-	text-align:center;
-	
+#contactbottom {
+    color: captiontext;
+    font-family: veteran-typewriter;
+    font-size: 15px;
+    text-align: center;
 }

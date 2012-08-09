@@ -53,25 +53,26 @@
 
     {% block navigation %}{% navigation_bar %}{% endblock %}
 
-	<div id="messageContainer" style="position:relative; top:20px; width: 100%;">
-						
-			<ul class="messages">
-			    {% for message in messages %}
-			    	<div class="row messagesRow">
-						<div class="twelvecol">
-			    			<li{% if message.tags %} class="{{ message.tags }} systemMessage"{% endif %}>{{ message|safe }}</li>
-			    		</div>
-					</div>
-			    {% endfor %}
-	            {% include 'social/notifications.html' %}
-			</ul>				
-	</div>
+	
 
 <div class="right">
 	{% block rightbar %}{% endblock %}
 </div>
 
-<div class="content">	
+<div class="content" style="padding-top: 20px;">
+    <div id="messageContainer" style="position:relative; top:20px; width: 100%;">
+                        
+            <ul class="messages">
+                {% for message in messages %}
+                    <div class="row messagesRow">
+                        <div class="twelvecol">
+                            <li{% if message.tags %} class="{{ message.tags }} systemMessage"{% endif %}>{{ message|safe }}</li>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% include 'social/notifications.html' %}
+            </ul>                
+    </div>	
 	{% block content %}{% endblock %}
 </div>
 
