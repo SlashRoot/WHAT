@@ -179,6 +179,11 @@ float:right;
 	z-index:1;
 }
 
+#current-logo{
+        min-height: 100%;
+        width: 50%;
+}
+
 #dialog{
 	text-align:center;
 	font-family:veteran-typewriter;
@@ -248,6 +253,7 @@ z-index:2
 #slides {
     margin-left: 165px;
     margin-bottom:65px;
+    margin-top: 250px;
     width: 100%;
     border-left:2px solid #0E170E;
     padding:10px;
@@ -299,7 +305,6 @@ z-index:2
     left: 40px;
     opacity: 0.15;
     position: absolute;
-    top: 698px;
     z-index:-1;
 }
 
@@ -390,7 +395,7 @@ z-index:2
 #below_the_fold {
     height: 329px;
     margin-bottom: 200px;
-    margin-left: 5%;
+    margin-left: 14%;
     position: relative;
     width: 70em;
 }
