@@ -150,7 +150,11 @@ LOCAL_APPS = (
     'slashroot',
 )
 
-INSTALLED_APPS = PACKAGED_APPS + CORE_APPS + LOCAL_APPS
+PREPENDED_LOCAL_APPS = []
+for app in LOCAL_APPS:
+    PREPENDED_LOCAL_APPS.append('%s.%s' % ('what_apps', app))
+
+INSTALLED_APPS = PACKAGED_APPS + CORE_APPS + tuple(PREPENDED_LOCAL_APPS)
 
 
 HAYSTACK_CONNECTIONS = {
@@ -189,5 +193,5 @@ LOGIN_REDIRECT_URL = "/iam/"
 
 #Override the Test Runner to test only local apps.
 
-TEST_RUNNER = 'utility.tests.WHATTestRunner'
+TEST_RUNNER = 'what_apps.utility.tests.WHATTestRunner'
 
