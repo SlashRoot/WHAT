@@ -16,5 +16,5 @@ except ImportError, e:
     sys.exit(1)
 
 if __name__ == "__main__":
-    os.environ["DJANGO_SETTINGS_MODULE"] = "settings.common"
+    os.environ["DJANGO_SETTINGS_MODULE"] = "settings.local"
     execute_manager(settings)

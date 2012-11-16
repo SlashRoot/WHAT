@@ -51,7 +51,7 @@
                                 
 	</head>
 
-    {% navigation_bar %}
+    {% block navigation %}{% navigation_bar %}{% endblock %}
 
 	
 
@@ -76,8 +76,8 @@
 	{% block content %}{% endblock %}
 </div>
 
-<div class="footer">
-	{% block footer %}{% endblock %}
-</div>
+
+{% block footer %}<div class="footer"></div>{% endblock %}
+
 
 </html>

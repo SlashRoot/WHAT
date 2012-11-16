@@ -7,4 +7,3 @@ VIRTUALENV = path(sys.executable).abspath().dirname().dirname()
 
 def set_path():
     sys.path.append(PROJECT_ROOT)
-    sys.path.append(PROJECT_ROOT / 'apps')

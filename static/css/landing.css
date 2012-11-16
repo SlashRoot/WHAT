@@ -16,6 +16,10 @@ top:0px;
 
 #tree {
 	width:45%;
+    margin-left: 380px;
+    position: relative;
+    margin-top:27px;
+}
 }
 
 .ui-dialog {
@@ -263,8 +267,9 @@ z-index:2
     font-family: Times New Roman;
     font-size: 16px;
     line-height: 42px;
-    margin-top: -18px;
     text-align: center;
+    padding-top:10px;
+    min-height: 180px;
 }
 
 #services-modal {
@@ -313,12 +318,6 @@ z-index:2
 	width:100%
 	background-color:#EBCDF7;
 
-}
-#tree {
-    margin-left: 300px;
-    position: relative;
-    width: 49%px;
-    margin-top:20px;
 }
 
 #logoBig {

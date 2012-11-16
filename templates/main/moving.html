@@ -1,0 +1,88 @@
+{% extends 'sitewide_head.html' %}
+
+{% block navigation %}{% endblock %}
+
+{% block head %}
+
+    <link rel="stylesheet" href="/media/css/tree.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/landing.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/forms.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/cms.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/bubble_locations.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/slides.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/moving.css" type="text/css" media="screen" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <script src="/media/js/jquery-ui.min.js"></script>
+    <script src="/media/js/slides.min.jquery.js"></script>
+    
+    <script>
+
+    $(function(){
+            // Set starting slide to 1
+            var startSlide = 1;
+            // Get slide number if it exists
+            if (window.location.hash) {
+                startSlide = window.location.hash.replace('#','');
+            }
+            // Initialize Slides
+            $('#slides-moving').slides({
+                preload: true,
+                preloadImage: 'img/loading.gif',
+                generatePagination: true,
+                hoverPause: true,
+                // Get the starting slide
+                start: startSlide,
+                next: 'next',
+                animationComplete: function(current){
+                    // Set the slide number as a hash
+                    window.location.hash = '#' + current;
+                }
+            });
+        });
+
+</script>
+
+{% endblock head %}
+
+{% block content %}
+
+
+<img id="front-schematic" src="/media/images/schematic2.png" ></img>    
+
+<div id="moving_logoBig"> 
+    <img id="moving_logo" src="/media/images/current-logo.png"></img>
+    <img id="moving_tree" src="/media/images/tree-cropped.png"></img>
+</div>
+
+<div id="slide-wrapper"></div>
+
+<div id="slides-moving">
+    <div class="slides_container">
+        
+        {% for block in moving_content_blocks %}
+        <div class="slide">
+        	<div class="slide-content">
+	            <h1>{{block.headline}}</h1>
+	            <p>
+	                {{block.content}}
+	            </p>
+	         </div>
+        <div class="arrow-wrapper">
+             <img class="next" src="/media/images/icons/right_arrow.png">
+        </div>
+        
+        </div>
+        
+        {% endfor %}
+
+    </div>
+</div>
+
+{# centerBidniss #}
+  
+</div>
+
+
+{% endblock %}
+{% block footer %}{% endblock %}

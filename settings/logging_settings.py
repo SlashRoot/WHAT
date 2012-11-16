@@ -36,6 +36,15 @@ if not 'test' in sys.argv or 'test_coverage' in sys.argv:
             'formatter': 'standard'
          },
         
+        'email_file':{
+            'level':'INFO',
+            'class':'logging.handlers.TimedRotatingFileHandler',
+            'when': 'midnight',
+            'filename': '/var/log/what/email.log',
+            'formatter': 'standard'
+         },
+                 
+        
         'mail_admins': {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler',
@@ -59,6 +68,10 @@ if not 'test' in sys.argv or 'test_coverage' in sys.argv:
         },
         'comm': {
             'handlers': ['comm_file'],
+            'level': 'INFO',
+        },
+        'email': {
+            'handlers': ['email_file'],
             'level': 'INFO',
         },
     }
