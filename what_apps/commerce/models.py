@@ -2,8 +2,6 @@ from django.db import models
 from django.db.models import Sum, Variance
 from django.core.exceptions import ValidationError
 
-#TODO: Create a fixture for the concept of "SlashRoot as GenericParty" - this app is going to be installed at other places on other servers as well.
-#from people.models import SLASHROOT_AS_GENERICPARTY, GenericParty
 from what_apps.utility.models import GenericPartyForeignKey
 
 '''
@@ -236,7 +234,7 @@ class Pledge(models.Model):
         
         In the example of a coffee sale, we don't bother assigning an owner.  Nobody cares who owns a cup of coffee.
         '''
-        from commerce.models import Delivery, Ownership #Fucked up.  I do not understand why this line is needed or throws an error in PyDev.
+        from what_apps.commerce.models import Delivery, Ownership #Fucked up.  I do not understand why this line is needed or throws an error in PyDev.
         new, delivery = Delivery.objects.get_or_create(pledge=self)
         
         if not new:

@@ -1,6 +1,6 @@
 from django.template import Library, Template, Context
+from what_apps.do.models import Task
 
-from do.models import Task
 
 register = Library()
 

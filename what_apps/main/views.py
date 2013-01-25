@@ -11,10 +11,6 @@ from what_apps.do.models import Task
 from what_apps.people.models import GenericParty
 
 
-
-#TODO: Maybe move this too
-#from pos.forms import BeverageSaleForm
-
 def main_cms(request):
     pass
 
@@ -29,6 +25,10 @@ def main_landing(request):
 
 #If the user is logging in on the front page, they have new bubbles coming their way.
 def loggedInBubbles(request):
+    '''
+    Where are we going with this view?  Can we disappear this thing?
+    '''
+    
     #Which menu are we rendering?  TODO: Un-hardcode menu reference.  (For that matter, we prolly oughta take members to a completely different function)
     initial_menu = BubbleMenu.objects.get(launch_name="admin_main")
 
@@ -53,9 +53,8 @@ def loggedInBubbles(request):
     It's probably best to re-ajax it.
     -Justin
     '''
-    from hwtrack.models import Device
-#    from service.models import RenderDeviceService
-    from people.models import Client
+    from what_apps.hwtrack.models import Device
+    from what_apps.people.models import Client
     
     class AddClientForm(forms.ModelForm):
         class Meta:

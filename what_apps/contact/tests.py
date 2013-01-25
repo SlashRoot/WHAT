@@ -6,15 +6,15 @@ from django.http import HttpRequest
 from django.contrib.auth.models import User
 from django.conf import settings
 
-from contact.forms import handle_user_profile_form
-from contact.management.commands.emailhandler import get_first_text_part, Command as EmailHandlerCommand
-from contact.views import new_contact
-from contact.models import MailHandler
+from what_apps.contact.forms import handle_user_profile_form
+from what_apps.contact.management.commands.emailhandler import get_first_text_part, Command as EmailHandlerCommand
+from what_apps.contact.views import new_contact
+from what_apps.contact.models import MailHandler
 
-from people.models import UserProfile, Role, Group, RoleInGroup
-from do.tests import make_task_tree
-from do.models import Task
-from email_blast.models import BlastMessage
+from what_apps.people.models import UserProfile, Role, Group, RoleInGroup
+from what_apps.do.tests import make_task_tree
+from what_apps.do.models import Task
+from what_apps.email_blast.models import BlastMessage
 
 
 class IncomingEmailTests(TestCase):
@@ -29,7 +29,7 @@ class IncomingEmailTests(TestCase):
         MailHandler.objects.create(address="test-handler") 
         email_handler_command = EmailHandlerCommand()
         
-        email_msg = email_handler_command.handle('%s/apps/contact/management/commands/sample_email_to_handler.txt' % settings.PROJECT_ROOT )
+        email_msg = email_handler_command.handle('%s/what_apps/contact/management/commands/sample_email_to_handler.txt' % settings.PROJECT_ROOT )
         
         pass
     
@@ -44,7 +44,7 @@ class IncomingEmailTests(TestCase):
         
         #This email text is from Ron Lumbergh, the user above.  The innotrode guy - the young guy.
         #It is to do.task.1@objects.slashrootcafe.com - the email address of the task we made using make_task_tree.
-        email_msg = email_handler_command.handle('%s/apps/contact/management/commands/sample_email_to_object.txt' % settings.PROJECT_ROOT )
+        email_msg = email_handler_command.handle('%s/what_apps/contact/management/commands/sample_email_to_object.txt' % settings.PROJECT_ROOT )
 
         task = Task.objects.get(id=1) #Here's the task to which we sent the email.
         #Now Ron will login and verify that his message is displayed on the page.
@@ -62,13 +62,13 @@ class IncomingEmailTests(TestCase):
         brother_maynard = User.objects.create(username="brother_maynard", email="bmaynard@armaments.camelot.co.uk")
         
         email_handler_command = EmailHandlerCommand()
-        email_handler_command.handle('%s/apps/contact/management/commands/sample_email_to_blast.txt' % settings.PROJECT_ROOT )
+        email_handler_command.handle('%s/what_apps/contact/management/commands/sample_email_to_blast.txt' % settings.PROJECT_ROOT )
         
         self.assertTrue(BlastMessage.objects.filter(message__contains="Llamas are awesome.").exists())
 
     def test_email_to_blast_from_unknown_user(self):
         email_handler_command = EmailHandlerCommand()
-        email_msg = email_handler_command.handle('%s/apps/contact/management/commands/sample_email_blast_from_unknown_user.txt' % settings.PROJECT_ROOT )
+        email_msg = email_handler_command.handle('%s/what_apps/contact/management/commands/sample_email_blast_from_unknown_user.txt' % settings.PROJECT_ROOT )
         self.assertFalse(email_msg)
 
 class ContactInfoTests(TestCase):

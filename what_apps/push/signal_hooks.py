@@ -1,8 +1,8 @@
 from django.db.models.signals import post_save
+from what_apps.do.models import Task, TaskHierarchy
+from what_apps.push.functions import push_with_template
 
-from push.functions import push_with_template
 
-from do.models import Task, TaskHierarchy
 
 
 def notifyNewChildTask(sender, instance, **kwargs):

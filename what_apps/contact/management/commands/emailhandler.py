@@ -9,10 +9,10 @@ from django.contrib.contenttypes.models import ContentType
 
 from email.Parser import Parser
 from django.contrib.auth.models import User
-from contact.models import MailHandler, MailMessage, AdditionalEmail
-from social.models import TopLevelMessage
-from people.models import RoleInGroup
-from email_blast.models import BlastMessage
+from what_apps.contact.models import MailHandler, MailMessage, AdditionalEmail
+from what_apps.social.models import TopLevelMessage
+from what_apps.people.models import RoleInGroup
+from what_apps.email_blast.models import BlastMessage
 from django.db.utils import DatabaseError
 from django.core.mail.backends import smtp
 

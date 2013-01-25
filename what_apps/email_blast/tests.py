@@ -1,10 +1,11 @@
+from .models import BlastMessage
+from django.contrib.auth.models import User
 from django.core import mail
 from django.test import TestCase
 from unittest import expectedFailure
+from what_apps.people.models import Group, Role, RoleInGroup, UserInGroup, \
+    RoleHierarchy
 
-from email_blast.models import BlastMessage
-from people.models import Group, Role, RoleInGroup, UserInGroup, RoleHierarchy
-from django.contrib.auth.models import User
 
 class BlastFormTest(TestCase):
     def test_if_blast_form_is_200(self):

@@ -8,7 +8,7 @@ Replace these with more appropriate tests for your application.
 from django.test import TestCase
 from django.contrib.auth.models import User
 
-from people.models import Group, Role, RoleInGroup, RoleHierarchy
+from what_apps.people.models import Group, Role, RoleInGroup, RoleHierarchy
 
 import json
 from unittest.case import expectedFailure

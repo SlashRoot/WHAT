@@ -118,7 +118,7 @@ class Service(models.Model):
         '''
         Returns a QuerySet of all the phone calls ever made to or by the recipient of this Service.
         '''
-        from comm.models import PhoneCall
+        from what_apps.comm.models import PhoneCall
         
         if not include_incoming:
             all_calls = PhoneCall.objects.filter(to_number__owner = self.recipient.contact_info() )
@@ -132,7 +132,7 @@ class Service(models.Model):
         return all_calls    
     
     def phone_calls_today(self, include_incoming=True, include_outgoing=True):
-        from comm.models import PhoneCall
+        from what_apps.comm.models import PhoneCall
         today = date.today()
         calls = self.all_phone_calls_ever(include_incoming, include_outgoing).filter(created__year = today.year, created__day = today.day, created__month = today.month)
         return calls

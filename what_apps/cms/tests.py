@@ -1,10 +1,10 @@
-from utility.tests import WHATTestCase
 from unittest import expectedFailure
-from cms.models import Question, QandA, QuestionOnForm, BooleanAnswer, ContentBlock
-from utility.tests import test_user_factory
+from what_apps.cms.models import Question, QandA, QuestionOnForm, BooleanAnswer, \
+    ContentBlock
+from what_apps.do.config import set_up as do_set_up
+from what_apps.utility.tests import WHATTestCase, test_user_factory
 
 
-import do.config
 
 class Blogging(WHATTestCase):
     
@@ -12,7 +12,7 @@ class Blogging(WHATTestCase):
     login_required_urls = ['/cms/edit_content_block/']
     
     def setUp(self):
-        do.config.set_up()
+        do_set_up()
         self.users = test_user_factory(1)
 
     def test_blog_editor_200_logged_in(self):

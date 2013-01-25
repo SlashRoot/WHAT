@@ -8,7 +8,7 @@ Replace these with more appropriate tests for your application.
 import datetime
 
 from django.test import TestCase
-from mooncalendar.models import Moon
+from .models import Moon
 from unittest import expectedFailure
 
 

@@ -1,26 +1,25 @@
-from django.test import TestCase
-from service.models import Service
-
-from contact.models import PhoneNumber, ContactInfo
-from people.models import UserProfile, UserInGroup
 from django.contrib.auth.models import User
-
-from do.config import set_up_privileges
-
-import do.config
-import service.config as service_config
-import mellon.config
-import people.config
-from comm.tests import create_phone_calls
-from utility.models import FixedObject
-from people.config import set_up as people_set_up
 from django.core.cache import cache
+from django.test import TestCase
+from jinja2.ext import do
+from what_apps.comm.tests import create_phone_calls
+from what_apps.contact.models import PhoneNumber, ContactInfo
+from what_apps.do.config import set_up_privileges, set_up as do_set_up
+from what_apps.mellon.config import set_up as mellon_set_up
+from what_apps.people.models import UserProfile, UserInGroup
+from what_apps.service.models import Service
+from what_apps.slashroot.config import set_up as slashroot_set_up
+from what_apps.utility.models import FixedObject
+import what_apps.service.config as service_config
+
+
+
 
 class NavigationTests(TestCase):
     
     def setUp(self):
         cache.clear()
-        people_set_up()
+        slashroot_set_up()
         self.rusty = User.objects.create(is_superuser=True, username="rusty", first_name="Rusty", last_name="Spike")
         UserProfile.objects.create(user=self.rusty, contact_info=ContactInfo.objects.create())
         member_role = FixedObject.objects.get(name="RoleInGroup__slashroot_holder").object
@@ -57,13 +56,13 @@ class NavigationTests(TestCase):
 
 class ResolveCallsModels(TestCase):
     def setUp(self):
-        do.config.set_up()
+        do_set_up()
         service_config.set_up()
         
-        mellon.config.set_up()
+        mellon_set_up()
         set_up_privileges()
         
-        people.config.set_up()
+        slashroot_set_up()
         
         #Create a known number for people to call.
         operator = User.objects.create(username="operator", first_name="Operator")

@@ -1,11 +1,11 @@
-from django.forms.formsets import formset_factory
-from django.contrib.auth.models import User
 from django import forms
-from django.forms import CharField
-from utility.forms import AutoCompleteField 
+from django.contrib.auth.models import User
 from django.db import models
-from presence.models import AfterHoursTidiness
 from django.db.models.fields.related import ManyToManyField
+from django.forms import CharField
+from django.forms.formsets import formset_factory
+from what_apps.presence.models import AfterHoursTidiness
+from what_apps.utility.forms import AutoCompleteField
 
  
 '''

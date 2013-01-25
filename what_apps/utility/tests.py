@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from people.models import GenericParty
+from what_apps.people.models import GenericParty
 from django.test.simple import DjangoTestSuiteRunner
 
 from django.conf import settings

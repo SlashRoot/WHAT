@@ -1,13 +1,14 @@
-from unittest import expectedFailure
-
-from django.test import TestCase
 from django.contrib.auth.models import User
+from django.test import TestCase
+from unittest import expectedFailure
+from what_apps.do.config import set_up as do_set_up
+from what_apps.do.tests import make_task_tree
+from what_apps.people.models import GenericParty, Group, UserInGroup, Role, \
+    RoleInGroup
+from what_apps.social.models import DrawAttention, TopLevelMessage
+from what_apps.utility.tests import test_user_generic_party_factory
 
-from do.tests import make_task_tree
-from social.models import DrawAttention, TopLevelMessage
-from people.models import GenericParty, Group, UserInGroup, Role, RoleInGroup
-import do.config
-from utility.tests import test_user_generic_party_factory
+
 
 class MessageTests(TestCase):
     
@@ -54,7 +55,7 @@ class UserMessageTest(TestCase):
     
     def setUp(self):
         setUp_users_for_messages(self)
-        do.config.set_up()
+        do_set_up()
         
     def tearDown(self):
         TopLevelMessage.objects.all().delete()
@@ -120,7 +121,7 @@ class GroupLog(TestCase):
         self.group = Group.objects.create(name='test_group')
         self.group_party = GenericParty.objects.get(party=self.group)     
         
-        do.config.set_up()
+        do_set_up()
         
     def tearDown(self):
         TopLevelMessage.objects.all().delete()

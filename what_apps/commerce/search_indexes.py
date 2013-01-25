@@ -1,4 +1,4 @@
-from commerce.models import TradeElement
+from what_apps.commerce.models import TradeElement
 
 from haystack.indexes import RealTimeSearchIndex, CharField, DateTimeField, EdgeNgramField, IntegerField
 from haystack import site

@@ -1,8 +1,8 @@
 from django.template import Library, Template, Context
 from django.template.loader import get_template
+from what_apps.social.forms import DrawAttentionAjaxForm
+from what_apps.social.models import message_threads_for_object_family as mtof
 
-from social.forms import DrawAttentionAjaxForm
-from social.models import message_threads_for_object_family as mtof
 
 register = Library()
 

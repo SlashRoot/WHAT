@@ -5,9 +5,6 @@ from django.shortcuts import render_to_response as render
 from forms import AddDeviceForm, ServiceCheckinForm
 from what_apps.contact.forms import UserContactForm, UserProfileForm
 
-#from service.models import RenderDeviceService, SymptomInstance
-
-
 def all_computers(request):
     devices = Computer.objects.order_by('id')
     return render('hwtrack/all_devices.html', locals())

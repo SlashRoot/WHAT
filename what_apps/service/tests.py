@@ -1,18 +1,21 @@
-from comm.tests import create_phone_calls
-from contact.models import ContactInfo, PhoneNumber
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.test import TestCase
-from do.config import set_up as do_setup, set_up_privileges
-from do.models import Task
-from mellon.config import set_up as mellon_setup
-from people.models import UserProfile
-from service.config import set_up as service_setup
-from service.models import Service, ServiceStatusLog, ServiceStatusPrototype
 from unittest import expectedFailure
-from utility.models import FixedObject
+from what_apps.comm.tests import create_phone_calls
+from what_apps.contact.models import ContactInfo, PhoneNumber
+from what_apps.do.config import set_up as do_setup, set_up_privileges
+from what_apps.do.models import Task
+from what_apps.mellon.config import set_up as mellon_setup
+from what_apps.people.models import UserProfile
+from what_apps.service.config import set_up as service_setup
+from what_apps.service.models import Service, ServiceStatusLog, \
+    ServiceStatusPrototype
+from what_apps.slashroot.config import set_up as slashroot_set_up
+from what_apps.utility.models import FixedObject
 import datetime
-import people.config
+
+
 
 
 
@@ -25,7 +28,7 @@ class CurrentClients(TestCase):
         mellon_setup()
         set_up_privileges()
         
-        people.config.set_up()
+        slashroot_set_up()
         
         self.admin = User.objects.create(is_superuser=True, username="admin", password="admin", first_name="Youhan")
         self.admin.set_password('admin')
@@ -181,7 +184,7 @@ class CurrentClients(TestCase):
                                         service=service,
                                         creator=self.admin,
                                         )
-        before.created -= datetime.timedelta(17)
+        before.created -= datetime.timedelta(17.5)
         before.duration()
         self.assertEqual(before.duration().days, 
                                17,
@@ -205,7 +208,7 @@ class CurrentClients(TestCase):
         new_status = ServiceStatusLog.objects.create(service=service, prototype=new_prototype, creator=self.admin)
         
         
-        old_status.created -= datetime.timedelta(11)
+        old_status.created -= datetime.timedelta(11.5)
         old_status.save()
         
         total_time_in_old_status = service.total_time_in_status(old_status)[1]

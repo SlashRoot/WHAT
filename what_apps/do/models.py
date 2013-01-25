@@ -621,7 +621,7 @@ class TaskPrototype(models.Model):
             creator_id = creator
         
             
-        from do.models import TaskProgeny
+        from .models import TaskProgeny
         if not parent_task:
             parent_task = self.instances.create(creator_id=creator_id, weight=self.weight, projected=projected)
 

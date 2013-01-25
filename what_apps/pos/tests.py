@@ -1,5 +1,5 @@
 from django.test import TestCase
-from pos.models import TemporarySaleModel
+from .models import TemporarySaleModel
 
 class SimplePosLoadingTests(TestCase):
     

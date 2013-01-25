@@ -1,8 +1,8 @@
+from .models import TradeItem, TradeElement
 from django.test import TestCase
-from commerce.models import TradeItem, TradeElement
-
 from mechanize import Browser
 from unittest import expectedFailure
+
 
 class BasicCommerceViewsTests(TestCase):
     def test_record_purchase_page_200(self):
