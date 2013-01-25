@@ -33,12 +33,11 @@ top:0px;
     z-index: 1001;
 }
 
-
 .ui-icon {
-    background-image: url("/media/images/close_button.jpg");
+    background-image: url("/media/images/close_button_x.png");
     background-repeat: no-repeat;
     float: right;
-    margin-top: -87px;
+    margin-top: -69px;
     padding-right: 21px;
 }
 
@@ -72,7 +71,7 @@ top:0px;
 
 .ui-dialog-title {
 	float: left;
-	margin-top: -90px;
+	margin-top: -72px;
 	padding-left: 10px;
 }
 
@@ -184,6 +183,12 @@ float:right;
 	z-index:1;
 }
 
+#current-logo{
+        min-height: 100%;
+        width: 50%;
+        float:left;
+}
+
 #dialog{
 	text-align:center;
 	font-family:veteran-typewriter;
@@ -251,13 +256,12 @@ z-index:2
 }
 
 #slides {
-    background-color: #FFEDD3;
-    margin-bottom: 65px;
-    margin-left: 145px;
-    padding: 10px;
-    width: 65%;
-    padding:40px;
-    opacity:0.7;
+    margin-left: 165px;
+    margin-bottom:65px;
+    margin-top: 250px;
+    width: 100%;
+    border-left:2px solid #0E170E;
+    padding:10px;
 }
 
 .slides_container {
@@ -269,15 +273,11 @@ z-index:2
     min-height: 180px;
 }
 
-.slides_container h1{
-					opacity:1;
-					display:block;
-					}
 #services-modal {
-    float: left;
+    float: center;
     margin-top: -64;
     font-size: 90%;
-    line-height: 42px;
+    line-height: 34px;
     text-align: center;
     color: white;
     display: none;
@@ -285,19 +285,32 @@ z-index:2
 }
 
 #membership-modal {
+    float: center;
+    margin-top: -64;
     font-size: 90%;
-    line-height: 42px;
+    line-height: 34px;
     text-align: center;
     color: white;
     display: none;
     width: 500px;
 }
 
+#contact-modal {
+    float: center;
+    font-size: 90%;
+    margin-top: -64;
+    line-height: 34px;
+    text-align: center;
+    color: white;
+    display: none;
+    width: 500;
+}
+
 #front-schematic {
     float: right;
     left: 40px;
     opacity: 0.15;
-    position: fixed;
+    position: absolute;
     z-index:-1;
 }
 
@@ -331,10 +344,12 @@ z-index:2
 }
 
 #subLogo {
+    clear: left;
     float: left;
+    font-family: veteran-typewriter;
     font-size: 24px;
-    position: relative;
-    top: 40px;
+    margin-left: 4%;
+    margin-top: -30px;
 }
 
 #photostrip {
@@ -382,7 +397,7 @@ z-index:2
 #below_the_fold {
     height: 329px;
     margin-bottom: 200px;
-    margin-left: 5%;
+    margin-left: 14%;
     position: relative;
     width: 70em;
 }
@@ -955,11 +970,8 @@ clear:left;
     width: 100%;
 color:#ffffff;
 }
-
-#contact {
-	font-family:veteran-typewriter;
-	font-size:15px;
-	color:captiontext;
-	text-align:center;
-	
+#contactbottom {
+    color: captiontext;
+    font-family: veteran-typewriter;
+    font-size: 15px;
 }

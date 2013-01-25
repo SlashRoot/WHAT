@@ -10,7 +10,7 @@ sys.path.append(PROJECT_ROOT)
 sys.path.append(PROJECT_ROOT / 'apps')
 
 from heartbeat import Heartbeat
-from meta.alerts import local_red_alert
+from what_apps.meta.alerts import local_red_alert
 import requests
 
 

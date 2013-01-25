@@ -6,7 +6,6 @@
 
 .pagination {
 	margin-top:45px;
-	width:120px;
 	float:left;
 }
 
@@ -19,18 +18,18 @@
 }
 
 .pagination li a {
-	display:block;
-	width:53px;
-	height:17px;
-	padding-top:12px;
-	background-image:url(/media/images/pagination.png);
-	background-position:2px -3px;
-	float:left;
-	overflow:hidden;
+    background-image: url("/media/images/paginationsmaller.png");
+    float: left;
+    height: 5px;
+    padding-top: 16px;
+    width: 20px;
 }
 
 .pagination li.current a {
-	background-position:2px -40px;
-	float:left;
+	background-position:0px -80px !important;
+}
+
+.pagination li a:hover {
+	background-position:0px -41px;
 }
 

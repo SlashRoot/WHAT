@@ -1,0 +1,1 @@
+# This file previously contained slashRoot people concepts.  These have been moved to the slashRoot app.
