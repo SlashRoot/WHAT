@@ -71,8 +71,8 @@
 	<img id="front-schematic" src="/media/images/schematic2.png" ></img>	
 
         <img id="current-logo" src="/media/images/current-logo.gif"></img>
-	<div>
-	<span id="subLogo"> :technology dojo </span>
+	<div id="subLogo">
+	 :technology dojo 
 	</div>
 
     <div id="slides">
@@ -206,8 +206,7 @@
 
 		
 	</div>	
-  
-    <div id="booking-inquiries">Booking Inquires booking@slashrootcafe.com </div>
+
   
 </div>
 
@@ -218,21 +217,20 @@
 
 	<div id="contactbottom"> 845.633.8330 info@slashrootcafe.com </div>
 	
-		{% if request.user.is_authenticated and not disable_incoming_calls %}
+	{% if request.user.is_authenticated and not disable_incoming_calls %}
+	
+		<script type="text/javascript" src="http://static.twilio.com/libs/twiliojs/1.0/twilio.js"></script>
 		
-			<script type="text/javascript" src="http://static.twilio.com/libs/twiliojs/1.0/twilio.js"></script>
-			
-			<script type="text/javascript">
-				$.get('/comm/incoming_phone_client_loader', function(data) {
-					$('#incomingPhone').html(data);					
-				});
-			</script>
-			
-			<div id="incomingPhone" class="verySmall">
-				Loading Incoming Client...
-			</div>
-			
-		{% endif %}
-	</div>
+		<script type="text/javascript">
+			$.get('/comm/incoming_phone_client_loader', function(data) {
+				$('#incomingPhone').html(data);					
+			});
+		</script>
+		
+		<div id="incomingPhone" class="verySmall">
+			Loading Incoming Client...
+		</div>
+		
+	{% endif %}
 	
 {% endblock %}

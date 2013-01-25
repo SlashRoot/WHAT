@@ -34,10 +34,10 @@ top:0px;
 }
 
 .ui-icon {
-    background-image: url("/media/images/close_button.jpg");
+    background-image: url("/media/images/close_button_x.png");
     background-repeat: no-repeat;
     float: right;
-    margin-top: -87px;
+    margin-top: -69px;
     padding-right: 21px;
 }
 
@@ -71,7 +71,7 @@ top:0px;
 
 .ui-dialog-title {
 	float: left;
-	margin-top: -90px;
+	margin-top: -72px;
 	padding-left: 10px;
 }
 
@@ -186,6 +186,7 @@ float:right;
 #current-logo{
         min-height: 100%;
         width: 50%;
+        float:left;
 }
 
 #dialog{
@@ -343,10 +344,12 @@ z-index:2
 }
 
 #subLogo {
+    clear: left;
     float: left;
+    font-family: veteran-typewriter;
     font-size: 24px;
-    position: relative;
-    top: 40px;
+    margin-left: 4%;
+    margin-top: -30px;
 }
 
 #photostrip {
@@ -971,5 +974,4 @@ color:#ffffff;
     color: captiontext;
     font-family: veteran-typewriter;
     font-size: 15px;
-    text-align: center;
 }

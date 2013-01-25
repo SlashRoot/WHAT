@@ -21,3 +21,4 @@ twill
 tropo-webapi-python
 mechanize
 django-model-utils
+factory_boy

@@ -117,6 +117,7 @@ CORE_APPS = (
 PACKAGED_APPS = (
      'south',
      'taggit',
+     'coldbrew',
      #'django_coverage',
      #'debug_toolbar',
      #'haystack',
@@ -194,4 +195,4 @@ LOGIN_REDIRECT_URL = "/iam/"
 #Override the Test Runner to test only local apps.
 
 TEST_RUNNER = 'what_apps.utility.tests.WHATTestRunner'
-
+COFFEESCRIPT_LOCATION = '%s/static/js/coffee' % PROJECT_ROOT
