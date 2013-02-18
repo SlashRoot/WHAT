@@ -183,10 +183,11 @@ float:right;
 	z-index:1;
 }
 
-#current-logo{
-        min-height: 100%;
-        width: 50%;
-        float:left;
+#current-logo {
+    float: left;
+    left: 25%;
+    position: relative;
+    width: 600px;
 }
 
 #dialog{
@@ -227,7 +228,6 @@ float:right;
 .aboutText {
     font-family: Times New Roman;
     font-size: 16px;
-    height: 361px;
     letter-spacing: 2px;
     line-height: 20px;
     width: 600px;
@@ -238,7 +238,7 @@ float:right;
 }
 
 .aboutText a:hover {
-	color:#730173;
+	color:#FFFFFF;
 
 }
 .aboutText a{
@@ -255,13 +255,15 @@ left:-447px;
 z-index:2
 }
 
+
 #slides {
-    margin-left: 165px;
-    margin-bottom:65px;
+    background-color: slategrey;
+    border-left: 2px solid #0E170E;
+    height: 355px;
     margin-top: 250px;
+    opacity: 0.77;
+    padding-left: 235px;
     width: 100%;
-    border-left:2px solid #0E170E;
-    padding:10px;
 }
 
 .slides_container {
@@ -308,7 +310,7 @@ z-index:2
 
 #front-schematic {
     float: right;
-    left: 40px;
+    left:0px;
     opacity: 0.15;
     position: absolute;
     z-index:-1;
@@ -348,8 +350,9 @@ z-index:2
     float: left;
     font-family: veteran-typewriter;
     font-size: 24px;
-    margin-left: 4%;
-    margin-top: -30px;
+    margin-left: 45%;
+    margin-top:-30px;
+
 }
 
 #photostrip {
@@ -395,11 +398,7 @@ z-index:2
 }
 
 #below_the_fold {
-    height: 329px;
-    margin-bottom: 200px;
-    margin-left: 14%;
-    position: relative;
-    width: 70em;
+
 }
 
 #blue-box-header {
@@ -419,6 +418,25 @@ z-index:2
     width: 100%;
 }
 
+#photostripe {
+    background-color: black;
+    height: 86px;
+    margin-top: -1px;
+    opacity: 0.84;
+    padding-bottom: 80px;
+    position: absolute;
+    width: 100%;
+    overflow:hidden;
+}
+
+
+#photostripe li {
+    float: left;
+    height: 77px;
+    padding-left: 23px;
+    padding-right: 12px;
+    width: 22%;
+}
 
 #front-page-blog-preview {
     background-color: #48515A;
@@ -488,6 +506,12 @@ z-index:2
     font-size: 16px;
     line-height: 32px;
     width: 100%;
+}
+
+.slide {
+    font-family: sans-serif;
+    font-size: 16px;
+    line-height: 32px;
 }
 
 #front-page-blog-preview h1 {
@@ -856,9 +880,14 @@ text-decoration:none;
 
 #return {
     color: #69071C;
-    font-size: 12px;
+    font-size: 16px;
     margin-left: -100px;
 }
+
+#return:hover {
+    color: #FFFFFF;
+}
+
 
 .loggedInBubble.crumb {
 border:8px double #F1C493;
@@ -968,10 +997,13 @@ clear:left;
     position: fixed;
     text-align: center;
     width: 100%;
-color:#ffffff;
+    color:#000000;
 }
 #contactbottom {
-    color: captiontext;
+    color: #000000;
     font-family: veteran-typewriter;
     font-size: 15px;
+    position:absolute;
+    left:37%;
+    bottom:0px;
 }
