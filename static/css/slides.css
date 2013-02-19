@@ -5,8 +5,10 @@
 */
 
 .pagination {
-	margin-top:45px;
-	float:left;
+    float: left;
+    left: 319px;
+    margin-top: 40px;
+    position: relative;
 }
 
 .pagination li {
@@ -23,6 +25,8 @@
     height: 5px;
     padding-top: 16px;
     width: 20px;
+    color:transparent;
+    display:none;
 }
 
 .pagination li.current a {
@@ -31,5 +35,6 @@
 
 .pagination li a:hover {
 	background-position:0px -41px;
+	text-decoration:none;
 }
 
