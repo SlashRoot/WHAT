@@ -997,7 +997,7 @@ clear:left;
     font-family: veteran-typewriter;
     height: 15px;
     opacity: 0.465;
-    position: fixed;
+    position: absolute;
     text-align: center;
     width: 100%;
     color:#000000;
