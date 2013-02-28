@@ -3,6 +3,8 @@ from what_apps.cms.models import Question, QandA, QuestionOnForm, BooleanAnswer,
     ContentBlock
 from what_apps.do.config import set_up as do_set_up
 from what_apps.utility.tests import WHATTestCase, test_user_factory
+from what_apps.cms.views import edit_content_block
+from django.http import HttpRequest
 
 
 
@@ -23,12 +25,29 @@ class Blogging(WHATTestCase):
     def test_blog_submission_creates_blog_object(self):
         self.assertEqual(ContentBlock.objects.count(), 0)
         self.client.login(username=self.users[0].username, password='password')
-        post_response = self.client.post('/cms/edit_content_block/', {'headline': 'My really awesome blog post.', 'content':'yep, this is the post.', 'published':True, 'tags': 'public,blog'})
+        post_response = self.client.post('/cms/edit_content_block/', {'headline': 'My really awesome blog post.', 
+                                                                      'content':'yep, this is the post.', 
+                                                                      'published':True, 
+                                                                      'tags': 'public,blog'})
         self.assertEqual(post_response.status_code, 200)
         
         self.assertEqual(ContentBlock.objects.count(), 1)
         
         return ContentBlock.objects.all()[0]
+    
+    def test_blog_submission_with_id_modifies_blog_object(self):
+        blog_post = self.test_blog_submission_creates_blog_object()
+        post_response = self.client.post('/cms/edit_content_block/%s/' % blog_post.id, 
+                                {'headline': 'My less awesome blog post.', 
+                                  'content':'yep, this is the post.', 
+                                  'published':True, 
+                                  'tags': 'public,blog'})
+        self.assertEqual(post_response.status_code, 200)
+        self.assertEqual(ContentBlock.objects.count(), 1)
+        
+        get_response = self.client.get('/cms/edit_content_block/%s/' % blog_post.id)
+        self.assertEqual(get_response.status_code, 200)
+        self.assertContains(get_response, 'My less awesome blog post.') 
     
     def test_submitted_blog_appears_on_blog_page(self):
         blog_post = self.test_blog_submission_creates_blog_object()

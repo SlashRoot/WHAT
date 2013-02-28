@@ -24,7 +24,7 @@ urlpatterns = patterns('',
     (r'^/cms/form/(?P<q_and_a_id>\d+)/$', 'what_apps.cms.views.q_and_a_form'), #Public
     (r'^hack-and-tell/$', 'what_apps.main.views.hack_and_tell'), #Public
     
-    (r'^cms/edit_content_block/(?P<headline_slug>\w+)/$', 'what_apps.cms.views.edit_content_block'),
+    (r'^cms/edit_content_block/(?P<content_block_id>\d+)/$', 'what_apps.cms.views.edit_content_block'),
     (r'^cms/edit_content_block/$', 'what_apps.cms.views.edit_content_block'),
     
     (r'^blog/(?P<headline_slug>[-\w]+)/$', 'what_apps.cms.views.blog'), #Public

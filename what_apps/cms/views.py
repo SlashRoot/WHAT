@@ -10,27 +10,30 @@ from what_apps.utility.models import FixedObject
 AUTO_TASK_CREATOR = FixedObject.objects.get(name="User__auto_task_creator")
 
 @login_required
-def edit_content_block(request):
+def edit_content_block(request, content_block_id=None):
     
     cust = {'auto_resize': True,
         'rows':15,
         'cols':65, 
         }
     
+    if content_block_id:
+        blog_post = get_object_or_404(ContentBlock, id=content_block_id)
+    else:
+        blog_post = None
+    
     if request.POST:
-        form = BlogPostForm(request.POST)
+        form = BlogPostForm(request.POST, instance=blog_post)
         if form.is_valid():
             form.instance.creator = request.user
             form.save()
         else:
             form.fields['content'].widget.attrs = cust
-            
-            
     else:
-
-    
-        form = BlogPostForm()
+        form = BlogPostForm(instance=blog_post)
         form.fields['content'].widget.attrs = cust
+    
+    
     
     return render(request, 'forms/utility_form.html', locals())
     

@@ -4,7 +4,7 @@ from what_apps.cms.models import ContentBlock
  
 
 class BlogPostForm(forms.ModelForm):
-    content = forms.CharField(widget = TinyMCE)
+    content = forms.CharField(widget=TinyMCE)
     
     class Meta:
         model = ContentBlock

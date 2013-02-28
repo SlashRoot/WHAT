@@ -1,8 +1,9 @@
+
 .rightVert {
-    width:13%;
-    position:absolute;
-    right:0;
-    top:0;
+    position: fixed;
+    right: 30px;
+    top: 50px;
+    width: 8%;
 }
 
 .leftVert {
@@ -30,10 +31,12 @@
 }
 
 .blogAvatarContainer {
-    border-radius: 13px 0 0 13px;
     border: medium none !important;
+    border-radius: 13px 0 0 13px;
+    left: 35%;
+    margin-top: 20px !important;
     opacity: 0.85;
-    margin-top:20px !important;
+    position: relative;
 }
 
 .blogColumn {
