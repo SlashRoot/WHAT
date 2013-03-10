@@ -23,7 +23,7 @@ class ContentBlock(models.Model):
     creator = models.ForeignKey('auth.User')
     published = models.BooleanField()
     
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
     
     def __unicode__(self):
         return self.headline
