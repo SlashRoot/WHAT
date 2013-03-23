@@ -24,6 +24,7 @@ def contact_form(request):
     
     return render(request, 'contact_form.html', locals())
 
+@login_required
 def contact_list(request):
     people = User.objects.all().order_by('last_name')
     return render(request, 'contact/contact_list.html', locals())

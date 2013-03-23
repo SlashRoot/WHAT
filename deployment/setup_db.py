@@ -9,6 +9,7 @@ from django.core.management import ManagementUtility
 from what_apps.mellon import config as mellon_config
 from what_apps.do import config as do_config
 from what_apps.slashroot import config as slashroot_config
+from what_apps.people import config as people_config
 
 utility = ManagementUtility(['', 'syncdb', '--noinput'])
 utility.execute()
@@ -25,3 +26,5 @@ slashroot_config.set_up()
 admin = User.objects.get_or_create(username="admin", is_superuser=True)[0]
 admin.set_password('admin')
 admin.save()
+
+rusty, rusty_profile = people_config.setup()
