@@ -17,15 +17,6 @@ import datetime
 import json
 
 
-
-
-
-
-
-
-
-
-
 def draw_attention_ajax(request):
     form = DrawAttentionAjaxForm(request.POST)
     

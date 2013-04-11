@@ -6,8 +6,9 @@ from what_apps.people.models import UserProfile
 def setup():
     rusty = UserFactory.create(password="password",
                               first_name="rusty",
-                              last_name="spike")
+                              last_name="spike",
+                              username="rspike")
     
-    rusty_profile = UserProfile.objects.create(user="rusty")
+    rusty_profile = UserProfile.objects.create(user=rusty)
     return rusty, rusty_profile
     

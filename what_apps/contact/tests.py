@@ -105,3 +105,12 @@ class PageLoadTests(TestCase):
 
     def test_new_contact(self):
         pass
+    
+class SpamSelectionTests(TestCase):
+    
+    @expectedFailure
+    def spam_number_does_not_send_outgoing_calls(self):
+        self.fail()
+        
+    def phone_number_profile_contains_spam_checkbox(self):
+        self.fail()
