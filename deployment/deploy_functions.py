@@ -13,9 +13,6 @@ set_path()#Puts project and apps directories on path TODO: Turn this into a clas
 
 from private import resources
 
-from settings.production import PORT as PRODUCTION_SERVER_PORT
-from settings.staging import PORT as STAGING_SERVER_PORT
-
 
 class ThreadPoolService(service.Service):
     '''
@@ -68,9 +65,11 @@ def get_WHAT_resource(deployment_type, port=None):
     
     if not port: #For development, port will have been specified.
         if deployment_type == "production":
+            from settings.production import PORT as PRODUCTION_SERVER_PORT
             port = PRODUCTION_SERVER_PORT
             #TODO: Integrate SSL.
         elif deployment_type == "staging":
+            from settings.staging import PORT as STAGING_SERVER_PORT
             port = STAGING_SERVER_PORT
         else: #If somehow the deployment type wasn't specified properly, let's crash now rather than wait for a problem in django. 
             wsgiThreadPool.stop()

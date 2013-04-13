@@ -6,7 +6,7 @@ from urllib2 import URLError
 import uuid
 
 
-from comm.sample_requests import TYPICAL_TWILIO_REQUEST
+from what_apps.comm.sample_requests import TYPICAL_TWILIO_REQUEST
 from xml.etree import ElementTree
 
 from email.mime.multipart import MIMEMultipart
@@ -14,11 +14,11 @@ from email.mime.text import MIMEText
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings.heartbeat'
 
-from comm.services import find_command_in_tropo_command_list
+from what_apps.comm.services import find_command_in_tropo_command_list
 from settings.common import ADMINS
 
 
-from comm.comm_settings import SLASHROOT_EXPRESSIONS
+from what_apps.comm.comm_settings import SLASHROOT_EXPRESSIONS
 from twill.commands import go, showforms, formclear, fv, show, submit, get_browser
 from mechanize import Browser
 from cookielib import LWPCookieJar

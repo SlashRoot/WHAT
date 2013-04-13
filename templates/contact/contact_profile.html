@@ -11,6 +11,7 @@
 <h4>Phone Numbers</h4>
 
 {% for phone_number in contact.phone_numbers.all %}
-	{{phone_number.type}} - <a href="/comm/outgoing_call_menu/?phone_number={{phone_number.id}}">call now</a>
+			 <a href="{{phone_number.get_absolute_url}}">
+		      {{phone_number.type}}: {{phone_number.number}} <br/>
+		    </a>
 {% endfor %}
-

@@ -41,7 +41,11 @@ border:1px solid black;
 		</td>
 	
 		<td>
-		{{person.userprofile.contact_info.phone_numbers.all.0.number}}
+		  {% for phone_number in person.userprofile.contact_info.phone_numbers.all %}
+		    <a href="{{phone_number.get_absolute_url}}">
+		      {{phone_number.type}}: {{phone_number.number}} <br/>
+		    </a>
+		  {% endfor %}
 		</td>
 	
 </tr>

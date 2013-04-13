@@ -24,21 +24,20 @@ top:0px;
 
 .ui-dialog {
     display: block;
-    height: auto;
+    height: 500px;
     left: 405px;
     outline: 0 none;
     position: relative;
     top: -1184.1px;
-    width: 300px;
     z-index: 1001;
+    
 }
 
-
 .ui-icon {
-    background-image: url("/media/images/close_button.jpg");
+    background-image: url("/media/images/close_button_x.png");
     background-repeat: no-repeat;
     float: right;
-    margin-top: -87px;
+    margin-top: -69px;
     padding-right: 21px;
 }
 
@@ -60,19 +59,20 @@ top:0px;
 .ui-dialog-content {
     background-color: #000000;
     border-radius: 0px 0px 5px 5px;
-    min-height: 200px;
     min-width: 500px;
-    opacity:0.75;
+    height:auto;
+    opacity: 0.9;
 }
 
 .ui-dialog-content p {
 	padding-left: 10px;
 	padding-bottom: 5px;
+	background-color:#000000;
 }
 
 .ui-dialog-title {
 	float: left;
-	margin-top: -90px;
+	margin-top: 4px;
 	padding-left: 10px;
 }
 
@@ -184,6 +184,13 @@ float:right;
 	z-index:1;
 }
 
+#current-logo {
+    float: left;
+    left: 25%;
+    position: relative;
+    width: 600px;
+}
+
 #dialog{
 	text-align:center;
 	font-family:veteran-typewriter;
@@ -222,7 +229,6 @@ float:right;
 .aboutText {
     font-family: Times New Roman;
     font-size: 16px;
-    height: 361px;
     letter-spacing: 2px;
     line-height: 20px;
     width: 600px;
@@ -233,7 +239,7 @@ float:right;
 }
 
 .aboutText a:hover {
-	color:#730173;
+	color:#FFFFFF;
 
 }
 .aboutText a{
@@ -250,14 +256,15 @@ left:-447px;
 z-index:2
 }
 
+
 #slides {
-    background-color: #FFEDD3;
-    margin-bottom: 65px;
-    margin-left: 145px;
-    padding: 10px;
-    width: 65%;
-    padding:40px;
-    opacity:0.7;
+    background-color: slategrey;
+    border-left: 2px solid #0E170E;
+    height: 320px;
+    margin-top: 250px;
+    opacity: 0.77;
+    padding-left: 235px;
+    width: 100%;
 }
 
 .slides_container {
@@ -269,35 +276,46 @@ z-index:2
     min-height: 180px;
 }
 
-.slides_container h1{
-					opacity:1;
-					display:block;
-					}
 #services-modal {
-    float: left;
+    float: center;
+    margin-top: -64;
+    font-size: 16px;
+    line-height: 34px;
+    text-align: center;
+    color: white;
+    display: none;
+    width: auto;
+    height:500px;
+    font-family: veteran-typewriter;
+}
+
+#membership-modal {
+    float: center;
     margin-top: -64;
     font-size: 90%;
-    line-height: 42px;
+    line-height: 34px;
     text-align: center;
     color: white;
     display: none;
     width: 500px;
 }
 
-#membership-modal {
+#contact-modal {
+    float: center;
     font-size: 90%;
-    line-height: 42px;
+    margin-top: -64;
+    line-height: 34px;
     text-align: center;
     color: white;
     display: none;
-    width: 500px;
+    width: 500;
 }
 
 #front-schematic {
     float: right;
-    left: 40px;
+    left:0px;
     opacity: 0.15;
-    position: fixed;
+    position: absolute;
     z-index:-1;
 }
 
@@ -331,10 +349,13 @@ z-index:2
 }
 
 #subLogo {
+    clear: left;
     float: left;
+    font-family: veteran-typewriter;
     font-size: 24px;
-    position: relative;
-    top: 40px;
+    margin-left: 44%;
+    margin-top:-30px;
+
 }
 
 #photostrip {
@@ -380,11 +401,7 @@ z-index:2
 }
 
 #below_the_fold {
-    height: 329px;
-    margin-bottom: 200px;
-    margin-left: 5%;
-    position: relative;
-    width: 70em;
+
 }
 
 #blue-box-header {
@@ -404,6 +421,25 @@ z-index:2
     width: 100%;
 }
 
+#photostripe {
+    background-color: black;
+    height: 86px;
+    margin-top: -1px;
+    opacity: 0.84;
+    padding-bottom: 80px;
+    position: absolute;
+    width: 100%;
+    overflow:hidden;
+}
+
+
+#photostripe li {
+    float: left;
+    height: 77px;
+    padding-left: 23px;
+    padding-right: 12px;
+    width: 22%;
+}
 
 #front-page-blog-preview {
     background-color: #48515A;
@@ -473,6 +509,12 @@ z-index:2
     font-size: 16px;
     line-height: 32px;
     width: 100%;
+}
+
+.slide {
+    font-family: sans-serif;
+    font-size: 16px;
+    line-height: 32px;
 }
 
 #front-page-blog-preview h1 {
@@ -841,9 +883,14 @@ text-decoration:none;
 
 #return {
     color: #69071C;
-    font-size: 12px;
+    font-size: 16px;
     margin-left: -100px;
 }
+
+#return:hover {
+    color: #FFFFFF;
+}
+
 
 .loggedInBubble.crumb {
 border:8px double #F1C493;
@@ -950,16 +997,16 @@ clear:left;
     font-family: veteran-typewriter;
     height: 15px;
     opacity: 0.465;
-    position: fixed;
+    position: absolute;
     text-align: center;
     width: 100%;
-color:#ffffff;
+    color:#000000;
 }
-
-#contact {
-	font-family:veteran-typewriter;
-	font-size:15px;
-	color:captiontext;
-	text-align:center;
-	
+#contactbottom {
+    color: #000000;
+    font-family: veteran-typewriter;
+    font-size: 15px;
+    position:absolute;
+    left:37%;
+    bottom:0px;
 }

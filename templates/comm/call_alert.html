@@ -1,6 +1,6 @@
 <div class="displayCall" id="displayCall_{{call.id}}" call="{{call.id}}" status="{{call.status}}">
 	<div class="basicCallInfo">
-	    <h5>PhoneCall #{{call.id}} {{call.created}}</h5> 
+	    <h5><a href="{{call.get_absolute_url}}">PhoneCall #{{call.id}}</a> {{call.created}}</h5> 
 	    From {%if call.from_user %}{{call.from_user.get_full_name}}{% else %}Unknown Caller{% endif %}</strong>
 	    {% if call.from_user.userprofile %}
 			<strong>(<a href="{{call.from_user.get_absolute_url}}">{{call.from_user.userprofile.user.get_full_name}}</a>)</strong>    
@@ -13,7 +13,7 @@
     	{% include 'comm/call_recordings.html' %}
 	    
 	    </div>
-	
+	<div style="float:right;"><button>CALL STATUS</button></div>
     </div>
 	  
 </div>	 

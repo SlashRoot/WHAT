@@ -1,4 +1,5 @@
-django
+-e git+http://git@github.com/SlashRoot/django.git#egg=django
+-e git+http://git@github.com/SlashRoot/django-coldbrew.git#egg=coldbrew
 stomp.py
 orbited
 twisted
@@ -20,3 +21,4 @@ twill
 tropo-webapi-python
 mechanize
 django-model-utils
+factory_boy
