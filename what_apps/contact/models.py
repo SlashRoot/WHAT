@@ -68,6 +68,7 @@ class PhoneNumber(models.Model):
     number = PhoneNumberField(unique=True)
     created = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey('ContactInfo', related_name="phone_numbers", blank=True, null=True)
+    spam = models.BooleanField()
     
     objects = PhoneNumberManager()
     
