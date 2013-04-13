@@ -1,10 +1,9 @@
 from django.conf.urls.defaults import *
 from django.conf import settings
 
-from django.views.generic.simple import direct_to_template
-
 from django.contrib import admin
 from django.views.generic.edit import CreateView
+from django.views.generic.base import TemplateView
 
 
 admin.autodiscover()
@@ -236,8 +235,10 @@ urlpatterns = patterns('',
 )
    
 urlpatterns += patterns('django.views.generic.simple',
-    (r'^isLoggedInDisplay/$', 'direct_to_template', {'template': 'widgets/login.html'}),
-    (r'^graph_test/', 'direct_to_template', {'template': 'graph_test.html'}),
+    (r'^isLoggedInDisplay/$', TemplateView.as_view(
+            template_name='widgets/login.html')),
+    (r'^graph_test/', TemplateView.as_view(
+            template_name='graph_test.html')),
     )
 
 urlpatterns += patterns('',(r'^users/(?P<username>\w+)/$', 'social.views.profile'),)
