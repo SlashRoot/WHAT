@@ -554,7 +554,7 @@ def notifyNewChildTask(sender, instance, created, **kwargs):
     if created:
         parent = instance.parent
         child = instance.child
-        push_with_template('do/task_row_detailed.html', {'task': child}, "/do/new_child/" + str(parent.id))        
+        #push_with_template('do/task_row_detailed.html', {'task': child}, "/do/new_child/" + str(parent.id))        
         
 
 #post_save.connect(notifyNewChildTask, sender=TaskProgeny) #every time a task hierarchy gets saved notify new_child task, see post save signal in signal in django documentation
@@ -800,7 +800,7 @@ def notifyNewTask(sender, instance, created, **kwargs):
     For example, if a Task Prototype is "Walked the llama named [[0]]," it doesn't make sense to push that name because nobody will know what we're talking about.
     '''
     if created and not bool(instance.prototype.count_relations_in_name()): #The number of relations in the name will be zero if there aren't any.  Other wise, we don't really want to rock out on this.         
-        push_with_template('do/do_feed_items/task_feed.html', {'task': instance}, "/feeds/do/llamas/walruses/tasks") #TODO: Make this name sensible.        
+        pass #push_with_template('do/do_feed_items/task_feed.html', {'task': instance}, "/feeds/do/llamas/walruses/tasks") #TODO: Make this name sensible.        
         
 post_save.connect(notifyNewTask, sender=Task) 
 
@@ -813,7 +813,7 @@ def notifyNewRelation(sender, instance, created, **kwargs):
         task = instance.task
         
         if task.prototype.count_relations_in_name() == task.related_objects.count():
-            push_with_template('do/do_feed_items/task_feed.html', {'task': task}, "/feeds/do/llamas/walruses/tasks") #TODO: Make this name sensible.
+            pass #push_with_template('do/do_feed_items/task_feed.html', {'task': task}, "/feeds/do/llamas/walruses/tasks") #TODO: Make this name sensible.
 
 post_save.connect(notifyNewRelation, sender=TaskRelatedObject)
 
@@ -857,12 +857,12 @@ def notifyNewDoActivity(sender, instance, created, **kwargs):
                     msg.content_subtype = "html"
                     msg.send()
                 
-                push_with_template('do/do_feed_items/toplevelmessage', {'item': instance}, "/feeds/do/llamas/walruses/activity") #TODO: Make this better.
+                #push_with_template('do/do_feed_items/toplevelmessage', {'item': instance}, "/feeds/do/llamas/walruses/activity") #TODO: Make this better.
                 
                 return 1
         else:
             type = str(instance._meta).split('.')[1]
-            push_with_template('do/do_feed_items/' + type, {'item': instance}, "/feeds/do/llamas/walruses/activity") #TODO: Make this better.
+            #push_with_template('do/do_feed_items/' + type, {'item': instance}, "/feeds/do/llamas/walruses/activity") #TODO: Make this better.
             return 1            
 
         

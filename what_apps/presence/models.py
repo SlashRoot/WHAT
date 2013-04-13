@@ -133,7 +133,7 @@ def user_login_listener(request, user, **kwargs):
                         'user': session_info.user.username                        
                         }
         
-        push_with_json(dict_to_push, "/feeds/presece/json") #TODO: Make this better.
+        #push_with_json(dict_to_push, "/feeds/presece/json") #TODO: Make this better.
 
 user_logged_in.connect(user_login_listener)
 
@@ -143,7 +143,7 @@ def session_destroy_listener(sender, instance, **kwargs):
         session_info = SessionInfo.objects.get(session_key=session.session_key)
         session_info.destroyed = datetime.datetime.now() #Set the time of destruction
         session_info.save()
-        push_with_json({'item': session_info.user.username}, "/feeds/do/llamas/walruses/activity") #TODO: Make this better.
+        #push_with_json({'item': session_info.user.username}, "/feeds/do/llamas/walruses/activity") #TODO: Make this better.
     except SessionInfo.DoesNotExist:
     #Send signal - did user logout?  Or was session destroyed by maintenance?  Or destroyed manually by the user?
         pass

@@ -8,13 +8,13 @@ from what_apps.push.functions import push_with_template
 def notifyNewChildTask(sender, instance, **kwargs):
     parent = instance.parent
     child = instance.child
-    push_with_template('do/task_row_detailed.html', {'task': child}, "/do/new_child/" + str(parent.id))
+    #push_with_template('do/task_row_detailed.html', {'task': child}, "/do/new_child/" + str(parent.id))
     
 
 post_save.connect(notifyNewChildTask, sender=TaskHierarchy)
 
 def notifyNewTask(sender, instance, **kwargs):
-    
+    return # Temporary push deprecation
     for parent in instance.parents.all():
         push_with_template('do/task_row_detailed.html', {'task': parent}, "/do/new_chlid/" + parent.id)
     #Notify parents

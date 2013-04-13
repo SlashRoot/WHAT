@@ -75,10 +75,10 @@ def authenticate_card(request):
             login(request, user)
             
             if LocationState.objects.latest('created').name == 'closed':
-                push_with_template('do/do_feed_items/login_swipe', {'item': user, 'opening':True}, "/feeds/do/llamas/walruses/activity") #TODO: Make this better.
+                #push_with_template('do/do_feed_items/login_swipe', {'item': user, 'opening':True}, "/feeds/do/llamas/walruses/activity") #TODO: Make this better.
                 open_slashroot(request)
             else:
-                push_with_template('do/do_feed_items/login_swipe', {'item': user}, "/feeds/do/llamas/walruses/activity") #TODO: Make this better.
+                pass #push_with_template('do/do_feed_items/login_swipe', {'item': user}, "/feeds/do/llamas/walruses/activity") #TODO: Make this better.
             
             return HttpResponse(1)
         except MagneticCard.DoesNotExist:

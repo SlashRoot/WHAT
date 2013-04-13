@@ -25,6 +25,6 @@ class StatusDescription(models.Model):
     
 def update_heartbeat(sender, instance, created, **kwargs):
     dict_to_push = {'id':instance.id, 'created':instance.created.isoformat()}
-    push_with_json(dict_to_push, '/heartbeat')
+    #push_with_json(dict_to_push, '/heartbeat')
     
 post_save.connect(update_heartbeat, sender=StatusLog)
