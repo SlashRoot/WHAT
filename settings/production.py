@@ -1,5 +1,5 @@
 from settings.common import *
-from private.database_settings import DATABASE_DICT
+from private.database_settings import PRODUCTION_DATABASE_DICT as DATABASE_DICT
 
 DEBUG = False
 #PUBLIC_FILE_UPLOAD_DIRECTORY = '/home/slashroot/what-production/static/public/'
