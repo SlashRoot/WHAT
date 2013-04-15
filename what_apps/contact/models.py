@@ -121,10 +121,13 @@ class PhoneNumber(models.Model):
     def populate_calls(self):
         '''
         method to assign a user to all calls which have this phone number.
-        Of course, this will only work if only one user has this number.
+        Of course, this will only work if a user has this number.
         If that is the case, we'll return True.
         Otherwise, we'll return False.
         '''
+        if not self.user():
+            return False
+        
         #First the calls TO this user
         calls = self.calls_to.all()
         counter = 0
