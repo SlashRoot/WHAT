@@ -3,12 +3,25 @@
 {% block title %}{{phone_number}}{% endblock %}
 
 {% block more_content %}
+
+		
         
         {% if not phone_number.user %}
             <h2><a href='/contact/new_contact/?phone_number={{phone_number.number}}'>Add to Contacts</a></h2>
         {% endif %}
         
-        <h2><a href="/comm/outgoing_call_menu/?phone_number={{phone_number.id}}">Place Call</a></h2>    
+        <h2><a href="/comm/outgoing_call_menu/?phone_number={{phone_number.id}}">Place Call to this number</a></h2>
+        
+        <form action="" method="POST">
+          {% csrf_token %}
+          {% if phone_number.spam %}
+            <input type="hidden" value="0" name="spam">
+            <button>This number is marked as spam.  Click here to unmark.</button>
+          {% else %}
+            <input type="hidden" value="1" name="spam">
+		    <button>Mark as spam.</button>
+          {% endif %}
+        </form>
         
         
         

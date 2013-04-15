@@ -219,4 +219,9 @@ def toggle_dial_list(request, dial_list_id):
 
 def phone_number_profile(request, phone_number_id):
     phone_number = PhoneNumber.objects.get(id=phone_number_id)
+    
+    if request.POST:
+        phone_number.spam = int(request.POST['spam'])
+        phone_number.save()
+    
     return render(request, 'contact/phone_number_profile.html', locals())
