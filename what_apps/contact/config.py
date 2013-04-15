@@ -17,6 +17,6 @@ def setup():
                                              owner=rusty_contact,
                                              type="work")
     
-    return rusty_contact
+    return rusty_contact, home_number, work_number
     
     

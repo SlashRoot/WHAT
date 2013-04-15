@@ -74,11 +74,16 @@ class PhoneNumber(models.Model):
     
     def __unicode__(self):
         if self.owner:
-            return "%s (%s)" % (self.owner, self.type)
+            name = "%s (%s)" % (self.owner, self.type)
         elif self.number == "+10000000000":
-            return "Blank Number"
+            name = "Blank Number"
         else:
-            return "Unknown Caller #%s" % self.id
+            name = "Unknown Caller #%s" % self.id
+        
+        if self.spam:
+            name += " (SPAM!)"
+        
+        return name
         
     
     def save(self, owner=None, *args, **kwargs):

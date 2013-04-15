@@ -10,11 +10,6 @@ from django.views.generic.edit import CreateView
 
 admin.autodiscover()
 
-
-
-
-
-
 urlpatterns = patterns('',
     #MAIN
     (r'^$', 'what_apps.main.views.main_landing'),

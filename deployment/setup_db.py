@@ -11,6 +11,7 @@ from what_apps.do import config as do_config
 from what_apps.slashroot import config as slashroot_config
 from what_apps.people import config as people_config
 from what_apps.contact import config as contact_config
+from what_apps.comm import config as comm_config
 
 utility = ManagementUtility(['', 'syncdb', '--noinput'])
 utility.execute()
@@ -29,8 +30,9 @@ admin.set_password('admin')
 admin.save()
 
 rusty, rusty_profile = people_config.setup()
-rusty_contact = contact_config.setup()
+rusty_contact, rusty_home_number, rusty_work_number = contact_config.setup()
 
 rusty_profile.contact_info = rusty_contact
 rusty_profile.save()
 
+comm_config.setup(rusty_home_number)
