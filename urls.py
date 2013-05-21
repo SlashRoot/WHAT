@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf import urls
 from django.conf import settings
 
 
@@ -10,7 +10,7 @@ from django.views.generic.edit import CreateView
 
 admin.autodiscover()
 
-urlpatterns = patterns('',
+urlpatterns = urls.patterns('',
     #MAIN
     (r'^$', 'what_apps.main.views.main_landing'),
     (r'^moving_2012$', 'what_apps.main.views.moving'),
@@ -25,14 +25,14 @@ urlpatterns = patterns('',
     (r'^blog/(?P<headline_slug>[-\w]+)/$', 'what_apps.cms.views.blog'), #Public
     (r'^blog/$', 'what_apps.cms.views.blog'), #Public
     
-    #(r'^admin/varnish/', include('varnishapp.urls')),
+    #(r'^admin/varnish/', urls.include('varnishapp.urls')),
     
     
     
     #Accounting
     (r'^accounting/show_donations', 'what_apps.accounting.views.show_donations'),
        
-    #Generic Ajax Handler - include object type in URL (This is used to update objects via ajax in a generic way)
+    #Generic Ajax Handler - urls.include object type in URL (This is used to update objects via ajax in a generic way)
     (r'^utility/submit_generic/(?P<app_name>\w+)/(?P<object_type>\w+)/$', 'what_apps.utility.views.submit_generic'),
     (r'^utility/submit_generic_partial/(?P<object_type>\w+)/(?P<object_id>\d+)/$', 'what_apps.utility.views.submit_generic_partial'),
     
@@ -65,8 +65,8 @@ urlpatterns = patterns('',
     #(r'^media_admin/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/usr/local/lib/python2.6/dist-packages/django/contrib/admin/media'}),
     
     #Admin
-    (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    (r'^admin/', include(admin.site.urls)),
+    (r'^admin/doc/', urls.include('django.contrib.admindocs.urls')),
+    (r'^admin/', urls.include(admin.site.urls)),
     
     #Contact
     (r'^contact/contact_list', 'what_apps.contact.views.contact_list'),
@@ -146,7 +146,7 @@ urlpatterns = patterns('',
     
     
     #Phone
-    (r'^comm/', include('what_apps.comm.urls')), 
+    (r'^comm/', urls.include('what_apps.comm.urls')), 
     
     
     #do
@@ -204,7 +204,7 @@ urlpatterns = patterns('',
     #(r'^blog/', 'what_apps.blog.views.index'),
     
     #Searching
-    #(r'^search/', include('haystack.urls')),
+    #(r'^search/', urls.include('haystack.urls')),
     
     #Utility
     (r'^utility/autocomplete/$', 'what_apps.utility.views.autocomplete_dispatcher'),
@@ -213,7 +213,7 @@ urlpatterns = patterns('',
      #Math
      (r'^donald/get_sigma/$', 'what_apps.donald.views.get_sigma'),
      
-     (r'^tinymce/', include('tinymce.urls')),
+     (r'^tinymce/', urls.include('tinymce.urls')),
      
      #Mellon
      (r'^mellon/enter_new_magnetic_card/$', 'what_apps.mellon.views.new_card_function_form'),
@@ -231,7 +231,7 @@ urlpatterns = patterns('',
    
 
 
-urlpatterns += patterns('',(r'^users/(?P<username>\w+)/$', 'what_apps.social.views.profile'),)
+urlpatterns += urls.patterns('',(r'^users/(?P<username>\w+)/$', 'what_apps.social.views.profile'),)
 
 
 handler404 = 'what_apps.meta.errors.page_not_found'
