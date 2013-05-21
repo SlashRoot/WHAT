@@ -30,7 +30,7 @@ admin.set_password('admin')
 admin.save()
 
 rusty, rusty_profile = people_config.setup()
-rusty_contact, rusty_home_number, rusty_work_number = contact_config.setup()
+rusty_contact, rusty_home_number, rusty_work_number = contact_config.setup(userprofile=rusty_profile)
 
 rusty_profile.contact_info = rusty_contact
 rusty_profile.save()
