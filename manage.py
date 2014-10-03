@@ -1,20 +1,29 @@
 #!/usr/bin/env python
-import sys, os
-from django.core.management import execute_manager
+from __future__ import absolute_import, unicode_literals
 
-from deployment.path_settings import set_path
-set_path() #Setting the path to the same as deployment.  We don't use this file for any kind of deployment, but the other features (especially the test runner) need to have the same path.
+import os
+import sys
 
-if sys.argv[1] == "runserver":
-    exit('Do not use manage.py to runserver any more.  Instead, use ./deployment/development.py.  If you have further questions, please contact the DevOps satchem.')
-try:
-    import settings.common as settings # Assumed to be in the same directory.
-except ImportError, e:
-    import sys
-    sys.stderr.write("Error: Can't find the file 'settings.py' in the directory containing %r. It appears you've customized things.\nYou'll have to run django-admin.py, passing it your settings module.\n(If the file settings.py does indeed exist, it's causing an ImportError somehow.)\nActual Error: %s" % (__file__, e))
-    raise
-    sys.exit(1)
 
+# Corrects some pathing issues in various contexts, such as cron jobs,
+# and the project layout still being in Django 1.3 format.
+from settings.common import PROJECT_ROOT, PROJECT_DIRNAME
+os.chdir(PROJECT_ROOT)
+sys.path.insert(0, os.path.abspath(os.path.join(PROJECT_ROOT, "..")))
+
+
+# Add the site ID CLI arg to the environment, which allows for the site
+# used in any site related queries to be manually set for management
+# commands.
+for i, arg in enumerate(sys.argv):
+    if arg.startswith("--site"):
+        os.environ["MEZZANINE_SITE_ID"] = arg.split("=")[1]
+        sys.argv.pop(i)
+
+
+# Run Django.
 if __name__ == "__main__":
-    os.environ["DJANGO_SETTINGS_MODULE"] = "settings.local"
-    execute_manager(settings)
+    settings_module = "settings.local"
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", settings_module)
+    from django.core.management import execute_from_command_line
+    execute_from_command_line(sys.argv)

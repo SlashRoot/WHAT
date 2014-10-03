@@ -4,18 +4,22 @@ from deployment.path_settings import PROJECT_ROOT
 
 from private.database_settings import DATABASE_DICT
 
+
+# Full filesystem path to the project.
+SETTINGS_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.abspath(os.path.join(SETTINGS_DIR, os.pardir))
+
+# Name of the directory for the project.
+PROJECT_DIRNAME = PROJECT_ROOT.split(os.sep)[-1]
+
+
+
 #from logging_settings import *
 
 ADMINS = (
     ('Justin Holmes', 'justin@justinholmes.com'),
-    ('Amanda Stauble', 'ac.stauble@gmail.com'),
-    ('Dominick Piaquadio', 'dpiaquadio@gmail.com'),
     ('Kieran Prasch', 'kieranprasch@gmail.com'),
-    ('Max Orloff', 'mr.offalox@gmail.com'),
-    
     ('Rachel Lagodka', 'rachel.lagodka@gmail.com'),
-    
-    ('Andrew Mischo','8454188198@vtext.com'),
     ('James Farrington', 'sonsof70@yahoo.com'),
 )
 
@@ -35,10 +39,8 @@ if 'test' in sys.argv or 'test_coverage' in sys.argv:
 
 else:
     DATABASES = {
-                 
         #Production DB on margaret
         'default': DATABASE_DICT
-    
     }
 
 # Local time zone for this installation. Choices can be found here:
@@ -100,7 +102,7 @@ MIDDLEWARE_CLASSES = [
 ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
-    '%s/templates/' % PROJECT_ROOT
+    '%s/templates/' % PROJECT_ROOT,
 )
 
 CORE_APPS = (
@@ -124,11 +126,11 @@ PACKAGED_APPS = (
 )
 
 
-LOCAL_APPS = (    
+LOCAL_APPS = (
     'utility',
     'people',
     'products',
-    'hwtrack',   
+    'hwtrack',
     'accounting',
     'checklist',
     'cms',
