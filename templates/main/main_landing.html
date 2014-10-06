@@ -18,8 +18,10 @@
     <link rel="stylesheet" href="/media/css/bootstrap.css" type="text/css"/>
     <link rel="stylesheet" href="/media/css/newCSSLanding.css" type="text/css"/>
     <script src="/media/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="/media/css/jquery.fullPage.css" type="text/css"/>
+    <script src="/media/js/jquery.fullPage.js"></script>
     
-    <script>
+    <!-- <script>
 
 	$(function(){
 			// Set starting slide to 1
@@ -43,7 +45,7 @@
 			});
 		});
 
-</script>
+</script> -->
 
 {% endblock head %}
 
@@ -90,41 +92,98 @@
 
 	<!-- <img id="front-schematic" src="/media/images/schematic2.png" ></img> -->
 
-    
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3"></div>
-            <div class="col-lg-6">
-                <h2 id="main_service_picker_header" class="featurette-heading">We Practice and Teach Four Things:</h2>
+
+    <div id="fullpage">
+	<div class="section " id="section0">
+		<div class="intro">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-6">
+                        <h2 id="main_service_picker_header" class="featurette-heading">We Practice and Teach Four Things:</h2>
+                    </div>
+                    <div class="col-lg-3"></div>
+                </div>
             </div>
-            <div class="col-lg-3"></div>
-        </div>
-        <div class="container-marketing">
-      <div id="main_service_picker">
-        <!-- Four columns of servies -->
-      <div class="row">
-        <div class="col-lg-4">
-          <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" style="width: 140px; height: 140px;">
-          <h2>Software Development</h2>
-          <p>Web applications, phone routing, mobile apps, graphic design – whatever gets the job done.</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div><!-- /.col-lg-4 -->
-        <div class="col-lg-4">
-          <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" style="width: 140px; height: 140px;">
-          <h2>Networking</h2>
-          <p>We help to connect people, and wireless routers.</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div><!-- /.col-lg-4 -->
-        <div class="col-lg-4">
-          <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" style="width: 140px; height: 140px;">
-          <h2>Live Events</h2>
-          <p>Acoustic Music, Poetry, Art, Classes, Workshops, etc.</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div><!-- /.col-lg-4 -->
-      </div><!-- /.row -->
-      </div> <!-- main service picker -->
+            
+            <div class="container-marketing">
+                <div id="main_service_picker">
+                    <!-- Four columns of servies -->
+                <div class="row">
+                    <div class="col-lg-4">
+                        <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" style="width: 140px; height: 140px;">
+                        <h2>Software Development</h2>
+                        <p>Web applications, phone routing, mobile apps, graphic design – whatever gets the job done.</p>
+                        <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+                    </div><!-- /.col-lg-4 -->
+                    <div class="col-lg-4">
+                        <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" style="width: 140px; height: 140px;">
+                        <h2>Networking</h2>
+                        <p>We help to connect people, and wireless routers.</p>
+                        <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+                    </div><!-- /.col-lg-4 -->
+                    <div class="col-lg-4">
+                        <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" style="width: 140px; height: 140px;">
+                        <h2>Live Events</h2>
+                        <p>Acoustic Music, Poetry, Art, Classes, Workshops, etc.</p>
+                        <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+                    </div><!-- /.col-lg-4 -->
+                </div><!-- /.row -->
+                </div> <!-- main service picker -->  
+            </div> <!-- container -->  
+		</div>
+	</div>
+	<div class="section" id="section1">
+	    <div class="slide" id="slide1" data-anchor="slide1">
+			<div class="intro">
+				<h1>Clickable</h1>
+				<p>
+					You can even click on the navigation and jump directly to another section.
+				</p>
+			</div>
+		</div>
+
+	    <div class="slide" id="slide2" data-anchor="slide2">
+			<h1>Slide 2</h1>
+		</div>
+
+		<div class="slide" id="slide3" data-anchor="slide3">
+			<h1>Slide 2</h1>
+		</div>
+
+	</div>
+	<div class="section" id="section2">
+		<div class="intro">
+			<h1>Enjoy it</h1>
+		</div>
+	</div>
+</div>
+
+
+
+    
+   
+         
         
-    </div> <!-- container -->   
+    <div class="section" id="section1">
+	    <div class="slide" id="slide1" data-anchor="slide1">
+			<div class="intro">
+				<h1>Clickable</h1>
+				<p>
+					You can even click on the navigation and jump directly to another section.
+				</p>
+			</div>
+		</div>
+
+	    <div class="slide" id="slide2" data-anchor="slide2">
+			<h1>Slide 2</h1>
+		</div>
+
+		<div class="slide" id="slide3" data-anchor="slide3">
+			<h1>Slide 2</h1>
+		</div>
+	</div>    
+        
     </div> <!-- container marketing -->
 
         <img id="current-logo" src="/media/images/current-logo.gif"></img>
