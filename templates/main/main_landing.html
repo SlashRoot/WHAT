@@ -2,7 +2,7 @@
 
 {% block head %}
 
-	<link rel="stylesheet" href="/media/css/tree.css" type="text/css" media="screen" />
+	<!-- <link rel="stylesheet" href="/media/css/tree.css" type="text/css" media="screen" /> 
 	<link rel="stylesheet" href="/media/css/landing.css" type="text/css" media="screen" />
 	<link rel="stylesheet" href="/media/css/forms.css" type="text/css" media="screen" />
 	<link rel="stylesheet" href="/media/css/cms.css" type="text/css" media="screen" />
@@ -10,7 +10,14 @@
 	<link rel="stylesheet" href="/media/css/slides.css" type="text/css" media="screen" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 	<script src="/media/js/jquery-ui.min.js"></script>
-    <script src="/media/js/slides.min.jquery.js"></script>
+    <script src="/media/js/slides.min.jquery.js"></script> -->
+
+    <script src="/media/js/jquery-ui.min.js"></script>
+    <script src="/media/js/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="/media/css/bootstrap-theme.css" type="text/css"/>
+    <link rel="stylesheet" href="/media/css/bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="/media/css/newCSSLanding.css" type="text/css"/>
+    <script src="/media/js/bootstrap.js"></script>
     
     <script>
 
@@ -42,7 +49,7 @@
 
 {% block content %}
 
-	<div id="services-modal" title="Tech Menu">
+	<!-- <div id="services-modal" title="Tech Menu">
 		<p>
 		<span style="color:gold;text-decoration:underline;">Appetizers</span><br>
 		Diagnosis - $35<br>
@@ -79,10 +86,46 @@
 		email:</p>
 		<a href="mailto:info@slashrootcafe.com">Info</a></br>
 		<a href="mailto:booking@slashrootcafe.com">Bookings</a>
-	</div>
+	</div> --> 
 
+	<!-- <img id="front-schematic" src="/media/images/schematic2.png" ></img> -->
 
-	<img id="front-schematic" src="/media/images/schematic2.png" ></img>	
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
+                <h2 id="main_service_picker_header" class="featurette-heading">We Practice and Teach Four Things:</h2>
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+        <div class="container-marketing">
+      <div id="main_service_picker">
+        <!-- Four columns of servies -->
+      <div class="row">
+        <div class="col-lg-4">
+          <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" style="width: 140px; height: 140px;">
+          <h2>Software Development</h2>
+          <p>Web applications, phone routing, mobile apps, graphic design – whatever gets the job done.</p>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+          <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" style="width: 140px; height: 140px;">
+          <h2>Networking</h2>
+          <p>We help to connect people, and wireless routers.</p>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+          <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" style="width: 140px; height: 140px;">
+          <h2>Live Events</h2>
+          <p>Acoustic Music, Poetry, Art, Classes, Workshops, etc.</p>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+      </div><!-- /.row -->
+      </div> <!-- main service picker -->
+        
+    </div> <!-- container -->   
+    </div> <!-- container marketing -->
 
         <img id="current-logo" src="/media/images/current-logo.gif"></img>
 	<div id="subLogo">
@@ -226,7 +269,13 @@
 
 {% block footer %}
 
-	<div id="contactbottom"> 845.633.8330 info@slashrootcafe.com </div>
+    <hr class="featurette-divider">
+    <div class="container">
+        <footer>
+            <p class="pull-right"><a href="#">Back to top</a></p>
+            <p id="contactbottom" class="lead">845.633.8330 | info@slashrootcafe.com</p>
+        </footer>
+    </div>
 	
 	{% if request.user.is_authenticated and not disable_incoming_calls %}
 	

@@ -21,6 +21,7 @@ margin-left:50px;
 cursor: pointer;
 }
 
+<!--
 #global_nav {
     background-color: #000000;
     clear: right;
@@ -51,6 +52,7 @@ cursor: pointer;
 #global_nav li a:hover {
   color: #9657c0;
 }
+-->
 
 #messageContainer li {
     background-color: black;

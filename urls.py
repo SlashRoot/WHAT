@@ -12,7 +12,8 @@ admin.autodiscover()
 
 urlpatterns = urls.patterns('',
     #MAIN
-    (r'^$', 'what_apps.main.views.main_landing'),
+    (r'^old/', 'what_apps.main.views.main_landing'),
+    (r'^$', 'what_apps.main.views.construction'),
     (r'^moving_2012$', 'what_apps.main.views.moving'),
     
     #CMS

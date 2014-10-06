@@ -22,6 +22,13 @@ def main_landing(request):
     blog_blocks = ContentBlock.objects.filter(published=True, tags__name__in=["public","blog"]).order_by('-created').distinct() [:4]
     return render(request, "main/main_landing.html", locals())
 
+def construction(request):
+    ''''
+    TODO: Bring this back for a menu-driven front page.
+    '''
+    disable_incoming_calls = True
+    blog_blocks = ContentBlock.objects.filter(published=True, tags__name__in=["public","blog"]).order_by('-created').distinct() [:4]
+    return render(request, "main/construction.html", locals())
 
 #If the user is logging in on the front page, they have new bubbles coming their way.
 def loggedInBubbles(request):

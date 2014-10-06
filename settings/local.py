@@ -18,10 +18,10 @@ DATABASES = {
 }
 
 
-# Uncomment to use production data (you'll need access to private repo, of course.)
-# DATABASES = {
-#     #Production DB on margaret
-#     'default': PRODUCTION_DATABASE_DICT
-# }
-#
-# DATABASES['default']['PORT'] = 5555
+#Uncomment to use production data (you'll need access to private repo, of course.)
+DATABASES = {
+    #Production DB on margaret
+    'default': PRODUCTION_DATABASE_DICT
+}
+
+DATABASES['default']['PORT'] = 5555
