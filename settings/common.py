@@ -1,6 +1,5 @@
 import sys, os
 from socket import herror
-from deployment.path_settings import PROJECT_ROOT
 
 from private.database_settings import DATABASE_DICT
 
@@ -12,6 +11,7 @@ PROJECT_ROOT = os.path.abspath(os.path.join(SETTINGS_DIR, os.pardir))
 # Name of the directory for the project.
 PROJECT_DIRNAME = PROJECT_ROOT.split(os.sep)[-1]
 
+WSGI_APPLICATION = 'wsgi.application'
 
 
 #from logging_settings import *
@@ -67,6 +67,13 @@ USE_L10N = True
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = '%s/static' % PROJECT_ROOT
+STATIC_URL = '/media/'
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+
+HENDRIX_CHILD_RESOURCES = (
+    'hendrix.contrib.resources.static.DefaultDjangoStaticResource',
+    'hendrix.contrib.resources.static.DjangoAdminStaticResource',
+)
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -95,7 +102,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
-    'django.middleware.doc.XViewMiddleware'
+    'django.contrib.admindocs.middleware.XViewMiddleware'
 ]
 
 
