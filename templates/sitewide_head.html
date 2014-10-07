@@ -1,92 +1,96 @@
-{% load navigation_tags %}
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-    <head>
-            
-        <title>{% block title %}SlashRoot: Coffee House and Tech Dojo{% endblock %}</title>
-        
-        
-        
-        <link rel="stylesheet" href="/media/css/generic.css" type="text/css" media="screen" />
-        <!--<link rel="stylesheet" href="/media/css/sitewide.css" type="text/css" media="screen" />-->
-        <link rel="stylesheet" href="/media/css/lists.css" type="text/css" media="screen" />
-        <link rel="stylesheet" href="/media/css/1140.css" type="text/css" media="screen" />
-        <link rel="stylesheet" href="/media/css/jquery.qtip.min.css" type="text/css" media="screen" />
-        <link rel="stylesheet" href="/media/css/jquery/base/jquery.ui.slider.css" type="text/css" media="screen" />
-        <link type="text/css" href="/media/js/jPlayer/skins/blue_monday/jplayer.blue.monday.css" rel="stylesheet" />
-        <link rel="stylesheet" href="/media/css/forms.css" type="text/css" media="screen" />
-    	
-        <script>document.domain=document.domain;</script>
-        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-        
-        <script type="text/javascript" src="/media/js/jquery.tools.min.js"></script>  
-        <script type="text/javascript" src="/media/js/jquery-ui-1.8.13.custom.min.js"></script>
-        <script type="text/javascript" src="/media/js/sitewide.js"></script>
-        <script type="text/javascript" src="/media/js/tree.js"></script>    	
-    	<script type="text/javascript" src="/media/js/jquery.qtip.min.js"></script>
-    	<script type="text/javascript" src="/media/js/Orbited.js"></script> 
-    	<script type="text/javascript" src="/media/js/nav.js"></script> 
-    	<script type="text/javascript" src="/media/js/collapseable.js"></script>
-    	<script type="text/javascript" src="/media/js/add_another.js"></script>
-    	<script type="text/javascript" src="/media/js/jquery.tablesorter.js"></script>
-    	<script type="text/javascript" src="/media/js/jquery.validate.min.js"></script>
-    	<script type="text/javascript" src="/media/js/jquery.timeago.js"></script>
-    	<script type="text/javascript" src="/media/js/tiny_mce/tiny_mce_src.js"></script>
-        <script type="text/javascript" src="/media/js/jPlayer/jquery.jplayer.min.js"></script>
-        <script src="/media/js/forms.js"></script>
-        <script type="text/javascript" src="/media/js/autocomplete.js"></script> 
-        
-        <script src="/media/js/jquery-ui.min.js"></script>
-        <script src="/media/js/jquery-1.11.1.min.js"></script>
-        <link rel="stylesheet" href="/media/css/bootstrap-theme.css" type="text/css"/>
-        <link rel="stylesheet" href="/media/css/bootstrap.css" type="text/css"/>
-        <link rel="stylesheet" href="/media/css/newCSSLanding.css" type="text/css"/>
-        <script src="/media/js/bootstrap.js"></script>
-        
-		{# Permanent Orbited script. Do not change; please make any additions below. #}
-         
-        <script src="/media/js/stomp.js">       
+  <head>
+    <title>{% block title %}SlashRoot: Coffee House and Tech Dojo{% endblock %}</title>
+
+    {# Third Party CSS #}
+    <link rel="stylesheet" href="/media/css/1140.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/jquery.qtip.min.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/jquery/base/jquery.ui.slider.css" type="text/css" media="screen" />
+    <link type="text/css" href="/media/js/jPlayer/skins/blue_monday/jplayer.blue.monday.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/media/css/forms.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/jquery.fullpage.css" type="text/css"/>
+    <link rel="stylesheet" href="/media/css/bootstrap-theme.css" type="text/css"/>
+    <link rel="stylesheet" href="/media/css/bootstrap.css" type="text/css"/>
+
+    {# Slashroot CSS #}
+    <link rel="stylesheet" href="/media/css/generic.css" type="text/css" media="screen" />
+    <!--<link rel="stylesheet" href="/media/css/sitewide.css" type="text/css" media="screen" />-->
+    <link rel="stylesheet" href="/media/css/lists.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/media/css/slashroot-fullpage.css" type="text/css"/>
+
+    {# Javascript #}
+    <script>document.domain=document.domain;</script>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+
+    {# Jquery #}
+    <script type="text/javascript" src="/media/js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/media/js/jquery.tools.min.js"></script>
+    <script type="text/javascript" src="/media/js/jquery.qtip.min.js"></script>
+    <script type="text/javascript" src="/media/js/jquery.tablesorter.js"></script>
+    <script type="text/javascript" src="/media/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/media/js/jquery.timeago.js"></script>
+    <script type="text/javascript" src="/media/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/media/js/jPlayer/jquery.jplayer.min.js"></script>
+
+    <script type="text/javascript" src="/media/js/jquery.easings.min.js"></script>
+    <script type="text/javascript" src="/media/js/jquery.slimscroll.min.js"></script>
+    <script type="text/javascript" src="/media/js/jquery.fullpage.js"></script>
+
+    {# Other javascript #}
+    <script type="text/javascript" src="/media/js/sitewide.js"></script>
+    <script type="text/javascript" src="/media/js/Orbited.js"></script>
+    <script type="text/javascript" src="/media/js/tree.js"></script>
+  	<script type="text/javascript" src="/media/js/nav.js"></script>
+  	<script type="text/javascript" src="/media/js/collapseable.js"></script>
+  	<script type="text/javascript" src="/media/js/add_another.js"></script>
+  	<script type="text/javascript" src="/media/js/tiny_mce/tiny_mce_src.js"></script>
+    <script type="text/javascript" src="/media/js/forms.js"></script>
+    <script type="text/javascript" src="/media/js/autocomplete.js"></script>
+    <script type="text/javascript" src="/media/js/fullpage-settings.js"></script>
+    <script type="text/javascript" src="/media/js/bootstrap.js"></script>
+
+{# Permanent Orbited script. Do not change; please make any additions below. #}
+
+    <script src="/media/js/stomp.js">
 			Orbited.settings.port = 6050;
 			TCPSocket = Orbited.TCPSocket
 		</script>
-        
-        {% block head %}
-        
-          {# Add extra scripts and styles here. ( still in <head> ) #}
-        
-        {% endblock %}
-                                
-	</head>
 
-    {% block navigation %}{% navigation_bar %}{% endblock %}
+{% block head %}
 
-	
+    {# Add extra scripts and styles here. ( still in <head> ) #}
 
-<div class="right">
-	{% block rightbar %}{% endblock %}
-</div>
+{% endblock %}
 
-<div class="content" style="padding-top: 20px;">
-    <div id="messageContainer" style="position:relative; top:20px; width: 100%;">
-                        
-            <ul class="messages">
-                {% for message in messages %}
-                    <div class="row messagesRow">
-                        <div class="twelvecol">
-                            <li{% if message.tags %} class="{{ message.tags }} systemMessage"{% endif %}>{{ message|safe }}</li>
-                        </div>
-                    </div>
-                {% endfor %}
-                {% include 'social/notifications.html' %}
-            </ul>                
-    </div>	
-	{% block content %}{% endblock %}
-</div>
+  </head>
 
+{% load navigation_tags %}
+
+{% block navigation %}{% navigation_bar %}{% endblock %}
+
+  <div class="right">
+  	{% block rightbar %}{% endblock %}
+  </div>
+
+  <div class="content" style="padding-top: 20px;">
+      <div id="messageContainer" style="position:relative; top:20px; width: 100%;">
+
+              <ul class="messages">
+                  {% for message in messages %}
+                      <div class="row messagesRow">
+                          <div class="twelvecol">
+                              <li{% if message.tags %} class="{{ message.tags }} systemMessage"{% endif %}>{{ message|safe }}</li>
+                          </div>
+                      </div>
+                  {% endfor %}
+                  {% include 'social/notifications.html' %}
+              </ul>
+      </div>
+  	{% block content %}{% endblock %}
+  </div>
 
 {% block footer %}<div class="footer"></div>{% endblock %}
-
 
 </html>

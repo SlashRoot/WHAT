@@ -4,7 +4,7 @@
 
 <div id="global_nav">
 
-	{% if request.user.is_authenticated %}
+{% if request.user.is_authenticated %}
 
 	<a href="/admin/logout"style="float:right; font-family:veteran typewriter; font-size:11px;">  (logout) </a>
 	<span style="float:right;">Logged in as {{request.user.username}}</span>
@@ -20,38 +20,25 @@
 		<li><a href="{{pos_url}}" >/Pos</a></li>
 	</ul>
 
-    {% else %}
+{% else %}
 
-    <div id="header">
-        <p>
+  <div id="header">
 
-					<ul id=nav class="nav navbar-nav">
-            <li class="active"><a href="#">About</a></li>
-            <li><a href="#about">Login</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li><a href="#contact">Blog</a></li>
-          </ul>
+		<p>
+			<ul id="nav" class="nav navbar-nav">
+        <li class="active"><a href="/">About</a></li>
+				<li><a href="/blog">Blog</a></li>
+        <li><a href="#contact">Contact</a></li>
+				<li><a href="/presence/login.html">Login</a></li>
+      </ul>
+		</p>
 
-				</p>
+		<div id="slash_pic_front">
+		<img id="current-logo" src="/media/images/current-logo.gif" class="img-responsive"></img>
+		</div>
 
-					<div id="slash_pic_front">
-					<img id="current-logo" src="/media/images/current-logo.gif" class="img-responsive"></img>
-					</div>
+  </div>
 
-    </div>
-
-    <!--
-    <ul>
-	        <li id="blog"><a href="/">Home</a></li>
-		<li><a href="/presence/login.html">Login</a> </li>
-		<li id="services"><a> Technology Services </a> </li>
-		<li id="membership"><a> About Membership </a> </li>
-		<li id="contact"><a> Contact </a> </li>
-		<li id="blog"><a href="/blog">Blog</a></li>
-
-	</ul>
-	-->
-
-	{% endif %}
+{% endif %}
 
 </div>

@@ -2,288 +2,218 @@
 
 {% block head %}
 
-	<!-- <link rel="stylesheet" href="/media/css/tree.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="/media/css/landing.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="/media/css/forms.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="/media/css/cms.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="/media/css/bubble_locations.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="/media/css/slides.css" type="text/css" media="screen" />
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-	<script src="/media/js/jquery-ui.min.js"></script>
-    <script src="/media/js/slides.min.jquery.js"></script> -->
-
-    <script src="/media/js/jquery-ui.min.js"></script>
-    <script src="/media/js/jquery-1.11.1.min.js"></script>
-    <link rel="stylesheet" href="/media/css/bootstrap-theme.css" type="text/css"/>
-    <link rel="stylesheet" href="/media/css/bootstrap.css" type="text/css"/>
-    <link rel="stylesheet" href="/media/css/newCSSLanding.css" type="text/css"/>
-    <script src="/media/js/bootstrap.js"></script>
-    <link rel="stylesheet" href="/media/css/jquery.fullpage.css" type="text/css"/>
-    <script src="/media/js/jquery.fullpage.js"></script>
-    <script src="/media/js/jquery.easings.min.js"></script>
-    <script src="/media/js/jquery.slimscroll.min.js"></script>
-    <script src="/media/js/kp-bio-fullpage.js"></script>
-
-
-    <!-- <script>
-
-	$(function(){
-			// Set starting slide to 1
-			var startSlide = 1;
-			// Get slide number if it exists
-			if (window.location.hash) {
-				startSlide = window.location.hash.replace('#','');
-			}
-			// Initialize Slides
-			$('#slides').slides({
-				preload: true,
-				preloadImage: 'img/loading.gif',
-				generatePagination: true,
-				hoverPause: true,
-				// Get the starting slide
-				start: startSlide,
-				animationComplete: function(current){
-					// Set the slide number as a hash
-					window.location.hash = '#' + current;
-				}
-			});
-		});
-
-</script> -->
+<!--
+<link rel="stylesheet" href="/media/css/landing.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="/media/css/cms.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="/media/css/slides.css" type="text/css" media="screen" />
+-->
 
 {% endblock head %}
 
 {% block content %}
 
-	<!-- <div id="services-modal" title="Tech Menu">
-		<p>
-		<span style="color:gold;text-decoration:underline;">Appetizers</span><br>
-		Diagnosis - $35<br>
-		Micro-Consultation - $15/Three Questions<br>
-		General Maintenance/Dusting - $35<br>
-		<span style="color:gold;text-decoration:underline;">Entrees</span><br>
-		Linux/Ubuntu Multi-Service - $80<br>
-		Power Jack Replacement - $200<br>
-		Screen Replacement - $300<br>
-		Generalized Repair - $70/Hr.<br>
-		<span style="color:gold;text-decoration:underline;">Dessert</span><br>
-		Recycling and Disposal - $15/CRT or $5/Device <br>
-		Data Destruction - $50/HDD <br>
-		<span style="color:gold;text-decoration:underline;">Specials</span><br>
-		Software Development<br> Website Design<br>Networking Solutions<br>
-
-
-
-		</p>
-	</div>
-
-	<div id="membership-modal" title="Membership& Classes">
-		<p>slashRoot offers classes and instruction<br/>
-		relating to its four point curriculum<br/>
-		as well as technology in general.<br/>
-		Members have an opportunity to earn ranks<br/>
-	       	relating to their skill level<br/>
-		based on a martial arts structure.</p>
-	</div>
-
-	<div id="contact-modal" title="Contact Us">
-		<p>slashRoot would love to hear from you!</br>
-		845.633.8330</br>
-		email:</p>
-		<a href="mailto:info@slashrootcafe.com">Info</a></br>
-		<a href="mailto:booking@slashrootcafe.com">Bookings</a>
-	</div> -->
-
-	<!-- <img id="front-schematic" src="/media/images/schematic2.png" ></img> -->
+<!-- <img id="front-schematic" src="/media/images/schematic2.png" ></img> -->
 
 <div id="fullpage">
-        <div class="section" data-anchor="section1">
 
-      <div class="container">
+  <div class="section" data-anchor="slide1">
 
-        <div class="container-marketing">
-           
-            </div>
+    <div class="container">
 
-        <!-- Four columns of servies -->
+      <div class="container-marketing"></div>
+
+      <!-- 3 columns of servies -->
       <div class="row" id="main_service_picker">
+
         <div class="col-md-4">
           <img class="img-circle" src="/media/images/devbig.jpg" alt="Generic placeholder image" style="width: 140px; height: 140px;">
           <h2>Software Development</h2>
           <p>Web applications, phone routing, mobile apps, graphic design – whatever gets the job done.</p>
           <p><a class="btn btn-default" href="#secondSlide" role="button">View details &raquo;</a></p>
-        </div> <!-- /.col-lg-4 -->
+        </div>
+
         <div class="col-md-4">
           <img class="img-circle" src="/media/images/meshy.jpg" alt="Generic placeholder image" style="width: 140px; height: 140px;">
           <h2>Mesh Networking</h2>
           <p>We help to connect people, and wireless routers.</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div><!-- /.col-lg-4 -->
+          <p><a class="btn btn-default" href="#thirdSlide" role="button">View details &raquo;</a></p>
+        </div>
+
         <div class="col-md-4">
           <img class="img-circle" src="/media/images/front.jpg" alt="Generic placeholder image" style="width: 140px; height: 140px;">
           <h2>SlashRoot Cafe</h2>
           <p>Acoustic Music, Poetry, Art, Classes, Workshops, etc.</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div><!-- /.col-lg-4 -->
-      </div><!-- /.row -->
- <!-- main service picker -->
-          </div> <!-- container -->
-    </div> <!-- container marketing -->
-           </div>
-        <div class="section" data-anchor="section2">
-            <div class="slide">
-                <h1>Software Development</h1>
-            </div>
-        <div class="slide">
-                <h1>Networking</h1>
+          <p><a class="btn btn-default" href="#fourthSlide" role="button">View details &raquo;</a></p>
         </div>
-        <div class="slide">
-                <h1>Live Events</h1>
-        </div>
-        </div>
+
+      </div>
 
     </div>
+  </div>
 
+  <div class="section" data-anchor="slide2">
 
-
-
-
-	<div id="subLogo">
-	 :technology group<br>
-	 <span style="letter-spacing:4px;font-weight:bold;">845.633.8330</span>
-	</div>
-
-   <!-- <div id="slides">
-        <strong><a id="return" href="#1" class="link">< return</a></strong>
-				<div class="slides_container">
-					<div class="slide">
-						<div class="row aboutText">
-							<br><span style="color:#000000;"><h2> We Practice and Teach Four Things. </h2> <br><br> </span>
-
-								<strong><a style="" href="#2" class="link">1: Technology Service:</a></strong>
-									We love to fix and make things!
-									We help computers and their owners get along.
-									We play with Arduino!<br><br>
-
-									<strong><a href="#3" class="link"> 2: Software Development: </a></strong>
-									Web applications, phone routing, mobile apps, graphic design – whatever gets the job done. <br><br>
-
-								<strong><a href="#4" class="link">3: Networking:</a></strong>
-									We help to connect people, and wireless routers.<br><br>
-
-								<strong><a href="#5" class="link">4: Live Events:</a></strong>
-									Acoustic Music, Poetry, Art, Classes, Workshops, etc.<br><br>
-
-
-							</div>
-
-					</div>
-
-					<div class="slide">
-						<h1>Technology Service</h1><br>
-						<p>We provide unique and common technology services to our local and greater area.
-						We advocate the use <br> of open source software in our community,<br>
-						and illustrate connections between fair trade and open source.<br>
-						We will arrange for pickup and delivery of your computer!<br>
-
-						A full tech services menu can be found here.  <br></p>
-
-
-					</div>
-
-					<div class="slide">
-						<h1>Software Development</h1>
-
-						<p>The slashRoot Technology Group is dedicated to excellence in the design and implementation of software.<br>
-						We are glad to use and support Free and Open Source technologies,<br>
-						 as well as philosophies of liberty and transparency.<br>
-					    We use the Ubuntu operating system, the Python programming language,<br>
-					    the Django web framework, the Twisted network programming framework,<br>
-					     and are available to consult on countless other technologies.</p>
-						<p><a href="#1" class="link">Check out the first slide &rsaquo;</a></p>
-					</div>
-
-					<div class="slide">
-						<h1>Networking</h1>
-
-						<p>slashRoot is commited to organic networking.<br>
-						 We believe people can be brought together to create a stronger sense of community<br>
-						 We feel technologies can be used to connect people and ideas in ways previously not concieved of.<br>
-						 It is slashRoots intention to build a mesh network in New Paltz,<br>
-						  to help our local community to connect and communicate with one another</p>
-						<p><a href="#6" class="link">Check out the sixth slide &rsaquo;</a></p>
-					</div>
-
-					<div class="slide">
-
-						<h1>Live Events</h1>
-
-						<p>We have featured local poets, artist, musicians, and other creative types at slashRoot.<br>
-						We try to cultivate a vibe that we think independent, intelligent people will enjoy.<br>
-						slashRoot has also hosted members of the community for a village debate,<br>
-						 as well as events related to technology.<br>
-						 We also host classes and workshops<br>
-						 where we teach our four point curriculum.</p>
-						<p><a href="#7" class="link">Check out the seventh slide &rsaquo;</a></p>
-					</div>
-
-					<div class="slide">
-						<h1>Classes and Membership</h1>
-
-						<p>The slashRoot Technology Group has a four point curriculum.<br>
-						This includes Logical Expression, Material Application,<br>
-						Organic Networking, and Wholesome Commerce.<br>
-						Membership follows a martial arts paradigm, giving members<br>
-						an opportunity to earn white, yellow, green, brown, or black bands in our curriculum.</p>
-						<p><a href="#3" class="link">Check out the third slide &rsaquo;</a></p>
-					</div>
-				</div>
-			</div> -->
-
-
-    <div id="below_the_fold">
-
-    <div id="photostripe">
-    <ul>
-    	<li><img style="" src="/media/images/mobo.jpg" /></li>
-    	<li><img style="" src="/media/images/ubuntulogobluebig.jpg" /></li>
-    	<li><img src="/media/images/meshykeyboard.jpg" /></li>
-    	<li><img style="" src="/media/images/devbig.jpg" /></li>
-
-
-
-    </ul>
-
+    <div class="slide">
+        <h1>Software Development</h1>
     </div>
 
+    <div class="slide">
+        <h1>Networking</h1>
+    </div>
 
-{% comment %}
-	<div id="front-page-blog-preview">
-	<div id="blue-box-header"></div>
-		<img class="left leftVert" src="/media/images/border2.png"/>
-		<h1>Latest <a href="/blog/">Blog</a> Posts</h1>
-		{% for block in blog_blocks %}
-				<div class="blogContent" style="float:left;">
-					<h2><a href="{{block.get_absolute_url}}">{{block.headline}}</a></h2>
-					<h3>by {{block.creator}}</h3>
-					<h4>{{block.created}}</h4>
-				</div>
-		{% endfor %}
-	</div>
+    <div class="slide">
+        <h1>Live Events</h1>
+    </div>
 
-	<div id="google-calender">
-		<iframe src="https://www.google.com/calendar/embed?title=slashRoot%20Cafe%20Happenings&amp;showNav=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;showTz=0&amp;mode=AGENDA&amp;height=500&amp;wkst=1&amp;bgcolor=%23ffffff&amp;src=6r7vrl45g52rb520ml3mhrgna8%40group.calendar.google.com&amp;color=%23125A12&amp;src=sjvh3ctocfptqnp2ohmtn71k4s%40group.calendar.google.com&amp;color=%23182C57&amp;ctz=America%2FNew_York"
-		style=" border-width:0 " width="348" height="505" frameborder="0" scrolling="no">
-		</iframe>
-	</div>
+  </div>
 
+  <div class="section" data-anchor="slide3">
 
+    <div class="slide">
+        <h1>gkk</h1>
+    </div>
 
-	</div>
-{% endcomment %}
+    <div class="slide">
+        <h1>hgjgj</h1>
+    </div>
+
+    <div class="slide">
+        <h1>fghfgh</h1>
+    </div>
+
+  </div>
+
+  <div class="section" data-anchor="slide4">
+
+    <div class="slide">
+        <h1>gkk</h1>
+    </div>
+
+    <div class="slide">
+        <h1>hgjgj</h1>
+    </div>
+
+    <div class="slide">
+        <h1>fghfgh</h1>
+    </div>
+
+  </div>
 
 </div>
 
+
+<!-- <div id="slides">
+  <strong><a id="return" href="#1" class="link">< return</a></strong>
+	<div class="slides_container">
+		<div class="slide">
+			<div class="row aboutText">
+				<br><span style="color:#000000;"><h2> We Practice and Teach Four Things. </h2> <br><br> </span>
+
+					<strong><a style="" href="#2" class="link">1: Technology Service:</a></strong>
+						We love to fix and make things!
+						We help computers and their owners get along.
+						We play with Arduino!<br><br>
+
+						<strong><a href="#3" class="link"> 2: Software Development: </a></strong>
+						Web applications, phone routing, mobile apps, graphic design – whatever gets the job done. <br><br>
+
+					<strong><a href="#4" class="link">3: Networking:</a></strong>
+						We help to connect people, and wireless routers.<br><br>
+
+					<strong><a href="#5" class="link">4: Live Events:</a></strong>
+						Acoustic Music, Poetry, Art, Classes, Workshops, etc.<br><br>
+
+
+				</div>
+
+		</div>
+
+		<div class="slide">
+			<h1>Technology Service</h1><br>
+			<p>We provide unique and common technology services to our local and greater area.
+			We advocate the use <br> of open source software in our community,<br>
+			and illustrate connections between fair trade and open source.<br>
+			We will arrange for pickup and delivery of your computer!<br>
+
+			A full tech services menu can be found here.  <br></p>
+
+
+		</div>
+
+		<div class="slide">
+			<h1>Software Development</h1>
+
+			<p>The slashRoot Technology Group is dedicated to excellence in the design and implementation of software.<br>
+			We are glad to use and support Free and Open Source technologies,<br>
+			 as well as philosophies of liberty and transparency.<br>
+		    We use the Ubuntu operating system, the Python programming language,<br>
+		    the Django web framework, the Twisted network programming framework,<br>
+		     and are available to consult on countless other technologies.</p>
+			<p><a href="#1" class="link">Check out the first slide &rsaquo;</a></p>
+		</div>
+
+		<div class="slide">
+			<h1>Networking</h1>
+
+			<p>slashRoot is commited to organic networking.<br>
+			 We believe people can be brought together to create a stronger sense of community<br>
+			 We feel technologies can be used to connect people and ideas in ways previously not concieved of.<br>
+			 It is slashRoots intention to build a mesh network in New Paltz,<br>
+			  to help our local community to connect and communicate with one another</p>
+			<p><a href="#6" class="link">Check out the sixth slide &rsaquo;</a></p>
+		</div>
+
+		<div class="slide">
+
+			<h1>Live Events</h1>
+
+			<p>We have featured local poets, artist, musicians, and other creative types at slashRoot.<br>
+			We try to cultivate a vibe that we think independent, intelligent people will enjoy.<br>
+			slashRoot has also hosted members of the community for a village debate,<br>
+			 as well as events related to technology.<br>
+			 We also host classes and workshops<br>
+			 where we teach our four point curriculum.</p>
+			<p><a href="#7" class="link">Check out the seventh slide &rsaquo;</a></p>
+		</div>
+
+		<div class="slide">
+			<h1>Classes and Membership</h1>
+
+			<p>The slashRoot Technology Group has a four point curriculum.<br>
+			This includes Logical Expression, Material Application,<br>
+			Organic Networking, and Wholesome Commerce.<br>
+			Membership follows a martial arts paradigm, giving members<br>
+			an opportunity to earn white, yellow, green, brown, or black bands in our curriculum.</p>
+			<p><a href="#3" class="link">Check out the third slide &rsaquo;</a></p>
+		</div>
+	</div>
+</div> -->
+
+
+{% comment %}
+
+<div id="front-page-blog-preview">
+<div id="blue-box-header"></div>
+	<img class="left leftVert" src="/media/images/border2.png"/>
+	<h1>Latest <a href="/blog/">Blog</a> Posts</h1>
+	{% for block in blog_blocks %}
+			<div class="blogContent" style="float:left;">
+				<h2><a href="{{block.get_absolute_url}}">{{block.headline}}</a></h2>
+				<h3>by {{block.creator}}</h3>
+				<h4>{{block.created}}</h4>
+			</div>
+	{% endfor %}
+</div>
+
+
+
+<div id="google-calender">
+	<iframe src="https://www.google.com/calendar/embed?title=slashRoot%20Cafe%20Happenings&amp;showNav=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;showTz=0&amp;mode=AGENDA&amp;height=500&amp;wkst=1&amp;bgcolor=%23ffffff&amp;src=6r7vrl45g52rb520ml3mhrgna8%40group.calendar.google.com&amp;color=%23125A12&amp;src=sjvh3ctocfptqnp2ohmtn71k4s%40group.calendar.google.com&amp;color=%23182C57&amp;ctz=America%2FNew_York"
+	style=" border-width:0 " width="348" height="505" frameborder="0" scrolling="no">
+	</iframe>
+</div>
+
+{% endcomment %}
 
 {% endblock %}
 
@@ -291,8 +221,7 @@
 
 <div id="footer"><p id="contactbottom" class="lead">845.633.8330 | info@slashrootcafe.com</p></div>
 
-
-	{% if request.user.is_authenticated and not disable_incoming_calls %}
+{% if request.user.is_authenticated and not disable_incoming_calls %}
 
 		<script type="text/javascript" src="http://static.twilio.com/libs/twiliojs/1.0/twilio.js"></script>
 
@@ -306,6 +235,6 @@
 			Loading Incoming Client...
 		</div>
 
-	{% endif %}
+{% endif %}
 
 {% endblock %}
