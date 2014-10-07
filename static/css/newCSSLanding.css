@@ -5,10 +5,18 @@
     color: blue;
 }
 
+#main_service_picker img {
+  margin-left: 4em;
+}
+
+#main_service_picker p {
+  text-align: center;
+}
+
 
 
 .container-marketing {
-    
+
 }
 
 #slash_pic_front {
