@@ -1,5 +1,6 @@
 -e git+http://git@github.com/SlashRoot/django.git#egg=django
 -e git+http://git@github.com/SlashRoot/django-coldbrew.git#egg=coldbrew
+-e git+https://github.com/slashRoot/hendrix/#egg=hendrix
 stomp.py
 orbited
 twisted
