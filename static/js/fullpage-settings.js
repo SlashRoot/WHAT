@@ -1,40 +1,18 @@
 $(document).ready(function() {
     $('#fullpage').fullpage({
         verticalCentered: false,
-        resize : true,
         sectionsColor : ['#ccc', '#88abaf', '#99b089', '#b08d89'],
         anchors:[],
-        scrollingSpeed: 1000,
-        easing: ' easeOutBack',
-        menu: false,
-        navigation: false,
+        scrollingSpeed: 600,
+        navigation: true,
         navigationPosition: 'right',
-        navigationTooltips: ['firstSlide', 'secondSlide'],
-        slidesNavigation: true,
+        navigationTooltips: ['Home', 'Development','Networking', 'Cafe & Membership'],
+        slidesNavigation: false,
         slidesNavPosition: 'bottom',
-        loopBottom: false,
-        loopTop: false,
-        loopHorizontal: true,
-        autoScrolling: false,
-        scrollOverflow: false,
         css3: false,
         paddingTop: '3em',
         paddingBottom: '10px',
-        normalScrollElements: '#element1, .element2',
-        normalScrollElementTouchThreshold: 5,
-        keyboardScrolling: true,
-        touchSensitivity: 15,
-        continuousVertical: false,
-        animateAnchor: true,
-        sectionSelector: '.section',
-        slideSelector: '.slide',
+        keyboardScrolling: true
 
-        //events
-        onLeave: function(index, nextIndex, direction){},
-        afterLoad: function(anchorLink, index){},
-        afterRender: function(){},
-        afterResize: function(){},
-        afterSlideLoad: function(anchorLink, index, slideAnchor, slideIndex){},
-        onSlideLeave: function(anchorLink, index, slideIndex, direction){}
     });
 });
