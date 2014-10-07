@@ -10,6 +10,12 @@
 
 }
 
+#nav{
+  position:absolute;
+  right: 10px;
+
+}
+
 #main_service_picker img {
   margin-left: 7.5em;
 }
@@ -26,9 +32,9 @@
 
 #slash_pic_front {
     left: 3em;
-    max-width: 21%;
+    max-width: 37%;
     position: absolute;
-    top: 4px;
+    top: -7px;
 }
 
 #current-logo {
