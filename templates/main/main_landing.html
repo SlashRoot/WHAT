@@ -292,10 +292,8 @@
 
 {% block footer %}
 
-    <hr class="featurette-divider">
-    <div id="bottom_nav" class="navbar navbar-inverse navbar-fixed-bottom">
-            <p id="contactbottom" class="lead">845.633.8330 | info@slashrootcafe.com</p>
-    </div>
+<div id="footer"><p id="contactbottom" class="lead">845.633.8330 | info@slashrootcafe.com</p></div> 
+    
 	
 	{% if request.user.is_authenticated and not disable_incoming_calls %}
 	

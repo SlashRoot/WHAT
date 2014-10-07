@@ -983,17 +983,7 @@ clear:left;
 }
 
 #footer {
-    background-color: #1D4378;
-    bottom: 0;
-    clear: both;
-    color: #EBCDF7;
-    font-family: veteran-typewriter;
-    height: 15px;
-    opacity: 0.465;
-    position: absolute;
-    text-align: center;
-    width: 100%;
-    color:#000000;
+    
 }
 #contactbottom {
     color: #000000;
