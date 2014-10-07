@@ -19,10 +19,10 @@
     <link rel="stylesheet" href="/media/css/newCSSLanding.css" type="text/css"/>
     <script src="/media/js/bootstrap.js"></script>
     <link rel="stylesheet" href="/media/css/jquery.fullpage.css" type="text/css"/>
-        <script src="/media/js/jquery.fullpage.js"></script>
-        <script src="/media/js/jquery.easings.min.js"></script>
-        <script src="/media/js/jquery.slimscroll.min.js"></script>
-  <script src="/media/js/kp-bio-fullpage.js"></script>
+    <script src="/media/js/jquery.fullpage.js"></script>
+    <script src="/media/js/jquery.easings.min.js"></script>
+    <script src="/media/js/jquery.slimscroll.min.js"></script>
+    <script src="/media/js/kp-bio-fullpage.js"></script>
     
     
     <!-- <script>
@@ -102,30 +102,34 @@
       <div class="container">
         
         <div class="container-marketing">
-            <img id="current-logo" src="/media/images/current-logo.gif" size="70%"></img>
-      <div id="main_service_picker"> 
+           <div id="slash_pic_front" class="row">
+               <div class="col-xs-12">
+            <img id="current-logo" src="/media/images/current-logo.gif" class="img-responsive"></img>
+           </div>
+            </div>
+      
         <!-- Four columns of servies -->
-      <div class="row">
-        <div class="col-lg-4">
+      <div class="row" id="main_service_picker">
+        <div class="col-md-4">
           <img class="img-circle" src="/media/images/devbig.jpg" alt="Generic placeholder image" style="width: 140px; height: 140px;">
           <h2>Software Development</h2>
           <p>Web applications, phone routing, mobile apps, graphic design – whatever gets the job done.</p>
           <p><a class="btn btn-default" href="#secondSlide" role="button">View details &raquo;</a></p>
         </div> <!-- /.col-lg-4 -->
-        <div class="col-lg-4">
+        <div class="col-md-4">
           <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" style="width: 140px; height: 140px;">
           <h2>Mesh Networking</h2>
           <p>We help to connect people, and wireless routers.</p>
           <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
-        <div class="col-lg-4">
+        <div class="col-md-4">
           <img class="img-circle" src="/media/images/front.jpg" alt="Generic placeholder image" style="width: 140px; height: 140px;">
           <h2>SlashRoot Cafe</h2>
           <p>Acoustic Music, Poetry, Art, Classes, Workshops, etc.</p>
           <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
       </div><!-- /.row -->
-      </div> <!-- main service picker -->
+ <!-- main service picker -->
           </div> <!-- container -->   
     </div> <!-- container marketing -->  
            </div> 
@@ -289,11 +293,8 @@
 {% block footer %}
 
     <hr class="featurette-divider">
-    <div class="container">
-        <footer>
-            <p class="pull-right"><a href="#">Back to top</a></p>
+    <div id="bottom_nav" class="navbar navbar-inverse navbar-fixed-bottom">
             <p id="contactbottom" class="lead">845.633.8330 | info@slashrootcafe.com</p>
-        </footer>
     </div>
 	
 	{% if request.user.is_authenticated and not disable_incoming_calls %}

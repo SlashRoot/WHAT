@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $('#fullpage').fullpage({
-        verticalCentered: true,
+        verticalCentered: false,
         resize : true,
         sectionsColor : ['#ccc', 'blue'],
         anchors:['firstSlide', 'secondSlide'],

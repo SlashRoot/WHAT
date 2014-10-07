@@ -10,3 +10,23 @@
 .container-marketing {
     
 }
+
+#slash_pic_front {
+    max-width:100%;
+    position:relative;
+}
+
+#current-logo {
+    max-width:60%;
+}
+
+footer {
+    position:fixed;
+    height: 100px;
+    bottom: 0;
+    width: 100%;
+}
+
+#bottom_nav {
+    color:white;
+}
