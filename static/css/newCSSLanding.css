@@ -5,11 +5,16 @@
     color: blue;
 }
 
-#main_service_picker img {
-  margin-left: 4em;
+#fullpage{
+  padding-top:50px;
+
 }
 
-#main_service_picker p {
+#main_service_picker img {
+  margin-left: 7.5em;
+}
+
+#main_service_picker p, h2 {
   text-align: center;
 }
 
@@ -20,8 +25,10 @@
 }
 
 #slash_pic_front {
-    max-width:100%;
-    position:relative;
+    left: 3em;
+    max-width: 21%;
+    position: absolute;
+    top: 4px;
 }
 
 #current-logo {
@@ -58,4 +65,3 @@ footer {
 #footer {
     bottom:0px;
 }
-
