@@ -1,28 +1,18 @@
 {% extends 'sitewide_head.html' %}
 
 {% block head %}
-
-<!--
-<link rel="stylesheet" href="/media/css/landing.css" type="text/css" media="screen" />
-<link rel="stylesheet" href="/media/css/cms.css" type="text/css" media="screen" />
-<link rel="stylesheet" href="/media/css/slides.css" type="text/css" media="screen" />
--->
-
+{% include 'frontend_head.html' %}
 {% endblock head %}
 
 {% block content %}
-
-<!-- <img id="front-schematic" src="/media/images/schematic2.png" ></img> -->
 
 <div id="fullpage">
 
   <div class="section" data-anchor="slide1">
 
-    <div class="container">
+    <div id="section1-container" class="container">
 
-      <div class="container-marketing"></div>
-
-      <!-- 3 columns of servies -->
+      {# First Fullpage Slide - Three Colums of services. #}
       <div class="row" id="main_service_picker">
 
         <div class="col-md-4">
@@ -51,144 +41,106 @@
     </div>
   </div>
 
+  {# Software Section #}
   <div class="section" data-anchor="slide2">
 
     <div class="slide">
         <h1>Software Development</h1>
+        <p>
+          Web applications, phone routing, mobile apps, graphic design –
+          whatever gets the job done.
+        </p>
     </div>
 
     <div class="slide">
-        <h1>Networking</h1>
+        <h1>etyey</h1>
+        <p>
+          We provide unique and common technology services to our local and greater area.
+          We advocate the use <br> of open source software in our community,<br>
+          and illustrate connections between fair trade and open source.<br>
+          We will arrange for pickup and delivery of your computer!<br>
+
+          A full tech services menu can be found here.  <br>
+        </p>
     </div>
 
     <div class="slide">
-        <h1>Live Events</h1>
+        <h1>ereye</h1>
     </div>
 
   </div>
 
+  {# Mesh Section #}
   <div class="section" data-anchor="slide3">
 
     <div class="slide">
         <h1>gkk</h1>
+        <p>
+          We help to connect people, and wireless routers.
+        </p>
     </div>
 
     <div class="slide">
         <h1>hgjgj</h1>
+        <p>
+          The slashRoot Technology Group is dedicated to excellence in the design and implementation of software.<br>
+          We are glad to use and support Free and Open Source technologies,<br>
+          as well as philosophies of liberty and transparency.<br>
+          We use the Ubuntu operating system, the Python programming language,<br>
+          the Django web framework, the Twisted network programming framework,<br>
+          and are available to consult on countless other technologies.
+        </p>
     </div>
 
     <div class="slide">
         <h1>fghfgh</h1>
+        <p>
+          slashRoot is commited to organic networking.<br>
+          We believe people can be brought together to create a stronger sense of community<br>
+          We feel technologies can be used to connect people and ideas in ways previously not concieved of.<br>
+          It is slashRoots intention to build a mesh network in New Paltz,<br>
+          to help our local community to connect and communicate with one another
+        </p>
     </div>
 
   </div>
 
+  {# Cafe Section #}
   <div class="section" data-anchor="slide4">
 
     <div class="slide">
         <h1>gkk</h1>
+        <p>
+          The slashRoot Technology Group has a four point curriculum.<br>
+          This includes Logical Expression, Material Application,<br>
+          Organic Networking, and Wholesome Commerce.<br>
+          Membership follows a martial arts paradigm, giving members<br>
+          an opportunity to earn white, yellow, green, brown, or black bands in our curriculum.
+        </p>
     </div>
 
     <div class="slide">
         <h1>hgjgj</h1>
+        <p>
+            Acoustic Music, Poetry, Art, Classes, Workshops, etc.
+        </p>
     </div>
 
     <div class="slide">
         <h1>fghfgh</h1>
+        <p>
+          We have featured local poets, artist, musicians, and other creative types at slashRoot.<br>
+          We try to cultivate a vibe that we think independent, intelligent people will enjoy.<br>
+          slashRoot has also hosted members of the community for a village debate,<br>
+          as well as events related to technology.<br>
+          We also host classes and workshops<br>
+          where we teach our four point curriculum.
+        </p>
     </div>
 
   </div>
 
-</div>
-
-
-<!-- <div id="slides">
-  <strong><a id="return" href="#1" class="link">< return</a></strong>
-	<div class="slides_container">
-		<div class="slide">
-			<div class="row aboutText">
-				<br><span style="color:#000000;"><h2> We Practice and Teach Four Things. </h2> <br><br> </span>
-
-					<strong><a style="" href="#2" class="link">1: Technology Service:</a></strong>
-						We love to fix and make things!
-						We help computers and their owners get along.
-						We play with Arduino!<br><br>
-
-						<strong><a href="#3" class="link"> 2: Software Development: </a></strong>
-						Web applications, phone routing, mobile apps, graphic design – whatever gets the job done. <br><br>
-
-					<strong><a href="#4" class="link">3: Networking:</a></strong>
-						We help to connect people, and wireless routers.<br><br>
-
-					<strong><a href="#5" class="link">4: Live Events:</a></strong>
-						Acoustic Music, Poetry, Art, Classes, Workshops, etc.<br><br>
-
-
-				</div>
-
-		</div>
-
-		<div class="slide">
-			<h1>Technology Service</h1><br>
-			<p>We provide unique and common technology services to our local and greater area.
-			We advocate the use <br> of open source software in our community,<br>
-			and illustrate connections between fair trade and open source.<br>
-			We will arrange for pickup and delivery of your computer!<br>
-
-			A full tech services menu can be found here.  <br></p>
-
-
-		</div>
-
-		<div class="slide">
-			<h1>Software Development</h1>
-
-			<p>The slashRoot Technology Group is dedicated to excellence in the design and implementation of software.<br>
-			We are glad to use and support Free and Open Source technologies,<br>
-			 as well as philosophies of liberty and transparency.<br>
-		    We use the Ubuntu operating system, the Python programming language,<br>
-		    the Django web framework, the Twisted network programming framework,<br>
-		     and are available to consult on countless other technologies.</p>
-			<p><a href="#1" class="link">Check out the first slide &rsaquo;</a></p>
-		</div>
-
-		<div class="slide">
-			<h1>Networking</h1>
-
-			<p>slashRoot is commited to organic networking.<br>
-			 We believe people can be brought together to create a stronger sense of community<br>
-			 We feel technologies can be used to connect people and ideas in ways previously not concieved of.<br>
-			 It is slashRoots intention to build a mesh network in New Paltz,<br>
-			  to help our local community to connect and communicate with one another</p>
-			<p><a href="#6" class="link">Check out the sixth slide &rsaquo;</a></p>
-		</div>
-
-		<div class="slide">
-
-			<h1>Live Events</h1>
-
-			<p>We have featured local poets, artist, musicians, and other creative types at slashRoot.<br>
-			We try to cultivate a vibe that we think independent, intelligent people will enjoy.<br>
-			slashRoot has also hosted members of the community for a village debate,<br>
-			 as well as events related to technology.<br>
-			 We also host classes and workshops<br>
-			 where we teach our four point curriculum.</p>
-			<p><a href="#7" class="link">Check out the seventh slide &rsaquo;</a></p>
-		</div>
-
-		<div class="slide">
-			<h1>Classes and Membership</h1>
-
-			<p>The slashRoot Technology Group has a four point curriculum.<br>
-			This includes Logical Expression, Material Application,<br>
-			Organic Networking, and Wholesome Commerce.<br>
-			Membership follows a martial arts paradigm, giving members<br>
-			an opportunity to earn white, yellow, green, brown, or black bands in our curriculum.</p>
-			<p><a href="#3" class="link">Check out the third slide &rsaquo;</a></p>
-		</div>
-	</div>
-</div> -->
-
+</div> <-- fullpage div close -->
 
 {% comment %}
 
@@ -203,14 +155,6 @@
 				<h4>{{block.created}}</h4>
 			</div>
 	{% endfor %}
-</div>
-
-
-
-<div id="google-calender">
-	<iframe src="https://www.google.com/calendar/embed?title=slashRoot%20Cafe%20Happenings&amp;showNav=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;showTz=0&amp;mode=AGENDA&amp;height=500&amp;wkst=1&amp;bgcolor=%23ffffff&amp;src=6r7vrl45g52rb520ml3mhrgna8%40group.calendar.google.com&amp;color=%23125A12&amp;src=sjvh3ctocfptqnp2ohmtn71k4s%40group.calendar.google.com&amp;color=%23182C57&amp;ctz=America%2FNew_York"
-	style=" border-width:0 " width="348" height="505" frameborder="0" scrolling="no">
-	</iframe>
 </div>
 
 {% endcomment %}
