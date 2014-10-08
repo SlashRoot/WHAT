@@ -64,6 +64,7 @@ footer {
 
 #header {
     top:0px;
+    z-index:100;
 }
 
 #header ul {
