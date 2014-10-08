@@ -44,15 +44,29 @@
     </div>
   </div>
 
-  {# Software Section #}
+  {# Projects Section #}
   <div class="section" id="section2">
-
-    <div class="slide">
+    <div id="section2-container">
+      <div class="slide">
+        <div id=slide2-content-left class="col-md-4">
         <h1>Software Development</h1>
         <p>
           Web applications, phone routing, mobile apps, graphic design –
           whatever gets the job done.
         </p>
+        <div class="col-md-4" id="front-page-blog-preview">
+        <div id="blue-box-header"></div>
+          <img class="left leftVert" src="/media/images/border2.png"/>
+          <h1>Latest <a href="/blog/">Blog</a> Posts</h1>
+          {% for block in blog_blocks %}
+              <div class="blogContent" style="float:left;">
+                <h2><a href="{{block.get_absolute_url}}">{{block.headline}}</a></h2>
+                <h3>by {{block.creator}}</h3>
+                <h4>{{block.created}}</h4>
+              </div>
+          {% endfor %}
+        </div>
+      </div>
     </div>
 
     <div class="slide">
@@ -71,6 +85,7 @@
         <h1>ereye</h1>
     </div>
 
+  </div>
   </div>
 
   {# Mesh Section #}
@@ -144,23 +159,6 @@
   </div>
 
 </div> <-- fullpage div close -->
-
-{% comment %}
-
-<div id="front-page-blog-preview">
-<div id="blue-box-header"></div>
-	<img class="left leftVert" src="/media/images/border2.png"/>
-	<h1>Latest <a href="/blog/">Blog</a> Posts</h1>
-	{% for block in blog_blocks %}
-			<div class="blogContent" style="float:left;">
-				<h2><a href="{{block.get_absolute_url}}">{{block.headline}}</a></h2>
-				<h3>by {{block.creator}}</h3>
-				<h4>{{block.created}}</h4>
-			</div>
-	{% endfor %}
-</div>
-
-{% endcomment %}
 
 {% endblock %}
 

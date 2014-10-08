@@ -23,15 +23,25 @@
 
 }
 
-#section3 p{
+#front-page-blog-preview {
+    font-size: 2px;
+    height: 10%;
+    margin-left: 440em;
+    margin-top: -81px;
+    position: relative;
+    text-align: right;
+    width: 184em;
+}
+
+#section3 {
 
 }
 
-#section4 p{
+#section4 {
 
 }
 
-#section5 p{
+#section5 {
 
 }
 
@@ -68,6 +78,10 @@
 
 .container-marketing {
 
+}
+
+#fp-nav {
+    top: 10%;
 }
 
 #slash_pic_front {
