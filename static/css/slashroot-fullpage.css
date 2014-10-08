@@ -5,6 +5,26 @@
     color: blue;
 }
 
+#section1{
+
+}
+
+#section2 {
+
+}
+
+#section3 p{
+
+}
+
+#section4 p{
+
+}
+
+#section5 p{
+
+}
+
 #section1-container{
   padding-top:50px;
 
@@ -64,7 +84,6 @@ footer {
 
 #header {
     top:0px;
-    z-index:100;
 }
 
 #header ul {
