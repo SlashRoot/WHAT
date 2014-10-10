@@ -47,12 +47,45 @@ $( "#slider" ).slider();
       </div>
 
     </div>
+
+      {# Cafe Section #}
+        <div class="slide">
+            <h1>gkk</h1>
+            <p>
+              The slashRoot Technology Group has a four point curriculum.<br>
+              This includes Logical Expression, Material Application,<br>
+              Organic Networking, and Wholesome Commerce.<br>
+              Membership follows a martial arts paradigm, giving members<br>
+              an opportunity to earn white, yellow, green, brown, or black bands in our curriculum.
+            </p>
+        </div>
+
+        <div class="slide">
+            <h1>hgjgj</h1>
+            <p>
+                Acoustic Music, Poetry, Art, Classes, Workshops, etc.
+            </p>
+        </div>
+
+        <div class="slide">
+            <h1>fghfgh</h1>
+            <p>
+              We have featured local poets, artist, musicians, and other creative types at slashRoot.<br>
+              We try to cultivate a vibe that we think independent, intelligent people will enjoy.<br>
+              slashRoot has also hosted members of the community for a village debate,<br>
+              as well as events related to technology.<br>
+              We also host classes and workshops<br>
+              where we teach our four point curriculum.
+            </p>
+        </div>
+
+      </div>
   </div>
 
   {# Projects Section #}
   <div class="section" id="section2">
     <div id="section2-container">
-      <div class="slide">
+      <div style="height:100%;" class="slide">
         <div id=slide2-content-left class="col-md-4">
         <h1>Software Development</h1>
         <p>
@@ -60,11 +93,10 @@ $( "#slider" ).slider();
           whatever gets the job done.
         </p>
         <div class="col-md-4" id="front-page-blog-preview">
-        <div id="blue-box-header"></div>
-          <img class="left leftVert" src="/media/images/border2.png"/>
+          <img class="left leftVert" src="/media/images/sprites/border2.png"/>
           <h1>Latest <a href="/blog/">Blog</a> Posts</h1>
           {% for block in blog_blocks %}
-              <div class="blogContent" style="float:left;">
+              <div id class="blog-preview">
                 <h2><a href="{{block.get_absolute_url}}">{{block.headline}}</a></h2>
                 <h3>by {{block.creator}}</h3>
                 <h4>{{block.created}}</h4>
@@ -94,75 +126,6 @@ $( "#slider" ).slider();
 
   </div>
 
-  {# Mesh Section #}
-  <div class="section" id="section3">
-
-    <div class="slide">
-        <h1>gkk</h1>
-        <p>
-          We help to connect people, and wireless routers.
-        </p>
-    </div>
-
-    <div class="slide">
-        <h1>hgjgj</h1>
-        <p>
-          The slashRoot Technology Group is dedicated to excellence in the design and implementation of software.<br>
-          We are glad to use and support Free and Open Source technologies,<br>
-          as well as philosophies of liberty and transparency.<br>
-          We use the Ubuntu operating system, the Python programming language,<br>
-          the Django web framework, the Twisted network programming framework,<br>
-          and are available to consult on countless other technologies.
-        </p>
-    </div>
-
-    <div class="slide">
-        <h1>fghfgh</h1>
-        <p>
-          slashRoot is commited to organic networking.<br>
-          We believe people can be brought together to create a stronger sense of community<br>
-          We feel technologies can be used to connect people and ideas in ways previously not concieved of.<br>
-          It is slashRoots intention to build a mesh network in New Paltz,<br>
-          to help our local community to connect and communicate with one another
-        </p>
-    </div>
-
-  </div>
-
-  {# Cafe Section #}
-  <div class="section" id="section4">
-
-    <div class="slide">
-        <h1>gkk</h1>
-        <p>
-          The slashRoot Technology Group has a four point curriculum.<br>
-          This includes Logical Expression, Material Application,<br>
-          Organic Networking, and Wholesome Commerce.<br>
-          Membership follows a martial arts paradigm, giving members<br>
-          an opportunity to earn white, yellow, green, brown, or black bands in our curriculum.
-        </p>
-    </div>
-
-    <div class="slide">
-        <h1>hgjgj</h1>
-        <p>
-            Acoustic Music, Poetry, Art, Classes, Workshops, etc.
-        </p>
-    </div>
-
-    <div class="slide">
-        <h1>fghfgh</h1>
-        <p>
-          We have featured local poets, artist, musicians, and other creative types at slashRoot.<br>
-          We try to cultivate a vibe that we think independent, intelligent people will enjoy.<br>
-          slashRoot has also hosted members of the community for a village debate,<br>
-          as well as events related to technology.<br>
-          We also host classes and workshops<br>
-          where we teach our four point curriculum.
-        </p>
-    </div>
-
-  </div>
 
 </div> <-- fullpage div close -->
 
