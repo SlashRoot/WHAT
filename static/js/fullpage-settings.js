@@ -9,11 +9,11 @@ $(document).ready(function() {
         navigationPosition: 'right',
         navigationTooltips: ['Home', 'Development','Networking', 'Cafe & Membership'],
         slidesNavigation: true,
-        slidesNavPosition: 'bottom',
+        slidesNavPosition: 'top',
         css3: false,
         paddingTop: '3em',
         paddingBottom: '10px',
-        keyboardScrolling: true
+        keyboardScrolling: true,
 
     });
 });
