@@ -15,7 +15,7 @@ $( "#slider" ).slider();
   <div class="section" id="section1">
 {# Mesh Section #}
 
-  <div class="slide">
+  <div id="projects-slide" class="slide">
       <h1>gkk</h1>
       <p>
         We help to connect people, and wireless routers.
@@ -33,20 +33,20 @@ $( "#slider" ).slider();
       </p>
   </div>
 
-  <div class="slide active">
+  <div id="main-slide" class="slide active">
     <div id="section1-container" class="container">
 
       {# First Fullpage Slide - Three Colums of services. #}
 
       <div class="row" id="main_service_picker_row1">
 
-        <div class="col-md-3">
+        <div id="left-circle" class="col-md-3">
           <img class="img-circle" src="/media/images/photo/devbig.jpg" alt="Generic placeholder image" style="width: 140px; height: 140px;">
           <h2>Projects</h2>
           <p>Web applications, phone routing, mobile apps, conferences– see what we're up to.</p>
           <p><a class="btn btn-default" href="#secondSlide" role="button">Development &raquo;</a></p>
         </div>
-        <div class="col-md-6"></div>
+        <div id="right-circle" class="col-md-6"></div>
         <div class="col-md-3">
           <img class="img-circle" src="/media/images/photo/front.jpg" alt="Generic placeholder image" style="width: 140px; height: 140px;">
           <h2>SlashRoot Cafe</h2>
@@ -57,10 +57,10 @@ $( "#slider" ).slider();
 
       <div class="row" id="main_service_picker_row2">
         <div class="col-md-3"></div>
-        <div class="col-md-6">
+        <div id="center-circle" class="col-md-6">
           <img class="img-circle" src="/media/images/photo/meshy.jpg" alt="Generic placeholder image" style="width: 140px; height: 140px;">
           <h2>Mesh Networking</h2>
-          <p>We help to connect people, and wireless routers.</p>
+          <p style="color:white;">We help to connect people, and wireless routers.</p>
           <p><a class="btn btn-default" href="#thirdSlide" role="button">Networking&raquo;</a></p>
         </div>
         <div class="col-md-3"></div>
@@ -69,7 +69,7 @@ $( "#slider" ).slider();
     </div>
   </div>
       {# Cafe Section #}
-        <div class="slide">
+        <div id="cafe-slide" class="slide">
             <h1>gkk</h1>
             <p>
               The slashRoot Technology Group has a four point curriculum.<br>
@@ -141,7 +141,7 @@ $( "#slider" ).slider();
 {% block footer %}
 
 <div id="footer"><p id="contactbottom" class="lead">+1 845.633.8330 | info@slashrootcafe.com</p></div>
-<div id="slider"></div>
+
 {% if request.user.is_authenticated and not disable_incoming_calls %}
 
 		<script type="text/javascript" src="http://static.twilio.com/libs/twiliojs/1.0/twilio.js"></script>

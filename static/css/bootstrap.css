@@ -49,6 +49,13 @@ template {
 a {
   background: transparent;
 }
+@font-family-sans-serif{
+  src: url(/media/fonts/veteran-typewriter.tff);
+}
+@sansFontFamily {
+    font-family: typew;
+    src: url(/media/fonts/veteran-typewriter.tff);
+}
 a:active,
 a:hover {
   outline: 0;
@@ -260,9 +267,8 @@ th {
   }
 }
 @font-face {
-  font-family: 'Glyphicons Halflings';
-  src: url('../fonts/glyphicons-halflings-regular.eot');
-  src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+  font-family: 'typew';
+  src: url('/media/fonts/linowrite.ttf') format('truetype');
 }
 .glyphicon {
   position: relative;

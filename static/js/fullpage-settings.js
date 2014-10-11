@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $("#header, #footer").animate({height:"10%"}, 2000, 'swing');
+    $("#header, #footer").animate({height:"8%"}, 2000, 'swing');
     $('#fullpage').fullpage({
         verticalCentered: false,
         sectionsColor : ['black', '#88abaf', '#99b089', '#b08d89'],
