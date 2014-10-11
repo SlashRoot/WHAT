@@ -20,13 +20,29 @@ fp-slidesNav.bottom {
     bottom: 90px;
 }
 
-#cafe-slide{
-  font-size: 10px;
-  background: linear-gradient(
-    rgba(255, 255, 255, 0.3),
-    rgba(255, 255, 255, 0.3)
-  ),
-  url('/media/images/photo/cafe-empty.jpg') no-repeat center -10em;
+#cafe-slide {
+    background-attachment: scroll, scroll;
+    background-clip: border-box, border-box;
+    background-color: rgba(0, 0, 0, 0);
+    background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url("/media/images/photo/cafe-empty.jpg");
+    background-origin: padding-box, padding-box;
+    background-position: unset;
+    background-repeat: repeat, no-repeat;
+    background-size: 55% auto;
+
+}
+
+#md-filler{
+  width: 50%;
+
+}
+
+#cafe-slide p {
+    font-size: 17px;
+    padding: 2%;
+    text-align: right;
+    color:white;
+
 }
 
 #main-slide{

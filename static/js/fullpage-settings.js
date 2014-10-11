@@ -2,14 +2,14 @@ $(document).ready(function() {
     $("#header, #footer").animate({height:"8%"}, 2000, 'swing');
     $('#fullpage').fullpage({
         verticalCentered: false,
-        sectionsColor : ['black', '#88abaf', '#99b089', '#b08d89'],
+        sectionsColor : ['black', '#88abaf'],
         anchors:[],
         scrollingSpeed: 600,
-        navigation: true,
+        navigation: false,
         navigationPosition: 'right',
-        navigationTooltips: ['Home', 'Development','Networking', 'Cafe & Membership'],
+        navigationTooltips: ['Home', 'Networking'],
         slidesNavigation: true,
-        slidesNavPosition: 'top',
+        slidesNavPosition: 'bottom',
         css3: false,
         paddingTop: '3em',
         paddingBottom: '10px',
