@@ -37,35 +37,35 @@ $( "#slider" ).slider();
     <div id="section1-container" class="container">
 
       {# First Fullpage Slide - Three Colums of services. #}
-
+      <div style="height:10%" class="row"></div>
       <div class="row" id="main_service_picker_row1">
+        <div id="left-circle" class="col-md-2">
+          <img class="img-circle" src="/media/images/photo/meshy.jpg" alt="Generic placeholder image" style="width: 140px; height: 140px;">
+          <h2>Mesh Networking</h2>
+          <p style="color:white;">We help to connect people, and wireless routers.</p>
 
-        <div id="left-circle" class="col-md-3">
-          <img class="img-circle" src="/media/images/photo/devbig.jpg" alt="Generic placeholder image" style="width: 140px; height: 140px;">
-          <h2>Projects</h2>
-          <p>Web applications, phone routing, mobile apps, conferences– see what we're up to.</p>
-          <p><a class="btn btn-default" href="#secondSlide" role="button">Development &raquo;</a></p>
         </div>
-        <div id="right-circle" class="col-md-6"></div>
-        <div class="col-md-3">
+
+        <div id="right-circle" class="col-md-8"></div>
+        <div class="col-md-2">
           <img class="img-circle" src="/media/images/photo/front.jpg" alt="Generic placeholder image" style="width: 140px; height: 140px;">
           <h2>SlashRoot Cafe</h2>
           <p>Acoustic Music, Poetry, Art, Classes, Workshops, etc.</p>
-          <p><a class="btn btn-default" href="#fourthSlide" role="button">Cafe&raquo;</a></p>
+
         </div>
       </div>
 
       <div class="row" id="main_service_picker_row2">
         <div class="col-md-3"></div>
+
         <div id="center-circle" class="col-md-6">
-          <img class="img-circle" src="/media/images/photo/meshy.jpg" alt="Generic placeholder image" style="width: 140px; height: 140px;">
-          <h2>Mesh Networking</h2>
-          <p style="color:white;">We help to connect people, and wireless routers.</p>
-          <p><a class="btn btn-default" href="#thirdSlide" role="button">Networking&raquo;</a></p>
+          <img class="img-circle" src="/media/images/photo/devbig.jpg" alt="Generic placeholder image" style="width: 140px; height: 140px;">
+          <h2>Projects</h2>
+          <p style="color:white;">Web applications, phone routing, mobile apps, conferences– see what we're up to.</p>
         </div>
+
         <div class="col-md-3"></div>
       </div>
-
     </div>
   </div>
       {# Cafe Section #}
@@ -96,48 +96,29 @@ $( "#slider" ).slider();
   {# Projects Section #}
   <div class="section" id="section2">
     <div id="section2-container">
-      <div style="height:100%;" class="slide">
         <div id=slide2-content-left class="col-md-4">
         <h1>Software Development</h1>
         <p>
           Web applications, phone routing, mobile apps, graphic design –
           whatever gets the job done.
         </p>
+      </div>
+
+      <div id=slide2-content-mid class="col-md-4"></div>
         <div class="col-md-4" id="front-page-blog-preview">
-          <img class="left leftVert" src="/media/images/sprites/border2.png"/>
+          <img id="blog-liner" class="left leftVert" src="/media/images/drawings/border2.png"/>
           <h1>Latest <a href="/blog/">Blog</a> Posts</h1>
-          {% for block in blog_blocks %}
-              <div id class="blog-preview">
-                <h2><a href="{{block.get_absolute_url}}">{{block.headline}}</a></h2>
-                <h3>by {{block.creator}}</h3>
-                <h4>{{block.created}}</h4>
-              </div>
-          {% endfor %}
+            {% for block in blog_blocks %}
+            <div id class="blog-preview">
+              <h3><a href="{{block.get_absolute_url}}">{{block.headline}}</a></h3>
+              <h4>by {{block.creator}}</h4>
+              <h5>{{block.created}}</h5>
+            </div>
+            {% endfor %}
         </div>
       </div>
-    </div>
-
-    <div class="slide">
-        <h1>etyey</h1>
-        <p>
-          We provide unique and common technology services to our local and greater area.
-          We advocate the use <br> of open source software in our community,<br>
-          and illustrate connections between fair trade and open source.<br>
-          We will arrange for pickup and delivery of your computer!<br>
-
-          A full tech services menu can be found here.  <br>
-        </p>
-    </div>
-
-    <div class="slide">
-        <h1>ereye</h1>
-    </div>
 
   </div>
-
-  </div>
-
-
 </div> <-- fullpage div close -->
 
 {% endblock %}

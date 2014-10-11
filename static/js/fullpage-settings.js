@@ -11,7 +11,7 @@ $(document).ready(function() {
         slidesNavigation: true,
         slidesNavPosition: 'bottom',
         css3: false,
-        paddingTop: '3em',
+        paddingTop: '1em',
         paddingBottom: '10px',
         keyboardScrolling: true,
 

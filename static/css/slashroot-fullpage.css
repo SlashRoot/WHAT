@@ -10,6 +10,18 @@
     src: url(/media/fonts/veteran-typewriter.tff);
 }
 
+#front-page-blog-preview {
+  position: relative;
+  right: 0px;
+  font-size: 14px;
+
+}
+
+#blog-liner {
+    margin-right: 15px;
+    width: 10%;
+}
+
 .section{
   font-family: typew;
   font-size: 20px;
@@ -79,11 +91,11 @@ fp-slidesNav.bottom {
 
 }
 
-#front-page-blog-preview {
+{
     font-size: 2px;
     height: 10%;
     margin-left: 440em;
-    margin-top: -81px;
+    margin-top: -178px;
     position: relative;
     text-align: right;
     width: 184em;
@@ -120,10 +132,19 @@ fp-slidesNav.bottom {
 }
 
 #main_service_picker_row1 img {
-  margin-left: 4em;
+  margin-left: 7%;
 }
 
 #main_service_picker_row1 {
+  padding-top: 4.5%
+}
+
+#left-circle {
+
+}
+
+#right-circle {
+
 
 }
 
@@ -157,10 +178,10 @@ fp-slidesNav.bottom {
 }
 
 #slash_pic_front {
-    left: 3em;
-    max-width: 37%;
+    left: 0;
+    max-width: 34%;
     position: absolute;
-    top: -7px;
+    top: -5px;
 }
 
 #current-logo {
