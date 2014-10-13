@@ -223,3 +223,7 @@ fp-slidesNav.bottom {
 #footer {
     bottom:0px;
 }
+
+.img-circle {
+    box-shadow: 0 0 1px grey;
+}
