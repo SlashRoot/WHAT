@@ -59,8 +59,8 @@ fp-slidesNav.bottom {
 
 #main-slide{
   background: linear-gradient(
-    rgba(255, 255, 255, 0.3),
-    rgba(255, 255, 255, 0.3)
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.1)
   ),
   url('/media/images/photo/dark-roots2.jpg') no-repeat center -10em;
 
@@ -114,10 +114,11 @@ fp-slidesNav.bottom {
 }
 
 #section1-container{
-  padding-top:50px;
+  padding-top:0px;
   z-index: 20;
   font-family: typew;
   color:white;
+  height: 100%;
 }
 
 #section1-container p{
@@ -151,7 +152,7 @@ fp-slidesNav.bottom {
 #center-circle {
     left: 26%;
     position: absolute;
-    top: 60%;
+    top: 40%;
     z-index: 999;
     font-family: typew;
 }
